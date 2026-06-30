@@ -1,7 +1,7 @@
 # Buddhism
 *work-in-progress — please check in later too*
 
-An ontology-based reading of Zen / #Chan — Jizang-grounded, Dōgen-formulated, Hakuin-inspired.
+An ontology-under-erasure reading of Zen / #Chan — Jizang-grounded, Dōgen-formulated, Hakuin-inspired.
 
 Nishitani provides the impetus — absolute non-being is not a privative void but lies beyond the being/non-being distinction, which is named by emptiness.
 
@@ -16,7 +16,7 @@ Linji provides the weld its agential face — the true person of no rank: no met
 **Tiering.** The ultimate is the self-emptying floor (Jizang). All three rows are *conventional* articulation — MMK 24: emptiness = dependent origination = conventional designation; the path lives entirely on the conventional side. The two truths are themselves a conventional distinction, so the grid's organizing joints are scaffold — and genjō names the point where the scaffold is kicked away (the seam dissolving), not a separate ultimate row. The tiering and kannō-sōe (with the ki 機 it implies) are conventional and my own — contrasts with Dōgen, who keeps all ultimate.
 
 **Attunement axiom** — one irreducible posit: *śūnyatā — the kamma-holder has no own-being.* (Working in the Theravāda five-niyāma scheme: utu, bīja, citta, kamma, dhamma. Textual anchor: **MMK 17**, *karmaphalaparīkṣā* — Nāgārjuna directly on act, fruit, and the unfindable agent; MMK 24 is reserved for the tiering above.) Two downstream faces:
-- *definitional face*: conventionally, kamma names a distinct causal order, value-free — not utu wearing a veil.
+- *definitional face*: conventionally, kamma names a distinct agent-indexing mode over events, with no substrate of its own.
 - *relational face*: kamma is underivable-from-utu because there is *no fixed utu-base to read it off* — the reduction question is malformed, not merely unanswerable. (Not: the information is there but unpinnable. There is no pinned thing — the holder is empty.)
 
 **Why this doesn't over-generate.** Emptiness of own-being is universal — every relatum in every niyāma-pair lacks svabhāva — so *generic* no-own-being can't be what licenses the malformed-not-unanswerable verdict, or it would flatten every reduction in the system. The verdict fires *only where an agent is essentially a relatum.* utu→bīja and bīja→citta are conditionings among dhammas: emptiness makes their relata dependent but still *conventionally determinate* — there is a conventional fact of the matter to track, the reduction is merely hard. kamma is action-*of-an-agent* bearing fruit-*for-an-agent*, and the agent is the paradigm case of dependent designation (MMK 17: not findable as either identical to or different from the act) — so kamma's base is *not* conventionally determinate even in principle. Dependent-but-determinate (hard reduction) vs. no-determinate-base (malformed reduction): only kamma crosses the line, and it crosses because its relatum is an agent. The move is therefore *anātman localized to where an agent appears*, not a generic emptiness-hammer. (Guard: the agent resists reduction by being *more* thoroughly empty — no findable base — not by being a special substance. Said wrong, this re-smuggles a soul; said right, it is just the no-fixed-base point, correctly localized. It resists by being *less* of a thing, not more.)
