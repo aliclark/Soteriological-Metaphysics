@@ -1,7 +1,6 @@
 # Buddhism
 
-An ontology-under-erasure reading of Zen / #Chan (*work-in-progress — please check in later too*
-).
+An ontology-under-erasure reading of Zen / #Chan (*work-in-progress — please check in later too*).
 
 | Dependence | Enactment |
 |------------|-----------|
