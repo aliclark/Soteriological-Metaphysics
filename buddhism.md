@@ -2,7 +2,7 @@
 
 *work-in-progress — please check in later too*
 
-An ontology-under-erasure reading of Zen / #Chan — Jizang-grounded, Dōgen-formulated, Hakuin-inspired.
+An ontology-under-erasure reading of Zen / #Chan.
 
 | Dependence | Enactment |
 |------------|-----------|
