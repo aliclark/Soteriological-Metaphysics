@@ -16,7 +16,7 @@ Distinct from it, and never equated with it, is the **non-attaining middle** at 
 
 ## The act-grammar
 
-Why not leave it at Jizang? Per Dahui, Chinese and Japanese Zen don't cease at the self-emptying floor: emptiness that only empties can host neither Zen activity nor the vibrant person who acts. So the floor is turned into an act-grammar, here using Dōgen's vocabulary.
+Why not leave it at Jizang? Per Dahui, Zen doesn't cease at the self-emptying floor: emptiness that only empties can host neither Zen activity nor the vibrant person who acts. So the floor is turned into an act-grammar, here using Dōgen's vocabulary.
 
 Three rows, each a dependence/enactment pair; all three conventional.
 
