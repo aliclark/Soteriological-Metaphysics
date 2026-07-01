@@ -14,7 +14,7 @@ Jizang — the ultimate is the self-emptying floor; every level is conventional 
 
 Distinct from it, and never equated with it, is the **non-attaining middle** at the floor — Linji's "true person of no rank", no metaphysical rank yet always going in and out, acting. This is **shō**: realization as anātman, agential, never a still attainment. Two middles: genjō provisional, shō non-attaining. The system turns on keeping them apart.
 
-## The soteriological principle
+## The conventional principle
 
 Three rows, each a dependence/enactment pair; all three conventional.
 
