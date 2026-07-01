@@ -6,7 +6,7 @@ A soteriological metaphysics with no substrate: take one emptiness posit and fol
 
 ## Not Nothing
 
-Nishitani — absolute non-being is not a privative void but lies beyond the being/non-being distinction, that *provisionally-designated middle* names.
+Per Nishitani — absolute non-being is not a privative void but lies beyond the being/non-being distinction, that *provisionally-designated middle* names.
 
 ## Provisionally-designated middle
 
