@@ -2,7 +2,7 @@
 
 An ontology-under-erasure reading of Zen / #Chan *(work in progress).*
 
-A moral metaphysics with no substrate: take one emptiness posit and follow what it forces for karma, action, and awakening.
+A soteriological metaphysics with no substrate: take one emptiness posit and follow what it forces for karma, action, and awakening.
 
 ## The principle
 
