@@ -149,7 +149,7 @@ And mark what the case never tests: neither utterance occurs at the terminus. Th
 
 ## The terminus: the question the grid declines
 
-The loop has now been run whole; here is the question it does not reach. The limit question is this: **at total non-clench, does the act still weld?** Does the buddha's deed carry an index — is there buddha-karma?
+The limit question is this: **at total non-clench, does the act still weld?** Does the buddha's deed carry an index — is there buddha-karma?
 
 One determinate answer is sitting in the machinery. Run the Attainment identity straight — I-making is the clench that closes the response — and clench-zero is weld-zero: the terminus-deed confers no index and generates no karma; fruit from old seeds still arrives, since inga is untouched (Devadatta's rock ripens on schedule), but no reach-back appropriates it, and the series exhausts as delivery-facts run out. This is not heterodox. It is the kiriya doctrine — the arhat's deeds functional, generating no vipāka — and its second half is the nidāna-chain read forward: upādāna fuels becoming, so appropriation's cessation is becoming's. The grid could assert this and keep respectable company.
 
