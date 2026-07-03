@@ -24,7 +24,7 @@ namespace WAA
    §0  The five collapses as public bookkeeping
 ============================================================================== -/
 
-/-- The five replies the anti-reduction argument must block. -/
+/-- The five collapse routes the anti-reduction argument must block. -/
 inductive CollapseKind
   | verbal
   | soul
@@ -32,7 +32,7 @@ inductive CollapseKind
   | diachronic
   | supervenience
 
-/-- The corresponding blocking move, named at the same abstraction level as
+/-- The corresponding blocking moves, named at the same abstraction level as
     `Paper/Proofs.md`: act-time ownership, no stored bearer, token-reflexivity,
     delivery-plus-reach-back, and act/fact typing. -/
 inductive CollapseBlock
@@ -112,10 +112,9 @@ theorem no_correctFieldReducer_of_same_field_distinct_index
     (hfield : G.fieldOf w₁ = G.fieldOf w₂)
     (hne : G.index w₁ ≠ G.index w₂) :
     ¬ ∃ recover : G.FieldReducer, G.CorrectFieldReducer recover :=
-  fun hex =>
-    hex.elim (fun _recover hrec =>
-      hne (G.correctFieldReducer_forces_same_index_of_same_field
-        hrec h₁ h₂ hfield))
+  fun ⟨_recover, hrec⟩ =>
+    hne (G.correctFieldReducer_forces_same_index_of_same_field
+      hrec h₁ h₂ hfield)
 
 /-- The concrete same-call/same-response witness used in the prose: two
     different beings can actually answer the same call with the same response,
@@ -131,17 +130,20 @@ theorem no_correctFieldReducer_of_same_call_response
    §2  Sower/reaper, reach-back, and ownership-face
 ============================================================================== -/
 
-/-- The report-face of "the sower reaps": delivery, and nothing more. -/
+/-- The field-side report-face of "the sower reaps": the delivery line, before
+    any act-time ownership is added. -/
 def ReportFace (deed reception : G.Weld) : Prop :=
   G.DeliveredTo deed reception
 
-/-- The ownership-face: delivery reaches an actual reception and that reception
-    appropriates. It is a deed at reception-time, not a standing relation. -/
+/-- The full ownership-face: delivery reaches an actual reception and that
+    reception appropriates. It is a deed at reception-time, not a standing
+    relation. -/
 def OwnershipFace (deed reception : G.Weld) : Prop :=
   G.LandsAt deed reception ∧ G.Appropriates reception
 
 /-- A vacuous ownership attempt: the reception may appropriate, but the field
-    drew no delivery-line from this deed to this reception. -/
+    drew no delivery-line from this deed to this reception, so it is not a full
+    ownership-face for that deed. -/
 def VacuousOwnershipFace (deed reception : G.Weld) : Prop :=
   G.ReachBackVacuous deed reception ∧ G.Actual reception ∧ G.Appropriates reception
 
@@ -262,6 +264,8 @@ theorem shareZero_of_stateToolFits [DecidableEq Contrib]
   · exact hshare
   · exact False.elim (hfits hshare)
 
+/-- With decidable equality on the contribution scale, pole-reducibility is an
+    exact iff. -/
 theorem stateToolFits_iff_shareZero [DecidableEq Contrib] (w : G.Weld) :
     G.StateToolFits w ↔ G.share w = shareZero :=
   ⟨G.shareZero_of_stateToolFits, G.stateToolFits_of_shareZero⟩
@@ -279,7 +283,8 @@ theorem no_ownershipFace_of_stateToolFits
     ¬ G.OwnershipFace deed reception :=
   fun hown => hfits hown.right
 
-/-- The malformed verdict is never a floor-collapse. -/
+/-- A floor-tier diagnosis cannot be a collapse, since the floor carries no
+    live arrogation. -/
 theorem malformed_not_floor_claim (d : Distinction G) :
     ¬ d.Collapse (Tier.floor : Tier G) :=
   G.not_collapse_floor d
@@ -324,6 +329,8 @@ def dischargeTier (_office : OwnershipOffice) (w : G.Weld) : Grid.Tier G :=
 theorem dischargeTier_actTime (office : OwnershipOffice) (w : G.Weld) :
     office.dischargeTier w = Grid.Tier.actTime w := rfl
 
+/-- Discharging an office at act-time has exactly the weld's live-arrogation
+    condition. -/
 theorem dischargeTier_hasArrogation_iff
     (office : OwnershipOffice) (w : G.Weld) :
     Grid.Tier.hasArrogation G (office.dischargeTier w) ↔
@@ -332,7 +339,7 @@ theorem dischargeTier_hasArrogation_iff
 
 end OwnershipOffice
 
-/-- Contemporary positions placed by the third paper. -/
+/-- Contemporary positions placed by `Paper/Proofs.md`. -/
 inductive ContemporaryPosition
   | ganeri
   | zahavi
@@ -346,6 +353,7 @@ inductive ContemporaryPlacement
 
 namespace ContemporaryPosition
 
+/-- The grid placement assigned to each contemporary position in the paper. -/
 def placement : ContemporaryPosition → ContemporaryPlacement
   | .ganeri => .nearestAlly
   | .zahavi => .retype
@@ -391,6 +399,7 @@ inductive DesignationRoute
 
 namespace DesignationRoute
 
+/-- Whether the scoped anti-reduction verdict applies to this route. -/
 def VerdictFires : DesignationRoute → Prop
   | .selfIndex => True
   | .fieldOnly => False
