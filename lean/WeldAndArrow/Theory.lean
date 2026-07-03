@@ -1,7 +1,7 @@
 /-
 ================================================================================
   The Weld and the Arrow — I. Theory
-  A Lean 4 formalization of `01-theory.md`
+  A Lean 4 formalization of `paper/Theory.md`
 ================================================================================
 
 STATUS: checked by `lake build`. The file is intentionally conservative:
@@ -16,7 +16,7 @@ Downstream proof/theorem files should import this module, or the library root
 that re-exports it. This file is *only* Theory: the primitive sorts and the
 rules, plus a handful of sanity lemmas that check a definition does what the
 prose claims of it. Real theorems (backsliding is the one exception — see §2,
-it is stated as a theorem already in `01-theory.md` itself) belong downstream.
+it is stated as a theorem already in `Theory.md` itself) belong downstream.
 
 --------------------------------------------------------------------------------
 Design log
@@ -440,7 +440,7 @@ def IsKenshō (before : Config Contrib) (received : G.Weld) : Prop :=
     otherwise. The proof is `rfl`, precisely because `share` was never
     defined in terms of `Config` to begin with; the intentionally unused
     binders are named with leading underscores for that reason. This is the
-    theorem `01-theory.md` itself promises (Theory: Attainment, "Kenshō:
+    theorem `Theory.md` itself promises (Theory: Attainment, "Kenshō:
     rungs on the grade" —
     "post-kenshō backsliding ... falls out here as a theorem"): the being
     loses no attainment because there was never a stored attainment for a
@@ -896,7 +896,7 @@ theorem malformed_no_recovery
    is not just a phrase but a term one can actually build and compute with,
    because that is the one thing a later countermodel construction cannot
    do without. `clockGrid` below is also, independently, the worked example
-   `01-theory.md` itself gives for the domain joint (Theory: Attainment,
+   `Theory.md` itself gives for the domain joint (Theory: Attainment,
    "The domain joint" — the manufactured cuckoo clock), so it is in scope
    for this file on its own terms, not only as a preview.
 -------------------------------------------------------------------------- -/

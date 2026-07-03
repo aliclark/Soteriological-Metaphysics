@@ -6,8 +6,8 @@
 
 This file keeps the theorem layer conservative. It imports the primitive
 signature and proves consequences that already follow from the definitions in
-`Theory.lean`: function/share facts, re-pitch facts, delivery facts, and the
-separate/fuse diagnostics.
+`Theory.lean`: function/share facts, re-pitch facts, delivery/effectiveness
+facts, actual-pair projections, and the separate/fuse diagnostics.
 -/
 
 import WeldAndArrow.Theory
@@ -82,17 +82,17 @@ theorem not_stone_of_response
     ¬ G.Stone b :=
   fun hstone => hstone c ⟨r, hresp⟩
 
-/-- A stone is one attested arrival at the genjo pole. -/
+/-- A stone witnesses the stone side of the genjō pole. -/
 theorem atGenjoPole_of_stone (b : G.Being) (hstone : G.Stone b) :
     G.AtGenjōPole b :=
   Or.inl hstone
 
-/-- A terminus is one attested arrival at the genjo pole. -/
+/-- A terminus witnesses the terminus side of the genjō pole. -/
 theorem atGenjoPole_of_terminus (b : G.Being) (hterm : G.Terminus b) :
     G.AtGenjōPole b :=
   Or.inr hterm
 
-/-- A live terminus sits at the genjo pole and is not stone-typed. -/
+/-- A live terminus sits at the genjō pole and is not stone-typed. -/
 theorem atGenjoPole_and_not_stone_of_liveTerminus
     (b : G.Being) (h : G.LiveTerminus b) :
     G.AtGenjōPole b ∧ ¬ G.Stone b :=
@@ -105,7 +105,7 @@ theorem not_stone_of_responsiveTerminus_of_call
   G.liveTerminus_not_stone b (G.responsiveTerminus_live_of_call b c h)
 
 /- ==============================================================================
-   Re-pitch and kensho
+   Re-pitch and kenshō
 ============================================================================== -/
 
 /-- Re-pitching carries forward exactly the received weld's share. -/
@@ -114,7 +114,7 @@ theorem rePitch_tendency_eq_share
     (G.rePitch before received).tendency = G.share received :=
   rfl
 
-/-- Kensho can be read as the corresponding strict drop in the re-pitched tendency. -/
+/-- Kenshō can be read as the corresponding strict drop in the re-pitched tendency. -/
 theorem isKensho_iff_rePitch_tendency_drop
     (before : Config Contrib) (received : G.Weld) :
     G.IsKenshō before received ↔
@@ -122,14 +122,14 @@ theorem isKensho_iff_rePitch_tendency_drop
         ¬ (before.tendency ≼ (G.rePitch before received).tendency)) :=
   Iff.rfl
 
-/-- The re-pitched tendency of a kensho event is no greater than the prior tendency. -/
+/-- The re-pitched tendency of a kenshō event is no greater than the prior tendency. -/
 theorem rePitch_tendency_le_before_of_kensho
     {before : Config Contrib} {received : G.Weld}
     (h : G.IsKenshō before received) :
     (G.rePitch before received).tendency ≼ before.tendency :=
   h.left
 
-/-- A kensho event is not ordered back above its prior tendency. -/
+/-- A kenshō event is not ordered back above its prior tendency. -/
 theorem not_before_le_rePitch_tendency_of_kensho
     {before : Config Contrib} {received : G.Weld}
     (h : G.IsKenshō before received) :
@@ -186,54 +186,57 @@ theorem actual_of_landsAt
     G.Actual reception :=
   h.right
 
-/-- A kensho landing includes an ordinary landing. -/
+/-- A kenshō landing includes an ordinary landing. -/
 theorem landsAt_of_landsWithKensho
     {before : Config Contrib} {deed reception : G.Weld}
     (h : G.LandsWithKenshō before deed reception) :
     G.LandsAt deed reception :=
   h.left
 
-/-- A kensho landing includes the receiver-side kensho judgement. -/
+/-- A kenshō landing includes the receiver-side kenshō judgement. -/
 theorem isKensho_of_landsWithKensho
     {before : Config Contrib} {deed reception : G.Weld}
     (h : G.LandsWithKenshō before deed reception) :
     G.IsKenshō before reception :=
   h.right
 
-/-- A kensho landing is delivered. -/
+/-- A kenshō landing is delivered. -/
 theorem deliveredTo_of_landsWithKensho
     {before : Config Contrib} {deed reception : G.Weld}
     (h : G.LandsWithKenshō before deed reception) :
     G.DeliveredTo deed reception :=
-  h.left.left
+  G.deliveredTo_of_landsAt (G.landsAt_of_landsWithKensho h)
 
-/-- A kensho landing is received by an actual weld. -/
+/-- A kenshō landing is received by an actual weld. -/
 theorem actual_of_landsWithKensho
     {before : Config Contrib} {deed reception : G.Weld}
     (h : G.LandsWithKenshō before deed reception) :
     G.Actual reception :=
-  h.left.right
+  G.actual_of_landsAt (G.landsAt_of_landsWithKensho h)
 
 /-- Effectiveness gives an actual landing. -/
 theorem exists_landsAt_of_effectiveFor
     {before : Config Contrib} {deed : G.Weld}
     (h : G.EffectiveFor before deed) :
     ∃ reception, G.LandsAt deed reception :=
-  h.elim (fun reception hland => ⟨reception, hland.left⟩)
+  h.elim (fun reception hland =>
+    ⟨reception, G.landsAt_of_landsWithKensho hland⟩)
 
 /-- Effectiveness gives an actual receiving weld. -/
 theorem exists_actual_reception_of_effectiveFor
     {before : Config Contrib} {deed : G.Weld}
     (h : G.EffectiveFor before deed) :
     ∃ reception, G.Actual reception :=
-  h.elim (fun reception hland => ⟨reception, hland.left.right⟩)
+  h.elim (fun reception hland =>
+    ⟨reception, G.actual_of_landsWithKensho hland⟩)
 
-/-- Effectiveness gives a receiver-side kensho witness. -/
+/-- Effectiveness gives a receiver-side kenshō witness. -/
 theorem exists_kensho_reception_of_effectiveFor
     {before : Config Contrib} {deed : G.Weld}
     (h : G.EffectiveFor before deed) :
     ∃ reception, G.IsKenshō before reception :=
-  h.elim (fun reception hland => ⟨reception, hland.right⟩)
+  h.elim (fun reception hland =>
+    ⟨reception, G.isKensho_of_landsWithKensho hland⟩)
 
 /-- The preorder-style effectiveness comparison preserves effectiveness. -/
 theorem effectiveFor_of_atLeastAsEffective
@@ -241,9 +244,7 @@ theorem effectiveFor_of_atLeastAsEffective
     (hge : G.AtLeastAsEffective before deed1 deed2)
     (heff : G.EffectiveFor before deed2) :
     G.EffectiveFor before deed1 :=
-  heff.elim (fun reception2 hland2 =>
-    (hge reception2 hland2).elim (fun reception1 hland1 =>
-      ⟨reception1, hland1⟩))
+  heff.elim (fun reception hland => hge reception hland)
 
 /- ==============================================================================
    Actual pairs
@@ -305,7 +306,7 @@ theorem not_actTime_hasArrogation_of_shareZero
 /-- Collapse is impossible at the floor. -/
 theorem not_collapse_floor (d : Distinction G) :
     ¬ d.Collapse (Tier.floor : Tier G) :=
-  fun hcollapse => hcollapse.left
+  fun hcollapse => G.floor_has_no_arrogation hcollapse.left
 
 /-- Collapse carries its arrogation witness. -/
 theorem hasArrogation_of_collapse
@@ -325,7 +326,7 @@ theorem not_collapse_of_separated
     ¬ d.Collapse t :=
   fun hcollapse => h.right hcollapse.right
 
-/-- Obeying the rule gives fusion at every no-arrogation tier. -/
+/-- Obeying the rule supplies the fusion clause at every tier. -/
 theorem fused_of_obeysSeparateFuse
     {d : Distinction G} (h : d.ObeysSeparateFuse) (t : Tier G) :
     d.Fused t :=
@@ -342,7 +343,7 @@ theorem separated_of_obeysSeparateFuse
 theorem not_freeze_of_fused_floor
     {d : Distinction G} (h : d.Fused (Tier.floor : Tier G)) :
     ¬ d.Freeze :=
-  fun hfreeze => hfreeze (h (fun hfloor => hfloor))
+  fun hfreeze => hfreeze (h G.floor_has_no_arrogation)
 
 namespace RecordedUtterance
 
