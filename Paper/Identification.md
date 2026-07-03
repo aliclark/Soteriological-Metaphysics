@@ -1,0 +1,115 @@
+# The Weld and the Arrow — III. The Identification and Placements
+
+*Third of three files: the identification claim, the act-time placements that earn the name karma, the contemporary placements, the pole-typing corollary, and the disclaimers, enumerated. Cross-references to the companion files are marked (Theory) and (Theorems).*
+
+## The identification stated from the abstract
+
+The abstract states the thesis once:
+
+> **Everything diachronic belongs to the field; every index is enacted and nothing indexed is stored; karma names this loop, and the naming is earned by fit** — the tradition's uses of karmic ownership (cetanā, reception, remorse, absolution, dedication) discharge natively at act-time.
+
+The architectural fact under that sentence is the same one the Lean `Config` makes public: **nothing self-indexed is stored**. The field carries series, seeds, dispositions, delivery, and the re-pitched configuration the next deed reads. It does not carry a mineness. What is indexed is welded at act-time, spent at act-time, and then available only as a field-describable occurrence-fact. So the field vocabulary lacks the index by construction, not by defeat of a rival vocabulary.
+
+This is why the taxonomy can name internal **mis-feeds** cheaply. Feeding an index-free field-answer to an index-requiring designation -- *did I earn this?*, or the avyākata's search for the Tathāgata's self-pole after death -- is not a hard unanswered field-question. It is the wrong feed for that designation inside the grid. The point is grammatical and internal: the delivery-question belongs to inga; the index-question is enacted in the weld.
+
+## The offices-spine
+
+The identification is earned by fit, not by exclusivity. What the tradition does with karmic ownership discharges at act-time in this mechanism:
+
+- **Cetana** measures the deed where the deed is done: intention is the drive-composition of this response at this call, the same structure Row 2 states.
+- **Reception** is itself a deed: the reach-back welds *this fruit as return of that deed, mine* at the reception, full or vacuous, and spends that ownership-face there.
+- **Practice** is the weld's ordinary name inside the act-grammar: shu is not a state carried by the series but the doing that binds direction along the arrow.
+- **Remorse and absolution** verdicts land on welds, not on a cross-gap owner. The Cunda cases (Theorems: Three killings) work because the tradition grades what was done at the act, including where the event is impossible.
+- **Dedication** is a sowing-side weld whose routing is left to the field: pariṇāmanā gives the fruit's landing over rather than commanding delivery (Theorems).
+
+Diachronic bookkeeping is exactly where the tradition deflates itself: *na ca so na ca añño*, the reaper neither the sower nor another. The field individuates the series and delivers fruits; the reception-weld closes the loop on-site. Karma names that loop: field-carried delivery plus act-time ownership, with no stored owner between.
+
+## Sower and reaper
+
+The grid's supplement to the old formula is a split, not a replacement. "The sower reaps" has a report-face and an ownership-face. The report-face is true simpliciter: this deed conditioned this reception, a delivery-fact the field carries. The ownership-face is done: at reception, the reach-back appropriates what arrived as *mine*, and the doing is spent at that same act-time.
+
+If delivery drew no line, the reach-back's second place stands unfilled. That failure-mode is vacuity, not falsity: an appropriating with nothing arrived to appropriate. False memory is the psychological dress of the same typing. The field owns the conditions in the deflated sense -- it settles whether anything arrived to weld -- while the weld answers only the index-question over what arrives.
+
+The diachronic *whose* therefore decomposes into delivery plus fresh appropriation. There is no third cross-gap ownership-fact to store or consult, and no standing backward relation hiding under the reach-back. Held that way, it would be the retrospective soul; the soul-guard is still needed precisely because the index must not be read as stored.
+
+## Contemporary placement
+
+The neighbouring positions can now be placed without a verdict on them.
+
+Siderits gets the series-questions, and the grid cedes them: psychology, continuity, prediction, causal connectedness, and the individuation of the stream all belong to the field. His conventionalism is an alternative account of the diachronic usage. The residual disagreement is where the soteriology's load sits: this paper locates it in act-time discharge of the offices above, while his convention locates it in the useful series-fiction.
+
+Ganeri's account of appropriation (*The Self* -- ahaṃkāra and upādāna worked into a first-personal stance) is the nearest ally. The difference is spentness: Ganeri's appropriative activity is a standing structure of the person, while this weld is per-act and stored nowhere.
+
+Zahavi's constitutive for-me-ness receives the taxonomy's fourth public outcome (Theorems): a **retype**. His for-me-ness is thin, pre-reflective givenness, explicitly not appropriative I-making; classifying it as clench would import what the notion excludes. The grid still needs thin act-time for-me-ness, because the weld's token-reflexivity lights the deed as this-deed-for-this-doer. The disagreement narrows to one predicate: standing. Mineness held as a structural feature of consciousness freezes; mineness enacted and spent is the weld's own light.
+
+Sartre occupies the clench-as-structure cell after the Zahavi retype: anguish as the very form of consciousness. The placement matters because it lets the taxonomy keep Zahavi's thinness without losing the Sartrean shape that really does make clench structural.
+
+## Pole-typing
+
+At share-zero no self-pole index is made, so every terminus-question is a field-question. Fruit from old seeds still lands, since inga is untouched; what ceases is reach-back appropriation. The terminus therefore gives the positive direction of the state-tool: where no live self-pole index remains, the state-tool fits because there is no index-fact for it to miss.
+
+This is pole-typing, not a concession to a rival frame. The buddha/stone difference is still carried by the function/share split: the stone mounts no response, while the terminus mounts response without share. The avyākata follows: asking for the Tathāgata's post-mortem self-pole feeds an index-question to what is functionally field. That is the same internal mis-feed as *did I earn this?*, and it needs no extra cell.
+
+## The verdict's tier
+
+The word **mis-feed** is kept only for the taxonomy's internal typing failures. It does not name an external failure of another account. At the floor there is no agent and no fruit-for-anyone; at live act-time the question *whose?* can arise and must route through the weld-index. So the separate/fuse rule governs the taxonomy's own words as well: distinctions separate under act-time diagnosis and fuse at the floor and at genjō, the share-zero pole.
+
+The soul-guard remains. The agent-index resists being stored because it is emptier than a bearer, not because it is a special thing. A forward-facing owner between deeds and a retrospective owner waiting in memory are the same mistake in opposite directions.
+
+## The disclaimers, enumerated
+
+The following are conventional and my own -- original moves, each flagged against the canonical position it departs from or extends.
+
+1. **The tiering, the separate/fuse rule, kannō-sōe, and the coined compound shugenjō** -- contra Dōgen, who keeps all ultimate, and who fused the very shushō I have re-tiered (shō at the floor, shu conventional); and contra the late Dōgen doubly, since Jinshin inga repudiates the tiered fox-reading this paper keeps, a disagreement owned in Theory rather than footnoted, with the act-time gloss on the doubling (Daishugyō diagnosing, Jinshin inga instructing) offered as my own reading and not as a dissolution of the contra; and contra the Mujō seppō fascicle (and Zhanran on 無情有性) a third time, the insentient preaching deflated to the object-axis.
+2. **Shō's agency as lent** -- necessarily agential because never unwelded, yet not agential of itself.
+3. **For-me-ness located in the weld** -- shu, Row 3's enactment pole, the I-making (ahaṃkāra), so that self is a dependently-arisen process the act makes rather than a state the grade holds.
+4. **The reception-weld's reach-back** -- upādāna typed as the two-place token-reflexive index by which loop-closure is enacted at each reception, "the sower reaps" split into a report-face (true simpliciter, field) and an ownership-face (done, full or vacuous) and never a standing relation -- my own typing, though the word is canonical.
+5. **The three-register fact-sorting** -- field-facts carried, weld-facts made and spent, Row 2 stated -- a sorting of registers, not of kinds of fact -- and with it the refined premise *nothing self-indexed is stored*, under which the tradition's seeds are absorbed deflated as index-free conditioning-facts rather than deleted (an engagement with, not a reconstruction of, the Yogācāra machinery Chan presupposed).
+6. **The reading of Linji's 無位真人** along a three-way seam (無位 = shō, the floor-face / 真人...出入 = shu, the acting / 無位真人 = the weld, shushō-ittō).
+7. **The tiering of 証** (realization-as-not-fall, floor-face) apart from **悟** (satori).
+8. **Genjō as a single manifestation-floor with two attested arrivals** (the never-scaffolded stone and the scaffold-dissolved buddha; a third left open), practice-run-scaffold-free a proper subset.
+9. **The identification of karma with the field/weld loop** -- everything diachronic belongs to the field; every index is enacted and nothing indexed is stored; the naming is earned by the native act-time discharge of karmic ownership's offices.
+10. **The token-reflexivity of the weld-index** -- the index is made by the act that carries it: *this act's agent*, constituted by the deed rather than presupposed behind it.
+11. **The decomposition of MMK 17's two worries.**
+12. **The stone as the resonance scale's outside edge** -- the predicate typed over responses-to-calls, undefined where none is mounted.
+13. **The error-taxonomy as generated**, not listed -- collapse and freeze as the two violations of the separate/fuse rule, one pair per distinction, non-linear by construction.
+14. **The two grades of error** -- grammatical verdicts the system asserts (within the lens), soteriological shortfalls it can only display -- with the bodhisattva located structurally by that split, room and shape without pull, and no added axiom.
+15. **Kenshō typed as a per-call share-ceding event** -- countable (Dahui's eighteen), unholdable (nothing indexed stored, so backsliding a theorem), the seen-nature of 見性 declined while the event is kept -- a rung, tiered apart from satori and from genjō.
+16. **The theory's own soteriological status** -- a dharma among the myriad that affords a release without enjoining one (the orange, not the "eat this"), its valenced vocabulary borrowed from the object and reported rather than asserted.
+17. **Row 2 typed as index-placement** -- the grade's content indexical (where the act's subjecthood sits between being and dharmas), its register third-personal; the register/content split under which *nothing self-indexed is stored* holds verbatim, since a statement holds nothing.
+18. **The determination of the share** -- clench fixed by the actual composition of the act's drive: response driven by the call versus by the configuration's self-maintenance, an actual-sequence occurrence-fact about the weld, causal not phenomenal; counterfactual call-variation demoted to probe; Row 2 states a partial ordering, and the scalar is display.
+19. **The second retype** -- the disposition/act cell redrawn under the determination clause's own pressure: its content standing/dated, never configuration/act; the collapse inferential -- the dated occurrence read off the standing tendency, prognosis substituted for diagnosis.
+20. **The passive spent** -- Dōgen's 万法に証せらるる taken at its grammar: shō as the being-verified, objecthood; shushō-ittō as the two poles of one index-placement.
+21. **Clench typed as the weld's self-share**, under the **function/share split**: I-making the welding-function, clench its share-degree. The split blocks the buddha/stone convergence (share-zero is not function-zero), and the identity *I-making just is the clench* is entered in the table as an embryonic collapse.
+22. **Vacuity from the field** -- the reach-back's failure-mode typed as vacuity, not infelicity: its index two-place, and where delivery drew no line the second place stands unfilled; "misfire" retained only as display; false memory the same vacuity in psychological dress.
+23. **Memory and prudence as theorems** -- the trace a seed, recall a reception, remembered mineness welded fresh at recall-time and the felt storedness diagnosed as the retrospective soul; prudential privilege underivable, owned with Śāntideva (BCA 8.97-98) rather than against him.
+24. **Dukkha typed structurally, field-side** -- suffering as the mismatch of a self-maintaining response against a delivery-register that answers to nothing, enacted at clenched receptions and spent; the second truth derived as covariation with share, the third as a corollary at share-zero, the fourth displayable only.
+25. **The domain drawn asymmetric** -- one outside edge (the stone, function-zero) and one interior pole (the terminus, share-zero), with the solipsist as the opposite asymptote.
+26. **The transposition** -- the terminus question answered rather than declined: the self-pole half (kiriya, ahosi, upādāna-exhaustion) derived as theorem; reception-side welds shown intact and busy; *transposed* demoted from mechanism to display over that pair; the avyākata derived as the *did-I-earn-this* mis-feed, the fire simile read accordingly.
+27. **The mirror-reading of the terminus** -- buddha as responsive stone, 大円鏡智, function without share; disciplined as display convention over the run, with 本来無一物 as the guard against device-nature (the mirror given a stand).
+28. **The three-killings test, reframed as its own evidence** -- one verb, dispersed events; the cetanā theorem and futility theorem derived; ānantarya severity read from response-to-call structure plus delivery-arrogation, never from victim-rank.
+29. **The offices-spine** -- the identity-claim argued from the object's usage: every office of karmic ownership discharges at act-time (cetanā, reception, practice, remorse and absolution, dedication), while the diachronic bookkeeping is where the tradition deflates itself.
+30. **Contemporary placement** -- Siderits receives the ceded series-questions; Ganeri is the nearest ally by appropriation; Zahavi forces the retype; Sartre occupies the clench-as-structure cell.
+31. **The Hakuin reading** -- the Five Ranks as index-placement notation, host and guest as the two poles; the delusion/satori line taken as the inversion's epigram, flagged as paraphrase with pedigree mixed, and nothing resting on the line.
+32. **The retype as a fourth generator-outcome** -- a candidate objection that neither lands in a cell, nor adds one, nor is declined, but redraws a distinction's content; admitted because the taxonomy must be answerable for the redrawing of its own distinctions.
+33. **The svakarma demotion** -- *fruit ripens only in the doer's continuum* demoted from metaphysical necessity to contingent delivery-regime -- contra the Abhidharma scruple, downstream of the exhaustive decomposition of the diachronic *whose*; pariṇāmanā thereby absorbed on existing cells (Theorems).
+34. **The orthogonality rule and its price** -- function/share types, effectiveness grades, adaptivity the terminus's manner and never the ground of landing; with the domain joint's honesty-clause entered beside it; and the pole-typing corollary stated as entailed: the state-tool fits exactly where welding ceases.
+
+## Glossary
+
+*Supplements the Theory and Theorems glossaries; terms defined there are not repeated.*
+
+- **The identification claim** -- karma names the loop in which the field carries everything diachronic and the weld enacts every index at act-time.
+- **State-designation vs. act-fixing** -- the chariot is had over a standing base at a time; karmic ownership is made at act-time, so there is no indexed base for a state-tool to range over.
+- **The offices-spine** -- the identity-claim argued from the object's usage: every office karmic ownership holds in the tradition (cetanā, reception, practice, remorse and absolution, dedication) discharges at act-time; the diachronic bookkeeping is where the tradition deflates itself.
+- **Thin for-me-ness** -- Zahavi's pre-reflective givenness, explicitly non-appropriative; recognized as what the weld's token-reflexivity itself needs -- the deed lit as this-deed-for-this-doer -- pared of one predicate: standing.
+- **The Sartrean occupant** -- what fills the clench-as-structure cell after the Zahavi retype: anguish as the very form of consciousness.
+- **The sower-reaps split** -- the report-face (true simpliciter, a field-fact) versus the ownership-face (done at reception, full or vacuous); never a standing relation between the two.
+- **The pole-typing corollary** -- the state-tool fits exactly where welding ceases: at share-zero no live self-pole index remains for it to miss.
+- **The soul-guard** -- the agent resists storage by being more thoroughly empty, never by being a special substance; forward-facing and retrospective bearers are both declined.
+- **Mis-feed** -- an internal taxonomy verdict: an index-free field-answer fed to an index-requiring designation, or a separated-tier question fed to a fusion point.
+- **The disclaimers** -- the enumerated original moves, each flagged as conventional and the author's own against the canonical position it departs from or extends.
+
+---
+
+*With thanks to Claude (Anthropic) -- sparring partner and midwife to a more resonant theory, and ChatGPT (OpenAI) for the Lean proofs and for systematic refactorings.*

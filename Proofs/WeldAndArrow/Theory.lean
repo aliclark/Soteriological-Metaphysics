@@ -27,14 +27,11 @@ Design log
   tendency, and no field of type `Weld` or `Being`-as-owner. That absence is
   not a lemma with a proof term; it is a fact about a `structure` command,
   visible by reading it. This is the positive-direction analogue of the
-  paper's own remark that `malformed` is "demonstrated by failed elaboration,
-  not proved" (see the outside note reproduced in the Preview section): the
-  discipline that keeps a stored index out of `Config` is enforced the same
-  way the reduction is refused — by what the elaborator will accept as
-  well-typed, not by an internal theorem. `kenshō_not_held` in §2 turns this
-  into an actual, if easy, theorem: a later weld's share is *never* a
-  function of any `Config`, because no such function exists anywhere in this
-  signature for it to be one of.
+  paper's internal mis-feed discipline: the elaborator accepts the field
+  residue and the stored tendency, but it is never given a stored owner.
+  `kenshō_not_held` in §2 turns this into an actual, if easy, theorem: a later
+  weld's share is *never* a function of any `Config`, because no such function
+  exists anywhere in this signature for it to be one of.
 
 * The `Weld`/`Index` order follows the central modelling choice here:
   `Weld` is primitive (an agent, a call, a response, bundled — nothing else,
@@ -197,7 +194,7 @@ variable (G : Grid Contrib)
     index type: nothing in this file ever produces a `Being` "as an
     index" except by first supplying a `Weld` whose `response` is
     witnessed here. There is no route from `Config` (§2) or from
-    field-facts alone to an `Actual` weld — see `malformed_no_recovery`
+    field-facts alone to an `Actual` weld — see `no_agent_recovery_from_field`
     in the Preview section for the internal version of that claim. -/
 def Actual (w : G.Weld) : Prop := G.respondsTo w.agent w.call = some w.response
 
@@ -637,8 +634,8 @@ namespace Grid
 variable {Contrib : Type} [WeakOrderBot Contrib]
 
 /-- A tier at which a claim can be diagnosed: the self-emptying floor
-    (atemporal, one per `Grid` — Proofs, "Two guards and the verdict's own
-    tier"), or a live act-time diagnosis pinned to a specific weld. -/
+    (atemporal, one per `Grid` — Proofs, "The verdict's tier"), or a live
+    act-time diagnosis pinned to a specific weld. -/
 inductive Tier (G : Grid Contrib)
   | floor
   | actTime (w : G.Weld)
@@ -824,55 +821,31 @@ section Preview
 variable {Contrib : Type} [WeakOrderBot Contrib] (G : Grid Contrib)
 
 /- --------------------------------------------------------------------------
-   Wrinkle 1 — "malformed" is a meta-level fact: internal version attempted
+   Wrinkle 1 — field residue under-determines the agent: internal version
 
-   Outside note this responds to: "'Malformed' is a meta-level fact. 'The
-   reduction doesn't typecheck' isn't a theorem you can state inside Lean —
-   non-typeability is demonstrated by failed elaboration, not proved. The
-   internal alternative is to model a universe of 'designations' and prove
-   ¬∃ f : FieldFact → Index ... under your axioms. Both are legitimate."
+   Outside note this responds to: "Non-typeability is demonstrated by failed
+   elaboration, not proved. The internal alternative is to model a universe of
+   designations and prove ¬∃ f : FieldFact → Index ... under your axioms."
 
-   Both routes are attempted here, and the first is corrected en route.
+   The internal route is used here, with the modest scope made explicit.
 -------------------------------------------------------------------------- -/
 
-/-- The field-side residue of a weld: everything left once the agent is
-    forgotten. The honest candidate for a "field-fact" a reduction would
-    have to reconstruct an index from — `Call × Response`, never `Being`. -/
+/-- The field-side residue of a weld: everything left once the agent is not
+    part of the data. The honest field-fact for recovering an index is
+    `Call × Response`, never `Being`. -/
 def Grid.fieldOf (w : G.Weld) : G.Call × G.Response := (w.call, w.response)
 
-/-- Route (a), attempted and immediately corrected: naively, "no function
-    `Call × Response → Being` exists" is FALSE whenever `Being` is
-    nonempty — a constant function always typechecks, so the naive framing
-    of "try to write the reduction and watch it fail to elaborate" is not
-    quite right for this case: Lean will happily accept a constant, and
-    accepting it is not a bug. What fails to elaborate is something
-    narrower and gets no further than a hole: the correctness-carrying
-    version — a function claimed to RECOVER, for every actual weld, the
-    agent that in fact produced its field-facts. There is no way to write
-    such a function's BODY that does not either (i) ignore the input,
-    which typechecks but is not a recovery, or (ii) smuggle in a
-    `Being`-valued primitive that did not come from `Call × Response` —
-    and there is no third option, because `Being` is an opaque field of
-    `Grid` with no operation into it from `Call` or `Response` anywhere in
-    the signature. That is this file's own version of "failed
-    elaboration": not a red squiggle, but a content failure visible in the
-    signature itself, one level prior to any proof attempt.
+/-- Naively, "no function `Call × Response → Being` exists" is false whenever
+    `Being` is nonempty: a constant function typechecks. What matters is the
+    correctness-carrying version, a function claimed to recover, for every
+    actual weld, the agent that in fact produced its field residue.
 
-    Route (b), the internal, quantified alternative, is `malformed_no_
-    recovery` below: not "no function exists" (false, as just noted), but
-    "no function exists that is correct on the actual welds" — which is
-    exactly false whenever two DIFFERENT beings can actually produce the
-    SAME response to the SAME call, something nothing in `Grid`'s
-    signature forbids and everything about "the field is index-free"
-    predicts should be possible in general (two different practitioners
-    can, after all, both answer "not fall"). This is deliberately not a
-    blanket claim about every `Grid` — a `Grid` with only one inhabited
-    `Being` would trivially admit a correct constant `recover`, and a
-    formalization asserting otherwise would simply be a bug. The
-    hypotheses below are the honest scope of the claim: malformedness
-    is witnessed exactly where the field under-determines who acted,
-    which is the generic case, not a universal one. -/
-theorem malformed_no_recovery
+    The theorem below therefore has the honest scope of the claim: no such
+    recovery can be correct when two different beings can actually produce the
+    same response to the same call. It is not a blanket claim about every
+    `Grid`; it is the internal witness that field residues under-determine who
+    acted. -/
+theorem no_agent_recovery_from_field
     (a₁ a₂ : G.Being) (c : G.Call) (r : G.Response)
     (h1 : G.Actual ⟨a₁, c, r⟩) (h2 : G.Actual ⟨a₂, c, r⟩) (hne : a₁ ≠ a₂) :
     ¬ ∃ recover : G.Call × G.Response → G.Being,

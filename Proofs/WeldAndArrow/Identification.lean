@@ -1,19 +1,19 @@
 /-
 ================================================================================
-  The Weld and the Arrow — III. Proofs
-  Checked anti-reduction layer for `Paper/Proofs.md`
+  The Weld and the Arrow — III. The Identification and Placements
+  Checked identification layer for `Paper/Proofs.md`
 ================================================================================
 
 This file formalizes the part of the paper that is most naturally checkable:
-the typed anti-reduction argument, the five-collapse bookkeeping, the
-sower/reaper split, the act/fact boundary used against supervenience, the
-office-spine, the pole-reducibility corollary, and the enumerated disclaimers.
+field residues and index recovery, the sower/reaper split, token-reflexivity,
+the office-spine, the pole-typing corollary, contemporary placements, and the
+enumerated disclaimers.
 
 As in the earlier files, the prose claims that are genuinely meta-level typing
 discipline are kept as type signatures plus small theorems over those
-signatures. The file does not pretend that Siderits, Austin, Zahavi, or the
+signatures. The file does not pretend that named contemporary positions or the
 canonical texts are Lean hypotheses; it gives the internal grid-shape the paper
-uses when addressing them.
+uses when placing them.
 -/
 
 import WeldAndArrow.Theorems
@@ -21,56 +21,7 @@ import WeldAndArrow.Theorems
 namespace WAA
 
 /- ==============================================================================
-   §0  The five collapses as public bookkeeping
-============================================================================== -/
-
-/-- The five collapse routes the anti-reduction argument must block. -/
-inductive CollapseKind
-  | verbal
-  | soul
-  | process
-  | diachronic
-  | supervenience
-
-/-- The corresponding blocking moves, named at the same abstraction level as
-    `Paper/Proofs.md`: act-time ownership, no stored bearer, token-reflexivity,
-    delivery-plus-reach-back, and act/fact typing. -/
-inductive CollapseBlock
-  | actTimeOwnership
-  | noStoredBearer
-  | tokenReflexivity
-  | deliveryReachBackSplit
-  | actFactTyping
-
-namespace CollapseKind
-
-/-- The paper's five-collapse map. -/
-def blockedBy : CollapseKind → CollapseBlock
-  | .verbal        => .actTimeOwnership
-  | .soul          => .noStoredBearer
-  | .process       => .tokenReflexivity
-  | .diachronic    => .deliveryReachBackSplit
-  | .supervenience => .actFactTyping
-
-theorem verbal_blockedBy :
-    blockedBy CollapseKind.verbal = CollapseBlock.actTimeOwnership := rfl
-
-theorem soul_blockedBy :
-    blockedBy CollapseKind.soul = CollapseBlock.noStoredBearer := rfl
-
-theorem process_blockedBy :
-    blockedBy CollapseKind.process = CollapseBlock.tokenReflexivity := rfl
-
-theorem diachronic_blockedBy :
-    blockedBy CollapseKind.diachronic = CollapseBlock.deliveryReachBackSplit := rfl
-
-theorem supervenience_blockedBy :
-    blockedBy CollapseKind.supervenience = CollapseBlock.actFactTyping := rfl
-
-end CollapseKind
-
-/- ==============================================================================
-   §1  Field-only reduction and the malformed verdict
+   §0  Field residues and index recovery
 ============================================================================== -/
 
 namespace Grid
@@ -78,24 +29,23 @@ namespace Grid
 variable {Contrib : Type} [WeakOrderBot Contrib]
 variable (G : Grid Contrib)
 
-/-- A field-fact in the reductionist's sense: the call and response left when
-    the agent-index is forgotten. -/
+/-- A field residue: the call and response left when the agent-index is not part
+    of the data. -/
 abbrev FieldFact : Type := G.Call × G.Response
 
-/-- A field-only reducer is the state-tool the paper targets: it tries to recover
-    an agent-index from field-facts alone. -/
-abbrev FieldReducer : Type := G.FieldFact → G.Being
+/-- A field-only recovery candidate tries to recover an agent-index from field
+    residues alone. -/
+abbrev FieldRecovery : Type := G.FieldFact → G.Being
 
-/-- Correctness for a field-only reducer. This is the honest internal version of
-    "read karma off the field": for every actual weld, the reducer must recover
-    the very index projected from that weld. -/
-def CorrectFieldReducer (recover : G.FieldReducer) : Prop :=
+/-- Correctness for a field-only recovery candidate: for every actual weld, it
+    must recover the very index projected from that weld. -/
+def CorrectFieldRecovery (recover : G.FieldRecovery) : Prop :=
   ∀ w : G.Weld, G.Actual w → recover (G.fieldOf w) = G.index w
 
-/-- A correct field-only reducer cannot distinguish two actual welds with the
+/-- A correct field-only recovery cannot distinguish two actual welds with the
     same field residue; it must assign them the same index. -/
-theorem correctFieldReducer_forces_same_index_of_same_field
-    {recover : G.FieldReducer} (hrec : G.CorrectFieldReducer recover)
+theorem correctFieldRecovery_forces_same_index_of_same_field
+    {recover : G.FieldRecovery} (hrec : G.CorrectFieldRecovery recover)
     {w₁ w₂ : G.Weld} (h₁ : G.Actual w₁) (h₂ : G.Actual w₂)
     (hfield : G.fieldOf w₁ = G.fieldOf w₂) :
     G.index w₁ = G.index w₂ :=
@@ -105,26 +55,26 @@ theorem correctFieldReducer_forces_same_index_of_same_field
     _ = G.index w₂ := hrec w₂ h₂
 
 /-- If two actual welds share the field residue but differ in index, no
-    field-only reducer can be correct. This is the general checked form of
-    "malformed, not merely hard". -/
-theorem no_correctFieldReducer_of_same_field_distinct_index
+    field-only recovery can be correct. This is the modest internal fact that
+    field residues under-determine the agent-index. -/
+theorem no_agent_recovery_from_same_field_distinct_index
     {w₁ w₂ : G.Weld} (h₁ : G.Actual w₁) (h₂ : G.Actual w₂)
     (hfield : G.fieldOf w₁ = G.fieldOf w₂)
     (hne : G.index w₁ ≠ G.index w₂) :
-    ¬ ∃ recover : G.FieldReducer, G.CorrectFieldReducer recover :=
+    ¬ ∃ recover : G.FieldRecovery, G.CorrectFieldRecovery recover :=
   fun ⟨_recover, hrec⟩ =>
-    hne (G.correctFieldReducer_forces_same_index_of_same_field
+    hne (G.correctFieldRecovery_forces_same_index_of_same_field
       hrec h₁ h₂ hfield)
 
 /-- The concrete same-call/same-response witness used in the prose: two
     different beings can actually answer the same call with the same response,
     and the field residue cannot say which one acted. -/
-theorem no_correctFieldReducer_of_same_call_response
+theorem no_agent_recovery_from_same_call_response
     (a₁ a₂ : G.Being) (c : G.Call) (r : G.Response)
     (h₁ : G.Actual ⟨a₁, c, r⟩) (h₂ : G.Actual ⟨a₂, c, r⟩)
     (hne : a₁ ≠ a₂) :
-    ¬ ∃ recover : G.FieldReducer, G.CorrectFieldReducer recover :=
-  G.no_correctFieldReducer_of_same_field_distinct_index h₁ h₂ rfl hne
+    ¬ ∃ recover : G.FieldRecovery, G.CorrectFieldRecovery recover :=
+  G.no_agent_recovery_from_same_field_distinct_index h₁ h₂ rfl hne
 
 /- ==============================================================================
    §2  Sower/reaper, reach-back, and ownership-face
@@ -197,7 +147,7 @@ theorem diachronicWhose_iff_delivery_and_appropriation
   Iff.rfl
 
 /- ==============================================================================
-   §3  Act/fact typing and token-reflexivity
+   §2  Token-reflexivity
 ============================================================================== -/
 
 /-- Token-reflexivity in the narrow checked sense: the index is projected out of
@@ -208,54 +158,22 @@ def SelfAnchored (w : G.Weld) : Prop :=
 
 theorem selfAnchored (w : G.Weld) : G.SelfAnchored w := rfl
 
-/-- The fact-like data the reducer is allowed to carry in the supervenience
-    objection: field residues, and occurrence facts. The appropriating itself is
-    not added as a new field constructor here. -/
-inductive ReductionDatum
-  | field (fact : G.FieldFact)
-  | occurrence (w : G.Weld) (actual : G.Actual w)
-
-namespace ReductionDatum
-
-/-- Whether a reducer datum still contains a live act-index. Field-facts never
-    do; occurrence facts do exactly when the occurrence's own share is nonzero. -/
-def HasActIndex : ReductionDatum G → Prop
-  | .field _ => False
-  | .occurrence w _ => G.HasSelfPoleIndex w
-
-theorem field_has_noActIndex (fact : G.FieldFact) :
-    ¬ HasActIndex (G := G) (ReductionDatum.field fact) :=
-  fun h => h
-
-theorem occurrence_hasActIndex_iff
-    (w : G.Weld) (hactual : G.Actual w) :
-    HasActIndex (G := G) (ReductionDatum.occurrence w hactual) ↔
-      G.HasSelfPoleIndex w :=
-  Iff.rfl
-
-theorem occurrence_has_noActIndex_of_shareZero
-    {w : G.Weld} (hactual : G.Actual w) (hshare : G.share w = shareZero) :
-    ¬ HasActIndex (G := G) (ReductionDatum.occurrence w hactual) :=
-  G.no_self_pole_index_of_shareZero w hshare
-
-end ReductionDatum
-
 /- ==============================================================================
-   §4  Pole-reducibility and the verdict's own tier
+   §3  Pole-typing and the verdict's own tier
 ============================================================================== -/
 
 /-- The state-tool fits exactly when no live self-pole index remains. -/
 def StateToolFits (w : G.Weld) : Prop :=
   ¬ G.HasSelfPoleIndex w
 
-/-- Share-zero is the constructive direction of the pole-reducibility corollary:
+/-- Share-zero is the constructive direction of the pole-typing corollary:
     no self-pole index remains for a state-tool to miss. -/
 theorem stateToolFits_of_shareZero
     {w : G.Weld} (hshare : G.share w = shareZero) :
     G.StateToolFits w :=
   G.no_self_pole_index_of_shareZero w hshare
 
-/-- With decidable equality on the contribution scale, the corollary can be read
+/-- With decidable equality on the contribution scale, pole-typing can be read
     as an iff: the state-tool fits just where the share is zero. -/
 theorem shareZero_of_stateToolFits [DecidableEq Contrib]
     {w : G.Weld} (hfits : G.StateToolFits w) :
@@ -264,7 +182,7 @@ theorem shareZero_of_stateToolFits [DecidableEq Contrib]
   · exact hshare
   · exact False.elim (hfits hshare)
 
-/-- With decidable equality on the contribution scale, pole-reducibility is an
+/-- With decidable equality on the contribution scale, pole-typing is an
     exact iff. -/
 theorem stateToolFits_iff_shareZero [DecidableEq Contrib] (w : G.Weld) :
     G.StateToolFits w ↔ G.share w = shareZero :=
@@ -283,9 +201,9 @@ theorem no_ownershipFace_of_stateToolFits
     ¬ G.OwnershipFace deed reception :=
   fun hown => hfits hown.right
 
-/-- A floor-tier diagnosis cannot be a collapse, since the floor carries no
-    live arrogation. -/
-theorem malformed_not_floor_claim (d : Distinction G) :
+/-- A floor-tier diagnosis cannot be a mis-feed, since the floor carries no live
+    arrogation. -/
+theorem misfeed_not_floor_claim (d : Distinction G) :
     ¬ d.Collapse (Tier.floor : Tier G) :=
   G.not_collapse_floor d
 
@@ -303,7 +221,7 @@ theorem verdict_separates_at_actTime
   G.separated_of_obeysSeparateFuse h hidx
 
 /- ==============================================================================
-   §5  The office-spine and contemporary placements
+   §4  The office-spine and contemporary placements
 ============================================================================== -/
 
 end Grid
@@ -341,12 +259,14 @@ end OwnershipOffice
 
 /-- Contemporary positions placed by `Paper/Proofs.md`. -/
 inductive ContemporaryPosition
+  | siderits
   | ganeri
   | zahavi
   | sartre
 
 /-- Their grid placement. -/
 inductive ContemporaryPlacement
+  | seriesQuestions
   | nearestAlly
   | retype
   | occupant
@@ -355,9 +275,13 @@ namespace ContemporaryPosition
 
 /-- The grid placement assigned to each contemporary position in the paper. -/
 def placement : ContemporaryPosition → ContemporaryPlacement
+  | .siderits => .seriesQuestions
   | .ganeri => .nearestAlly
   | .zahavi => .retype
   | .sartre => .occupant
+
+theorem siderits_placement :
+    placement ContemporaryPosition.siderits = ContemporaryPlacement.seriesQuestions := rfl
 
 theorem ganeri_placement :
     placement ContemporaryPosition.ganeri = ContemporaryPlacement.nearestAlly := rfl
@@ -387,32 +311,8 @@ theorem retype_is_generatorOutcome
 end Grid
 
 /- ==============================================================================
-   §6  Scoped verdicts and the disclaimers
+   §5  Disclaimers
 ============================================================================== -/
-
-/-- The anti-reduction verdict fires only when a designation routes through a
-    self-index; field-only designations stay hard or easy, but not malformed in
-    this paper's sense. -/
-inductive DesignationRoute
-  | selfIndex
-  | fieldOnly
-
-namespace DesignationRoute
-
-/-- Whether the scoped anti-reduction verdict applies to this route. -/
-def VerdictFires : DesignationRoute → Prop
-  | .selfIndex => True
-  | .fieldOnly => False
-
-theorem verdict_fires_for_selfIndex :
-    VerdictFires DesignationRoute.selfIndex :=
-  trivial
-
-theorem verdict_does_not_fire_for_fieldOnly :
-    ¬ VerdictFires DesignationRoute.fieldOnly :=
-  fun h => h
-
-end DesignationRoute
 
 /-- The thirty-four original moves enumerated in `Paper/Proofs.md`. -/
 inductive Disclaimer
@@ -424,7 +324,7 @@ inductive Disclaimer
   | linjiReading
   | shoVersusSatori
   | genjoArrivals
-  | malformedVerdict
+  | karmaIdentification
   | weldTokenReflexivity
   | mmk17Decomposition
   | stoneOutsideEdge
@@ -444,7 +344,7 @@ inductive Disclaimer
   | transposition
   | mirrorTerminus
   | threeKillings
-  | actFactTyping
+  | officesSpine
   | contemporaryPlacement
   | hakuinReading
   | retypeOutcome
@@ -464,7 +364,7 @@ def number : Disclaimer → Nat
   | .linjiReading => 6
   | .shoVersusSatori => 7
   | .genjoArrivals => 8
-  | .malformedVerdict => 9
+  | .karmaIdentification => 9
   | .weldTokenReflexivity => 10
   | .mmk17Decomposition => 11
   | .stoneOutsideEdge => 12
@@ -484,17 +384,17 @@ def number : Disclaimer → Nat
   | .transposition => 26
   | .mirrorTerminus => 27
   | .threeKillings => 28
-  | .actFactTyping => 29
+  | .officesSpine => 29
   | .contemporaryPlacement => 30
   | .hakuinReading => 31
   | .retypeOutcome => 32
   | .svakarmaDemotion => 33
   | .orthogonalityPrice => 34
 
-theorem malformedVerdict_number :
-    number Disclaimer.malformedVerdict = 9 := rfl
+theorem karmaIdentification_number :
+    number Disclaimer.karmaIdentification = 9 := rfl
 
-theorem poleReducibility_carried_by_orthogonalityPrice :
+theorem poleTyping_carried_by_orthogonalityPrice :
     number Disclaimer.orthogonalityPrice = 34 := rfl
 
 end Disclaimer
