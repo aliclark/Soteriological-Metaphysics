@@ -1,31 +1,22 @@
 /-
 ================================================================================
   The Weld and the Arrow — I. Theory
-  A first-draft Lean 4 formalization of `01-theory.md`
+  A Lean 4 formalization of `01-theory.md`
 ================================================================================
 
-STATUS: compiling under `lake build`. First-draft note retained: no Lean toolchain was reachable when this
-draft was written in (no local install, and no network access to fetch one),
-so nothing below has been through the elaborator. It is written conservatively
-— term-mode proofs over tactics wherever a term-mode proof was available, only
-core-Lean4 lemmas whose exact signature I was confident of (`Nat.le_refl`,
-`Nat.le_trans`, `Nat.zero_le`), no
-`simp`/`decide`/`rcases`/`obtain` calls whose success depends on a simp-set or
-tactic availability I couldn't check. Treat every `theorem`/`example` as a
-claim to be checked, not a checked fact. The most likely failure points, if
-any, are noted inline where a design choice was genuinely uncertain rather
-than just tedious.
+STATUS: checked by `lake build`. The file is intentionally conservative:
+mostly term-mode proofs, no Mathlib dependency, and only the small amount of
+core Lean needed to keep the theory's primitive signature executable.
 
 No `import`s. Every order-theoretic notion is hand-rolled rather than reached
-for from Mathlib, on purpose (see §0) — both to stay self-contained without
-network access, and because Mathlib's `Preorder` carries expectations (and a
-large elaboration cost) this file doesn't want.
+for from Mathlib, on purpose (see §0) — both to stay self-contained and
+because Mathlib's `Preorder` carries expectations this file does not need.
 
-Companion files should import this one when they are written. This file is
-*only* Theory: the primitive sorts and the rules, plus a handful of sanity
-lemmas that check a definition does what the prose claims of it. Real
-theorems (backsliding is the one exception — see §2, it is stated as a
-theorem already in `01-theory.md` itself) belong downstream.
+Downstream proof/theorem files should import this module, or the library root
+that re-exports it. This file is *only* Theory: the primitive sorts and the
+rules, plus a handful of sanity lemmas that check a definition does what the
+prose claims of it. Real theorems (backsliding is the one exception — see §2,
+it is stated as a theorem already in `01-theory.md` itself) belong downstream.
 
 --------------------------------------------------------------------------------
 Design log
@@ -45,9 +36,9 @@ Design log
   function of any `Config`, because no such function exists anywhere in this
   signature for it to be one of.
 
-* The `Weld`/`Index` order follows the one piece of outside advice this
-  draft had going in: `Weld` is primitive (an agent, a call, a response,
-  bundled — nothing else, and in particular no separate prior `Act` a
+* The `Weld`/`Index` order follows the central modelling choice here:
+  `Weld` is primitive (an agent, a call, a response, bundled — nothing else,
+  and in particular no separate prior `Act` a
   `Weld` could be said to interpret, since MMK 8 is explicitly "neither
   prior, neither based"), and `index`/`share` are *projections out of* a
   completed `Weld`, never inputs to constructing one. There is no function
@@ -58,16 +49,16 @@ Design log
   nothing here ever manufactures an index without first being handed a
   complete occurrence to project it from.
 
-* The tier machinery (separate/fuse) now exposes the small DEEP interface
-  Theorems.lean will need: a `ClaimLanguage` gives an object-language of
-  claims together with tier-indexed satisfaction, a `Distinction` stores two
-  claim-objects rather than two bare `Tier → Prop` predicates, and a
-  `RecordedUtterance` stores the utterance's weld, offered tier, and content.
-  Theory.lean still does not choose the concrete language or run the
-  taxonomy generator. That remains Theorems content. The point of the
-  interface is only to prevent the old shallow encoding from becoming a
-  dead end once the fox's sentence, Baizhang's rule, and other recorded
-  utterances have to be graded as inspectable objects.
+* The tier machinery (separate/fuse) exposes the small deep interface
+  downstream theorem files will need: a `ClaimLanguage` gives an
+  object-language of claims together with tier-indexed satisfaction, a
+  `Distinction` stores two claim-objects rather than two bare `Tier → Prop`
+  predicates, and a `RecordedUtterance` stores the utterance's weld, offered
+  tier, and content. Theory.lean does not choose the concrete language or run
+  the taxonomy generator. That remains theorem-level content. The point of
+  the interface is only to prevent a shallow encoding from becoming a dead
+  end once the fox's sentence, Baizhang's rule, and other recorded utterances
+  have to be graded as inspectable objects.
 
 * Every `Contrib`-valued magnitude is kept under a hand-rolled `WeakOrder` —
   reflexive and transitive, deliberately NOT required to be total. This is
@@ -78,10 +69,10 @@ Design log
   contradicted the paper, which is the reason `WeakOrder` exists at all
   rather than just importing whatever the standard library offers.
 
-* Kept at plain `Type` throughout rather than universe-polymorphic `Type*`,
-  to remove one more axis of things that could be subtly wrong in a draft
-  nobody has compiled yet. Upgrading to universe polymorphism later is
-  routine and touches no proofs, only signatures.
+* Kept at plain `Type` throughout rather than universe-polymorphic `Type*`
+  because the current examples and intended signatures all live in the first
+  universe. Upgrading to universe polymorphism later is routine and touches
+  no proofs, only signatures.
 -/
 
 namespace WAA
@@ -365,7 +356,7 @@ theorem stone_is_terminus (b : G.Being) (h : G.Stone b) : G.Terminus b :=
 /-- Positive function at even one call rules out stone-typing. -/
 theorem not_stone_of_mountsSomewhere (b : G.Being) (h : G.MountsSomewhere b) :
     ¬ G.Stone b :=
-  fun hs => h.elim (fun c hc => absurd hc (hs c))
+  fun hs => h.elim (fun c hc => hs c hc)
 
 /-- A live terminus is not a stone. -/
 theorem liveTerminus_not_stone (b : G.Being) (h : G.LiveTerminus b) :
@@ -408,9 +399,8 @@ end Grid
 /-- What the field carries between acts for a being: a tendency to
     arrogate, and nothing else. This *is* the formalization of "nothing
     self-indexed is stored" — not a theorem about `Config`, but `Config`'s
-    definition, read the way the outside note reproduced in the Preview
-    section reads a failed elaboration: by what is and is not present in
-    the type, not by a proof. -/
+    definition, read by what is and is not present in the type, not by a
+    proof. -/
 structure Config (Contrib : Type) where
   tendency : Contrib
 
@@ -559,7 +549,7 @@ theorem objectAxisStanding_of_landsAt
 theorem effectiveFor_has_objectAxisStanding
     (before : Config Contrib) (deed : G.Weld) (h : G.EffectiveFor before deed) :
     G.ObjectAxisStanding deed :=
-  h.elim (fun reception hland => G.objectAxisStanding_of_landsAt deed reception hland.left)
+  h.elim (fun reception hland => ⟨reception, hland.left.left⟩)
 
 theorem atLeastAsEffective_refl (before : Config Contrib) (deed : G.Weld) :
     G.AtLeastAsEffective before deed deed :=
@@ -823,11 +813,10 @@ end Grid
 /- ==============================================================================
    Preview: the two outside wrinkles
 
-   Neither item below is Theory content proper — both anticipate
-   Proofs.lean / Theorems.lean and are included only to check, as far as a
-   single unverified file can, that the definitions above actually support
-   what those files will need. Nothing above this point depends on
-   anything below it.
+   Neither item below is Theory content proper — both anticipate later
+   proof/theorem files and provide checked witnesses that the definitions
+   above actually support what those files will need. Nothing above this
+   point depends on anything below it.
 ============================================================================== -/
 
 section Preview
@@ -900,9 +889,9 @@ theorem malformed_no_recovery
    derivability result — you'd exhibit a model satisfying the axioms
    where the privilege fails."
 
-   Prudential privilege itself is Theorems content (§1 there). This file now
-   supplies the neutral carrier it will need (`ActualWeld`/`ReceptionPair`)
-   but does not formulate the privilege predicate or prove its failure.
+   Prudential privilege itself is theorem-level content. This file supplies
+   the neutral carrier it will need (`ActualWeld`/`ReceptionPair`) but does
+   not formulate the privilege predicate or prove its failure.
    What is checked here is narrower and prior: that "a model of the theory"
    is not just a phrase but a term one can actually build and compute with,
    because that is the one thing a later countermodel construction cannot
@@ -960,7 +949,7 @@ def clockGrid : Grid Nat where
   conditions _ _ := False
 
 theorem rigid_is_stone : clockGrid.Stone Clock.rigid :=
-  fun _c hc => hc.elim (fun _r hr => by cases hr)
+  fun _c ⟨_r, hr⟩ => by cases hr
 
 theorem adaptive_is_terminus : clockGrid.Terminus Clock.adaptive :=
   fun _c _r _h => rfl
