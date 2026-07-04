@@ -77,6 +77,13 @@ Design log
   contradicted the paper, which is the reason this file uses its own
   `Preorder` rather than importing whatever the standard library offers.
 
+* The share-zero pole is an order-class (`AtBot`), not literal identity with
+  the chosen representative `shareZero`. Equality-to-`shareZero` lemmas are
+  kept only as thin bridges into that class; theorem-facing predicates should
+  consult the order comparison. This is the formal counterpart of treating
+  contribution values as display conventions over a preorder rather than
+  operational tokens.
+
 * Kept at plain `Type` throughout rather than universe-polymorphic `Type*`
   because the current examples and intended signatures all live in the first
   universe. Upgrading to universe polymorphism later is routine and touches
@@ -116,6 +123,22 @@ class Preorder (α : Type) where
     ordering is allowed to have. -/
 def Incomparable [Preorder α] (a b : α) : Prop := ¬ a ≼ b ∧ ¬ b ≼ a
 
+/-- Order-equivalence: neither more nor less self-driven. -/
+def OrderEq [Preorder α] (a b : α) : Prop := a ≼ b ∧ b ≼ a
+
+theorem orderEq_refl [Preorder α] (a : α) : OrderEq a a :=
+  ⟨Preorder.le_refl a, Preorder.le_refl a⟩
+
+theorem orderEq_symm [Preorder α] {a b : α} (h : OrderEq a b) :
+    OrderEq b a :=
+  ⟨h.right, h.left⟩
+
+theorem orderEq_trans [Preorder α] {a b c : α}
+    (hab : OrderEq a b) (hbc : OrderEq b c) :
+    OrderEq a c :=
+  ⟨Preorder.le_trans hab.left hbc.left,
+    Preorder.le_trans hbc.right hab.right⟩
+
 /-- The bottom is a genuine, ATTAINED element — the terminus, share-zero
     (Theory: Attainment, "an interior pole"), comparable to everything
     below it by fiat, exactly as a least self-driven placement should be.
@@ -131,17 +154,49 @@ class PreorderBot (α : Type) extends Preorder α where
 /-- Shorthand for the bottom of whatever `Contrib` is in scope. -/
 def shareZero [PreorderBot α] : α := PreorderBot.bot
 
+/-- The designated bottom is below every display value. -/
+theorem shareZero_le [PreorderBot α] (a : α) :
+    (shareZero : α) ≼ a :=
+  PreorderBot.bot_le a
+
+/-- The pole as an order-class: at or below the designated bottom.
+    Since `shareZero_le` gives the converse, this is order-equivalence with
+    `shareZero` — qualitative in the order, never identity with a token. -/
+def AtBot [PreorderBot α] (a : α) : Prop := a ≼ shareZero
+
+theorem atBot_shareZero [PreorderBot α] : AtBot (shareZero : α) :=
+  Preorder.le_refl shareZero
+
+theorem atBot_of_eq_shareZero [PreorderBot α] {a : α}
+    (h : a = shareZero) :
+    AtBot a :=
+  h ▸ atBot_shareZero
+
+theorem orderEq_shareZero_of_atBot [PreorderBot α] {a : α}
+    (h : AtBot a) :
+    OrderEq a shareZero :=
+  ⟨h, shareZero_le a⟩
+
+theorem atBot_of_orderEq_shareZero [PreorderBot α] {a : α}
+    (h : OrderEq a shareZero) :
+    AtBot a :=
+  h.left
+
+theorem orderEq_shareZero_iff_atBot [PreorderBot α] (a : α) :
+    OrderEq a shareZero ↔ AtBot a :=
+  ⟨atBot_of_orderEq_shareZero, orderEq_shareZero_of_atBot⟩
+
 /- ==============================================================================
    §1  The signature
 
-   `RawWeld` and `DriveComposition` are free-standing (no `Grid` needed to
-   state them) so that `Grid` itself can use them in its own field types
-   without a self-reference problem. `Grid` bundles everything else: a term
-   of type `Grid Contrib` *is a model of the theory* — which is exactly the
-   scaffolding a later countermodel (e.g. for prudential privilege,
-   Theorems §1) needs: build one concretely and show a property fails in
-   it. A worked instance is built in the Preview section to check the
-   scaffolding is actually usable for this, not just usable in principle.
+   `RawWeld` is free-standing (no `Grid` needed to state it) so that `Grid`
+   itself can use it in its own field types without a self-reference problem.
+   `Grid` bundles everything else: a term of type `Grid Contrib` *is a model
+   of the theory* — which is exactly the scaffolding a later countermodel
+   (e.g. for prudential privilege, Theorems §1) needs: build one concretely
+   and show a property fails in it. A worked instance is built in the Preview
+   section to check the scaffolding is actually usable for this, not just
+   usable in principle.
 ============================================================================== -/
 
 /-- An occurrence: a candidate agent, call, and response, bundled. There is
@@ -156,16 +211,6 @@ structure RawWeld (Being Call Response : Type) where
   agent    : Being
   call     : Call
   response : Response
-
-/-- The determination clause (Theory: Attainment, "What fixes a
-    placement"): the share is not a modal profile but the actual
-    composition of what drove *this* response. No arithmetic relation is
-    imposed between the two fields — summing them into a single total
-    would already be the measure the text prices away; only `selfDriven`,
-    read through `≼`, is ever consulted below. -/
-structure DriveComposition (Contrib : Type) where
-  callDriven : Contrib
-  selfDriven : Contrib
 
 /-- The whole signature, bundled. -/
 structure Grid (Contrib : Type) [PreorderBot Contrib] where
@@ -186,13 +231,15 @@ structure Grid (Contrib : Type) [PreorderBot Contrib] where
       `Response` but an absence, undefined rather than a numerically small
       share. -/
   respondsTo : Being → Call → Option Response
-  /-- the determination clause, read off wherever a response is actually
-      mounted. -/
-  driveOf    : Being → Call → Response → DriveComposition Contrib
+  /-- Row 2's reading of a mounted response: what the lens states, an
+      abstract point of the display-carrier. No claim is made that this is
+      a "component" of anything — the determination itself (what actually
+      drove the act) is deliberately not named in the signature. -/
+  grade      : Being → Call → Response → Contrib
   /-- delivery: whether an earlier weld's deed conditions a later weld's
       arrival — the field's business, index-free (Theory: Karma, "the
       weld answers only the index-question over what arrives"). Kept
-      entirely separate from `respondsTo`/`driveOf`, which are about
+      entirely separate from `respondsTo`/`grade`, which are about
       *drive*, never about *delivery*: conflating the two is a taxonomy
       error in its own right (Theorems, Grade 1, "Delivery-question /
       index-question"). -/
@@ -221,18 +268,17 @@ def Actual (w : G.Weld) : Prop := G.respondsTo w.agent w.call = some w.response
     "this act's agent" that does not pass through a completed `Weld`. -/
 def index (w : G.Weld) : G.Being := w.agent
 
-/-- Row 2, the grade, read off the determination clause: the self-driven
-    component of the actual drive-composition. States an indexical fact
-    (*this* weld's placement) in a third-personal register (a plain
-    `Contrib`-valued projection) — Theory: Attainment, "Row 2 ... states
-    an indexical fact in a third-personal register". -/
-def share (w : G.Weld) : Contrib := (G.driveOf w.agent w.call w.response).selfDriven
+/-- Row 2, the grade, read off the determination clause. States an
+    indexical fact (*this* weld's placement) in a third-personal register
+    (a plain `Contrib`-valued projection) — Theory: Attainment, "Row 2 ...
+    states an indexical fact in a third-personal register". -/
+def share (w : G.Weld) : Contrib := G.grade w.agent w.call w.response
 
 /-- Whether this occurrence makes a live self-pole index. The raw
     `index` projection above is still useful as the causal-series tag of a
     weld; this predicate is the theorem-facing notion that disappears at
     share-zero. -/
-def HasSelfPoleIndex (w : G.Weld) : Prop := G.share w ≠ shareZero
+def HasSelfPoleIndex (w : G.Weld) : Prop := ¬ AtBot (G.share w)
 
 /-- The live self-pole index, when there is evidence that one is present.
     This is proof-carrying rather than `Option`-valued on purpose: deciding
@@ -244,20 +290,34 @@ def selfPoleIndex (w : G.Weld) (_h : G.HasSelfPoleIndex w) : G.Being := w.agent
     has a live self-pole index exactly when the share is nonzero. -/
 def waa_Appropriates (reception : G.Weld) : Prop := G.HasSelfPoleIndex reception
 
-/-- Share-zero entails that no self-pole index is live. -/
-theorem no_self_pole_index_of_shareZero (w : G.Weld) (h : G.share w = shareZero) :
+/-- At the pole-class, no self-pole index is live. -/
+theorem no_self_pole_index_of_atBot (w : G.Weld) (h : AtBot (G.share w)) :
     ¬ G.HasSelfPoleIndex w :=
   fun hidx => hidx h
+
+/-- Literal equality with the designated bottom is a thin bridge into the
+    order-class pole vocabulary. -/
+theorem no_self_pole_index_of_eq_shareZero
+    (w : G.Weld) (h : G.share w = shareZero) :
+    ¬ G.HasSelfPoleIndex w :=
+  G.no_self_pole_index_of_atBot w (atBot_of_eq_shareZero h)
 
 /-- The evidence-carried index is the agent tag when the self-pole is live. -/
 theorem selfPoleIndex_eq_agent_of_hasSelfPoleIndex
     (w : G.Weld) (h : G.HasSelfPoleIndex w) :
     G.selfPoleIndex w h = w.agent := rfl
 
-/-- At share-zero there is no WAA-appropriation. -/
-theorem no_waa_appropriation_of_shareZero (w : G.Weld) (h : G.share w = shareZero) :
+/-- At the pole-class there is no WAA-appropriation. -/
+theorem no_waa_appropriation_of_atBot (w : G.Weld) (h : AtBot (G.share w)) :
     ¬ G.waa_Appropriates w :=
-  G.no_self_pole_index_of_shareZero w h
+  G.no_self_pole_index_of_atBot w h
+
+/-- Literal equality with the designated bottom rules out WAA-appropriation
+    by first entering the pole-class. -/
+theorem no_waa_appropriation_of_eq_shareZero
+    (w : G.Weld) (h : G.share w = shareZero) :
+    ¬ G.waa_Appropriates w :=
+  G.no_waa_appropriation_of_atBot w (atBot_of_eq_shareZero h)
 
 /-- Sanity check: the determination is not secretly the probe. This holds
     by `rfl`, and holds *because* `share`'s definition above never
@@ -268,20 +328,19 @@ theorem no_waa_appropriation_of_shareZero (w : G.Weld) (h : G.share w = shareZer
     the composition, a display over it, never what it consists in"
     (Theory: Attainment). -/
 example (w : G.Weld) :
-    G.share w = (G.driveOf w.agent w.call w.response).selfDriven := rfl
+    G.share w = G.grade w.agent w.call w.response := rfl
 
 /-- The probe (Theory: Attainment): counterfactual call-variation,
     available to any outside observer, that DISPLAYS a drive-composition
-    without being what the composition consists in. Formalized as the
-    bare fact that the same self-driven value recurs across a family of
-    ACTUAL welds by the same being at different calls in some class `cs`
-    — a symptom a third party can check, never the determination itself
-    (`Grid.share`, defined above, prior to and independently of any
-    probing). -/
+    without being what the determination consists in. Formalized as the
+    bare fact that the readings are order-equivalent across a family of
+    ACTUAL welds by the same being at different calls in some class `cs` —
+    a symptom a third party can check, never the determination itself
+    (`Grid.share`, defined above, prior to and independently of any probing). -/
 def ProbeConstant (b : G.Being) (cs : G.Call → Prop) : Prop :=
   ∀ c₁ c₂, cs c₁ → cs c₂ →
     ∀ r₁ r₂, G.respondsTo b c₁ = some r₁ → G.respondsTo b c₂ = some r₂ →
-      (G.driveOf b c₁ r₁).selfDriven = (G.driveOf b c₂ r₂).selfDriven
+      OrderEq (G.grade b c₁ r₁) (G.grade b c₂ r₂)
 
 /- --------------------------------------------------------------------------
    Function / share
@@ -313,7 +372,7 @@ def Stone (b : G.Being) : Prop := ∀ c, ¬ G.MountsAt b c
     `RespondsToEveryCall`; the non-vacuous notions are `LiveTerminus` and
     `ResponsiveTerminus`. -/
 def Terminus (b : G.Being) : Prop :=
-  ∀ c r, G.respondsTo b c = some r → (G.driveOf b c r).selfDriven = shareZero
+  ∀ c r, G.respondsTo b c = some r → AtBot (G.grade b c r)
 
 /-- The non-vacuous terminus: function is present somewhere and every
     mounted response is share-zero. This is often the right formal analogue
@@ -327,11 +386,11 @@ def LiveTerminus (b : G.Being) : Prop := G.MountsSomewhere b ∧ G.Terminus b
 def ResponsiveTerminus (b : G.Being) : Prop :=
   G.RespondsToEveryCall b ∧ G.Terminus b
 
-/-- A response by a terminus-typed being has share-zero. -/
-theorem shareZero_of_terminus_response
+/-- A response by a terminus-typed being lies in the pole-class. -/
+theorem atBot_of_terminus_response
     {b : G.Being} {c : G.Call} {r : G.Response}
     (hterm : G.Terminus b) (hresp : G.respondsTo b c = some r) :
-    G.share ⟨b, c, r⟩ = shareZero :=
+    AtBot (G.share ⟨b, c, r⟩) :=
   hterm c r hresp
 
 /-- A terminus response carries no self-pole index. -/
@@ -339,16 +398,16 @@ theorem no_self_pole_index_of_terminus_response
     {b : G.Being} {c : G.Call} {r : G.Response}
     (hterm : G.Terminus b) (hresp : G.respondsTo b c = some r) :
     ¬ G.HasSelfPoleIndex ⟨b, c, r⟩ :=
-  G.no_self_pole_index_of_shareZero ⟨b, c, r⟩
-    (G.shareZero_of_terminus_response hterm hresp)
+  G.no_self_pole_index_of_atBot ⟨b, c, r⟩
+    (G.atBot_of_terminus_response hterm hresp)
 
 /-- A terminus response does not WAA-appropriate. -/
 theorem no_waa_appropriation_of_terminus_response
     {b : G.Being} {c : G.Call} {r : G.Response}
     (hterm : G.Terminus b) (hresp : G.respondsTo b c = some r) :
     ¬ G.waa_Appropriates ⟨b, c, r⟩ :=
-  G.no_waa_appropriation_of_shareZero ⟨b, c, r⟩
-    (G.shareZero_of_terminus_response hterm hresp)
+  G.no_waa_appropriation_of_atBot ⟨b, c, r⟩
+    (G.atBot_of_terminus_response hterm hresp)
 
 /-- The zero-share pole's two attested arrivals (Theory: Attainment): a being sits at the
     pole either by never mounting a response at all, or by mounting every
@@ -397,9 +456,9 @@ end Grid
    proposition about what it contains. `Config` carries exactly one thing:
    a `Contrib`-valued tendency (the seed), a field-fact about the series.
    There is no field of type `Weld`, and — just as importantly — nothing
-   below ever defines a function FROM `Config` back INTO a `driveOf`
-   argument: the causal machinery that actually determines a later weld's
-   share (`Grid.driveOf`) never once takes a `Config` as input. That
+   below ever defines a function FROM `Config` back INTO a `grade`
+   reading: the causal machinery that actually determines a later weld's
+   share (`Grid.grade`) never once takes a `Config` as input. That
    disconnection is deliberate and is the architectural content of the
    retyped disposition/act cell (Theory: Attainment, "the collapse is
    inferential — the dated occurrence read off the standing tendency"):
@@ -445,8 +504,8 @@ def IsShareDrop (before : Config Contrib) (received : G.Weld) : Prop :=
 
 /- Design note — no share-from-Config route exists.
    The determination of a later weld's share never consults any `Config`:
-   there is no function `Config Contrib → DriveComposition Contrib`
-   anywhere in `Grid`'s signature for a later act to be constrained by.
+   there is no function `Config Contrib → Contrib` anywhere in `Grid`'s
+   signature for a later act to be constrained by.
    This is exhibited by the shape of the signature, not provable as a
    single theorem of it (any candidate statement collapses to `share`'s
    own definition with unused binders — an earlier draft's
@@ -675,10 +734,11 @@ variable (G : Grid Contrib)
 
 /-- Whether a tier has nonzero share for a distinction to separate over:
     never at the floor (Proofs: "there is no agent and no fruit-for-anyone"
-    there), and not at an act-time tier whose weld is already share-zero. -/
+    there), and not at an act-time tier whose weld is already at the
+    pole-class. -/
 def Tier.hasNonzeroShare : Tier G → Prop
   | .floor     => False
-  | .actTime w => G.share w ≠ shareZero
+  | .actTime w => G.HasSelfPoleIndex w
 
 /-- An abstract object language of claims, together with its tier-indexed
     satisfaction relation. This is intentionally only an interface: later
@@ -935,9 +995,11 @@ instance : PreorderBot Nat where
     present: no response mounted, function-zero, the stone's typing").
     The adaptive clock times its chime for a listener that is actually
     there, and — this is the manufactured case's whole point — its
-    response is read, via `driveOf`, as driven by the call entire: share
-    zero, function mounted (Theory: Attainment, "So it reads function
-    mounted, share zero: terminus-typed"). -/
+    response is read, via `grade`, at zero: function mounted, pole-class
+    share (Theory: Attainment, "So it reads function mounted, share zero:
+    terminus-typed"). The old call-driven gloss is now prose-only; no
+    theorem consumed it, and the signature deliberately records only the
+    Row-2 reading. -/
 def clockGrid : Grid Nat where
   Being      := Clock
   Call       := Listener
@@ -947,14 +1009,14 @@ def clockGrid : Grid Nat where
     | .rigid,    _        => none
     | .adaptive, .present => some .chime
     | .adaptive, .absent  => none
-  driveOf _ _ _ := { callDriven := 1, selfDriven := 0 }
+  grade _ _ _ := 0
   conditions _ _ := False
 
 theorem rigid_is_stone : clockGrid.Stone Clock.rigid :=
   fun _c ⟨_r, hr⟩ => by cases hr
 
 theorem adaptive_is_terminus : clockGrid.Terminus Clock.adaptive :=
-  fun _c _r _h => rfl
+  fun _c _r _h => Nat.le_refl 0
 
 theorem adaptive_not_stone : ¬ clockGrid.Stone Clock.adaptive :=
   fun h => h Listener.present ⟨Chime.chime, rfl⟩

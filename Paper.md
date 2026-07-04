@@ -1,367 +1,256 @@
 # A Plain-English Reading of the Lean Theorems
 
-**Scope.** This document states, in plain English, exactly what each theorem in `Theory.lean`, `Theorems.lean`, and `Identification.lean` asserts as a formal proposition. It ignores comments and docstrings, and it ignores Lean definitions that are mere renamings or abbreviations except where a theorem's meaning depends on them. Interpretive glosses from the surrounding prose (e.g. what a theorem is "about" philosophically) are deliberately excluded: the readings below are of the Lean statements only.
+**Scope.** This document states, in plain English, what the Lean declarations in `Theory.lean`, `Theorems.lean`, `Identification.lean`, and `Invariance.lean` assert. It reads the checked Lean surface: definitions, theorem statements, and proof status where that matters. Interpretive prose remains secondary to the formal statements.
 
-**Conventions.** Where a theorem is proved by `rfl` or `Iff.rfl`, its two sides are *definitionally equal*: the statement is true by unfolding definitions, and the reading says so. Where a hypothesis appears in a theorem's signature but is never used in the statement or proof, this is noted, because the theorem then holds regardless of that hypothesis. "Weld" below always means a triple; "actual" always means the specific equation given in the preliminaries.
-
----
-
-## 0. Preliminaries: the vocabulary the theorems are stated in
-
-These are the definitions a reader needs in order to know what the theorem statements mean. They are given in neutral mathematical language.
-
-**Naming convention.** The `waa_` prefix marks identifiers whose names assert part of the paper's karma-identification -- ownership, appropriation, whose-ness, reach-back, or sowing-side aiming/dedication. Unprefixed names are reserved for neutral delivery/order structure, including token-reflexive projection identities such as `index` and `SelfAnchored`.
-
-**Seeds are field-side.** Where the paper speaks of the seeds around a being, a "seed" names a standing delivery-line of the web (`conditions`), never a potency stored in a being. "Potency" names a family of such lines incident on a being's candidate receptions: relational facts of the web, not carried capacity. The environs lens is momentary and descriptive only; no comparison, domination, measure, or prescription is defined over it.
-
-**Order structure.** A `Preorder` on a type α is a binary relation ≼ that is reflexive and transitive; it is hand-rolled, not Mathlib's `Preorder`, to stay dependency-free. Totality and antisymmetry are deliberately not assumed. `Incomparable a b` is defined as: not (a ≼ b) and not (b ≼ a). A `PreorderBot` additionally designates one element, called `bot`, such that bot ≼ a for every a. `shareZero` is notation for this designated element. Note that because antisymmetry is not assumed, other elements may also sit below everything; "= shareZero" and "≠ shareZero" throughout mean literal equality/inequality with the *designated* element, not order-theoretic minimality or non-minimality.
-
-**The signature.** Fix a type `Contrib` carrying a `PreorderBot`; a Grid `G` over `Contrib` consists of:
-
-- three types: `Being`, `Call`, `Response`;
-- a function `respondsTo : Being → Call → Option Response` (i.e. for each being and call, either no response or exactly one designated response);
-- a function `driveOf : Being → Call → Response → DriveComposition`, where a `DriveComposition` is a pair of `Contrib` values named `callDriven` and `selfDriven` (no relation between the two components is assumed);
-- a binary relation `conditions` on welds (see next).
-
-A **weld** (`RawWeld` / `G.Weld`) is an ordered triple ⟨agent, call, response⟩ with agent : Being, call : Call, response : Response. Any triple is a weld; being a weld does not presuppose that the being actually gives that response.
-
-**Basic projections and predicates on welds.**
-
-- `Actual w` means: `respondsTo w.agent w.call = some w.response` — the response recorded in the triple is exactly the response the `respondsTo` function assigns to that being at that call.
-- `index w` is defined as `w.agent` (a projection; nothing more).
-- `share w` is defined as `(driveOf w.agent w.call w.response).selfDriven`.
-- `HasSelfPoleIndex w` means: `share w ≠ shareZero`.
-- `waa_Appropriates w` is defined to be `HasSelfPoleIndex w` (the same proposition under WAA's reconstruction name).
-- `selfPoleIndex w h` (for h a proof of `HasSelfPoleIndex w`) is defined as `w.agent`; the proof argument is not used in the value.
-- `fieldOf w` is the pair `(w.call, w.response)`.
-
-**Function-side predicates on beings.**
-
-- `MountsAt b c`: there exists r with `respondsTo b c = some r`.
-- `MountsSomewhere b`: there exists c with `MountsAt b c`.
-- `RespondsToEveryCall b`: for every c, `MountsAt b c`.
-- `Stone b`: for every c, not `MountsAt b c` (the being responds to no call).
-- `Terminus b`: for every c and r, if `respondsTo b c = some r` then `(driveOf b c r).selfDriven = shareZero`. Note this is a universally quantified conditional; it is vacuously true of any being that responds to nothing.
-- `LiveTerminus b`: `MountsSomewhere b` and `Terminus b`.
-- `ResponsiveTerminus b`: `RespondsToEveryCall b` and `Terminus b`.
-- `AtZeroSharePole b`: `Stone b` or `Terminus b`.
-- `ProbeConstant b cs` (cs a class of calls): for any two calls in cs at which b actually mounts responses, the `selfDriven` components of the two drive-compositions are equal.
-- `ResponseInvariant b`: whenever b responds at two calls, the two responses are equal.
-- `ResponseVariesWithCall b`: there exist two calls at which b responds with unequal responses.
-
-**Configurations, re-pitch, share-drops.**
-
-- A `Config` is a structure containing exactly one field: `tendency : Contrib`. There is no field of type `Being`, no field of type `Weld`, and no association from `Config` to `Being` in the signature.
-- `rePitch before received` (before : Config, received : Weld) is the Config whose tendency is `share received`. The argument `before` does not occur in the result: the output is a function of the received weld alone.
-- `IsShareDrop before received` means: `share received ≼ before.tendency` **and** not (`before.tendency ≼ share received`) — i.e. the received weld's share sits strictly below the prior tendency in the preorder sense (below in one direction, not below in the other).
-
-**Delivery-side definitions.** The delivery predicates below are direct names for `conditions`, except for non-delivery, which is its negation:
-
-- `waa_ReachBackFull deed reception` := `conditions deed reception`.
-- `DeliveredTo deed reception` := `conditions deed reception`.
-- `waa_AimedAt deed reception` := `conditions deed reception`.
-- `NotDeliveredTo deed reception` := **not** `conditions deed reception`.
-
-And built on these:
-
-- `LandsAt deed reception`: `DeliveredTo deed reception` and `Actual reception`.
-- `ObjectAxisStanding deed`: there exists a reception with `DeliveredTo deed reception`.
-- `LandsWithShareDrop before deed reception`: `LandsAt deed reception` and `IsShareDrop before reception`.
-- `EffectiveFor before deed`: there exists a reception with `LandsWithShareDrop before deed reception`.
-
-**The environs lens.**
-
-- `EnvironsLine b deed reception`: `Actual deed` and `reception.agent = b` and `conditions deed reception`. The deed must be actual; the candidate reception need not be.
-- `ReleaseLine before b deed reception`: `EnvironsLine b deed reception` and `IsShareDrop before reception`. The prior tendency is supplied explicitly by `before`, not looked up from `b`.
-
-**Actual pairs.**
-
-- An `ActualWeld` is a weld bundled with a proof that it is actual.
-- A `ReceptionPair` is an ordered pair of `ActualWeld`s (`first`, `second`).
-- `FirstConditionsSecond p` := `waa_ReachBackFull p.first.weld p.second.weld` (i.e. `conditions` between the two underlying welds).
-- `rePitchSequence before p` is the pair of Configs (rePitch before p.first.weld, rePitch (rePitch before p.first.weld) p.second.weld). Given rePitch's definition, this equals the pair of Configs with tendencies (share p.first.weld, share p.second.weld).
-
-**Tiers and distinctions.**
-
-- A `Tier` is either `floor` or `actTime w` for a weld w.
-- `Tier.hasNonzeroShare` is `False` at `floor`, and is the proposition `share w ≠ shareZero` at `actTime w`. (So at `actTime w` it is literally the proposition `HasSelfPoleIndex w`.)
-- A `ClaimLanguage L` consists of a type `Claim` and a relation `Holds : Tier → Claim → Prop`. `TrueAt L t p` := `L.Holds t p`.
-- A `Distinction d` is a claim language together with two claims, `sideA` and `sideB`. Write "the two sides are equivalent at t" for the biconditional `TrueAt t sideA ↔ TrueAt t sideB`.
-- `Fused d t`: **if** t has no nonzero share, **then** the two sides are equivalent at t. (At `floor` the antecedent "not False" is always provable, so `Fused d floor` is equivalent to: the two sides are equivalent at the floor.)
-- `Collapse d t`: t has nonzero share **and** the two sides are equivalent at t.
-- `Freeze d`: the two sides are **not** equivalent at the floor.
-- `Separated d t`: t has nonzero share **and** the two sides are **not** equivalent at t.
-- `ObeysSeparateFuse d`: (for every tier with nonzero share, the two sides are not equivalent there) **and** (for every tier without nonzero share, the two sides are equivalent there).
-
-Note that `Collapse`, `Freeze`, and `Separated` are semantic conditions on a distinction relative to the language's satisfaction relation; none of them mentions any utterance, speaker, or assertion.
-
-**Recorded utterances.** A `RecordedUtterance` bundles a weld, a proof that it is actual, a tier `offeredAt`, and a claim `content`. `answersCall u` := `u.weld.call`. `FitsOfferedTier u` := `TrueAt u.offeredAt u.content`.
-
-**Verdict machinery (enumerations).** `VerdictVoice` has two constructors, `assertable` and `displayable`. `ErrorGrade` has two constructors, `verdict` and `shortfall`; `ErrorGrade.voice` is the function mapping `verdict ↦ assertable` and `shortfall ↦ displayable`. `GeneratorOutcome` is an inductive type with four constructors: `collapse` (carrying a distinction, a tier, and a proof of Collapse), `freeze` (carrying a distinction and a proof of Freeze), `declined` (carrying nothing), and `retype` (carrying two distinctions).
-
-**Identification-layer definitions.**
-
-- `FieldFact` := the product type `Call × Response`. `FieldRecovery` := functions `FieldFact → Being`.
-- `CorrectFieldRecovery recover`: for every **actual** weld w, `recover (fieldOf w) = index w`.
-- `waa_ReportFace deed reception` := `DeliveredTo deed reception`.
-- `waa_OwnershipFace deed reception` := `LandsAt deed reception` and `waa_Appropriates reception`.
-- `waa_VacuousOwnershipFace deed reception` := `NotDeliveredTo deed reception` and `Actual reception` and `waa_Appropriates reception`.
-- `waa_DiachronicWhose deed reception` := `DeliveredTo deed reception` and `waa_Appropriates reception`.
-- `SelfAnchored w` := the equation `index w = w.agent`.
-- `StateToolFits w` := not `HasSelfPoleIndex w`, i.e. not (share w ≠ shareZero).
-- `waa_OwnershipOffice` is a six-element enumeration (`waa_cetana`, `waa_reception`, `waa_practice`, `waa_remorse`, `waa_absolution`, `waa_dedication`). `dischargeTier office w` := `Tier.actTime w`, for every office (the office argument is unused).
-- `ContemporaryPosition` is a four-element enumeration (siderits, ganeri, zahavi, sartre); `ContemporaryPlacement` is a four-element enumeration (seriesQuestions, nearestAlly, retype, occupant); `waa_placement` is the function siderits ↦ seriesQuestions, ganeri ↦ nearestAlly, zahavi ↦ retype, sartre ↦ occupant.
-- `Disclaimer` is a thirty-four-element enumeration; `Disclaimer.number` maps its constructors to the numerals 1 through 34 in declaration order.
+**Conventions.** A theorem proved by `rfl` or `Iff.rfl` is true by unfolding definitions. A theorem whose proof is a projection, contradiction, or witness assembly is described as such. A "weld" is always the triple `RawWeld` / `G.Weld`; "actual" always means the equation `respondsTo w.agent w.call = some w.response`.
 
 ---
 
-## 1. Theorems in `Theory.lean`
+## 0. Preliminaries
 
-`no_self_pole_index_of_shareZero`: for any weld w, if share w = shareZero, then it is not the case that share w ≠ shareZero. (Direct: a proposition and its negation cannot both hold.)
+**Order structure.** `Preorder` is a hand-rolled reflexive and transitive relation `≼`; no totality and no antisymmetry are assumed. `Incomparable a b` means neither `a ≼ b` nor `b ≼ a`. `OrderEq a b` means `a ≼ b` and `b ≼ a`.
 
-`selfPoleIndex_eq_agent_of_hasSelfPoleIndex`: for any weld w with a proof h of HasSelfPoleIndex w, `selfPoleIndex w h = w.agent`. Definitional (`rfl`): `selfPoleIndex` is defined to return `w.agent` and ignores h.
+`PreorderBot` adds a designated bottom element, written `shareZero`, with `shareZero ≼ a` for every `a`. `AtBot a` means `a ≼ shareZero`. Since `shareZero ≼ a` is always available, `AtBot a` says that `a` is order-equivalent to the designated bottom. The pole is therefore an order-class, not identity with one token.
 
-`no_waa_appropriation_of_shareZero`: for any weld w, if share w = shareZero then not `waa_Appropriates w`. Since `waa_Appropriates` is by definition `HasSelfPoleIndex`, this is the previous fact restated.
+The basic order lemmas are:
 
-(An anonymous `example`: share w = (driveOf w.agent w.call w.response).selfDriven — definitionally true, since that is share's definition.)
+- `orderEq_refl`, `orderEq_symm`, `orderEq_trans`: order-equivalence is reflexive, symmetric, and transitive.
+- `shareZero_le`: the designated bottom is below every value.
+- `atBot_shareZero`: `shareZero` is at the pole-class.
+- `atBot_of_eq_shareZero`: equality with the designated representative implies `AtBot`.
+- `orderEq_shareZero_of_atBot`, `atBot_of_orderEq_shareZero`, `orderEq_shareZero_iff_atBot`: `AtBot a` and `OrderEq a shareZero` are equivalent formulations.
 
-`shareZero_of_terminus_response`: if b is a Terminus and respondsTo b c = some r, then share ⟨b, c, r⟩ = shareZero. This is exactly the Terminus definition applied to (c, r), rephrased through the definition of share.
+**The signature.** A `Grid Contrib` consists of three types (`Being`, `Call`, `Response`), a response function `respondsTo : Being → Call → Option Response`, a Row-2 display function `grade : Being → Call → Response → Contrib`, and a delivery relation `conditions` on welds. There is no separate two-component drive object in the signature.
 
-`no_self_pole_index_of_terminus_response`: under the same hypotheses, ⟨b, c, r⟩ does not satisfy HasSelfPoleIndex. Follows by combining the previous two facts.
+A weld is the triple `⟨agent, call, response⟩`. `Actual w` means `respondsTo w.agent w.call = some w.response`. `index w` is the projection `w.agent`. `share w` is `grade w.agent w.call w.response`.
 
-`no_waa_appropriation_of_terminus_response`: under the same hypotheses, ⟨b, c, r⟩ does not satisfy `waa_Appropriates`. Same fact under `waa_Appropriates`' definitional identity with HasSelfPoleIndex.
+`HasSelfPoleIndex w` means `¬ AtBot (share w)`. `waa_Appropriates w` is definitionally the same proposition. `selfPoleIndex w h` returns `w.agent` and ignores the proof argument except for typing.
 
-`stone_is_terminus`: every Stone is a Terminus. This holds **vacuously**: a Stone responds to nothing, so the Terminus condition's hypothesis `respondsTo b c = some r` is never satisfiable, and the universally quantified conditional is true. The theorem therefore records that Terminus, as defined, is satisfied by all Stones; it does not assert any positive share-zero responding.
+**Function-side predicates.**
 
-`not_stone_of_mountsSomewhere`: if b mounts some response at some call, b is not a Stone. Direct contradiction between the existential and the universal negation.
+- `MountsAt b c`: there exists `r` with `respondsTo b c = some r`.
+- `MountsSomewhere b`: there is some call at which `b` mounts.
+- `RespondsToEveryCall b`: every call receives some response.
+- `Stone b`: no call receives a response from `b`.
+- `Terminus b`: every mounted response by `b` has `AtBot (grade b c r)`.
+- `LiveTerminus b`: `MountsSomewhere b ∧ Terminus b`.
+- `ResponsiveTerminus b`: `RespondsToEveryCall b ∧ Terminus b`.
+- `AtZeroSharePole b`: `Stone b ∨ Terminus b`.
+- `ProbeConstant b cs`: any two actual responses by `b` at calls in `cs` have order-equivalent grades.
+- `ResponseInvariant b`: whenever `b` responds at two calls, the responses are equal.
+- `ResponseVariesWithCall b`: there are two calls at which `b` responds differently.
 
-`liveTerminus_not_stone`: a LiveTerminus is not a Stone. Follows from its MountsSomewhere component and the previous theorem.
+**Configurations and share-drops.** `Config` has one field, `tendency : Contrib`; it stores no `Being`, no `Weld`, and no owner. `rePitch before received` returns the config with tendency `share received`; `before` is unused in the value. `IsShareDrop before received` means `share received ≼ before.tendency` and not `before.tendency ≼ share received`.
 
-`responsiveTerminus_live_of_call`: if b is a ResponsiveTerminus and **some call c is supplied as a hypothesis**, then b is a LiveTerminus. The call c witnesses MountsSomewhere. Without a call in hand (e.g. if the Call type were empty), this theorem gives nothing; the call hypothesis is essential.
+**Delivery-side definitions.** `waa_ReachBackFull`, `DeliveredTo`, and `waa_AimedAt` are all `conditions` under different names. `NotDeliveredTo` is its negation. `LandsAt deed reception` means delivery plus actual reception. `LandsWithShareDrop` adds `IsShareDrop`. `EffectiveFor before deed` existentially packages a share-dropping landing.
 
-Design note, not a theorem: the no-share-from-`Config` point is exhibited by the signature's shape. No function in the signature computes a later share from a `Config`; an earlier theorem to that name collapsed to `share`'s own definition with unused binders and was removed.
+`EnvironsLine b deed reception` means the deed is actual, the candidate reception has agent `b`, and `conditions deed reception` holds. `ReleaseLine before b deed reception` adds `IsShareDrop before reception`.
 
-`deliveredTo_or_not`: for welds deed and reception, **given a decidability instance for the proposition `conditions deed reception`**, either DeliveredTo deed reception or NotDeliveredTo deed reception. This is "P or not-P" for that specific proposition, obtained from the supplied decision procedure; the file does not assert the disjunction in the absence of decidability.
+**Tiers and distinctions.** A `Tier` is `floor` or `actTime w`. `Tier.hasNonzeroShare` is `False` at `floor` and `HasSelfPoleIndex w` at `actTime w`. Distinctions, claim languages, recorded utterances, error grades, and generator outcomes retain their previous shape: they define the separate/fuse diagnostic vocabulary over tiers.
 
-`deliveredTo_iff_waa_reachBackFull`: DeliveredTo deed reception ↔ waa_ReachBackFull deed reception. Definitional (`Iff.rfl`): both are the same relation `conditions` under two names.
-
-`objectAxisStanding_of_landsAt`: if LandsAt deed reception, then ObjectAxisStanding deed. The reception in hand witnesses the existential.
-
-`effectiveFor_has_objectAxisStanding`: if EffectiveFor before deed, then ObjectAxisStanding deed. Extract the witnessing reception; its landing includes delivery.
-
-`not_collapse_of_obeysSeparateFuse`: if d obeys the separate/fuse rule, then for every tier t, not Collapse d t. Proof shape: Collapse at t supplies both nonzero share at t and equivalence of the sides at t; the rule's first clause says nonzero share at t implies non-equivalence — contradiction.
-
-`not_freeze_of_obeysSeparateFuse`: if d obeys the separate/fuse rule, then not Freeze d. The rule's second clause at the floor (where "no nonzero share" is provable, since nonzero share at the floor is False) yields equivalence of the sides at the floor, contradicting Freeze.
-
-(An anonymous `example`: a distinction whose sideA and sideB are the *same* claim cannot Freeze — the biconditional at the floor is then p ↔ p, which holds.)
-
-**Concrete instance (`clockGrid`) and its theorems.** `clockGrid` is a Grid over Contrib = Nat (with the usual ≤ and bottom 0), whose Being type has two elements (`rigid`, `adaptive`), Call type two elements (`present`, `absent`), and Response type one element (`chime`); respondsTo sends rigid to `none` on every call, adaptive to `some chime` on `present` and `none` on `absent`; driveOf is constantly the pair (callDriven = 1, selfDriven = 0); `conditions` is constantly False.
-
-- `rigid_is_stone`: in clockGrid, `rigid` is a Stone — it mounts no response at either call.
-- `adaptive_is_terminus`: in clockGrid, `adaptive` is a Terminus — every response it actually mounts has selfDriven = 0 (immediate, since driveOf is constant with selfDriven = 0; the proof is `rfl` at each instance).
-- `adaptive_not_stone`: in clockGrid, `adaptive` is not a Stone — it mounts `chime` at `present`.
-- (An anonymous `example` conjoins the three: in this one concrete Grid, rigid is Stone, adaptive is Terminus, and adaptive is not Stone. This exhibits that Stone and Terminus are not coextensive in every Grid.)
-
-`no_agent_recovery_of_field_collision`: **given** two beings a₁ ≠ a₂, a call c, and a response r such that both ⟨a₁, c, r⟩ and ⟨a₂, c, r⟩ are Actual, there is no function `recover : Call × Response → Being` satisfying: for every actual weld w, recover (fieldOf w) = index w. Proof: such a recover would have to output both a₁ and a₂ on the same input (c, r). Read strictly, this is a **conditional** non-existence result: it applies only to Grids that in fact contain two distinct beings actually giving the same response to the same call, and it rules out only recovery functions of the stated *correctness* specification (functions of that type trivially exist whenever Being is nonempty).
+**Identification layer.** `StateToolFits w` means `¬ HasSelfPoleIndex w`; with the new definitions this is double-negated pole-class membership. The exact iff with `AtBot` therefore requires decidability of the one proposition `AtBot a`, not decidable equality on all of `Contrib`.
 
 ---
 
-## 2. Theorems in `Theorems.lean`
+## 1. `Theory.lean`
 
-**Preorder facts.**
+`no_self_pole_index_of_atBot`: if `AtBot (share w)`, then `w` has no live self-pole index. This is direct contradiction with `HasSelfPoleIndex w := ¬ AtBot (share w)`.
 
-`incomparable_symm`: if a and b are incomparable, so are b and a. (Swap the two conjuncts.)
+`no_self_pole_index_of_eq_shareZero`: equality `share w = shareZero` is first converted to `AtBot (share w)`, then the previous theorem applies.
 
-`not_le_of_incomparable`: if a and b are incomparable, then not (a ≼ b). (First conjunct.)
+`selfPoleIndex_eq_agent_of_hasSelfPoleIndex`: the evidence-carried index is `w.agent`. Definitional (`rfl`).
 
-`not_ge_of_incomparable`: if a and b are incomparable, then not (b ≼ a). (Second conjunct.)
+`no_waa_appropriation_of_atBot` and `no_waa_appropriation_of_eq_shareZero`: the same no-index facts under the definitional name `waa_Appropriates`.
 
-**Function/share and the two poles.**
+Anonymous example: `share w = grade w.agent w.call w.response`. Definitional (`rfl`).
 
-`share_eq_selfDriven`: share w = (driveOf w.agent w.call w.response).selfDriven. Definitional (`rfl`); this restates share's definition.
+`atBot_of_terminus_response`: if `b` is a `Terminus` and `respondsTo b c = some r`, then the weld `⟨b, c, r⟩` has `AtBot` share. This is exactly the `Terminus` definition applied to `c` and `r`.
 
-`mountsAt_of_actual`: if w is Actual, then w.agent mounts a response at w.call (witnessed by w.response).
+`no_self_pole_index_of_terminus_response` and `no_waa_appropriation_of_terminus_response`: a terminus response has no live self-pole index and does not WAA-appropriate, by combining the previous theorem with the `AtBot` no-index lemmas.
 
-`mountsSomewhere_of_actual`: if w is Actual, then w.agent mounts a response somewhere (witnessed by w.call).
+`stone_is_terminus`: every `Stone` is a `Terminus`. This is vacuous: the response hypothesis in `Terminus` can never be satisfied for a stone.
 
-`not_stone_of_actual`: if w is Actual, then w.agent is not a Stone.
+`not_stone_of_mountsSomewhere`: mounting somewhere contradicts `Stone`.
 
-`not_actual_of_stone`: if b is a Stone, then for any call c and response r, ⟨b, c, r⟩ is not Actual.
+`liveTerminus_not_stone`: a live terminus is not a stone, because its `MountsSomewhere` component witnesses function.
 
-`not_mountsSomewhere_of_stone`: a Stone does not mount a response anywhere.
+`responsiveTerminus_live_of_call`: a responsive terminus is a live terminus once a call `c` is supplied; that call witnesses `MountsSomewhere`. If the call type is empty, the theorem has no call to apply.
 
-`not_stone_of_response`: if respondsTo b c = some r for some c, r, then b is not a Stone.
+`deliveredTo_or_not`: for a particular pair of welds, if `conditions deed reception` is decidable, then either `DeliveredTo deed reception` or `NotDeliveredTo deed reception`.
 
-`atZeroSharePole_of_stone`: a Stone is AtZeroSharePole (left disjunct).
+`deliveredTo_iff_waa_reachBackFull`: definitional (`Iff.rfl`), since both names are `conditions`.
 
-`atZeroSharePole_of_terminus`: a Terminus is AtZeroSharePole (right disjunct).
+`objectAxisStanding_of_landsAt`: a landing gives object-axis standing, witnessed by the reception in hand.
 
-`atZeroSharePole_and_not_stone_of_liveTerminus`: a LiveTerminus is AtZeroSharePole and is not a Stone.
+`effectiveFor_has_objectAxisStanding`: effectiveness gives a share-dropping landing; its landing component supplies object-axis standing.
 
-`not_stone_of_responsiveTerminus_of_call`: if b is a ResponsiveTerminus and a call c is supplied, then b is not a Stone. (Again the supplied call is what witnesses responding somewhere.)
+`not_collapse_of_obeysSeparateFuse`: the first clause of `ObeysSeparateFuse` contradicts the equivalence required by `Collapse` at any live tier.
+
+`not_freeze_of_obeysSeparateFuse`: the second clause of `ObeysSeparateFuse` at `floor` gives the equivalence denied by `Freeze`.
+
+Anonymous example: a distinction whose two sides are the same claim cannot freeze.
+
+`no_agent_recovery_of_field_collision`: if two distinct beings can actually produce the same call-response pair, no function from field residue `Call × Response` can correctly recover the agent for every actual weld.
+
+**`clockGrid`.** The concrete grid uses `Nat` with bottom `0`; `rigid` responds nowhere, `adaptive` responds with `chime` when the listener is present, `grade` is constantly `0`, and `conditions` is always false. The former "call-driven = 1" component is no longer formal data.
+
+- `rigid_is_stone`: `rigid` responds nowhere.
+- `adaptive_is_terminus`: `adaptive` is a terminus. The proof is now `Nat.le_refl 0`, because `Terminus` asks for `AtBot 0`, not equality by `rfl`.
+- `adaptive_not_stone`: `adaptive` responds at `present`.
+- Anonymous example: the concrete grid contains a stone and a non-stone terminus.
+
+---
+
+## 2. `Theorems.lean`
+
+**Preorder facts.** `incomparable_symm` swaps the two conjuncts of incomparability. `not_le_of_incomparable` and `not_ge_of_incomparable` project the corresponding negated comparisons.
+
+**Function/share and poles.**
+
+`share_eq_grade`: `share w = grade w.agent w.call w.response`. Definitional (`rfl`).
+
+`mountsAt_of_actual`, `mountsSomewhere_of_actual`, `not_stone_of_actual`, `not_actual_of_stone`, `not_mountsSomewhere_of_stone`, and `not_stone_of_response` are direct witness/projection/contradiction consequences of `Actual`, `MountsAt`, and `Stone`.
+
+`atZeroSharePole_of_stone` and `atZeroSharePole_of_terminus` introduce the two disjuncts of `AtZeroSharePole`. `atZeroSharePole_and_not_stone_of_liveTerminus` combines the terminus disjunct with `liveTerminus_not_stone`. `not_stone_of_responsiveTerminus_of_call` uses the supplied call to get live function.
 
 **Re-pitch and share-drops.**
 
-`rePitch_tendency_eq_share`: (rePitch before received).tendency = share received, for every before. Definitional (`rfl`); this is rePitch's definition, and simultaneously records that the result does not depend on `before`.
+`rePitch_tendency_eq_share`: the re-pitched tendency is the received weld's share. Definitional (`rfl`); `before` is unused.
 
-`isShareDrop_iff_rePitch_tendency_drop`: IsShareDrop before received ↔ [(rePitch before received).tendency ≼ before.tendency and not (before.tendency ≼ (rePitch before received).tendency)]. Definitional (`Iff.rfl`): substituting `share received` for the re-pitched tendency, the right side is literally the definition of IsShareDrop.
+`isShareDrop_iff_rePitch_tendency_drop`: definitional (`Iff.rfl`), substituting the re-pitched tendency for `share received`.
 
-`rePitch_tendency_le_before_of_shareDrop`: if IsShareDrop before received, then (rePitch before received).tendency ≼ before.tendency. (First conjunct of IsShareDrop, rewritten through rePitch's definition.)
+`rePitch_tendency_le_before_of_shareDrop` and `not_before_le_rePitch_tendency_of_shareDrop` project the two conjuncts of `IsShareDrop`.
 
-`not_before_le_rePitch_tendency_of_shareDrop`: under the same hypothesis, not (before.tendency ≼ (rePitch before received).tendency). (Second conjunct.)
-
-`rePitch_tendency_eq_shareZero_of_terminus_response`: if b is a Terminus and respondsTo b c = some r, then (rePitch before ⟨b, c, r⟩).tendency = shareZero, for any before. (Combine rePitch's definition with `shareZero_of_terminus_response`.)
+`rePitch_tendency_atBot_of_terminus_response`: a terminus response re-pitches the tendency into the pole-class. The conclusion is `AtBot`, not equality with `shareZero`.
 
 **The environs lens.**
 
-`environsLine_of_releaseLine`: ReleaseLine before b deed reception implies EnvironsLine b deed reception. (First conjunct.)
+`environsLine_of_releaseLine`, `isShareDrop_of_releaseLine`, and `deliveredTo_of_environsLine` are projections.
 
-`isShareDrop_of_releaseLine`: ReleaseLine before b deed reception implies IsShareDrop before reception. (Second conjunct.)
+`not_isShareDrop_of_tendency_atBot`: if the prior tendency is already `AtBot`, then no received weld is a strict share-drop against it. The proof uses `before.tendency ≼ shareZero ≼ share received` to contradict the second conjunct of `IsShareDrop`.
 
-`deliveredTo_of_environsLine`: EnvironsLine b deed reception implies DeliveredTo deed reception. (The delivery fact is the third conjunct inside EnvironsLine.)
+`not_isShareDrop_of_eq_shareZero_tendency`: equality with the designated bottom is a bridge into the previous theorem.
 
-`not_isShareDrop_of_tendency_eq_shareZero`: if before.tendency = shareZero, then no received weld satisfies IsShareDrop before received. The only order fact used is that the designated bottom is below every share (`bot_le`), which contradicts the second conjunct of IsShareDrop.
+`no_releaseLine_of_tendency_atBot`: with an `AtBot` prior tendency, no `ReleaseLine` exists, because its share-drop conjunct is impossible.
 
-`no_releaseLine_of_tendency_eq_shareZero`: if before.tendency = shareZero, then there is no ReleaseLine before b deed reception. This is the previous theorem applied to the IsShareDrop conjunct; read strictly, the lens is empty at pole tendency, "nothing left to release."
+`no_releaseLine_of_eq_shareZero_tendency`: equality bridge into the previous theorem.
 
-`effectiveFor_of_releaseLine_actual`: if ReleaseLine before b deed reception holds and the reception is Actual, then EffectiveFor before deed. The proof assembles the existing `LandsWithShareDrop` witness; the conclusion is only the existential `EffectiveFor`.
+`effectiveFor_of_releaseLine_actual`: a release-line whose reception is actual assembles the existential `EffectiveFor` witness.
 
-**Delivery, reach-back, effectiveness.** The two reach/aiming biconditionals below are definitional (`Iff.rfl`), since waa_ReachBackFull, DeliveredTo, and waa_AimedAt are all defined as `conditions`:
+**Delivery and effectiveness.** The reach/aiming biconditionals are definitional (`Iff.rfl`). The remaining delivery theorems are projections from `LandsAt`, `LandsWithShareDrop`, or `EffectiveFor`, plus existential witnesses:
 
-`waa_reachBackFull_iff_deliveredTo`: waa_ReachBackFull deed reception ↔ DeliveredTo deed reception.
+- `deliveredTo_of_landsAt`, `actual_of_landsAt`
+- `landsAt_of_landsWithShareDrop`, `isShareDrop_of_landsWithShareDrop`
+- `deliveredTo_of_landsWithShareDrop`, `actual_of_landsWithShareDrop`
+- `exists_landsAt_of_effectiveFor`, `exists_actual_reception_of_effectiveFor`, `exists_shareDrop_reception_of_effectiveFor`
 
-`waa_aimedAt_iff_deliveredTo`: waa_AimedAt deed reception ↔ DeliveredTo deed reception.
+**Reception pairs.** `first_actual` and `second_actual` project stored proofs. `firstConditionsSecond_iff_deliveredTo` is definitional (`Iff.rfl`). The two `rePitchSequence_*_tendency` theorems are definitional (`rfl`) and show the sequence's tendencies are the two weld shares.
 
-`deliveredTo_of_landsAt`: LandsAt implies its DeliveredTo conjunct.
+**Tiers and separate/fuse.**
 
-`actual_of_landsAt`: LandsAt implies its Actual-reception conjunct.
+`floor_has_no_nonzero_share`: no nonzero share at `floor`.
 
-`landsAt_of_landsWithShareDrop`: LandsWithShareDrop implies its LandsAt conjunct.
+`actTime_hasNonzeroShare_iff_hasSelfPoleIndex`: definitional (`Iff.rfl`), because act-time nonzero share is `HasSelfPoleIndex`.
 
-`isShareDrop_of_landsWithShareDrop`: LandsWithShareDrop implies its IsShareDrop conjunct.
+`not_actTime_hasNonzeroShare_of_atBot`: an act-time tier whose weld is at the pole-class has no nonzero share.
 
-`deliveredTo_of_landsWithShareDrop`: LandsWithShareDrop implies DeliveredTo (by composing the two projections above).
+`not_actTime_hasNonzeroShare_of_eq_shareZero`: equality bridge into the previous theorem.
 
-`actual_of_landsWithShareDrop`: LandsWithShareDrop implies the reception is Actual.
+`not_collapse_floor`, `hasNonzeroShare_of_collapse`, `hasNonzeroShare_of_separated`, `not_collapse_of_separated`, `fused_of_obeysSeparateFuse`, `separated_of_obeysSeparateFuse`, and `not_freeze_of_fused_floor` are the direct separate/fuse diagnostics: they project the live-share component, use the rule clauses, or contradict equivalence with non-equivalence.
 
-`exists_landsAt_of_effectiveFor`: if EffectiveFor before deed, then some reception satisfies LandsAt deed reception.
-
-`exists_actual_reception_of_effectiveFor`: if EffectiveFor before deed, then some reception is Actual. (Note the conclusion, read literally, asserts only the existence of *an* actual weld — the one produced is the witnessing reception, but the stated proposition is just "∃ reception, Actual reception".)
-
-`exists_shareDrop_reception_of_effectiveFor`: if EffectiveFor before deed, then some reception satisfies IsShareDrop before reception.
-
-**Reception pairs.**
-
-`first_actual` / `second_actual`: the first (respectively second) member of a ReceptionPair is Actual. (These are the stored proofs, projected out.)
-
-`firstConditionsSecond_iff_deliveredTo`: FirstConditionsSecond p ↔ DeliveredTo p.first.weld p.second.weld. Definitional (`Iff.rfl`).
-
-`rePitchSequence_first_tendency`: the first component of rePitchSequence before p has tendency equal to share p.first.weld. Definitional (`rfl`).
-
-`rePitchSequence_second_tendency`: the second component has tendency equal to share p.second.weld. Definitional (`rfl`). (Together these record that the sequence's outputs depend only on the two welds' shares, not on `before`.)
-
-**Tiers, utterances, separate/fuse.**
-
-`floor_has_no_nonzero_share`: the floor tier does not have nonzero share. (Nonzero share at the floor is defined as False.)
-
-`actTime_hasNonzeroShare_iff_hasSelfPoleIndex`: nonzero share at tier actTime w ↔ HasSelfPoleIndex w. Definitional (`Iff.rfl`): both sides are the proposition share w ≠ shareZero.
-
-`not_actTime_hasNonzeroShare_of_shareZero`: if share w = shareZero, tier actTime w has no nonzero share.
-
-`not_collapse_floor`: no distinction Collapses at the floor. (Collapse requires nonzero share, and the floor has none.)
-
-`hasNonzeroShare_of_collapse`: Collapse d t implies t has nonzero share. (First conjunct.)
-
-`hasNonzeroShare_of_separated`: Separated d t implies t has nonzero share. (First conjunct.)
-
-`not_collapse_of_separated`: if Separated d t, then not Collapse d t. (Separated asserts the sides are inequivalent at t; Collapse asserts they are equivalent at t; contradiction.)
-
-`fused_of_obeysSeparateFuse`: if d obeys the rule, then d is Fused at **every** tier t. (Fused is a conditional whose antecedent is "no nonzero share at t"; the rule's second clause supplies exactly the needed consequent whenever the antecedent holds.)
-
-`separated_of_obeysSeparateFuse`: if d obeys the rule and t has nonzero share, then Separated d t. (Pair the nonzero-share hypothesis with the rule's first clause.)
-
-`not_freeze_of_fused_floor`: if d is Fused at the floor, then not Freeze d. (At the floor the Fused conditional's antecedent is provable, yielding the floor equivalence Freeze denies.)
-
-`answersCall_eq_weld_call`: answersCall u = u.weld.call. Definitional (`rfl`).
-
-`fitsOfferedTier_iff_trueAt`: FitsOfferedTier u ↔ TrueAt u.offeredAt u.content. Definitional (`Iff.rfl`).
-
-Anonymous `example` checks confirm that `voice` maps `verdict` to `assertable` and `shortfall` to `displayable`; these are encoding checks, not named theorems.
+`answersCall_eq_weld_call` and `fitsOfferedTier_iff_trueAt` are definitional. Anonymous examples confirm the two `ErrorGrade.voice` assignments.
 
 ---
 
-## 3. Theorems in `Identification.lean`
+## 3. `Identification.lean`
 
-**Field residues and index recovery.**
+**Field residues.** `CorrectFieldRecovery recover` says that every actual weld's field residue recovers its index. `correctFieldRecovery_forces_same_index_of_same_field` proves that two actual welds with equal field residue must then have equal indices. `no_agent_recovery_from_same_field_distinct_index` and `no_agent_recovery_from_same_call_response` package the corresponding impossibility results.
 
-`correctFieldRecovery_forces_same_index_of_same_field`: if `recover` is a CorrectFieldRecovery, and w₁, w₂ are Actual welds with fieldOf w₁ = fieldOf w₂ (same call-and-response pair), then index w₁ = index w₂ (same agent). Proof: both indices equal recover applied to the shared field pair.
+**Ownership-face definitions.** `waa_ReportFace`, `waa_OwnershipFace`, `waa_VacuousOwnershipFace`, and `waa_DiachronicWhose` are conjunctions over delivery, actuality, and WAA-appropriation. Their theorems are projections, introductions, contradictions with non-delivery, or definitional biconditionals:
 
-`no_agent_recovery_from_same_field_distinct_index`: if there exist two Actual welds with equal field residues but distinct indices, then no CorrectFieldRecovery exists. (Contrapositive packaging of the previous theorem.)
+- `waa_reportFace_of_waa_ownershipFace`
+- `actual_of_waa_ownershipFace`
+- `waa_appropriation_of_waa_ownershipFace`
+- `waa_ownershipFace_intro`
+- `not_waa_ownershipFace_of_vacuous`
+- `not_waa_ownershipFace_of_waa_vacuousOwnershipFace`
+- `waa_diachronicWhose_iff_delivery_and_waa_appropriation`
 
-`no_agent_recovery_from_same_call_response`: the same statement specialized to the concrete witness shape: two distinct beings a₁ ≠ a₂ both Actually answering the same call c with the same response r rule out any CorrectFieldRecovery. As with `no_agent_recovery_of_field_collision` in Theory.lean, this is conditional on such a pair existing in the Grid at hand, and rules out only recovery functions meeting the stated correctness specification.
+**Token reflexivity.** `selfAnchored`: `index w = w.agent`. Definitional (`rfl`).
 
-**Sower/reaper, reach-back, WAA-ownership-face.**
+**Pole-typing.**
 
-`waa_reportFace_of_waa_ownershipFace`: waa_OwnershipFace deed reception implies waa_ReportFace deed reception (i.e. DeliveredTo — the delivery conjunct inside LandsAt).
+`StateToolFits w` means `¬ HasSelfPoleIndex w`.
 
-`actual_of_waa_ownershipFace`: waa_OwnershipFace implies the reception is Actual.
+`stateToolFits_of_atBot`: `AtBot (share w)` gives `StateToolFits w`.
 
-`waa_appropriation_of_waa_ownershipFace`: waa_OwnershipFace implies waa_Appropriates reception (i.e. share reception ≠ shareZero).
+`stateToolFits_of_eq_shareZero`: equality bridge into `stateToolFits_of_atBot`.
 
-`waa_ownershipFace_intro`: LandsAt deed reception together with waa_Appropriates reception yields waa_OwnershipFace deed reception. (This is the definition's two conjuncts, assembled.)
+`atBot_of_stateToolFits`: assuming `[∀ a : Contrib, Decidable (AtBot a)]`, `StateToolFits w` implies `AtBot (share w)`. This is the only classical-looking step: it case-splits on one pole-class comparison, not on equality over the carrier.
 
-`not_waa_ownershipFace_of_vacuous`: if NotDeliveredTo deed reception (i.e. not `conditions`), then not waa_OwnershipFace deed reception. (waa_OwnershipFace contains DeliveredTo, which is `conditions`.)
+`stateToolFits_iff_atBot`: under the same decidability assumption, `StateToolFits w ↔ AtBot (share w)`.
 
-`not_waa_ownershipFace_of_waa_vacuousOwnershipFace`: a waa_VacuousOwnershipFace is not a waa_OwnershipFace (its first conjunct is NotDeliveredTo; apply the previous theorem). Note that the other two conjuncts of waa_VacuousOwnershipFace (Actual reception, waa_Appropriates reception) play no role in the conclusion.
+`stateToolFits_of_terminus_response`: terminus responses satisfy `StateToolFits`.
 
-`waa_diachronicWhose_iff_delivery_and_waa_appropriation`: waa_DiachronicWhose deed reception ↔ (DeliveredTo deed reception and waa_Appropriates reception). Definitional (`Iff.rfl`): the right side is the definition.
+`no_waa_ownershipFace_of_stateToolFits`: if the state-tool fits a reception, the WAA-ownership-face cannot fire there, because ownership-face includes WAA-appropriation.
 
-**Token-reflexivity.**
-
-`selfAnchored`: every weld satisfies SelfAnchored, i.e. index w = w.agent. Definitional (`rfl`): `index` is defined as the agent projection, so the equation holds for every weld by unfolding. The theorem's formal content is exactly this projection identity and nothing stronger.
-
-**Pole-typing and the verdict's tier.**
-
-`stateToolFits_of_shareZero`: if share w = shareZero, then StateToolFits w (i.e. not (share w ≠ shareZero)).
-
-`shareZero_of_stateToolFits`: **assuming decidable equality on Contrib**, if StateToolFits w, then share w = shareZero. This is the elimination of a double negation (not-not-equal to equal), and the decidability assumption is what licenses the case split; the theorem is not stated without it.
-
-`stateToolFits_iff_shareZero`: **assuming decidable equality on Contrib**, StateToolFits w ↔ share w = shareZero. (The two directions above, paired.)
-
-`stateToolFits_of_terminus_response`: if b is a Terminus and respondsTo b c = some r, then StateToolFits ⟨b, c, r⟩.
-
-`no_waa_ownershipFace_of_stateToolFits`: if StateToolFits reception, then for any deed, not waa_OwnershipFace deed reception. (waa_OwnershipFace's second conjunct is waa_Appropriates, i.e. HasSelfPoleIndex, which StateToolFits negates.)
-
-The paper's "a mis-feed at the floor is not a claim" verdict is carried by `not_collapse_floor`; no separate Identification theorem restates it.
-
-`obeysRule_fuses_at_floor`: if d obeys the separate/fuse rule, d is Fused at the floor. (Instance of `fused_of_obeysSeparateFuse` at t = floor.)
-
-`obeysRule_separates_at_actTime`: if d obeys the rule and HasSelfPoleIndex w, then Separated d (actTime w). (Instance of `separated_of_obeysSeparateFuse`, using the definitional identity of nonzero-share-at-actTime with HasSelfPoleIndex.)
-
-**Office-spine and contemporary placements.**
-
-`dischargeTier_actTime`: for every office and weld, dischargeTier office w = Tier.actTime w. Definitional (`rfl`): dischargeTier is defined as the constant function to actTime w, ignoring the office.
-
-`dischargeTier_hasNonzeroShare_iff`: nonzero share at dischargeTier office w ↔ HasSelfPoleIndex w. Definitional (`Iff.rfl`), by the previous identity plus the definition of nonzero share at actTime.
-
-Anonymous `example` checks confirm the four `waa_placement` assignments as encoded; nothing is derived beyond the function's definition.
-
-An anonymous `example` checks that for any two distinctions old and new, there exists a GeneratorOutcome equal to `retype old new`. The witness is the term `retype old new` itself; the formal content is only that the `retype` constructor exists and can be applied to any pair of distinctions.
-
-**Disclaimers.**
-
-Anonymous `example` checks confirm the disclaimer numbering as encoded, including `waa_karmaIdentification = 9` and `orthogonalityPrice = 34`; nothing is derived.
+**Rule and office facts.** `obeysRule_fuses_at_floor` and `obeysRule_separates_at_actTime` are direct uses of the separate/fuse theorems. `dischargeTier_actTime` and `dischargeTier_hasNonzeroShare_iff` are definitional. The placement and disclaimer examples are encoding checks for the listed constructors and numbers.
 
 ---
 
-## 4. Summary of logical strength, for the reviewer
+## 4. `Invariance.lean`
 
-Three strata are present, and a faithful reading keeps them apart.
+**Admission criterion.** Any future predicate over `grade` owes a transport lemma here, or it counts as operational residue. The file proves that the current grade-facing predicates are invariant under display reparameterization.
 
-**Definitional identities** (proved by `rfl`/`Iff.rfl`): these include `share_eq_selfDriven`, `selfAnchored`, `rePitch_tendency_eq_share`, the `_iff_` renaming lemmas among `waa_ReachBackFull`/`DeliveredTo`/`waa_AimedAt`, `isShareDrop_iff_rePitch_tendency_drop`, `waa_diachronicWhose_iff...`, `answersCall_eq_weld_call`, `fitsOfferedTier_iff_trueAt`, the `dischargeTier` lemmas, and the ReceptionPair tendency lemmas. Their assertoric content is that a definition unfolds to what it was defined as. Some of them additionally exhibit an independence fact by their shape -- e.g. `rePitch_tendency_eq_share` carries an unused Config binder, making visible that the equated quantity does not depend on it -- but the independence is a feature of the definitions displayed by the statement, not a nontrivial derivation. Anonymous `example` checks confirm the ErrorGrade voice assignments, placement assignments, disclaimer numbering, and the `retype` constructor's availability as encoded; they are not named theorems.
+`DisplayReparam Contrib Contrib'` consists of a function `toFun`, an order preservation/reflection theorem `a ≼ b ↔ toFun a ≼ toFun b`, and a proof that `toFun shareZero` is `AtBot` in the target carrier.
 
-**Elementary logical consequences**: projections of conjunctions, witnesses for existentials, contradictions between a proposition and its negation, and the separate/fuse diagnostics (`not_collapse_of_obeysSeparateFuse`, `not_freeze_of_obeysSeparateFuse`, `fused_of_obeysSeparateFuse`, `separated_of_obeysSeparateFuse`, `not_collapse_floor`, `not_freeze_of_fused_floor`, `not_collapse_of_separated`). The environs-lens theorems are projections plus one small order fact (`bot_le`) plus one witness assembly; none is deeper than the share-drop lemmas they sit beside. These are short first-order deductions from the definitions; none requires classical logic. The two that otherwise would (`deliveredTo_or_not`, `shareZero_of_stateToolFits`) take explicit decidability hypotheses instead.
+`DisplayReparam.atBot_iff`: `AtBot (toFun a) ↔ AtBot a`. The reverse direction uses order preservation and `atBot_bot`; the forward direction uses the fact that the target `shareZero` is below `toFun shareZero`.
 
-**Conditional impossibility and concrete-instance results**: the agent-recovery theorems (`correctFieldRecovery_forces_same_index_of_same_field`, `no_agent_recovery_from_same_field_distinct_index`, `no_agent_recovery_from_same_call_response`, `no_agent_recovery_of_field_collision`) prove that no correctness-satisfying recovery function exists **in any Grid containing** two actual welds with the same field residue and different agents; and the `clockGrid` theorems (`rigid_is_stone`, `adaptive_is_terminus`, `adaptive_not_stone`) establish facts about one finite, explicitly constructed Grid, showing in particular that `Terminus b ∧ ¬Stone b` is satisfiable (which the vacuous `stone_is_terminus` alone could not show).
+`DisplayReparam.orderEq_iff`: order-equivalence is preserved and reflected.
 
-Finally, one structural caution any reviewer should have in view: `Terminus` is vacuously true of every `Stone`, so any theorem with a bare `Terminus` hypothesis also applies to non-responders — the non-vacuous notions are `LiveTerminus` and `ResponsiveTerminus`.
+`Config.map` sends a tendency through `toFun`; `Config.map_tendency` is definitional (`rfl`).
+
+`Grid.map` leaves `Being`, `Call`, `Response`, `respondsTo`, and `conditions` unchanged, and maps `grade` through `toFun`.
+
+Definitional transport facts:
+
+- `map_grade`: mapped grade is `toFun` of the old grade.
+- `map_share`: mapped share is `toFun` of the old share.
+- `map_actual_iff`, `map_mountsAt_iff`, `map_mountsSomewhere_iff`, `map_respondsToEveryCall_iff`, `map_stone_iff`, `map_deliveredTo_iff`, `map_landsAt_iff`, `map_environsLine_iff`: function-side and delivery-side predicates do not inspect the contribution carrier, so they unfold unchanged.
+
+Grade-facing transport facts:
+
+- `map_terminus_iff`, `map_liveTerminus_iff`, `map_responsiveTerminus_iff`, `map_atZeroSharePole_iff`
+- `map_hasSelfPoleIndex_iff`
+- `map_probeConstant_iff`
+- `map_stateToolFits_iff`
+- `Tier.map` and `map_tier_hasNonzeroShare_iff`
+- `map_rePitch`
+- `map_isShareDrop_iff`
+- `map_landsWithShareDrop_iff`
+- `map_releaseLine_iff`
+
+Together these say that all current pole, probe, tier, configuration, share-drop, and release-line predicates are legal display predicates: changing the carrier by a reparameterization changes notation, not truth.
+
+**Negative example.** `InvarianceNegative.TwoBottom` is a two-element carrier where every element is order-equivalent to every other element, with `chosen` as the designated `shareZero`. `mergeToUnit` maps both elements to the single unit value and is a `DisplayReparam`. `twoBottomGrid` has one being, one call, one response, responds everywhere, and grades every response as `other`.
+
+The examples show:
+
+- `twoBottomGrid.Terminus ()` holds, because `other` is `AtBot`.
+- `OldEqTerminus twoBottomGrid ()` fails, where `OldEqTerminus` is the obsolete equality-token version requiring `grade = shareZero`.
+- `OldEqTerminus (twoBottomGrid.map mergeToUnit) ()` holds after the merge, because both old bottom tokens become the same unit token.
+- The new `Terminus` transports across the merge, while the old equality-token predicate would not have transported.
+
+This is the formal certificate that replacing `= shareZero` with `AtBot` was a real de-operationalisation, not a naming preference.
+
+---
+
+## 5. Logical Strength
+
+The definitional identities include `share_eq_grade`, `selfAnchored`, `rePitch_tendency_eq_share`, the delivery/aiming biconditionals, `isShareDrop_iff_rePitch_tendency_drop`, the recorded-utterance and discharge-tier identities, the reception-pair tendency lemmas, and the basic `map_*` identities in `Invariance.lean`.
+
+The elementary consequences are projections, witness assemblies, contradictions, and short order arguments. The important non-definitional order arguments are the `AtBot` share-drop obstruction and the display-reparameterization transport lemmas.
+
+The conditional impossibility results are the agent-recovery theorems and the invariance negative example. The concrete model result is still `clockGrid`: it exhibits a `Stone` and a non-stone `Terminus` in one finite grid.
+
+One structural caution remains: `Terminus` is vacuously true of every `Stone`; use `LiveTerminus` or `ResponsiveTerminus` when non-vacuous response-function matters.

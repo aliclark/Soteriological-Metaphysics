@@ -169,27 +169,36 @@ theorem selfAnchored (w : G.Weld) : G.SelfAnchored w := rfl
 def StateToolFits (w : G.Weld) : Prop :=
   ¬ G.HasSelfPoleIndex w
 
-/-- Share-zero is the constructive direction of the pole-typing corollary:
-    no self-pole index remains for a state-tool to miss. -/
-theorem stateToolFits_of_shareZero
+/-- The pole-class is the constructive direction of the pole-typing
+    corollary: no self-pole index remains for a state-tool to miss. -/
+theorem stateToolFits_of_atBot
+    {w : G.Weld} (hshare : AtBot (G.share w)) :
+    G.StateToolFits w :=
+  G.no_self_pole_index_of_atBot w hshare
+
+/-- Literal equality with the designated bottom is a bridge into the
+    pole-class pole-typing corollary. -/
+theorem stateToolFits_of_eq_shareZero
     {w : G.Weld} (hshare : G.share w = shareZero) :
     G.StateToolFits w :=
-  G.no_self_pole_index_of_shareZero w hshare
+  G.stateToolFits_of_atBot (atBot_of_eq_shareZero hshare)
 
-/-- With decidable equality on the contribution scale, pole-typing can be read
-    as an iff: the state-tool fits just where the share is zero. -/
-theorem shareZero_of_stateToolFits [DecidableEq Contrib]
+/-- With decidability of the one pole-class comparison, pole-typing can be
+    read as an iff: the state-tool fits just where the share is at the
+    pole-class. -/
+theorem atBot_of_stateToolFits [∀ a : Contrib, Decidable (AtBot a)]
     {w : G.Weld} (hfits : G.StateToolFits w) :
-    G.share w = shareZero := by
-  by_cases hshare : G.share w = shareZero
+    AtBot (G.share w) := by
+  by_cases hshare : AtBot (G.share w)
   · exact hshare
   · exact False.elim (hfits hshare)
 
-/-- With decidable equality on the contribution scale, pole-typing is an
+/-- With decidability of the one pole-class comparison, pole-typing is an
     exact iff. -/
-theorem stateToolFits_iff_shareZero [DecidableEq Contrib] (w : G.Weld) :
-    G.StateToolFits w ↔ G.share w = shareZero :=
-  ⟨G.shareZero_of_stateToolFits, G.stateToolFits_of_shareZero⟩
+theorem stateToolFits_iff_atBot [∀ a : Contrib, Decidable (AtBot a)]
+    (w : G.Weld) :
+    G.StateToolFits w ↔ AtBot (G.share w) :=
+  ⟨G.atBot_of_stateToolFits, G.stateToolFits_of_atBot⟩
 
 /-- Terminus responses are reducible in the corollary's sense. -/
 theorem stateToolFits_of_terminus_response

@@ -44,9 +44,9 @@ variable (G : Grid Contrib)
    Function, share, and the two poles
 ============================================================================== -/
 
-/-- Row 2 is exactly the self-driven component of the drive-composition. -/
-theorem share_eq_selfDriven (w : G.Weld) :
-    G.share w = (G.driveOf w.agent w.call w.response).selfDriven :=
+/-- Row 2 is exactly the grade recorded for the weld. -/
+theorem share_eq_grade (w : G.Weld) :
+    G.share w = G.grade w.agent w.call w.response :=
   rfl
 
 /-- An actual weld witnesses response-function at its own call. -/
@@ -136,12 +136,12 @@ theorem not_before_le_rePitch_tendency_of_shareDrop
     ¬ (before.tendency ≼ (G.rePitch before received).tendency) :=
   h.right
 
-/-- A terminus response re-pitches the carried tendency to share-zero. -/
-theorem rePitch_tendency_eq_shareZero_of_terminus_response
+/-- A terminus response re-pitches the carried tendency into the pole-class. -/
+theorem rePitch_tendency_atBot_of_terminus_response
     (before : Config Contrib) {b : G.Being} {c : G.Call} {r : G.Response}
     (hterm : G.Terminus b) (hresp : G.respondsTo b c = some r) :
-    (G.rePitch before ⟨b, c, r⟩).tendency = shareZero :=
-  G.shareZero_of_terminus_response hterm hresp
+    AtBot (G.rePitch before ⟨b, c, r⟩).tendency :=
+  G.atBot_of_terminus_response hterm hresp
 
 /- ==============================================================================
    The environs lens
@@ -169,25 +169,41 @@ theorem deliveredTo_of_environsLine
     G.DeliveredTo deed reception :=
   h.right.right
 
-/-- No reception is share-ceding against a pole-typed tendency: at
-    `before.tendency = shareZero`, `bot_le` supplies exactly the
-    comparison `IsShareDrop`'s second conjunct denies. -/
-theorem not_isShareDrop_of_tendency_eq_shareZero
-    {before : Config Contrib} (h : before.tendency = shareZero)
+/-- No reception is share-ceding against a pole-typed tendency: from
+    `before.tendency ≼ shareZero ≼ G.share received`, transitivity supplies
+    exactly the comparison `IsShareDrop`'s second conjunct denies. -/
+theorem not_isShareDrop_of_tendency_atBot
+    {before : Config Contrib} (h : AtBot before.tendency)
     (received : G.Weld) :
     ¬ G.IsShareDrop before received := by
   intro hdrop
-  exact hdrop.right (h.symm ▸ PreorderBot.bot_le (G.share received))
+  exact hdrop.right (Preorder.le_trans h (shareZero_le (G.share received)))
 
-/-- The lens goes quiet at the pole: an environs read against a share-zero
+/-- Equality with the designated bottom is a thin bridge into the pole-class
+    share-drop lemma. -/
+theorem not_isShareDrop_of_eq_shareZero_tendency
+    {before : Config Contrib} (h : before.tendency = shareZero)
+    (received : G.Weld) :
+    ¬ G.IsShareDrop before received :=
+  G.not_isShareDrop_of_tendency_atBot (atBot_of_eq_shareZero h) received
+
+/-- The lens goes quiet at the pole: an environs read against a pole-class
     tendency contains no release-lines — nothing left to release, a
     feature of the reading, not a defect. -/
-theorem no_releaseLine_of_tendency_eq_shareZero
-    {before : Config Contrib} (h : before.tendency = shareZero)
+theorem no_releaseLine_of_tendency_atBot
+    {before : Config Contrib} (h : AtBot before.tendency)
     (b : G.Being) (deed reception : G.Weld) :
     ¬ G.ReleaseLine before b deed reception :=
   fun hline =>
-    G.not_isShareDrop_of_tendency_eq_shareZero h reception hline.right
+    G.not_isShareDrop_of_tendency_atBot h reception hline.right
+
+/-- Literal equality with the designated bottom gives the pole-class release
+    obstruction. -/
+theorem no_releaseLine_of_eq_shareZero_tendency
+    {before : Config Contrib} (h : before.tendency = shareZero)
+    (b : G.Being) (deed reception : G.Weld) :
+    ¬ G.ReleaseLine before b deed reception :=
+  G.no_releaseLine_of_tendency_atBot (atBot_of_eq_shareZero h) b deed reception
 
 /-- Bridge to effectiveness talk: a release-line whose reception is actual
     witnesses the deed's effectiveness for that tendency. -/
@@ -327,11 +343,18 @@ theorem actTime_hasNonzeroShare_iff_hasSelfPoleIndex (w : G.Weld) :
     Tier.hasNonzeroShare G (Tier.actTime w) ↔ G.HasSelfPoleIndex w :=
   Iff.rfl
 
-/-- Share-zero act-time tiers have no nonzero share. -/
-theorem not_actTime_hasNonzeroShare_of_shareZero
+/-- Pole-class act-time tiers have no nonzero share. -/
+theorem not_actTime_hasNonzeroShare_of_atBot
+    {w : G.Weld} (h : AtBot (G.share w)) :
+    ¬ Tier.hasNonzeroShare G (Tier.actTime w) :=
+  G.no_self_pole_index_of_atBot w h
+
+/-- Equality with the designated bottom is a bridge into the pole-class
+    act-time lemma. -/
+theorem not_actTime_hasNonzeroShare_of_eq_shareZero
     {w : G.Weld} (h : G.share w = shareZero) :
     ¬ Tier.hasNonzeroShare G (Tier.actTime w) :=
-  G.no_self_pole_index_of_shareZero w h
+  G.not_actTime_hasNonzeroShare_of_atBot (atBot_of_eq_shareZero h)
 
 /-- Collapse is impossible at the floor. -/
 theorem not_collapse_floor (d : Distinction G) :
