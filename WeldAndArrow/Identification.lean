@@ -26,7 +26,7 @@ namespace WAA
 
 namespace Grid
 
-variable {Contrib : Type} [WeakOrderBot Contrib]
+variable {Contrib : Type} [PreorderBot Contrib]
 variable (G : Grid Contrib)
 
 /-- A field residue: the call and response left when the agent-index is not part
@@ -82,7 +82,7 @@ theorem no_agent_recovery_from_same_call_response
 
 /-- The field-side report-face of "the sower reaps": the delivery line, before
     any act-time ownership is added. -/
-def ReportFace (deed reception : G.Weld) : Prop :=
+def waa_ReportFace (deed reception : G.Weld) : Prop :=
   G.DeliveredTo deed reception
 
 /-- The full WAA-ownership-face: delivery reaches an actual reception and that
@@ -95,12 +95,12 @@ def waa_OwnershipFace (deed reception : G.Weld) : Prop :=
     drew no delivery-line from this deed to this reception, so it is not a full
     WAA-ownership-face for that deed. -/
 def waa_VacuousOwnershipFace (deed reception : G.Weld) : Prop :=
-  G.ReachBackVacuous deed reception ∧ G.Actual reception ∧ G.waa_Appropriates reception
+  G.waa_ReachBackVacuous deed reception ∧ G.Actual reception ∧ G.waa_Appropriates reception
 
 /-- The WAA-ownership-face includes the report-face. -/
-theorem reportFace_of_waa_ownershipFace
+theorem waa_reportFace_of_waa_ownershipFace
     {deed reception : G.Weld} (h : G.waa_OwnershipFace deed reception) :
-    G.ReportFace deed reception :=
+    G.waa_ReportFace deed reception :=
   h.left.left
 
 /-- The WAA-ownership-face includes actual reception. -/
@@ -125,7 +125,7 @@ theorem waa_ownershipFace_intro
 /-- A vacuous reach-back cannot at the same time be a full WAA-ownership-face for
     that deed and reception. -/
 theorem not_waa_ownershipFace_of_vacuous
-    {deed reception : G.Weld} (hv : G.ReachBackVacuous deed reception) :
+    {deed reception : G.Weld} (hv : G.waa_ReachBackVacuous deed reception) :
     ¬ G.waa_OwnershipFace deed reception :=
   fun hown => hv hown.left.left
 
@@ -208,13 +208,13 @@ theorem misfeed_not_floor_claim (d : Distinction G) :
   G.not_collapse_floor d
 
 /-- A distinction obeying the separate/fuse rule fuses at the floor. -/
-theorem verdict_fuses_at_floor
+theorem obeysRule_fuses_at_floor
     {d : Distinction G} (h : d.ObeysSeparateFuse) :
     d.Fused (Tier.floor : Tier G) :=
   G.fused_of_obeysSeparateFuse h Tier.floor
 
 /-- The same distinction separates at live act-time diagnosis. -/
-theorem verdict_separates_at_actTime
+theorem obeysRule_separates_at_actTime
     {d : Distinction G} (h : d.ObeysSeparateFuse)
     {w : G.Weld} (hidx : G.HasSelfPoleIndex w) :
     d.Separated (Tier.actTime w) :=
@@ -237,7 +237,7 @@ inductive waa_OwnershipOffice
 
 namespace waa_OwnershipOffice
 
-variable {Contrib : Type} [WeakOrderBot Contrib] {G : Grid Contrib}
+variable {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib}
 
 /-- Each office is discharged at a weld's act-time tier, not by a cross-gap
     state. -/
@@ -280,23 +280,23 @@ def waa_placement : ContemporaryPosition → ContemporaryPlacement
   | .zahavi => .retype
   | .sartre => .occupant
 
-theorem siderits_waa_placement :
+example :
     waa_placement ContemporaryPosition.siderits = ContemporaryPlacement.seriesQuestions := rfl
 
-theorem ganeri_waa_placement :
+example :
     waa_placement ContemporaryPosition.ganeri = ContemporaryPlacement.nearestAlly := rfl
 
-theorem zahavi_waa_placement :
+example :
     waa_placement ContemporaryPosition.zahavi = ContemporaryPlacement.retype := rfl
 
-theorem sartre_waa_placement :
+example :
     waa_placement ContemporaryPosition.sartre = ContemporaryPlacement.occupant := rfl
 
 end ContemporaryPosition
 
 namespace Grid
 
-variable {Contrib : Type} [WeakOrderBot Contrib]
+variable {Contrib : Type} [PreorderBot Contrib]
 variable (G : Grid Contrib)
 
 /-- The taxonomy's fourth public outcome, used by the Zahavi placement and by
@@ -391,10 +391,10 @@ def number : Disclaimer → Nat
   | .svakarmaDemotion => 33
   | .orthogonalityPrice => 34
 
-theorem waa_karmaIdentification_number :
+example :
     number Disclaimer.waa_karmaIdentification = 9 := rfl
 
-theorem poleTyping_carried_by_orthogonalityPrice :
+example :
     number Disclaimer.orthogonalityPrice = 34 := rfl
 
 end Disclaimer

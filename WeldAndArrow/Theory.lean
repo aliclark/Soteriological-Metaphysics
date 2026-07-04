@@ -8,9 +8,9 @@ STATUS: checked by `lake build`. The file is intentionally conservative:
 mostly term-mode proofs, no Mathlib dependency, and only the small amount of
 core Lean needed to keep the theory's primitive signature executable.
 
-No `import`s. Every order-theoretic notion is hand-rolled rather than reached
-for from Mathlib, on purpose (see §0) — both to stay self-contained and
-because Mathlib's `Preorder` carries expectations this file does not need.
+No `import`s. The order-theoretic notion is a hand-rolled `Preorder`, not
+Mathlib's `Preorder`, to stay dependency-free and make the exact assumptions
+visible.
 
 Downstream proof/theorem files should import this module, or the library root
 that re-exports it. This file is *only* Theory: the primitive sorts and the
@@ -57,14 +57,14 @@ Design log
   end once the fox's sentence, Baizhang's rule, and other recorded utterances
   have to be graded as inspectable objects.
 
-* Every `Contrib`-valued magnitude is kept under a hand-rolled `WeakOrder` —
+* Every `Contrib`-valued magnitude is kept under a hand-rolled `Preorder` —
   reflexive and transitive, deliberately NOT required to be total. This is
   not a shortcut, it is required by the source text: "some of them, where
   call and self-maintenance interact in the driving, simply incomparable"
   (Theory: Attainment). Mathlib's `Preorder`, notionally the "right" class,
   would have worked identically here; a `LinearOrder` would have silently
-  contradicted the paper, which is the reason `WeakOrder` exists at all
-  rather than just importing whatever the standard library offers.
+  contradicted the paper, which is the reason this file uses its own
+  `Preorder` rather than importing whatever the standard library offers.
 
 * Kept at plain `Type` throughout rather than universe-polymorphic `Type*`
   because the current examples and intended signatures all live in the first
@@ -74,44 +74,48 @@ Design log
 
 namespace WAA
 
+/- `waa_` marks identifiers whose names assert part of the paper's
+   karma-identification: ownership, appropriation, whose-ness, or reach-back.
+   Unprefixed names are reserved for neutral delivery/order structure. -/
+
 /- ==============================================================================
-   §0  A deliberately weak order for display-scalars
+   §0  A dependency-free preorder for display-scalars
 
    Row 2 "states a partial ordering, not a measure" (Theory: Attainment).
-   `WeakOrder` asks for exactly reflexivity and transitivity: nothing else,
+   `Preorder` asks for exactly reflexivity and transitivity: nothing else,
    on purpose, so that `Incomparable` below is a genuine possibility rather
    than a defect a total order would rule out by fiat.
 ============================================================================== -/
 
-/-- A bare preorder, rolled by hand and *not* assumed total. -/
-class WeakOrder (α : Type) where
+/-- A bare preorder, rolled by hand and *not* assumed total or antisymmetric. -/
+class Preorder (α : Type) where
   /-- The display-order relation: `a ≼ b` means `a` is no more self-driven
       than `b` in the ordinal Row-2 sense. -/
   le       : α → α → Prop
   le_refl  : ∀ a, le a a
   le_trans : ∀ {a b c : α}, le a b → le b c → le a c
 
-@[inherit_doc] infix:50 " ≼ " => WeakOrder.le
+@[inherit_doc] infix:50 " ≼ " => Preorder.le
 
 /-- Neither side dominates — the formal home of "simply incomparable"
     (Theory: Attainment), not a defect to be patched but a shape Row 2's
     ordering is allowed to have. -/
-def Incomparable [WeakOrder α] (a b : α) : Prop := ¬ a ≼ b ∧ ¬ b ≼ a
+def Incomparable [Preorder α] (a b : α) : Prop := ¬ a ≼ b ∧ ¬ b ≼ a
 
 /-- The bottom is a genuine, ATTAINED element — the terminus, share-zero
     (Theory: Attainment, "an interior pole"), comparable to everything
     below it by fiat, exactly as a least self-driven placement should be.
-    There is deliberately no dual `WeakOrderTop`: the solipsist is glossed
+    There is deliberately no dual `PreorderTop`: the solipsist is glossed
     in the source as an ASYMPTOTE ("the share tending to totality" — never
     reached, Theorems: Compound positions, "the grade's own asymptote"),
     so positing an attained top would misrepresent the text. Its absence
     here is a decision, not an oversight. -/
-class WeakOrderBot (α : Type) extends WeakOrder α where
+class PreorderBot (α : Type) extends Preorder α where
   bot    : α
   bot_le : ∀ a, le bot a
 
 /-- Shorthand for the bottom of whatever `Contrib` is in scope. -/
-def shareZero [WeakOrderBot α] : α := WeakOrderBot.bot
+def shareZero [PreorderBot α] : α := PreorderBot.bot
 
 /- ==============================================================================
    §1  The signature
@@ -150,7 +154,7 @@ structure DriveComposition (Contrib : Type) where
   selfDriven : Contrib
 
 /-- The whole signature, bundled. -/
-structure Grid (Contrib : Type) [WeakOrderBot Contrib] where
+structure Grid (Contrib : Type) [PreorderBot Contrib] where
   /-- the primitive identity of a causal series (Proofs, disclaimer 4) — a
       tag over a causally-connected run, not a first-personal owner.
       Individuation is not ownership, which is the entire content of
@@ -182,7 +186,7 @@ structure Grid (Contrib : Type) [WeakOrderBot Contrib] where
 
 namespace Grid
 
-variable {Contrib : Type} [WeakOrderBot Contrib]
+variable {Contrib : Type} [PreorderBot Contrib]
 
 /-- Shorthand: an occurrence for a specific `Grid`. -/
 abbrev Weld (G : Grid Contrib) := RawWeld G.Being G.Call G.Response
@@ -194,7 +198,7 @@ variable (G : Grid Contrib)
     index type: nothing in this file ever produces a `Being` "as an
     index" except by first supplying a `Weld` whose `response` is
     witnessed here. There is no route from `Config` (§2) or from
-    field-facts alone to an `Actual` weld — see `no_agent_recovery_from_field`
+    field-facts alone to an `Actual` weld — see `no_agent_recovery_of_field_collision`
     in the Preview section for the internal version of that claim. -/
 def Actual (w : G.Weld) : Prop := G.respondsTo w.agent w.call = some w.response
 
@@ -403,7 +407,7 @@ structure Config (Contrib : Type) where
 
 namespace Grid
 
-variable {Contrib : Type} [WeakOrderBot Contrib] (G : Grid Contrib)
+variable {Contrib : Type} [PreorderBot Contrib] (G : Grid Contrib)
 
 /-- Reception re-pitches the configuration the field carries forward — an
     inga-fact, never a stored index (Theory: Karma). The new tendency is
@@ -451,20 +455,20 @@ theorem share_independent_of_config
 /-- The reach-back is *full* when the claimed deed actually conditions the
     reception — a delivery-fact (Theory: Karma, "The reception-weld: loop-
     closure as theorem"). -/
-def ReachBackFull (deed reception : G.Weld) : Prop := G.conditions deed reception
+def waa_ReachBackFull (deed reception : G.Weld) : Prop := G.conditions deed reception
 
 /-- ... and *vacuous* otherwise: an appropriating with nothing arrived to
     appropriate, not a falsehood (Theory: Karma, "A reach-back along an
     undrawn line is therefore not false ... but vacuous"). -/
-def ReachBackVacuous (deed reception : G.Weld) : Prop := ¬ G.conditions deed reception
+def waa_ReachBackVacuous (deed reception : G.Weld) : Prop := ¬ G.conditions deed reception
 
 /-- When a concrete model gives a decision procedure for delivery, the two
     reach-back cases are exhaustive. Abstractly, the theory keeps only the
     predicates: asserting this disjunction for every proposition would be
     excluded middle. -/
-theorem reachBack_full_or_vacuous (deed reception : G.Weld)
+theorem waa_reachBack_full_or_vacuous (deed reception : G.Weld)
     [hdec : Decidable (G.conditions deed reception)] :
-    G.ReachBackFull deed reception ∨ G.ReachBackVacuous deed reception :=
+    G.waa_ReachBackFull deed reception ∨ G.waa_ReachBackVacuous deed reception :=
   match hdec with
   | isTrue h => Or.inl h
   | isFalse h => Or.inr h
@@ -475,7 +479,7 @@ theorem reachBack_full_or_vacuous (deed reception : G.Weld)
 
 /-- A delivery-line from one occurrence to another, stated in field
     vocabulary. This is definitionally the same relation as
-    `ReachBackFull`; the different name is for theorem statements where the
+    `waa_ReachBackFull`; the different name is for theorem statements where the
     field-side role matters more than the reception-side appropriation. -/
 def DeliveredTo (deed reception : G.Weld) : Prop := G.conditions deed reception
 
@@ -529,10 +533,10 @@ def ResponseVariesWithCall (b : G.Being) : Prop :=
 /-- Sowing-side delivery-engineering: the deed is configured for this
     landing exactly when the field in fact delivers it there. Stronger
     causal stories belong in downstream models. -/
-def AimedAt (deed reception : G.Weld) : Prop := G.DeliveredTo deed reception
+def waa_AimedAt (deed reception : G.Weld) : Prop := G.DeliveredTo deed reception
 
-theorem deliveredTo_iff_reachBackFull (deed reception : G.Weld) :
-    G.DeliveredTo deed reception ↔ G.ReachBackFull deed reception :=
+theorem deliveredTo_iff_waa_reachBackFull (deed reception : G.Weld) :
+    G.DeliveredTo deed reception ↔ G.waa_ReachBackFull deed reception :=
   Iff.rfl
 
 theorem objectAxisStanding_of_landsAt
@@ -580,7 +584,7 @@ namespace ReceptionPair
     downstream prudence theorem needs is a theorem-level choice; the carrier
     merely makes the relevant actual pair available. -/
 def FirstConditionsSecond {G : Grid Contrib} (p : ReceptionPair G) : Prop :=
-  G.ReachBackFull p.first.weld p.second.weld
+  G.waa_ReachBackFull p.first.weld p.second.weld
 
 /-- The pair's sequential re-pitched configurations, exposed for future
     two-step arguments. No ordering or privilege between them is asserted
@@ -628,7 +632,7 @@ end Grid
 
 namespace Grid
 
-variable {Contrib : Type} [WeakOrderBot Contrib]
+variable {Contrib : Type} [PreorderBot Contrib]
 
 /-- A tier at which a claim can be diagnosed: the self-emptying floor
     (atemporal, one per `Grid` — Proofs, "The verdict's tier"), or a live
@@ -813,7 +817,7 @@ end Grid
 
 section Preview
 
-variable {Contrib : Type} [WeakOrderBot Contrib] (G : Grid Contrib)
+variable {Contrib : Type} [PreorderBot Contrib] (G : Grid Contrib)
 
 /- --------------------------------------------------------------------------
    Wrinkle 1 — field residue under-determines the agent: internal version
@@ -840,7 +844,7 @@ def Grid.fieldOf (w : G.Weld) : G.Call × G.Response := (w.call, w.response)
     same response to the same call. It is not a blanket claim about every
     `Grid`; it is the internal witness that field residues under-determine who
     acted. -/
-theorem no_agent_recovery_from_field
+theorem no_agent_recovery_of_field_collision
     (a₁ a₂ : G.Being) (c : G.Call) (r : G.Response)
     (h1 : G.Actual ⟨a₁, c, r⟩) (h2 : G.Actual ⟨a₂, c, r⟩) (hne : a₁ ≠ a₂) :
     ¬ ∃ recover : G.Call × G.Response → G.Being,
@@ -886,7 +890,7 @@ inductive Listener
 inductive Chime
   | chime
 
-instance : WeakOrderBot Nat where
+instance : PreorderBot Nat where
   le       := Nat.le
   le_refl  := Nat.le_refl
   le_trans := fun h1 h2 => Nat.le_trans h1 h2

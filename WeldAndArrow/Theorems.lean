@@ -14,9 +14,9 @@ import WeldAndArrow.Theory
 
 namespace WAA
 
-section WeakOrder
+section Preorder
 
-variable {α : Type} [WeakOrder α]
+variable {α : Type} [Preorder α]
 
 /-- Incomparability is symmetric. -/
 theorem incomparable_symm {a b : α} (h : Incomparable a b) :
@@ -33,11 +33,11 @@ theorem not_ge_of_incomparable {a b : α} (h : Incomparable a b) :
     ¬ b ≼ a :=
   h.right
 
-end WeakOrder
+end Preorder
 
 namespace Grid
 
-variable {Contrib : Type} [WeakOrderBot Contrib]
+variable {Contrib : Type} [PreorderBot Contrib]
 variable (G : Grid Contrib)
 
 /- ==============================================================================
@@ -148,30 +148,30 @@ theorem rePitch_tendency_eq_shareZero_of_terminus_response
 ============================================================================== -/
 
 /-- A full reach-back is the same field-side fact as delivery. -/
-theorem reachBackFull_iff_deliveredTo (deed reception : G.Weld) :
-    G.ReachBackFull deed reception ↔ G.DeliveredTo deed reception :=
+theorem waa_reachBackFull_iff_deliveredTo (deed reception : G.Weld) :
+    G.waa_ReachBackFull deed reception ↔ G.DeliveredTo deed reception :=
   Iff.rfl
 
 /-- A vacuous reach-back is exactly non-delivery. -/
-theorem reachBackVacuous_iff_not_deliveredTo (deed reception : G.Weld) :
-    G.ReachBackVacuous deed reception ↔ ¬ G.DeliveredTo deed reception :=
+theorem waa_reachBackVacuous_iff_not_deliveredTo (deed reception : G.Weld) :
+    G.waa_ReachBackVacuous deed reception ↔ ¬ G.DeliveredTo deed reception :=
   Iff.rfl
 
 /-- Full and vacuous reach-back cannot coincide. -/
-theorem not_reachBackVacuous_of_full
-    {deed reception : G.Weld} (hfull : G.ReachBackFull deed reception) :
-    ¬ G.ReachBackVacuous deed reception :=
+theorem not_waa_reachBackVacuous_of_full
+    {deed reception : G.Weld} (hfull : G.waa_ReachBackFull deed reception) :
+    ¬ G.waa_ReachBackVacuous deed reception :=
   fun hvacuous => hvacuous hfull
 
 /-- Vacuity rules out full reach-back. -/
-theorem not_reachBackFull_of_vacuous
-    {deed reception : G.Weld} (hvacuous : G.ReachBackVacuous deed reception) :
-    ¬ G.ReachBackFull deed reception :=
+theorem not_waa_reachBackFull_of_vacuous
+    {deed reception : G.Weld} (hvacuous : G.waa_ReachBackVacuous deed reception) :
+    ¬ G.waa_ReachBackFull deed reception :=
   hvacuous
 
 /-- An aimed call is just delivery, stated from the sowing side. -/
-theorem aimedAt_iff_deliveredTo (deed reception : G.Weld) :
-    G.AimedAt deed reception ↔ G.DeliveredTo deed reception :=
+theorem waa_aimedAt_iff_deliveredTo (deed reception : G.Weld) :
+    G.waa_AimedAt deed reception ↔ G.DeliveredTo deed reception :=
   Iff.rfl
 
 /-- Landing includes delivery. -/
@@ -364,12 +364,12 @@ end RecordedUtterance
 namespace ErrorGrade
 
 /-- Verdict errors speak in the assertable voice. -/
-theorem verdict_voice :
+example :
     ErrorGrade.voice ErrorGrade.verdict = VerdictVoice.assertable :=
   rfl
 
 /-- Shortfall errors speak in the displayable voice. -/
-theorem shortfall_voice :
+example :
     ErrorGrade.voice ErrorGrade.shortfall = VerdictVoice.displayable :=
   rfl
 
