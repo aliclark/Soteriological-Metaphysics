@@ -28,10 +28,21 @@ Design log
   not a lemma with a proof term; it is a fact about a `structure` command,
   visible by reading it. This is the positive-direction analogue of the
   paper's internal mis-feed discipline: the elaborator accepts the field
-  residue and the stored tendency, but it is never given a stored owner.
-  `share_independent_of_config` in §2 turns this into an actual, if easy, theorem: a later
-  weld's share is *never* a function of any `Config`, because no such function
-  exists anywhere in this signature for it to be one of.
+  residue and the stored tendency, but it is never given a stored owner. A
+  later weld's share is never a function of any `Config`, because no such
+  function exists anywhere in this signature for it to be one of.
+
+* Seeds are field-side. Where the paper speaks of the seeds around a
+  being, a "seed" names a standing delivery-line of the web
+  (`conditions`), never a potency stored in a being: the ālaya/bīja-as-
+  stored-state reading is deliberately not taken. "Potency" names a
+  family of such lines incident on a being's candidate receptions —
+  relational facts of the web, not carried capacity — so the disposition
+  the paper retypes is not readmitted: nothing here is *of* the being.
+  The lens is momentary and indexical: successive readings of a tenseless
+  web; a great upāya-weld does not *alter* the reading, it is included in
+  it — display, not mechanism, nothing travels. And it is descriptive
+  only: no comparison, domination, or prescription is defined over it.
 
 * The `Weld`/`Index` order follows the central modelling choice here:
   `Weld` is primitive (an agent, a call, a response, bundled — nothing else,
@@ -75,8 +86,11 @@ Design log
 namespace WAA
 
 /- `waa_` marks identifiers whose names assert part of the paper's
-   karma-identification: ownership, appropriation, whose-ness, or reach-back.
-   Unprefixed names are reserved for neutral delivery/order structure. -/
+   karma-identification: ownership, appropriation, whose-ness, reach-back,
+   or sowing-side aiming/dedication. Unprefixed names are reserved for
+   neutral delivery/order structure — including token-reflexive projection
+   identities (`index`, `SelfAnchored`), which assert only what a completed
+   weld already displays, never an appropriation. -/
 
 /- ==============================================================================
    §0  A dependency-free preorder for display-scalars
@@ -292,9 +306,12 @@ def RespondsToEveryCall (b : G.Being) : Prop := ∀ c, G.MountsAt b c
     domain" rather than a limiting case within it (Theory: Attainment). -/
 def Stone (b : G.Being) : Prop := ∀ c, ¬ G.MountsAt b c
 
-/-- The terminus: function *entire* wherever a call is actually mounted,
-    together with share zero throughout — "the other pole of the domain,
-    not its far edge" (Theory: Attainment). -/
+/-- The terminus: share zero at every mounted response — "the other pole of
+    the domain, not its far edge" (Theory: Attainment). NOTE: no positivity
+    of function is imposed; the conditional is vacuously true of a `Stone`
+    (`stone_is_terminus`). "Function entire" is carried by
+    `RespondsToEveryCall`; the non-vacuous notions are `LiveTerminus` and
+    `ResponsiveTerminus`. -/
 def Terminus (b : G.Being) : Prop :=
   ∀ c r, G.respondsTo b c = some r → (G.driveOf b c r).selfDriven = shareZero
 
@@ -370,12 +387,6 @@ theorem responsiveTerminus_live_of_call
     G.LiveTerminus b :=
   ⟨⟨c, h.left c⟩, h.right⟩
 
-/-- At an actual share-zero weld, no live self-pole index can be supplied. -/
-theorem no_self_pole_index_of_terminus_weld
-    (w : G.Weld) (_hactual : G.Actual w) (hshare : G.share w = shareZero) :
-    ¬ G.HasSelfPoleIndex w :=
-  G.no_self_pole_index_of_shareZero w hshare
-
 end Grid
 
 /- ==============================================================================
@@ -397,11 +408,13 @@ end Grid
    not merely discouraged here, it is inexpressible.
 ============================================================================== -/
 
-/-- What the field carries between acts for a being: a tendency to
-    arrogate, and nothing else. This *is* the formalization of "nothing
-    self-indexed is stored" — not a theorem about `Config`, but `Config`'s
-    definition, read by what is and is not present in the type, not by a
-    proof. -/
+/-- What the field carries between acts: a tendency to arrogate, and
+    nothing else. This *is* the formalization of "nothing self-indexed is
+    stored" — not a theorem about `Config`, but `Config`'s definition, read
+    by what is and is not present in the type. There is deliberately no
+    association from `Config` to `Being` anywhere in the signature:
+    possessive readings ("this being's configuration") are downstream
+    glosses, never structure. -/
 structure Config (Contrib : Type) where
   tendency : Contrib
 
@@ -430,23 +443,16 @@ def rePitch (_before : Config Contrib) (received : G.Weld) : Config Contrib :=
 def IsShareDrop (before : Config Contrib) (received : G.Weld) : Prop :=
   G.share received ≼ before.tendency ∧ ¬ before.tendency ≼ G.share received
 
-/-- The determination of a later weld's share never consults any `Config` —
-    there is no function `Config Contrib → DriveComposition Contrib`
-    anywhere in `Grid`'s signature for a later act to be constrained by.
-    In particular, `before` and `first` are both present as hypotheses
-    below and neither appears on the right-hand side of the equation: the
-    re-pitched configuration a share-drop produces plays no role in the value
-    of `G.share later`, for ANY later weld `later`, of the same being or
-    otherwise. The proof is `rfl`, precisely because `share` was never
-    defined in terms of `Config` to begin with; the intentionally unused
-    binders are named with leading underscores for that reason. This is the
-    theorem `Theory.md` itself promises: the later share is independent of
-    any prior configuration because the file stores no self-indexed
-    attainment for a later act to be held to. -/
-theorem share_independent_of_config
-    (_before : Config Contrib) (_first later : G.Weld) :
-    G.share later = (G.driveOf later.agent later.call later.response).selfDriven :=
-  rfl
+/- Design note — no share-from-Config route exists.
+   The determination of a later weld's share never consults any `Config`:
+   there is no function `Config Contrib → DriveComposition Contrib`
+   anywhere in `Grid`'s signature for a later act to be constrained by.
+   This is exhibited by the shape of the signature, not provable as a
+   single theorem of it (any candidate statement collapses to `share`'s
+   own definition with unused binders — an earlier draft's
+   `share_independent_of_config` did exactly that and was removed). The
+   architectural content lives in §2's `Config` note: the file stores no
+   self-indexed attainment for a later act to be held to. -/
 
 /- --------------------------------------------------------------------------
    The reception-weld: reach-back
@@ -456,22 +462,6 @@ theorem share_independent_of_config
     reception — a delivery-fact (Theory: Karma, "The reception-weld: loop-
     closure as theorem"). -/
 def waa_ReachBackFull (deed reception : G.Weld) : Prop := G.conditions deed reception
-
-/-- ... and *vacuous* otherwise: an appropriating with nothing arrived to
-    appropriate, not a falsehood (Theory: Karma, "A reach-back along an
-    undrawn line is therefore not false ... but vacuous"). -/
-def waa_ReachBackVacuous (deed reception : G.Weld) : Prop := ¬ G.conditions deed reception
-
-/-- When a concrete model gives a decision procedure for delivery, the two
-    reach-back cases are exhaustive. Abstractly, the theory keeps only the
-    predicates: asserting this disjunction for every proposition would be
-    excluded middle. -/
-theorem waa_reachBack_full_or_vacuous (deed reception : G.Weld)
-    [hdec : Decidable (G.conditions deed reception)] :
-    G.waa_ReachBackFull deed reception ∨ G.waa_ReachBackVacuous deed reception :=
-  match hdec with
-  | isTrue h => Or.inl h
-  | isFalse h => Or.inr h
 
 /- --------------------------------------------------------------------------
    Delivery, landing, effectiveness, adaptivity
@@ -483,6 +473,24 @@ theorem waa_reachBack_full_or_vacuous (deed reception : G.Weld)
     field-side role matters more than the reception-side appropriation. -/
 def DeliveredTo (deed reception : G.Weld) : Prop := G.conditions deed reception
 
+/-- Non-delivery: the field draws no line from this deed to this reception.
+    Deliberately unprefixed and deliberately thin — a reach-back made along
+    such an undrawn line is what the source calls *vacuous*, but the
+    vacuity belongs to the appropriating face (`waa_VacuousOwnershipFace`,
+    Identification.lean), not to this bare field-fact. -/
+def NotDeliveredTo (deed reception : G.Weld) : Prop := ¬ G.conditions deed reception
+
+/-- When a concrete model gives a decision procedure for delivery, delivery
+    or non-delivery is exhaustive. Abstractly, the theory keeps only the
+    predicates: asserting this disjunction for every proposition would be
+    excluded middle. -/
+theorem deliveredTo_or_not (deed reception : G.Weld)
+    [hdec : Decidable (G.conditions deed reception)] :
+    G.DeliveredTo deed reception ∨ G.NotDeliveredTo deed reception :=
+  match hdec with
+  | isTrue h => Or.inl h
+  | isFalse h => Or.inr h
+
 /-- A fruit has landed when delivery reaches an actual reception. -/
 def LandsAt (deed reception : G.Weld) : Prop :=
   G.DeliveredTo deed reception ∧ G.Actual reception
@@ -491,7 +499,7 @@ def LandsAt (deed reception : G.Weld) : Prop :=
     somewhere. No self-pole index is implied for the occurrence pointed at. -/
 def ObjectAxisStanding (deed : G.Weld) : Prop := ∃ reception, G.DeliveredTo deed reception
 
-/-- A share-ceding landing, relative to the receiver's prior configuration.
+/-- A share-ceding landing, relative to a supplied prior configuration.
     This is the local witness used by effectiveness talk; it asserts an
     actual landing and a share-drop reception, but no value. -/
 def LandsWithShareDrop
@@ -504,14 +512,47 @@ def LandsWithShareDrop
 def EffectiveFor (before : Config Contrib) (deed : G.Weld) : Prop :=
   ∃ reception, G.LandsWithShareDrop before deed reception
 
-/-- An ordinal effectiveness comparison: every share-ceding landing of the
-    second deed can be matched by one of the first. This is a preorder-style
-    display convention, not a probability calculus. -/
-def AtLeastAsEffective
-    (before : Config Contrib) (deed₁ deed₂ : G.Weld) : Prop :=
-  ∀ reception₂,
-    G.LandsWithShareDrop before deed₂ reception₂ →
-      ∃ reception₁, G.LandsWithShareDrop before deed₁ reception₁
+/- No comparative effectiveness relation is defined. An earlier draft's
+   `AtLeastAsEffective`, despite its ∀/∃ surface, was logically the bare
+   implication between two `EffectiveFor` propositions and has been
+   removed. If a downstream file ever wants ordinal comparison, the
+   intended shape is domination between environs-readings (below) —
+   theorem-level content, deliberately not fixed here. -/
+
+/- --------------------------------------------------------------------------
+   The environs lens
+
+   A descriptive, momentary reading of the web around a being: which
+   standing delivery-lines are incident on its candidate receptions, and
+   which of those would, against a supplied prior tendency, be
+   share-ceding. Everything here is a projection from `conditions` and
+   `IsShareDrop`; nothing is stored in, or of, the being.
+
+   Deliberately NOT operationalized: no comparison relation, no domination
+   order, no measure, no prescription. The lens says only, coarsely, what
+   stands around a being at a moment. Errors about the reading — attaching
+   to it, ranking beings by it — are for other beings to make or not, as
+   with the grid itself.
+-------------------------------------------------------------------------- -/
+
+/-- A standing line of the web incident on a being: an actual deed that
+    the field delivers to one of the being's candidate receptions. The
+    reception need NOT be actual — the lens reads over the family of
+    receptions the being might make (the same hypothetical variation
+    `RawWeld` is closed under for the probe). Field-side and tenseless:
+    a relational fact of the web, never a potency carried by the being. -/
+def EnvironsLine (b : G.Being) (deed reception : G.Weld) : Prop :=
+  G.Actual deed ∧ reception.agent = b ∧ G.conditions deed reception
+
+/-- A release-conducive standing line — the lens's whole content ("dharma-
+    potency of the environs, at that moment"): an environs-line whose
+    reception would be share-ceding against a supplied prior tendency.
+    The `before` is supplied, not looked up: there is no association from
+    `Config` to `Being` to look it up from. Nothing normative is derived
+    from this, here or downstream, on purpose. -/
+def ReleaseLine
+    (before : Config Contrib) (b : G.Being) (deed reception : G.Weld) : Prop :=
+  G.EnvironsLine b deed reception ∧ G.IsShareDrop before reception
 
 /-- A fixed/static responder gives the same response whenever it responds.
     This is only the response-shape; a clock that never responds to the
@@ -530,9 +571,10 @@ def ResponseVariesWithCall (b : G.Being) : Prop :=
     G.respondsTo b c₂ = some r₂ ∧
     r₁ ≠ r₂
 
-/-- Sowing-side delivery-engineering: the deed is configured for this
-    landing exactly when the field in fact delivers it there. Stronger
-    causal stories belong in downstream models. -/
+/-- Sowing-side aiming, in the thin extensional sense the glossary
+    licenses: the deed counts as aimed at this landing exactly when the
+    field in fact delivers it there. No intention-primitive is introduced;
+    stronger causal or intentional stories belong in downstream models. -/
 def waa_AimedAt (deed reception : G.Weld) : Prop := G.DeliveredTo deed reception
 
 theorem deliveredTo_iff_waa_reachBackFull (deed reception : G.Weld) :
@@ -548,18 +590,6 @@ theorem effectiveFor_has_objectAxisStanding
     (before : Config Contrib) (deed : G.Weld) (h : G.EffectiveFor before deed) :
     G.ObjectAxisStanding deed :=
   h.elim (fun reception hland => ⟨reception, hland.left.left⟩)
-
-theorem atLeastAsEffective_refl (before : Config Contrib) (deed : G.Weld) :
-    G.AtLeastAsEffective before deed deed :=
-  fun reception h => ⟨reception, h⟩
-
-theorem atLeastAsEffective_trans
-    (before : Config Contrib) {a b c : G.Weld}
-    (hab : G.AtLeastAsEffective before a b)
-    (hbc : G.AtLeastAsEffective before b c) :
-    G.AtLeastAsEffective before a c :=
-  fun reception h =>
-    (hbc reception h).elim (fun receptionB hB => hab receptionB hB)
 
 /-- An actual weld packaged with its actuality proof. This is the small
     carrier downstream files need when they reason about remembered deeds,

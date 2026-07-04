@@ -91,11 +91,13 @@ def waa_ReportFace (deed reception : G.Weld) : Prop :=
 def waa_OwnershipFace (deed reception : G.Weld) : Prop :=
   G.LandsAt deed reception ∧ G.waa_Appropriates reception
 
-/-- A vacuous WAA-ownership attempt: the reception may WAA-appropriate, but the field
-    drew no delivery-line from this deed to this reception, so it is not a full
-    WAA-ownership-face for that deed. -/
+/-- The source's vacuous reach-back ("an appropriating with nothing arrived
+    to appropriate — not a falsehood ... but vacuous"): an actual,
+    appropriating reception whose claimed deed never delivered to it. The
+    vacuity is a property of this three-conjunct face; bare non-delivery
+    alone is `NotDeliveredTo` and carries no appropriation. -/
 def waa_VacuousOwnershipFace (deed reception : G.Weld) : Prop :=
-  G.waa_ReachBackVacuous deed reception ∧ G.Actual reception ∧ G.waa_Appropriates reception
+  G.NotDeliveredTo deed reception ∧ G.Actual reception ∧ G.waa_Appropriates reception
 
 /-- The WAA-ownership-face includes the report-face. -/
 theorem waa_reportFace_of_waa_ownershipFace
@@ -122,10 +124,10 @@ theorem waa_ownershipFace_intro
     G.waa_OwnershipFace deed reception :=
   ⟨hland, happ⟩
 
-/-- A vacuous reach-back cannot at the same time be a full WAA-ownership-face for
+/-- Bare non-delivery cannot at the same time be a full WAA-ownership-face for
     that deed and reception. -/
 theorem not_waa_ownershipFace_of_vacuous
-    {deed reception : G.Weld} (hv : G.waa_ReachBackVacuous deed reception) :
+    {deed reception : G.Weld} (hv : G.NotDeliveredTo deed reception) :
     ¬ G.waa_OwnershipFace deed reception :=
   fun hown => hv hown.left.left
 
@@ -150,9 +152,10 @@ theorem waa_diachronicWhose_iff_delivery_and_waa_appropriation
    §2  Token-reflexivity
 ============================================================================== -/
 
-/-- Token-reflexivity in the narrow checked sense: the index is projected out of
-    this very weld. The absence of a route from `Config` or field-facts into this
-    projection is the type discipline enforced by `Theory.lean`. -/
+/-- Token-reflexivity as a projection identity. Deliberately a `def` that
+    can never fail (`selfAnchored` proves it for every weld): the content
+    is the identity's *shape* — no route to "this act's agent" except
+    through the completed weld — displayed, not risked. -/
 def SelfAnchored (w : G.Weld) : Prop :=
   G.index w = w.agent
 
@@ -201,11 +204,8 @@ theorem no_waa_ownershipFace_of_stateToolFits
     ¬ G.waa_OwnershipFace deed reception :=
   fun hown => hfits hown.right
 
-/-- A floor-tier diagnosis cannot be a mis-feed, since the floor carries no live
-    nonzero share. -/
-theorem misfeed_not_floor_claim (d : Distinction G) :
-    ¬ d.Collapse (Tier.floor : Tier G) :=
-  G.not_collapse_floor d
+-- The paper's "a mis-feed at the floor is not a claim" verdict is carried
+-- by `not_collapse_floor`; no separate theorem restates it.
 
 /-- A distinction obeying the separate/fuse rule fuses at the floor. -/
 theorem obeysRule_fuses_at_floor
@@ -239,8 +239,11 @@ namespace waa_OwnershipOffice
 
 variable {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib}
 
-/-- Each office is discharged at a weld's act-time tier, not by a cross-gap
-    state. -/
+/-- Each office is discharged at a weld's act-time tier (the office
+    argument is unused). The paper's further claim — discharged *not by a
+    cross-gap state* — is architectural, carried by what `Config` does not
+    contain and by the absence of any `Config`-consuming discharge
+    function; it is not this definition's proposition. -/
 def dischargeTier (_office : waa_OwnershipOffice) (w : G.Weld) : Grid.Tier G :=
   Grid.Tier.actTime w
 
@@ -299,10 +302,11 @@ namespace Grid
 variable {Contrib : Type} [PreorderBot Contrib]
 variable (G : Grid Contrib)
 
-/-- The taxonomy's fourth public outcome, used by the Zahavi placement and by
-    the internal disposition/act redrawing, is available as a genuine generator
-    outcome for any old/new distinction pair. -/
-theorem retype_is_generatorOutcome
+/- Encoding check: the `retype` constructor exists and applies to any pair
+   of distinctions (used by the Zahavi placement and the disposition/act
+   redrawing). An `example`, not a theorem, for the same reason the voice
+   and placement checks are. -/
+example
     (oldDistinction newDistinction : Distinction G) :
     ∃ out : GeneratorOutcome G,
       out = GeneratorOutcome.retype oldDistinction newDistinction :=

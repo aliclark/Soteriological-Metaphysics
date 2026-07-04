@@ -144,6 +144,61 @@ theorem rePitch_tendency_eq_shareZero_of_terminus_response
   G.shareZero_of_terminus_response hterm hresp
 
 /- ==============================================================================
+   The environs lens
+============================================================================== -/
+
+/-- A release-line is an environs-line. -/
+theorem environsLine_of_releaseLine
+    {before : Config Contrib} {b : G.Being} {deed reception : G.Weld}
+    (h : G.ReleaseLine before b deed reception) :
+    G.EnvironsLine b deed reception :=
+  h.left
+
+/-- A release-line's reception is share-ceding against the supplied
+    tendency. -/
+theorem isShareDrop_of_releaseLine
+    {before : Config Contrib} {b : G.Being} {deed reception : G.Weld}
+    (h : G.ReleaseLine before b deed reception) :
+    G.IsShareDrop before reception :=
+  h.right
+
+/-- An environs-line is a delivery-fact. -/
+theorem deliveredTo_of_environsLine
+    {b : G.Being} {deed reception : G.Weld}
+    (h : G.EnvironsLine b deed reception) :
+    G.DeliveredTo deed reception :=
+  h.right.right
+
+/-- No reception is share-ceding against a pole-typed tendency: at
+    `before.tendency = shareZero`, `bot_le` supplies exactly the
+    comparison `IsShareDrop`'s second conjunct denies. -/
+theorem not_isShareDrop_of_tendency_eq_shareZero
+    {before : Config Contrib} (h : before.tendency = shareZero)
+    (received : G.Weld) :
+    ¬ G.IsShareDrop before received := by
+  intro hdrop
+  exact hdrop.right (h.symm ▸ PreorderBot.bot_le (G.share received))
+
+/-- The lens goes quiet at the pole: an environs read against a share-zero
+    tendency contains no release-lines — nothing left to release, a
+    feature of the reading, not a defect. -/
+theorem no_releaseLine_of_tendency_eq_shareZero
+    {before : Config Contrib} (h : before.tendency = shareZero)
+    (b : G.Being) (deed reception : G.Weld) :
+    ¬ G.ReleaseLine before b deed reception :=
+  fun hline =>
+    G.not_isShareDrop_of_tendency_eq_shareZero h reception hline.right
+
+/-- Bridge to effectiveness talk: a release-line whose reception is actual
+    witnesses the deed's effectiveness for that tendency. -/
+theorem effectiveFor_of_releaseLine_actual
+    {before : Config Contrib} {b : G.Being} {deed reception : G.Weld}
+    (hline : G.ReleaseLine before b deed reception)
+    (hact : G.Actual reception) :
+    G.EffectiveFor before deed :=
+  ⟨reception, ⟨⟨hline.left.right.right, hact⟩, hline.right⟩⟩
+
+/- ==============================================================================
    Delivery, reach-back, and effectiveness
 ============================================================================== -/
 
@@ -151,23 +206,6 @@ theorem rePitch_tendency_eq_shareZero_of_terminus_response
 theorem waa_reachBackFull_iff_deliveredTo (deed reception : G.Weld) :
     G.waa_ReachBackFull deed reception ↔ G.DeliveredTo deed reception :=
   Iff.rfl
-
-/-- A vacuous reach-back is exactly non-delivery. -/
-theorem waa_reachBackVacuous_iff_not_deliveredTo (deed reception : G.Weld) :
-    G.waa_ReachBackVacuous deed reception ↔ ¬ G.DeliveredTo deed reception :=
-  Iff.rfl
-
-/-- Full and vacuous reach-back cannot coincide. -/
-theorem not_waa_reachBackVacuous_of_full
-    {deed reception : G.Weld} (hfull : G.waa_ReachBackFull deed reception) :
-    ¬ G.waa_ReachBackVacuous deed reception :=
-  fun hvacuous => hvacuous hfull
-
-/-- Vacuity rules out full reach-back. -/
-theorem not_waa_reachBackFull_of_vacuous
-    {deed reception : G.Weld} (hvacuous : G.waa_ReachBackVacuous deed reception) :
-    ¬ G.waa_ReachBackFull deed reception :=
-  hvacuous
 
 /-- An aimed call is just delivery, stated from the sowing side. -/
 theorem waa_aimedAt_iff_deliveredTo (deed reception : G.Weld) :
@@ -237,14 +275,6 @@ theorem exists_shareDrop_reception_of_effectiveFor
     ∃ reception, G.IsShareDrop before reception :=
   h.elim (fun reception hland =>
     ⟨reception, G.isShareDrop_of_landsWithShareDrop hland⟩)
-
-/-- The preorder-style effectiveness comparison preserves effectiveness. -/
-theorem effectiveFor_of_atLeastAsEffective
-    {before : Config Contrib} {deed1 deed2 : G.Weld}
-    (hge : G.AtLeastAsEffective before deed1 deed2)
-    (heff : G.EffectiveFor before deed2) :
-    G.EffectiveFor before deed1 :=
-  heff.elim (fun reception hland => hge reception hland)
 
 /- ==============================================================================
    Actual pairs
