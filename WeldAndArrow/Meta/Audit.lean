@@ -132,6 +132,12 @@ info: 'WAA.Grid.rePitch_forgets' does not depend on any axioms
 #print axioms Grid.rePitch_forgets
 
 /--
+info: 'WAA.Grid.DirectedConvention.PrudentialPrivilegeNegative.prudentialPrivilege_failure_modes' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.PrudentialPrivilegeNegative.prudentialPrivilege_failure_modes
+
+/--
 info: 'WAA.ObjectiveNegative.no_grid_data_objective_for_my_drops' does not depend on any axioms
 -/
 #guard_msgs in

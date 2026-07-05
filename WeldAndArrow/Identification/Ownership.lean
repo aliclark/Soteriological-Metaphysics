@@ -100,6 +100,197 @@ theorem no_diachronicWhose_from_series_alone
   exact hno ((waaDiachronicWhose_iff_delivery_and_waaAppropriates G
     deed reception).mp hwhose).right
 
+/- ==============================================================================
+   §2  Prudential privilege negative
+============================================================================== -/
+
+namespace PrudentialPrivilegeNegative
+
+open BeingConvention
+
+/-- The present-side fine register. -/
+def deedAgent : Nat :=
+  1
+
+/-- The future-side fine register. -/
+def receptionAgent : Nat :=
+  2
+
+/-- The future reception's mounted response. -/
+def receptionResponse : Nat :=
+  3
+
+/-- The present concern/deed register in the checked prudence witness. -/
+def deed : registerClockGrid.Weld :=
+  ⟨deedAgent, (), receptionAgent⟩
+
+/-- The future reception register delivered by `deed`. -/
+def reception : registerClockGrid.Weld :=
+  ⟨receptionAgent, (), receptionResponse⟩
+
+/-- The concrete actual pair used to route the witness through the same
+    `ReceptionPair` carrier as the diachronic ownership vocabulary. -/
+def pair : ReceptionPair registerClockGrid where
+  first := { weld := deed, actual := rfl }
+  second := { weld := reception, actual := rfl }
+
+theorem pair_firstConditionsSecond :
+    pair.FirstConditionsSecond := by
+  rfl
+
+theorem deed_waaAppropriates :
+    registerClockGrid.WaaAppropriates deed := by
+  dsimp [Grid.WaaAppropriates, Grid.HasSelfPoleIndex, Grid.share,
+    registerClockGrid, deed, AtBot, shareBot]
+  change ¬ (1 : Nat) ≤ 0
+  exact Nat.not_succ_le_zero 0
+
+theorem reception_waaAppropriates :
+    registerClockGrid.WaaAppropriates reception := by
+  dsimp [Grid.WaaAppropriates, Grid.HasSelfPoleIndex, Grid.share,
+    registerClockGrid, reception, AtBot, shareBot]
+  change ¬ (2 : Nat) ≤ 0
+  exact Nat.not_succ_le_zero 1
+
+/-- Ordinary diachronic ownership can be made at reception-time in the witness:
+    delivery plus fresh WAA-appropriation. -/
+theorem reception_waaDiachronicWhose :
+    WaaDiachronicWhose registerClockGrid deed reception :=
+  ⟨rfl, reception_waaAppropriates⟩
+
+/-- The same pair also gives the full WAA-ownership face. -/
+theorem reception_waaOwnershipFace :
+    WaaOwnershipFace registerClockGrid deed reception :=
+  ⟨⟨rfl, rfl⟩, reception_waaAppropriates⟩
+
+/-- Merge reading: every fine register belongs to one macro tag. -/
+abbrev kMerge : BeingCoarsening registerClockGrid Unit :=
+  registerClockCoarsening
+
+/-- Split reading: each fine register keeps its own macro tag. -/
+def kSplit : BeingCoarsening registerClockGrid Nat where
+  proj := id
+
+theorem merge_same_fiber :
+    kMerge.SameFiber deedAgent receptionAgent :=
+  rfl
+
+/-- Pairwise boundary induced by the merge reading. -/
+abbrev mergeBoundary (_p _q : Nat) : Prop :=
+  True
+
+/-- Pairwise boundary induced by the split reading. -/
+abbrev splitBoundary (p q : Nat) : Prop :=
+  p = q
+
+theorem merge_boundary_holds :
+    mergeBoundary deedAgent receptionAgent :=
+  True.intro
+
+theorem split_boundary_fails :
+    ¬ ((1 : Nat) = (2 : Nat)) := by
+  decide
+
+/-- The grid data visible to a convention-free standing-owner recovery. -/
+abbrev W : Type :=
+  RawWeld Nat Unit Nat
+
+/-- Function, grade, and delivery data, with no supplied being-convention. -/
+abbrev GridData : Type :=
+  (Nat -> Unit -> Option Nat) ×
+    (Nat -> Unit -> Nat -> Nat) ×
+      (W -> W -> Prop)
+
+def gridData : GridData :=
+  (registerClockGrid.respondsTo, registerClockGrid.grade,
+    registerClockGrid.conditions)
+
+/-- A standing cross-gap "mine" relation over the witness grid. -/
+abbrev StandingMine : Type :=
+  registerClockGrid.Weld -> registerClockGrid.Weld -> Prop
+
+/-- Agreement with the merge convention at the prudential pair. -/
+def AgreesWithMergeAt (mine : StandingMine) : Prop :=
+  mine deed reception ↔ mergeBoundary deedAgent receptionAgent
+
+/-- Agreement with the split convention at the same prudential pair. -/
+def AgreesWithSplitAt (mine : StandingMine) : Prop :=
+  mine deed reception ↔ splitBoundary deedAgent receptionAgent
+
+/-- Prudential privilege, as a checked recovery claim: from the grid data alone,
+    recover a standing cross-gap "mine" relation that settles the pair before
+    any supplied being-convention. Such a relation would have to agree with
+    both legal readings of the same grid data. -/
+def PrudentialPrivilege : Prop :=
+  ∃ recover : GridData -> StandingMine,
+    AgreesWithMergeAt (recover gridData) ∧
+      AgreesWithSplitAt (recover gridData)
+
+/-- The prudential privilege recovery claim fails in the register-clock witness:
+    the merge and split being-conventions are both legal, but they disagree on
+    whether the present deed-register and the future reception-register share a
+    fiber. -/
+theorem not_prudentialPrivilege :
+    ¬ PrudentialPrivilege := by
+  rintro ⟨recover, hmerge, hsplit⟩
+  have hmine : recover gridData deed reception :=
+    hmerge.mpr merge_boundary_holds
+  have hnotMine : ¬ recover gridData deed reception := by
+    intro h
+    exact split_boundary_fails (hsplit.mp h)
+  exact hnotMine hmine
+
+/-- Re-pitching the actual pair leaves the final configuration reading only the
+    received future weld's share. The prior tendency is not an inheritance
+    register for the deed-side owner. -/
+theorem rePitchSequence_final_forgets_prior
+    (before1 before2 : Config Nat) :
+    (ReceptionPair.rePitchSequence (G := registerClockGrid) before1 pair).snd =
+      (ReceptionPair.rePitchSequence (G := registerClockGrid) before2 pair).snd :=
+  registerClockGrid.rePitch_forgets
+    (registerClockGrid.rePitch before1 pair.first.weld)
+    (registerClockGrid.rePitch before2 pair.first.weld)
+    pair.second.weld
+
+/-- The final tendency of the pair is just the future reception's share. -/
+theorem rePitchSequence_final_tendency
+    (before : Config Nat) :
+    (ReceptionPair.rePitchSequence (G := registerClockGrid) before pair).snd.tendency =
+      registerClockGrid.share reception :=
+  rfl
+
+/-- The grade side of the witness does not inspect downstream delivery
+    conditions. -/
+theorem deed_grade_independent_of_conditions
+    (conditions1 conditions2 :
+      registerClockGrid.Weld -> registerClockGrid.Weld -> Prop) :
+    (registerClockGrid.withConditions conditions1).grade
+        deed.agent deed.call deed.response =
+      (registerClockGrid.withConditions conditions2).grade
+        deed.agent deed.call deed.response :=
+  registerClockGrid.grade_independent_of_conditions
+    conditions1 conditions2 deed.agent deed.call deed.response
+
+/-- The checked prudence package: fresh reception-time ownership is available,
+    but standing grid-data privilege, stored inheritance, and delivery-sensitive
+    grading are not. -/
+theorem prudentialPrivilege_failure_modes :
+    WaaDiachronicWhose registerClockGrid deed reception ∧
+      ¬ PrudentialPrivilege ∧
+        (∀ before1 before2 : Config Nat,
+          (ReceptionPair.rePitchSequence (G := registerClockGrid) before1 pair).snd =
+            (ReceptionPair.rePitchSequence (G := registerClockGrid) before2 pair).snd) ∧
+          (∀ conditions1 conditions2 :
+            registerClockGrid.Weld -> registerClockGrid.Weld -> Prop,
+            (registerClockGrid.withConditions conditions1).grade
+                deed.agent deed.call deed.response =
+              (registerClockGrid.withConditions conditions2).grade
+                deed.agent deed.call deed.response) :=
+  ⟨reception_waaDiachronicWhose, not_prudentialPrivilege,
+    rePitchSequence_final_forgets_prior, deed_grade_independent_of_conditions⟩
+
+end PrudentialPrivilegeNegative
+
 end DirectedConvention
 
 /- ==============================================================================

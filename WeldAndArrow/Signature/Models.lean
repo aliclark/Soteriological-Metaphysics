@@ -105,15 +105,14 @@ theorem registerClock_macro_selfConditioning :
 /- `clockGrid` is a genuine, finite, computable term of type `Grid Nat` —
     direct evidence that "a model of the theory" is a buildable Lean
     object, and that facts about a concrete instance are provable at
-    `rfl`-level once the instance is fixed. That is the tool a later
-    independence result needs: fix a small `Grid`, choose an actual
-    `ReceptionPair`, run the relevant `Config`/`rePitch` steps, phrase
-    whatever "privilege" would have to assert as a further `Prop` over that
-    data, and show it fails in the instance. That construction is not
-    carried out here — deciding how to phrase "privilege" formally is itself
-    a nontrivial choice belonging to whoever proves the theorem, not to the
-    scaffolding. What this section checks is only that the scaffolding does
-    not get in the way. -/
+    `rfl`-level once the instance is fixed. The prudential-privilege
+    construction this scaffolding anticipated is carried out in
+    `Identification/Ownership.lean`, under
+    `Grid.DirectedConvention.PrudentialPrivilegeNegative`: an actual
+    `ReceptionPair`, the relevant `Config`/`rePitch` steps, and a named
+    `PrudentialPrivilege` recovery proposition are fixed there and the
+    proposition is shown to fail. This section checks only that the model
+    scaffolding does not get in the way. -/
 
 end Preview
 
