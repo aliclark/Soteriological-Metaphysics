@@ -1,10 +1,6 @@
-name = "proofs"
+name = "WeldAndArrow"
 version = "0.1.0"
-defaultTargets = ["proofs"]
+defaultTargets = ["WeldAndArrow"]
 
 [[lean_lib]]
 name = "WeldAndArrow"
-
-[[lean_exe]]
-name = "proofs"
-root = "Main"

@@ -1,10 +1,13 @@
 # A Plain-English Reading of the Lean Theorems
 
 **Scope.** This document states, in plain English, what the Lean declarations in
-`Theory.lean`, `Theorems.lean`, `Identification.lean`, and `Invariance.lean`
+`Theory.lean`, `Theorems.lean`, `Identification.lean`, `Invariance.lean`, and
+`Audit.lean`
 assert. It reads the checked Lean surface: definitions, theorem statements, and
 proof status where that matters. Interpretive prose remains secondary to the
 formal statements.
+
+The project is pinned to `leanprover/lean4:v4.31.0` in `lean-toolchain`.
 
 **Conventions.** A theorem proved by `rfl` or `Iff.rfl` is true by unfolding
 definitions. A theorem whose proof is a projection, contradiction, or witness
@@ -12,7 +15,7 @@ assembly is described as such. A "weld" is always the triple `RawWeld` /
 `G.Weld`; "actual" always means the equation
 `respondsTo w.agent w.call = some w.response`.
 
-`waa_` marks identifiers whose names assert the paper's identification content:
+Identifiers beginning `Waa` mark names that assert the paper's identification content:
 ownership, appropriation, whose-ness, reach-back, or sowing-side aiming. The
 unprefixed vocabulary is neutral order/delivery vocabulary, including Row-2
 index-placement names such as `HasSelfPoleIndex`, `selfPoleIndex`, and
@@ -25,6 +28,12 @@ predicates. The signature itself still carries no asymmetry, irreflexivity, or
 transitivity for `conditions`. Role-asymmetry is not temporal asymmetry: the
 `deed` and `reception` slots are different roles, but the reception slot means
 "where the welding happens", not "the later one".
+
+`Grid.DirectedConvention.TimeDirection` is an abbreviation of `Strict`; all
+strictness theorems apply to it transparently. The formal modules
+`Theory.lean`, `Theorems.lean`, and `Invariance.lean` keep their comments
+mathematical and point to `Identification.lean` Commentary C.1-C.3 for the
+paper-facing readings.
 
 The namespace tree now records ontological ordering. Floor/genjō and the bare
 signature sit outside the convention layers. `Grid.DirectedConvention` reads
@@ -41,13 +50,13 @@ their definition consumes.
 **Order structure.** `Preorder` is a hand-rolled reflexive and transitive
 relation `≼`; no totality and no antisymmetry are assumed. `Incomparable a b`
 means neither `a ≼ b` nor `b ≼ a`. `OrderEq a b` means `a ≼ b` and `b ≼ a`.
-`Directed a b` means `a ≼ b` and not `b ≼ a`.
+`Strict a b` means `a ≼ b` and not `b ≼ a`.
 
 The preorder facts are:
 
 - `incomparable_symm`, `not_le_of_incomparable`, and `not_ge_of_incomparable`.
-- `not_directed_self`: strict direction is never reflexive.
-- `not_directed_of_orderEq` and `no_direction_of_all_orderEq`: order-equivalence
+- `strict_irrefl`: strict direction is never reflexive.
+- `not_strict_of_orderEq` and `no_strict_of_all_orderEq`: order-equivalence
   kills direction, pointwise or carrier-wide.
 
 `PreorderBot` adds a designated bottom element, written `shareBot`, with
@@ -55,6 +64,11 @@ The preorder facts are:
 `shareBot ≼ a` is always available, `AtBot a` says that `a` is
 order-equivalent to the designated bottom. The pole is therefore an
 order-class, not identity with one token.
+
+The project stays self-contained and does not import Mathlib. Mathlib's
+counterparts are `Preorder`, `OrderBot`, and `IsBot`; local `AtBot` is the
+order-class of the bottom and plays the role Mathlib's `IsBot` would play for
+that chosen element.
 
 The basic bottom lemmas are:
 
@@ -77,7 +91,7 @@ A weld is the triple `⟨agent, call, response⟩`. `Actual w` means the respons
 really is mounted. `index w` is `w.agent`. `share w` is
 `grade w.agent w.call w.response`.
 
-`HasSelfPoleIndex w` means `¬ AtBot (share w)`. `waa_Appropriates w` is
+`HasSelfPoleIndex w` means `¬ AtBot (share w)`. `WaaAppropriates w` is
 definitionally the same proposition. `selfPoleIndex w h` returns `w.agent` and
 uses the proof argument only for typing.
 
@@ -120,20 +134,20 @@ Under a coarsening `κ`:
 `tendency : Contrib`; it stores no `Being`, no `Weld`, and no owner.
 `rePitch before received` returns the config with tendency `share received`;
 `before` is unused in the value. `IsShareDrop before received` means
-`share received ≼ before.tendency` and not
-`before.tendency ≼ share received`.
+`Strict (share received) before.tendency`, i.e. `share received ≼
+before.tendency` and not `before.tendency ≼ share received`.
 
 **DirectedConvention definitions.** The directional reading layer contains:
 
-- `waa_ReachBackFull`, `DeliveredTo`, `NotDeliveredTo`, and `waa_AimedAt`.
+- `WaaReachBackFull`, `DeliveredTo`, `NotDeliveredTo`, and `WaaAimedAt`.
 - `LandsAt`, `ObjectAxisStanding`, `LandsWithShareDrop`, and
   `HasShareDropLanding`.
 - `EnvironsLine` and `ShareDropLine`.
-- `waa_ReportFace`, `waa_OwnershipFace`, `waa_VacuousOwnershipFace`, and
-  `waa_DiachronicWhose`.
+- `WaaReportFace`, `WaaOwnershipFace`, `WaaVacuousOwnershipFace`, and
+  `WaaDiachronicWhose`.
 
 All of these are definitions over `conditions`, `Actual`, `IsShareDrop`, and
-`waa_Appropriates`; none adds a new axiom to `conditions`.
+`WaaAppropriates`; none adds a new axiom to `conditions`.
 
 **Tiers and distinctions.** A `Tier` is `floor` or `actTime w`.
 `Tier.hasLiveShare` is `False` at `floor` and `HasSelfPoleIndex w` at
@@ -160,20 +174,20 @@ converted to `AtBot (share w)`, then the previous theorem applies.
 `selfPoleIndex_eq_agent_of_hasSelfPoleIndex`: the evidence-carried index is
 `w.agent`. Definitional (`rfl`).
 
-`no_waa_appropriation_of_atBot` and `no_waa_appropriation_of_eq_shareBot`: the
-same no-index facts under the definitional name `waa_Appropriates`.
+`not_waaAppropriates_of_atBot` and `not_waaAppropriates_of_eq_shareBot`: the
+same no-index facts under the definitional name `WaaAppropriates`.
 
-Anonymous example: `share w = grade w.agent w.call w.response`. Definitional
-(`rfl`).
+`share_eq_grade_check`: `share w = grade w.agent w.call w.response`.
+Definitional (`rfl`).
 
 `atBot_of_terminus_response`: if `b` is a `Terminus` and
 `respondsTo b c = some r`, then the weld `⟨b, c, r⟩` has `AtBot` share.
 
 `no_self_pole_index_of_terminus_response` and
-`no_waa_appropriation_of_terminus_response`: a terminus response has no live
+`not_waaAppropriates_of_terminus_response`: a terminus response has no live
 self-pole index and does not WAA-appropriate.
 
-`stone_is_terminus`: every `Stone` is a `Terminus`. This is vacuous: the
+`stone_is_terminus_vacuously`: every `Stone` is a `Terminus`. This is vacuous: the
 response hypothesis in `Terminus` can never be satisfied for a stone.
 
 `not_stone_of_mountsSomewhere`, `liveTerminus_not_stone`, and
@@ -184,7 +198,7 @@ function.
 if `conditions deed reception` is decidable, then either
 `DeliveredTo G deed reception` or `NotDeliveredTo G deed reception`.
 
-`Grid.DirectedConvention.deliveredTo_iff_waa_reachBackFull`: definitional
+`Grid.DirectedConvention.deliveredTo_iff_waaReachBackFull`: definitional
 (`Iff.rfl`), since both names are `conditions`.
 
 `Grid.DirectedConvention.objectAxisStanding_of_landsAt`: a landing gives
@@ -199,8 +213,8 @@ contradicts the equivalence required by `Collapse` at any live tier.
 `not_freeze_of_obeysSeparateFuse`: the second clause of `ObeysSeparateFuse` at
 `floor` gives the equivalence denied by `Freeze`.
 
-Anonymous example: a distinction whose two sides are the same claim cannot
-freeze.
+`not_freeze_of_same_claim`: a distinction whose two sides are the same claim
+cannot freeze.
 
 `no_agent_recovery_of_field_collision`: if two distinct beings can actually
 produce the same call-response pair, no function from field residue
@@ -213,8 +227,8 @@ nowhere, `adaptive` responds with `chime` when the listener is present,
 - `rigid_is_stone`: `rigid` responds nowhere.
 - `adaptive_is_terminus`: `adaptive` is a terminus.
 - `adaptive_not_stone`: `adaptive` responds at `present`.
-- Anonymous example: the concrete grid contains a stone and a non-stone
-  terminus.
+- `clockGrid_function_share_split_witness`: the concrete grid contains a stone
+  and a non-stone terminus.
 
 **`registerClockGrid`.** The second concrete grid uses natural-numbered fine
 registers as beings. Each register answers the tick by handing off to the next
@@ -306,7 +320,8 @@ tendencies are the two weld shares.
   `not_freeze_of_fused_floor` are the direct separate/fuse diagnostics.
 
 `answersCall_eq_weld_call` and `fitsOfferedTier_iff_trueAt` are definitional.
-Anonymous examples confirm the two `ErrorGrade.voice` assignments.
+`verdict_voice_assertable` and `shortfall_voice_displayable` confirm the two
+`ErrorGrade.voice` assignments.
 
 **Pilot convention-layer rows.** Under
 `Grid.DirectedConvention.BeingConvention.GridConvention`, `ConventionLayer` has
@@ -336,19 +351,19 @@ welds with equal field residue must then have equal indices.
 impossibility results.
 
 **Ownership-face definitions.** The ownership/report/vacuity/whose predicates
-live under `Grid.DirectedConvention`. `waa_ReportFace`,
-`waa_OwnershipFace`, `waa_VacuousOwnershipFace`, and
-`waa_DiachronicWhose` are conjunctions over delivery, actuality, and
+live under `Grid.DirectedConvention`. `WaaReportFace`,
+`WaaOwnershipFace`, `WaaVacuousOwnershipFace`, and
+`WaaDiachronicWhose` are conjunctions over delivery, actuality, and
 WAA-appropriation. Their theorems are projections, introductions,
 contradictions with non-delivery, or definitional biconditionals:
 
-- `waa_reportFace_of_waa_ownershipFace`
-- `actual_of_waa_ownershipFace`
-- `waa_appropriation_of_waa_ownershipFace`
-- `waa_ownershipFace_intro`
-- `not_waa_ownershipFace_of_vacuous`
-- `not_waa_ownershipFace_of_waa_vacuousOwnershipFace`
-- `waa_diachronicWhose_iff_delivery_and_waa_appropriation`
+- `waaReportFace_of_waaOwnershipFace`
+- `actual_of_waaOwnershipFace`
+- `waaAppropriates_of_waaOwnershipFace`
+- `waaOwnershipFace_intro`
+- `not_waaOwnershipFace_of_vacuous`
+- `not_waaOwnershipFace_of_waaVacuousOwnershipFace`
+- `waaDiachronicWhose_iff_delivery_and_waaAppropriates`
 
 **Token reflexivity.** `selfAnchored`: `index w = w.agent`. Definitional
 (`rfl`).
@@ -356,25 +371,31 @@ contradictions with non-delivery, or definitional biconditionals:
 **Pole-typing.** `StateToolFits w` means `¬ HasSelfPoleIndex w`.
 `stateToolFits_of_atBot` and `stateToolFits_of_eq_shareBot` are the direct
 pole-class and equality-bridge facts. Assuming
-`[∀ a : Contrib, Decidable (AtBot a)]`, `atBot_of_stateToolFits` and
+`[Decidable (AtBot (G.share w))]`, `atBot_of_stateToolFits` and
 `stateToolFits_iff_atBot` give the exact iff with pole-class membership.
 `stateToolFits_of_terminus_response` applies the result to terminus responses.
 
-`Grid.DirectedConvention.no_waa_ownershipFace_of_stateToolFits`: if the
+`Grid.DirectedConvention.not_waaOwnershipFace_of_stateToolFits`: if the
 state-tool fits a reception, the WAA-ownership-face cannot fire there, because
 ownership-face includes WAA-appropriation.
 
 **Rule and office facts.** `obeysRule_fuses_at_floor` and
 `obeysRule_separates_at_actTime` are direct uses of the separate/fuse theorems.
-`assignedTier` assigns each `waa_OwnershipOffice` to the weld's act-time tier.
+`assignedTier` assigns each `WaaOwnershipOffice` to the weld's act-time tier.
 The two facts that this unfolds to `Tier.actTime w` and has exactly the weld's
-`HasSelfPoleIndex` condition are anonymous encoding-check examples, alongside
-the placement and disclaimer examples.
+`HasSelfPoleIndex` condition are `assignedTier_eq_actTime` and
+`assignedTier_hasLiveShare_iff`. `retype_constructor_exists` checks the
+generator's retype constructor. The placement and disclaimer checks are named
+below.
+
+The contemporary placement checks are `siderits_waaPlacement`,
+`ganeri_waaPlacement`, `zahavi_waaPlacement`, and `sartre_waaPlacement`.
 
 **Disclaimers.** `Disclaimer.number` now runs through 39. The new entries are
 `beingConvention` (35), `pilotGeneratedRows` (36), `beingTrichotomy` (37),
-`hareHornRegister` (38), and `modalRealismFreeze` (39). The checked examples
-still pin `waa_karmaIdentification = 9` and now pin `modalRealismFreeze = 39`.
+`hareHornRegister` (38), and `modalRealismFreeze` (39).
+`waaKarmaIdentification_number` pins `waaKarmaIdentification = 9`, and
+`modalRealismFreeze_number` pins `modalRealismFreeze = 39`.
 
 ---
 
@@ -391,6 +412,9 @@ preservation/reflection theorem `a ≼ b ↔ toFun a ≼ toFun b`, and a proof t
 `DisplayReparam.atBot_iff` proves `AtBot (toFun a) ↔ AtBot a`.
 `DisplayReparam.orderEq_iff` proves that order-equivalence is preserved and
 reflected.
+`DisplayReparam.id` is the identity reparameterization, with `id_toFun` as its
+definitional projection lemma. `DisplayReparam.comp` composes
+reparameterizations, with `comp_toFun` as its definitional projection lemma.
 
 `Config.map` sends a tendency through `toFun`; `Config.map_tendency` is
 definitional.
@@ -445,15 +469,15 @@ as the designated `shareBot`. `mergeToUnit` maps both elements to the single
 unit value and is a `DisplayReparam`. `twoBottomGrid` has one being, one call,
 one response, responds everywhere, and grades every response as `other`.
 
-The examples show:
+The named checks show:
 
-- `twoBottomGrid.Terminus ()` holds, because `other` is `AtBot`.
-- `OldEqTerminus twoBottomGrid ()` fails, where `OldEqTerminus` is the obsolete
-  equality-token version requiring `grade = shareBot`.
-- `OldEqTerminus (twoBottomGrid.map mergeToUnit) ()` holds after the merge,
-  because both old bottom tokens become the same unit token.
-- The new `Terminus` transports across the merge, while the old equality-token
-  predicate would not have transported.
+- `twoBottomGrid_terminus`: `twoBottomGrid.Terminus ()` holds.
+- `not_oldEqTerminus_twoBottomGrid`: the obsolete equality-token predicate
+  fails before reparameterization.
+- `oldEqTerminus_map_mergeToUnit`: the obsolete equality-token predicate holds
+  after the merge.
+- `oldEqTerminus_not_invariant`: the new `Terminus` transports across the
+  merge, while the old equality-token predicate would not have transported.
 
 This is the formal certificate that replacing equality with `AtBot` was a real
 de-operationalisation, not a naming preference.
@@ -465,6 +489,8 @@ pair; `conditions_disagree` exhibits a pair where the directions differ;
 `no_direction_recovery_from_conditionsEither` concludes that no function of the
 symmetric closure is correct on both grids. This is the formal certificate that
 direction is not carried by the correlational structure.
+`not_strict_twoBottom` records the carrier-wide strictness failure on the
+two-bottom negative carrier.
 
 **`BeingNegative`.** `twoBeingGrid` has two fine tags with identical response,
 grade, and symmetric delivery behavior. `κmerge` reads them as one macro tag;
@@ -477,9 +503,11 @@ that the being-boundary is a reading, not grid-carried structure.
 with one being, one call, one response, total response, grade `1`, and
 `conditions _ _ := True`. The checked examples show:
 
-- `conditions w w` holds.
-- `Grid.DirectedConvention.LandsAt selfLineGrid w w` holds.
-- `Grid.DirectedConvention.waa_OwnershipFace selfLineGrid w w` holds.
+- `selfLine_conditions_self`: `conditions w w` holds.
+- `selfLine_landsAt_self`: `Grid.DirectedConvention.LandsAt selfLineGrid w w`
+  holds.
+- `selfLine_waaOwnershipFace_self`:
+  `Grid.DirectedConvention.WaaOwnershipFace selfLineGrid w w` holds.
 
 The scope is narrow and deliberate: the signature permits self-lines; it does
 not say that any real regime contains them. Irreflexivity of delivery is a
@@ -487,7 +515,32 @@ regime fact to be supplied by a model, not a structural axiom.
 
 ---
 
-## 5. Logical Strength
+## 5. Audit.lean
+
+`Audit.lean` imports `Invariance.lean` and pins selected `#print axioms`
+outputs with `#guard_msgs`.
+
+The audited declarations are:
+
+- `no_agent_recovery_of_field_collision`
+- `DirectionNegative.no_direction_recovery_from_conditionsEither`
+- `Grid.stateToolFits_iff_atBot`
+- `Grid.map_actual_iff`
+- `Grid.map_isShareDrop_iff`
+- `Grid.DirectedConvention.map_landsWithShareDrop_iff`
+- `Grid.DirectedConvention.BeingConvention.BeingCoarsening.map_selfConditioningTag_iff`
+
+The pinned result is: no audited theorem depends on `sorry` or
+`Classical.choice`. All audited declarations are axiom-free except
+`DirectionNegative.no_direction_recovery_from_conditionsEither`, which depends
+on exactly `[propext, Quot.sound]`.
+
+The Lake build now targets the library `WeldAndArrow`; there is no `lean_exe`
+target and no `Main.lean`.
+
+---
+
+## 6. Logical Strength
 
 The definitional identities include `share_eq_grade`, `selfAnchored`,
 `rePitch_tendency_eq_share`, the delivery/aiming biconditionals,
@@ -497,7 +550,7 @@ the reception-pair tendency lemmas, and the basic `map_*` identities in
 
 The elementary consequences are projections, witness assemblies,
 contradictions, and short order arguments. The important non-definitional order
-arguments are the `AtBot` share-drop obstruction, `not_directed_self`, and the
+arguments are the `AtBot` share-drop obstruction, `strict_irrefl`, and the
 display-reparameterization transport lemmas.
 
 The conditional impossibility results are the agent-recovery theorems, the

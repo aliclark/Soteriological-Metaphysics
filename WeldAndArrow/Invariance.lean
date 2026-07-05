@@ -1,13 +1,14 @@
 /-
 ================================================================================
-  The Weld and the Arrow — IV. Invariance
-  Display reparameterization for the contribution carrier
+  WeldAndArrow.Invariance
+  Display reparameterization and recovery countermodels
 ================================================================================
 
-This file is the admission criterion for future grade-facing predicates:
-anything that depends on `Contrib` owes a transport lemma here, or it is
-operational residue by definition. The theorems below are the formal content
-of treating contribution values as display conventions over the preorder.
+This module transports grid predicates across display reparameterizations and
+records small countermodels for equality-at-bottom, direction recovery, and
+partition recovery.
+
+Reading and motivation: Identification.lean, Commentary C.3.
 -/
 
 import WeldAndArrow.Identification
@@ -27,6 +28,37 @@ namespace DisplayReparam
 
 variable {Contrib Contrib' : Type} [PreorderBot Contrib] [PreorderBot Contrib']
 variable (f : DisplayReparam Contrib Contrib')
+
+/-- The identity display reparameterization. -/
+protected def id (Contrib : Type) [PreorderBot Contrib] :
+    DisplayReparam Contrib Contrib where
+  toFun := id
+  le_iff := fun _ _ => Iff.rfl
+  atBot_bot := atBot_shareBot
+
+@[simp]
+theorem id_toFun (a : Contrib) :
+    (DisplayReparam.id Contrib).toFun a = a :=
+  rfl
+
+/-- Composition of display reparameterizations. -/
+def comp {Contrib'' : Type} [PreorderBot Contrib'']
+    (f : DisplayReparam Contrib Contrib')
+    (g : DisplayReparam Contrib' Contrib'') :
+    DisplayReparam Contrib Contrib'' where
+  toFun := fun a => g.toFun (f.toFun a)
+  le_iff := fun a b => (f.le_iff a b).trans (g.le_iff (f.toFun a) (f.toFun b))
+  atBot_bot :=
+    Preorder.le_trans
+      ((g.le_iff (f.toFun shareBot) shareBot).mp f.atBot_bot)
+      g.atBot_bot
+
+@[simp]
+theorem comp_toFun {Contrib'' : Type} [PreorderBot Contrib'']
+    (f : DisplayReparam Contrib Contrib')
+    (g : DisplayReparam Contrib' Contrib'') (a : Contrib) :
+    (DisplayReparam.comp f g).toFun a = g.toFun (f.toFun a) :=
+  rfl
 
 /-- Reparameterization preserves and reflects the pole-class. -/
 theorem atBot_iff (a : Contrib) :
@@ -58,6 +90,7 @@ def map (before : Config Contrib) (f : DisplayReparam Contrib Contrib') :
     Config Contrib' :=
   { tendency := f.toFun before.tendency }
 
+@[simp]
 theorem map_tendency (before : Config Contrib)
     (f : DisplayReparam Contrib Contrib') :
     (before.map f).tendency = f.toFun before.tendency :=
@@ -81,10 +114,12 @@ def map (G : Grid Contrib) (f : DisplayReparam Contrib Contrib') :
 
 variable (G : Grid Contrib) (f : DisplayReparam Contrib Contrib')
 
+@[simp]
 theorem map_grade (b : G.Being) (c : G.Call) (r : G.Response) :
     (G.map f).grade b c r = f.toFun (G.grade b c r) :=
   rfl
 
+@[simp]
 theorem map_share (w : G.Weld) :
     (G.map f).share w = f.toFun (G.share w) :=
   rfl
@@ -448,8 +483,8 @@ namespace BeingCoarsening
 
 variable {Macro : Type}
 
-/-- Transpose a being-coarsening across the direction-smuggling detector.
-    Fine tags are unchanged; only the direction-reading of delivery reverses. -/
+/-- Transpose a being-coarsening across the condition-transpose operation.
+    Fine tags are unchanged; only delivery order reverses. -/
 def transpose (κ : BeingCoarsening G Macro) :
     BeingCoarsening G.transpose Macro where
   proj := κ.proj
@@ -531,20 +566,20 @@ def OldEqTerminus {Contrib : Type} [PreorderBot Contrib]
     (G : Grid Contrib) (b : G.Being) : Prop :=
   ∀ c r, G.respondsTo b c = some r → G.grade b c r = shareBot
 
-example : twoBottomGrid.Terminus () :=
+theorem twoBottomGrid_terminus : twoBottomGrid.Terminus () :=
   fun _ _ _ => True.intro
 
-example : ¬ OldEqTerminus twoBottomGrid () := by
+theorem not_oldEqTerminus_twoBottomGrid : ¬ OldEqTerminus twoBottomGrid () := by
   intro h
   have hbad : TwoBottom.other = TwoBottom.chosen := h () () rfl
   cases hbad
 
-example : OldEqTerminus (twoBottomGrid.map mergeToUnit) () :=
+theorem oldEqTerminus_map_mergeToUnit : OldEqTerminus (twoBottomGrid.map mergeToUnit) () :=
   fun _ _ _ => rfl
 
 /-- The new predicate transports across the merge, while the old equality-token
     predicate would hold after the merge and fail before it. -/
-example :
+theorem oldEqTerminus_not_invariant :
     ((twoBottomGrid.map mergeToUnit).Terminus () ↔ twoBottomGrid.Terminus ()) ∧
       OldEqTerminus (twoBottomGrid.map mergeToUnit) () ∧
       ¬ OldEqTerminus twoBottomGrid () :=
@@ -557,27 +592,11 @@ example :
 
 end InvarianceNegative
 
-/- ==============================================================================
-   §N  Direction-underdetermination: the arrow's retype, witnessed
-
-   Theory: Karma ("the arrow retyped") demotes before/after from carried
-   structure to display. The checkable content is an underdetermination
-   fact in the same family as `no_agent_recovery_of_field_collision`:
-   the symmetric closure `ConditionsEither` does not determine `conditions`.
-   The two grids below agree on `ConditionsEither` at EVERY pair of welds and
-   disagree on `conditions` at a witness pair, so no function of the
-   symmetric structure returns the direction. Honest scope, as with the
-   agent-recovery theorem: this is not a claim about every grid, it is
-   the internal witness that symmetric delivery-structure under-
-   determines the arrow. Nothing here consumes physics; thermodynamics
-   enters the prose as the mechanism of the READING, never as a premise
-   of any theorem.
-============================================================================== -/
+/- Reading and motivation: Identification.lean, Commentary C.3. -/
 
 namespace DirectionNegative
 
-/-- One being, two calls, one response: the smallest web on which a
-    direction can be drawn two ways. -/
+/-- One being, two calls, one response: a small carrier with two orientations. -/
 abbrev W := RawWeld Unit Bool Unit
 
 /-- The weld at the `false` call. -/
@@ -604,8 +623,7 @@ def backwardGrid : Grid Nat where
   grade _ _ _ := 0
   conditions w₁ w₂ := w₁.call = true ∧ w₂.call = false
 
-/-- The two readings agree on the symmetric closure at every pair:
-    forgetting direction erases exactly the difference between them. -/
+/-- The two orientations agree on the symmetric closure at every pair. -/
 theorem conditionsEither_agrees (w₁ w₂ : W) :
     forwardGrid.ConditionsEither w₁ w₂ ↔ backwardGrid.ConditionsEither w₁ w₂ :=
   ⟨fun h => h.elim (fun ⟨h1, h2⟩ => Or.inr ⟨h2, h1⟩)
@@ -613,7 +631,7 @@ theorem conditionsEither_agrees (w₁ w₂ : W) :
    fun h => h.elim (fun ⟨h1, h2⟩ => Or.inr ⟨h2, h1⟩)
                    (fun ⟨h1, h2⟩ => Or.inl ⟨h2, h1⟩)⟩
 
-/-- And they disagree on the direction itself at the witness pair. -/
+/-- They disagree on `conditions` at the witness pair. -/
 theorem conditions_disagree :
     forwardGrid.conditions wFalse wTrue ∧
       ¬ backwardGrid.conditions wFalse wTrue := by
@@ -622,10 +640,7 @@ theorem conditions_disagree :
   · intro h
     cases h.left
 
-/-- No function of the symmetric structure recovers the direction: any
-    candidate correct on both grids would force their `conditions` to
-    coincide, and they do not. The direction is the reading's, never
-    the closure's — `no_agent_recovery` run at the arrow. -/
+/- Reading and motivation: Identification.lean, Commentary C.3. -/
 theorem no_direction_recovery_from_conditionsEither :
     ¬ ∃ recover : (W → W → Prop) → (W → W → Prop),
         recover forwardGrid.ConditionsEither = forwardGrid.conditions ∧
@@ -639,9 +654,9 @@ theorem no_direction_recovery_from_conditionsEither :
   exact conditions_disagree.right (hcond ▸ conditions_disagree.left)
 
 /-- The equilibrium-pole face, on the existing negative carrier: where
-    everything is order-equivalent, nothing is directed. -/
-example (a b : InvarianceNegative.TwoBottom) : ¬ Directed a b :=
-  no_direction_of_all_orderEq (fun _ _ => ⟨True.intro, True.intro⟩) a b
+    everything is order-equivalent, nothing is strict. -/
+theorem not_strict_twoBottom (a b : InvarianceNegative.TwoBottom) : ¬ Strict a b :=
+  no_strict_of_all_orderEq (fun _ _ => ⟨True.intro, True.intro⟩) a b
 
 end DirectionNegative
 
@@ -668,11 +683,11 @@ def twoBeingGrid : Grid Nat where
   grade _ _ _ := 0
   conditions _ _ := True
 
-/-- Merge reading: both fine tags are one macro tag. -/
+/-- Merge coarsening: both fine tags are one macro tag. -/
 def κmerge : BeingCoarsening twoBeingGrid Unit where
   proj _ := ()
 
-/-- Split reading: each fine tag remains its own macro tag. -/
+/-- Split coarsening: each fine tag remains its own macro tag. -/
 def κsplit : BeingCoarsening twoBeingGrid Bool where
   proj := id
 
@@ -696,9 +711,9 @@ def mergeBoundary (_p _q : Bool) : Prop := True
 
 def splitBoundary (p q : Bool) : Prop := p = q
 
-/-- No function of this grid's data recovers "the" partition: the same data
-    supports both the merge and the split readings, which disagree at
-    `false`/`true`. -/
+/-- No function of this grid's data recovers a unique partition: the same data
+    supports both the merge and the split coarsenings, which disagree at
+    `false` and `true`. -/
 theorem no_partition_recovery :
     ¬ ∃ recover : GridData → Bool → Bool → Prop,
         recover gridData = mergeBoundary ∧
@@ -715,17 +730,7 @@ theorem no_partition_recovery :
 
 end BeingNegative
 
-/- ==============================================================================
-   Self-line witness: permitted by the signature, not forced by it
-
-   The signature permits self-lines by decision, not oversight: irreflexivity of
-   delivery is a contingent regime fact, never structure carried by
-   `conditions`. A self-line is a correlation on which direction-reading gets no
-   grip; `not_directed_self` is the order-side display of the same strictness
-   point. This does not collide with shushō-ittō, which is typed as one weld
-   rather than two acts joined. Whether any real regime draws self-lines is a
-   delivery-question the grid declines.
-============================================================================== -/
+/- Reading and motivation: Identification.lean, Commentary C.3. -/
 
 namespace SelfLineWitness
 
@@ -749,17 +754,18 @@ def selfLineGrid : Grid Nat where
 def w : selfLineGrid.Weld :=
   ⟨Being.one, Call.call, Response.response⟩
 
-theorem w_has_live_share : selfLineGrid.waa_Appropriates w := by
+theorem w_has_live_share : selfLineGrid.WaaAppropriates w := by
   intro hbot
   cases hbot
 
-example : selfLineGrid.conditions w w :=
+theorem selfLine_conditions_self : selfLineGrid.conditions w w :=
   True.intro
 
-example : Grid.DirectedConvention.LandsAt selfLineGrid w w :=
+theorem selfLine_landsAt_self : Grid.DirectedConvention.LandsAt selfLineGrid w w :=
   ⟨True.intro, rfl⟩
 
-example : Grid.DirectedConvention.waa_OwnershipFace selfLineGrid w w :=
+theorem selfLine_waaOwnershipFace_self :
+    Grid.DirectedConvention.WaaOwnershipFace selfLineGrid w w :=
   ⟨⟨True.intro, rfl⟩, w_has_live_share⟩
 
 end SelfLineWitness

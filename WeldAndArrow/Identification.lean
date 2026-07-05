@@ -18,6 +18,111 @@ uses when placing them.
 
 import WeldAndArrow.Theorems
 
+/-
+================================================================================
+  §C Commentary
+================================================================================
+
+C.0 Naming and Scope
+
+Names beginning `Waa` mark identifiers whose names assert the paper's
+identification content: ownership, appropriation, whose-ness, reach-back, or
+sowing-side aiming/dedication. Unprefixed names remain the neutral delivery,
+order, token-projection, and tier-placement vocabulary. `Grid.DirectedConvention`
+marks vocabulary that consumes the directional reading of `conditions`; the
+primitive signature itself does not add asymmetry, irreflexivity, or transitivity
+axioms to `conditions`.
+
+C.1 Theory.lean
+
+`Config` is the formal place where "nothing self-indexed is stored" is enforced:
+it carries only a `Contrib`-valued tendency and no owner, being, or weld field.
+This is the type-level version of the paper's internal mis-feed discipline.
+
+Seeds, potency, and environs talk in the paper are read here as field-side
+delivery lines (`conditions`) and candidate receptions, not as capacities stored
+in a being. The alaya/bija-as-stored-state reading is deliberately not taken.
+
+The direction-freedom of `conditions` is a modelling decision tied to Theory:
+Karma, "The arrow retyped: direction as display". `ConditionsEither` records the
+symmetrized field fact, while `Grid.DirectedConvention` names the reading layer
+that consumes ordered roles. The thermodynamic/arrow-of-time gloss motivates the
+reading but is never a premise of a theorem.
+
+`RawWeld`, `Grid.index`, and `Grid.share` encode the MMK 8 point that there is no
+separate prior act or performer inside the formal signature: the index and share
+are projections from a completed weld. `no_agent_recovery_of_field_collision`
+is the internal recovery obstruction corresponding to that gloss.
+
+The hand-rolled `Preorder` is used for dependency-freedom and to keep the exact
+assumptions visible. Mathlib has the counterparts `Preorder`, `OrderBot`, and
+`IsBot`; the local `AtBot` is the order-class of the chosen bottom and is
+equivalent in role to Mathlib's `IsBot` predicate for that element.
+
+There is no `PreorderTop`: the solipsist/total-share gloss in the paper is an
+asymptote, not an attained element. By contrast, `PreorderBot` supplies an
+attained bottom so `AtBot` can express the share-zero pole as an order-class.
+
+`Stone`, `Terminus`, `AtPoleClass`, and `stone_is_terminus_vacuously` implement
+the function/share split discussed in Theory: Attainment. A stone has no mounted
+response; a terminus has mounted responses whose grade lies at the pole-class.
+
+`rePitch` keeps `_before` in the signature because the operation is conceptually
+on a prior configuration, even though the current simple implementation depends
+only on the received weld. `IsShareDrop` is the strict order comparison
+`Strict (G.share received) before.tendency`.
+
+The `BeingConvention` namespace records the reading in which fine tags may be
+diagnosed as macro beings. Its examples accommodate the paper's sentient,
+hare's-horn, buddha, and generated-boundary cases without adding a privileged
+partition to `Grid`.
+
+The separate/fuse interface (`ClaimLanguage`, `Distinction`,
+`RecordedUtterance`, `Tier`) is the small formal surface needed for the fox,
+Baizhang, shō/shu, genjō, and verdict-tier discussions. The formal module keeps
+only the abstract interface; this commentary retains the textual motivation.
+
+C.2 Theorems.lean
+
+The theorem layer proves consequences of the definitions: function/share facts,
+share-drop obstruction at the pole, delivery and landing projections, tier
+diagnostics, and the generated convention rows. The paper's readings of these
+facts live here as commentary only; the theorem statements consume only the
+neutral definitions.
+
+The strictness facts are now in `Theory.lean` as `Strict`, `strict_irrefl`,
+`not_strict_of_orderEq`, and `no_strict_of_all_orderEq`. The arrow-of-time gloss
+uses `Grid.DirectedConvention.TimeDirection`, an abbreviation of `Strict`.
+
+The `beforeAfterRow` and `beingsRow` results are the formal checks behind the
+paper's collapse/freeze table: the rows obey separate/fuse, and their live-tier
+denials are self-refuting as diagnoses.
+
+C.3 Invariance.lean
+
+`DisplayReparam` is the admission criterion for predicates that mention the
+contribution carrier: they must transport across order-preserving and
+pole-preserving changes of display convention. This is the formal counterpart
+of treating contribution values as display conventions rather than operational
+tokens.
+
+The `InvarianceNegative` example explains why equality with the chosen bottom
+is not the system predicate: equality-to-bottom fails to transport, while
+`AtBot` and `Terminus` do.
+
+`DirectionNegative` is the countermodel behind Theory: Karma, "the arrow
+retyped": two grids agree on `ConditionsEither` and disagree on `conditions`, so
+the symmetric field structure does not recover direction. The physics and
+thermodynamics language motivates the reading, but no theorem depends on it.
+
+`BeingNegative` is the parallel countermodel for designation: one fine grid
+admits both merge and split macro readings, so a unique being-boundary is not
+recoverable from the grid data alone.
+
+`SelfLineWitness` records that self-lines are permitted by the signature. The
+paper's shushō-ittō discussion is a reading of that permission, not an axiom.
+-/
+
 namespace WAA
 
 /- ==============================================================================
@@ -84,70 +189,70 @@ namespace DirectedConvention
 
 /-- The field-side report-face of "the sower reaps": the delivery line, before
     any act-time ownership is added. -/
-def waa_ReportFace (deed reception : G.Weld) : Prop :=
+def WaaReportFace (deed reception : G.Weld) : Prop :=
   DeliveredTo G deed reception
 
 /-- The full WAA-ownership-face: delivery reaches an actual reception and that
     reception WAA-appropriates. It is a deed at reception-time, not a standing
     relation. -/
-def waa_OwnershipFace (deed reception : G.Weld) : Prop :=
-  LandsAt G deed reception ∧ G.waa_Appropriates reception
+def WaaOwnershipFace (deed reception : G.Weld) : Prop :=
+  LandsAt G deed reception ∧ G.WaaAppropriates reception
 
 /-- The source's vacuous reach-back ("an appropriating with nothing arrived
     to appropriate — not a falsehood ... but vacuous"): an actual,
     appropriating reception whose claimed deed never delivered to it. The
     vacuity is a property of this three-conjunct face; bare non-delivery
     alone is `NotDeliveredTo` and carries no appropriation. -/
-def waa_VacuousOwnershipFace (deed reception : G.Weld) : Prop :=
-  NotDeliveredTo G deed reception ∧ G.Actual reception ∧ G.waa_Appropriates reception
+def WaaVacuousOwnershipFace (deed reception : G.Weld) : Prop :=
+  NotDeliveredTo G deed reception ∧ G.Actual reception ∧ G.WaaAppropriates reception
 
 /-- The WAA-ownership-face includes the report-face. -/
-theorem waa_reportFace_of_waa_ownershipFace
-    {deed reception : G.Weld} (h : waa_OwnershipFace G deed reception) :
-    waa_ReportFace G deed reception :=
+theorem waaReportFace_of_waaOwnershipFace
+    {deed reception : G.Weld} (h : WaaOwnershipFace G deed reception) :
+    WaaReportFace G deed reception :=
   h.left.left
 
 /-- The WAA-ownership-face includes actual reception. -/
-theorem actual_of_waa_ownershipFace
-    {deed reception : G.Weld} (h : waa_OwnershipFace G deed reception) :
+theorem actual_of_waaOwnershipFace
+    {deed reception : G.Weld} (h : WaaOwnershipFace G deed reception) :
     G.Actual reception :=
   h.left.right
 
 /-- The WAA-ownership-face includes WAA-appropriation at reception-time. -/
-theorem waa_appropriation_of_waa_ownershipFace
-    {deed reception : G.Weld} (h : waa_OwnershipFace G deed reception) :
-    G.waa_Appropriates reception :=
+theorem waaAppropriates_of_waaOwnershipFace
+    {deed reception : G.Weld} (h : WaaOwnershipFace G deed reception) :
+    G.WaaAppropriates reception :=
   h.right
 
 /-- Full landing plus WAA-appropriation introduces the WAA-ownership-face. -/
-theorem waa_ownershipFace_intro
+theorem waaOwnershipFace_intro
     {deed reception : G.Weld}
-    (hland : LandsAt G deed reception) (happ : G.waa_Appropriates reception) :
-    waa_OwnershipFace G deed reception :=
+    (hland : LandsAt G deed reception) (happ : G.WaaAppropriates reception) :
+    WaaOwnershipFace G deed reception :=
   ⟨hland, happ⟩
 
 /-- Bare non-delivery cannot at the same time be a full WAA-ownership-face for
     that deed and reception. -/
-theorem not_waa_ownershipFace_of_vacuous
+theorem not_waaOwnershipFace_of_vacuous
     {deed reception : G.Weld} (hv : NotDeliveredTo G deed reception) :
-    ¬ waa_OwnershipFace G deed reception :=
+    ¬ WaaOwnershipFace G deed reception :=
   fun hown => hv hown.left.left
 
 /-- A vacuous WAA-ownership attempt is not a full WAA-ownership-face. -/
-theorem not_waa_ownershipFace_of_waa_vacuousOwnershipFace
-    {deed reception : G.Weld} (hv : waa_VacuousOwnershipFace G deed reception) :
-    ¬ waa_OwnershipFace G deed reception :=
-  not_waa_ownershipFace_of_vacuous G hv.left
+theorem not_waaOwnershipFace_of_waaVacuousOwnershipFace
+    {deed reception : G.Weld} (hv : WaaVacuousOwnershipFace G deed reception) :
+    ¬ WaaOwnershipFace G deed reception :=
+  not_waaOwnershipFace_of_vacuous G hv.left
 
 /-- The diachronic whose-question decomposes into delivery plus fresh
     WAA-appropriation; no third cross-gap owner is part of this definition. -/
-def waa_DiachronicWhose (deed reception : G.Weld) : Prop :=
-  DeliveredTo G deed reception ∧ G.waa_Appropriates reception
+def WaaDiachronicWhose (deed reception : G.Weld) : Prop :=
+  DeliveredTo G deed reception ∧ G.WaaAppropriates reception
 
-theorem waa_diachronicWhose_iff_delivery_and_waa_appropriation
+theorem waaDiachronicWhose_iff_delivery_and_waaAppropriates
     (deed reception : G.Weld) :
-    waa_DiachronicWhose G deed reception ↔
-      DeliveredTo G deed reception ∧ G.waa_Appropriates reception :=
+    WaaDiachronicWhose G deed reception ↔
+      DeliveredTo G deed reception ∧ G.WaaAppropriates reception :=
   Iff.rfl
 
 end DirectedConvention
@@ -190,8 +295,8 @@ theorem stateToolFits_of_eq_shareBot
 /-- With decidability of the one pole-class comparison, pole-typing can be
     read as an iff: the state-tool fits just where the share is at the
     pole-class. -/
-theorem atBot_of_stateToolFits [∀ a : Contrib, Decidable (AtBot a)]
-    {w : G.Weld} (hfits : G.StateToolFits w) :
+theorem atBot_of_stateToolFits {w : G.Weld}
+    [Decidable (AtBot (G.share w))] (hfits : G.StateToolFits w) :
     AtBot (G.share w) := by
   by_cases hshare : AtBot (G.share w)
   · exact hshare
@@ -199,8 +304,8 @@ theorem atBot_of_stateToolFits [∀ a : Contrib, Decidable (AtBot a)]
 
 /-- With decidability of the one pole-class comparison, pole-typing is an
     exact iff. -/
-theorem stateToolFits_iff_atBot [∀ a : Contrib, Decidable (AtBot a)]
-    (w : G.Weld) :
+theorem stateToolFits_iff_atBot (w : G.Weld)
+    [Decidable (AtBot (G.share w))] :
     G.StateToolFits w ↔ AtBot (G.share w) :=
   ⟨G.atBot_of_stateToolFits, G.stateToolFits_of_atBot⟩
 
@@ -214,9 +319,9 @@ theorem stateToolFits_of_terminus_response
 namespace DirectedConvention
 
 /-- If the state-tool fits a reception, the WAA-ownership-face cannot fire there. -/
-theorem no_waa_ownershipFace_of_stateToolFits
+theorem not_waaOwnershipFace_of_stateToolFits
     {deed reception : G.Weld} (hfits : G.StateToolFits reception) :
-    ¬ waa_OwnershipFace G deed reception :=
+    ¬ WaaOwnershipFace G deed reception :=
   fun hown => hfits hown.right
 
 end DirectedConvention
@@ -244,15 +349,15 @@ theorem obeysRule_separates_at_actTime
 end Grid
 
 /-- The WAA-offices karmic ownership holds in the paper's identity-claim. -/
-inductive waa_OwnershipOffice
-  | waa_cetana
-  | waa_reception
-  | waa_practice
-  | waa_remorse
-  | waa_absolution
-  | waa_dedication
+inductive WaaOwnershipOffice
+  | cetana
+  | reception
+  | practice
+  | remorse
+  | absolution
+  | dedication
 
-namespace waa_OwnershipOffice
+namespace WaaOwnershipOffice
 
 variable {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib}
 
@@ -261,21 +366,21 @@ variable {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib}
     cross-gap state* — is architectural, carried by what `Config` does not
     contain and by the absence of any `Config`-consuming assignment
     function; it is not this definition's proposition. -/
-def assignedTier (_office : waa_OwnershipOffice) (w : G.Weld) : Grid.Tier G :=
+def assignedTier (_office : WaaOwnershipOffice) (w : G.Weld) : Grid.Tier G :=
   Grid.Tier.actTime w
 
-example (office : waa_OwnershipOffice) (w : G.Weld) :
+theorem assignedTier_eq_actTime (office : WaaOwnershipOffice) (w : G.Weld) :
     office.assignedTier w = Grid.Tier.actTime w := rfl
 
 /-- Assigning an office to act-time has exactly the weld's live-share
     condition. -/
-example
-    (office : waa_OwnershipOffice) (w : G.Weld) :
+theorem assignedTier_hasLiveShare_iff
+    (office : WaaOwnershipOffice) (w : G.Weld) :
     Grid.Tier.hasLiveShare G (office.assignedTier w) ↔
       G.HasSelfPoleIndex w :=
   Iff.rfl
 
-end waa_OwnershipOffice
+end WaaOwnershipOffice
 
 /-- Contemporary positions placed by `Paper/Proofs.md`. -/
 inductive ContemporaryPosition
@@ -294,23 +399,23 @@ inductive ContemporaryPlacement
 namespace ContemporaryPosition
 
 /-- The grid placement assigned to each contemporary position in the paper. -/
-def waa_placement : ContemporaryPosition → ContemporaryPlacement
+def waaPlacement : ContemporaryPosition → ContemporaryPlacement
   | .siderits => .seriesQuestions
   | .ganeri => .nearestAlly
   | .zahavi => .retype
   | .sartre => .occupant
 
-example :
-    waa_placement ContemporaryPosition.siderits = ContemporaryPlacement.seriesQuestions := rfl
+theorem siderits_waaPlacement :
+    waaPlacement ContemporaryPosition.siderits = ContemporaryPlacement.seriesQuestions := rfl
 
-example :
-    waa_placement ContemporaryPosition.ganeri = ContemporaryPlacement.nearestAlly := rfl
+theorem ganeri_waaPlacement :
+    waaPlacement ContemporaryPosition.ganeri = ContemporaryPlacement.nearestAlly := rfl
 
-example :
-    waa_placement ContemporaryPosition.zahavi = ContemporaryPlacement.retype := rfl
+theorem zahavi_waaPlacement :
+    waaPlacement ContemporaryPosition.zahavi = ContemporaryPlacement.retype := rfl
 
-example :
-    waa_placement ContemporaryPosition.sartre = ContemporaryPlacement.occupant := rfl
+theorem sartre_waaPlacement :
+    waaPlacement ContemporaryPosition.sartre = ContemporaryPlacement.occupant := rfl
 
 end ContemporaryPosition
 
@@ -323,7 +428,7 @@ variable (G : Grid Contrib)
    of distinctions (used by the Zahavi placement and the disposition/act
    redrawing). An `example`, not a theorem, for the same reason the voice
    and placement checks are. -/
-example
+theorem retype_constructor_exists
     (oldDistinction newDistinction : Distinction G) :
     ∃ out : GeneratorOutcome G,
       out = GeneratorOutcome.retype oldDistinction newDistinction :=
@@ -346,7 +451,7 @@ inductive Disclaimer
   | linjiReading
   | shoVersusSatori
   | genjoArrivals
-  | waa_karmaIdentification
+  | waaKarmaIdentification
   | weldTokenReflexivity
   | mmk17Decomposition
   | stoneOutsideEdge
@@ -391,7 +496,7 @@ def number : Disclaimer → Nat
   | .linjiReading => 6
   | .shoVersusSatori => 7
   | .genjoArrivals => 8
-  | .waa_karmaIdentification => 9
+  | .waaKarmaIdentification => 9
   | .weldTokenReflexivity => 10
   | .mmk17Decomposition => 11
   | .stoneOutsideEdge => 12
@@ -423,10 +528,10 @@ def number : Disclaimer → Nat
   | .hareHornRegister => 38
   | .modalRealismFreeze => 39
 
-example :
-    number Disclaimer.waa_karmaIdentification = 9 := rfl
+theorem waaKarmaIdentification_number :
+    number Disclaimer.waaKarmaIdentification = 9 := rfl
 
-example :
+theorem modalRealismFreeze_number :
     number Disclaimer.modalRealismFreeze = 39 := rfl
 
 end Disclaimer

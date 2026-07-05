@@ -4,3 +4,4 @@ import WeldAndArrow.Theory
 import WeldAndArrow.Theorems
 import WeldAndArrow.Identification
 import WeldAndArrow.Invariance
+import WeldAndArrow.Audit

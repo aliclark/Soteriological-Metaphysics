@@ -1,13 +1,14 @@
 /-
 ================================================================================
-  The Weld and the Arrow — II. Theorems
-  Checked consequences of `WeldAndArrow.Theory`
+  WeldAndArrow.Theorems
+  Checked consequences of WeldAndArrow.Theory
 ================================================================================
 
-This file keeps the theorem layer conservative. It imports the primitive
-signature and proves consequences that already follow from the definitions in
-`Theory.lean`: function/share facts, re-pitch facts, delivery/share-drop landing
-facts, actual-pair projections, and the separate/fuse diagnostics.
+This module proves consequences of the primitive definitions: order facts,
+function/share facts, re-pitch facts, delivery and landing projections, pair
+projections, and tier diagnostics.
+
+Reading and motivation: Identification.lean, Commentary C.2.
 -/
 
 import WeldAndArrow.Theory
@@ -33,35 +34,6 @@ theorem not_ge_of_incomparable {a b : α} (h : Incomparable a b) :
     ¬ b ≼ a :=
   h.right
 
-/-- Direction in a preorder: strict comparability — `a` genuinely below
-    `b`, with no return comparison. This is the shape `IsShareDrop`
-    already consumes, named once so the temporal reading can consume it
-    too: time-direction stands to an event-order exactly as arrogation
-    stands to the share-order — a strictness that appears away from the
-    pole (Theory: Karma, "the arrow retyped"). -/
-def Directed (a b : α) : Prop := a ≼ b ∧ ¬ b ≼ a
-
-/-- Direction is strictness, and strictness is never reflexive: no element
-    is directed to itself. Where the system does directional work, the
-    irreflexivity falls out as a theorem rather than being posited, which is
-    why `conditions` owes no such axiom (see `Grid.DirectedConvention`). -/
-theorem not_directed_self (a : α) : ¬ Directed a a :=
-  fun h => h.right h.left
-
-/-- Order-equivalence kills direction. -/
-theorem not_directed_of_orderEq {a b : α} (h : OrderEq a b) :
-    ¬ Directed a b :=
-  fun hd => hd.right h.right
-
-/-- The equilibrium pole: where everything is order-equivalent — the
-    null ray, the heat-death carrier, `TwoBottom` — no pair is directed.
-    Direction exists exactly where strictness does; at the symmetric
-    pole the order flattens and the reading has nothing to read. -/
-theorem no_direction_of_all_orderEq
-    (h : ∀ a b : α, OrderEq a b) (a b : α) :
-    ¬ Directed a b :=
-  not_directed_of_orderEq (h a b)
-
 end Preorder
 
 namespace Grid
@@ -69,11 +41,10 @@ namespace Grid
 variable {Contrib : Type} [PreorderBot Contrib]
 variable (G : Grid Contrib)
 
-/- ==============================================================================
-   Function, share, and the two poles
-============================================================================== -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 
-/-- Row 2 is exactly the grade recorded for the weld. -/
+/-- The share projection is exactly the grade recorded for the weld. -/
+@[simp]
 theorem share_eq_grade (w : G.Weld) :
     G.share w = G.grade w.agent w.call w.response :=
   rfl
@@ -111,17 +82,17 @@ theorem not_stone_of_response
     ¬ G.Stone b :=
   fun hstone => hstone c ⟨r, hresp⟩
 
-/-- A stone witnesses the stone side of the zero-share pole. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem atPoleClass_of_stone (b : G.Being) (hstone : G.Stone b) :
     G.AtPoleClass b :=
   Or.inl hstone
 
-/-- A terminus witnesses the terminus side of the zero-share pole. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem atPoleClass_of_terminus (b : G.Being) (hterm : G.Terminus b) :
     G.AtPoleClass b :=
   Or.inr hterm
 
-/-- A live terminus sits at the zero-share pole and is not stone-typed. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem atPoleClass_and_not_stone_of_liveTerminus
     (b : G.Being) (h : G.LiveTerminus b) :
     G.AtPoleClass b ∧ ¬ G.Stone b :=
@@ -133,17 +104,15 @@ theorem not_stone_of_responsiveTerminus_of_call
     ¬ G.Stone b :=
   G.liveTerminus_not_stone b (G.responsiveTerminus_live_of_call b c h)
 
-/- ==============================================================================
-   Re-pitch and share-drops
-============================================================================== -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 
-/-- Re-pitching carries forward exactly the received weld's share. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem rePitch_tendency_eq_share
     (before : Config Contrib) (received : G.Weld) :
     (G.rePitch before received).tendency = G.share received :=
   rfl
 
-/-- A share-drop can be read as the corresponding strict drop in the re-pitched tendency. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem isShareDrop_iff_rePitch_tendency_drop
     (before : Config Contrib) (received : G.Weld) :
     G.IsShareDrop before received ↔
@@ -151,14 +120,14 @@ theorem isShareDrop_iff_rePitch_tendency_drop
         ¬ (before.tendency ≼ (G.rePitch before received).tendency)) :=
   Iff.rfl
 
-/-- The re-pitched tendency of a share-drop event is no greater than the prior tendency. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem rePitch_tendency_le_before_of_shareDrop
     {before : Config Contrib} {received : G.Weld}
     (h : G.IsShareDrop before received) :
     (G.rePitch before received).tendency ≼ before.tendency :=
   h.left
 
-/-- A share-drop event is not ordered back above its prior tendency. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem not_before_le_rePitch_tendency_of_shareDrop
     {before : Config Contrib} {received : G.Weld}
     (h : G.IsShareDrop before received) :
@@ -178,15 +147,14 @@ theorem rePitch_tendency_atBot_of_terminus_response
 
 namespace DirectedConvention
 
-/-- A share-drop line is an environs-line. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem environsLine_of_shareDropLine
     {before : Config Contrib} {b : G.Being} {deed reception : G.Weld}
     (h : ShareDropLine G before b deed reception) :
     EnvironsLine G b deed reception :=
   h.left
 
-/-- A share-drop line's reception is share-ceding against the supplied
-    tendency. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem isShareDrop_of_shareDropLine
     {before : Config Contrib} {b : G.Being} {deed reception : G.Weld}
     (h : ShareDropLine G before b deed reception) :
@@ -202,9 +170,7 @@ theorem deliveredTo_of_environsLine
 
 end DirectedConvention
 
-/-- No reception is share-ceding against a pole-typed tendency: from
-    `before.tendency ≼ shareBot ≼ G.share received`, transitivity supplies
-    exactly the comparison `IsShareDrop`'s second conjunct denies. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem not_isShareDrop_of_tendency_atBot
     {before : Config Contrib} (h : AtBot before.tendency)
     (received : G.Weld) :
@@ -212,8 +178,7 @@ theorem not_isShareDrop_of_tendency_atBot
   intro hdrop
   exact hdrop.right (Preorder.le_trans h (shareBot_le (G.share received)))
 
-/-- Equality with the designated bottom is a thin bridge into the pole-class
-    share-drop lemma. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem not_isShareDrop_of_eq_shareBot_tendency
     {before : Config Contrib} (h : before.tendency = shareBot)
     (received : G.Weld) :
@@ -222,9 +187,7 @@ theorem not_isShareDrop_of_eq_shareBot_tendency
 
 namespace DirectedConvention
 
-/-- The lens goes quiet at the pole: an environs read against a pole-class
-    tendency contains no share-drop lines — nothing left to release, a
-    feature of the reading, not a defect. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem no_shareDropLine_of_tendency_atBot
     {before : Config Contrib} (h : AtBot before.tendency)
     (b : G.Being) (deed reception : G.Weld) :
@@ -240,8 +203,7 @@ theorem no_shareDropLine_of_eq_shareBot_tendency
     ¬ ShareDropLine G before b deed reception :=
   no_shareDropLine_of_tendency_atBot G (atBot_of_eq_shareBot h) b deed reception
 
-/-- Bridge to effectiveness talk as display: a share-drop line whose reception
-    is actual witnesses the deed's share-drop landing for that tendency. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem hasShareDropLanding_of_shareDropLine_actual
     {before : Config Contrib} {b : G.Being} {deed reception : G.Weld}
     (hline : ShareDropLine G before b deed reception)
@@ -251,20 +213,18 @@ theorem hasShareDropLanding_of_shareDropLine_actual
 
 end DirectedConvention
 
-/- ==============================================================================
-   Delivery, reach-back, and share-drop landing
-============================================================================== -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 
 namespace DirectedConvention
 
 /-- A full reach-back is the same field-side fact as delivery. -/
-theorem waa_reachBackFull_iff_deliveredTo (deed reception : G.Weld) :
-    waa_ReachBackFull G deed reception ↔ DeliveredTo G deed reception :=
+theorem waaReachBackFull_iff_deliveredTo (deed reception : G.Weld) :
+    WaaReachBackFull G deed reception ↔ DeliveredTo G deed reception :=
   Iff.rfl
 
 /-- An aimed call is just delivery, stated from the sowing side. -/
-theorem waa_aimedAt_iff_deliveredTo (deed reception : G.Weld) :
-    waa_AimedAt G deed reception ↔ DeliveredTo G deed reception :=
+theorem waaAimedAt_iff_deliveredTo (deed reception : G.Weld) :
+    WaaAimedAt G deed reception ↔ DeliveredTo G deed reception :=
   Iff.rfl
 
 /-- Landing includes delivery. -/
@@ -279,35 +239,35 @@ theorem actual_of_landsAt
     G.Actual reception :=
   h.right
 
-/-- A share-drop landing includes an ordinary landing. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem landsAt_of_landsWithShareDrop
     {before : Config Contrib} {deed reception : G.Weld}
     (h : LandsWithShareDrop G before deed reception) :
     LandsAt G deed reception :=
   h.left
 
-/-- A share-drop landing includes the receiver-side share-drop judgement. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem isShareDrop_of_landsWithShareDrop
     {before : Config Contrib} {deed reception : G.Weld}
     (h : LandsWithShareDrop G before deed reception) :
     G.IsShareDrop before reception :=
   h.right
 
-/-- A share-drop landing is delivered. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem deliveredTo_of_landsWithShareDrop
     {before : Config Contrib} {deed reception : G.Weld}
     (h : LandsWithShareDrop G before deed reception) :
     DeliveredTo G deed reception :=
   deliveredTo_of_landsAt G (landsAt_of_landsWithShareDrop G h)
 
-/-- A share-drop landing is received by an actual weld. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem actual_of_landsWithShareDrop
     {before : Config Contrib} {deed reception : G.Weld}
     (h : LandsWithShareDrop G before deed reception) :
     G.Actual reception :=
   actual_of_landsAt G (landsAt_of_landsWithShareDrop G h)
 
-/-- Share-drop landing gives an actual landing. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem exists_landsAt_of_hasShareDropLanding
     {before : Config Contrib} {deed : G.Weld}
     (h : HasShareDropLanding G before deed) :
@@ -315,7 +275,7 @@ theorem exists_landsAt_of_hasShareDropLanding
   h.elim (fun reception hland =>
     ⟨reception, landsAt_of_landsWithShareDrop G hland⟩)
 
-/-- Share-drop landing gives an actual receiving weld. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem exists_actual_reception_of_hasShareDropLanding
     {before : Config Contrib} {deed : G.Weld}
     (h : HasShareDropLanding G before deed) :
@@ -323,7 +283,7 @@ theorem exists_actual_reception_of_hasShareDropLanding
   h.elim (fun reception hland =>
     ⟨reception, actual_of_landsWithShareDrop G hland⟩)
 
-/-- Share-drop landing gives a receiver-side share-drop witness. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem exists_shareDrop_reception_of_hasShareDropLanding
     {before : Config Contrib} {deed : G.Weld}
     (h : HasShareDropLanding G before deed) :
@@ -357,13 +317,13 @@ theorem firstConditionsSecond_iff_deliveredTo (p : ReceptionPair G) :
       DirectedConvention.DeliveredTo G p.first.weld p.second.weld :=
   Iff.rfl
 
-/-- The first re-pitch in a pair sequence carries the first weld's share. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem rePitchSequence_first_tendency
     (before : Config Contrib) (p : ReceptionPair G) :
     (rePitchSequence (G := G) before p).fst.tendency = G.share p.first.weld :=
   rfl
 
-/-- The second re-pitch in a pair sequence carries the second weld's share. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem rePitchSequence_second_tendency
     (before : Config Contrib) (p : ReceptionPair G) :
     (rePitchSequence (G := G) before p).snd.tendency = G.share p.second.weld :=
@@ -375,17 +335,17 @@ end ReceptionPair
    Tiers, utterances, and separate/fuse diagnostics
 ============================================================================== -/
 
-/-- The floor tier has no live share. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem floor_has_no_live_share :
     ¬ Tier.hasLiveShare G (Tier.floor : Tier G) :=
   fun h => h
 
-/-- Act-time live share is exactly the live self-pole index predicate. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem actTime_hasLiveShare_iff_hasSelfPoleIndex (w : G.Weld) :
     Tier.hasLiveShare G (Tier.actTime w) ↔ G.HasSelfPoleIndex w :=
   Iff.rfl
 
-/-- Pole-class act-time tiers have no live share. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem not_actTime_hasLiveShare_of_atBot
     {w : G.Weld} (h : AtBot (G.share w)) :
     ¬ Tier.hasLiveShare G (Tier.actTime w) :=
@@ -403,13 +363,13 @@ theorem not_collapse_floor (d : Distinction G) :
     ¬ d.Collapse (Tier.floor : Tier G) :=
   fun hcollapse => G.floor_has_no_live_share hcollapse.left
 
-/-- Collapse carries its live-share witness. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem hasLiveShare_of_collapse
     {d : Distinction G} {t : Tier G} (h : d.Collapse t) :
     Tier.hasLiveShare G t :=
   h.left
 
-/-- Separation carries its live-share witness. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem hasLiveShare_of_separated
     {d : Distinction G} {t : Tier G} (h : d.Separated t) :
     Tier.hasLiveShare G t :=
@@ -427,7 +387,7 @@ theorem fused_of_obeysSeparateFuse
     d.Fused t :=
   h.right t
 
-/-- Obeying the rule gives separation at every live-share tier. -/
+/- Reading and motivation: Identification.lean, Commentary C.2. -/
 theorem separated_of_obeysSeparateFuse
     {d : Distinction G} (h : d.ObeysSeparateFuse)
     {t : Tier G} (ht : Tier.hasLiveShare G t) :
@@ -445,6 +405,7 @@ namespace RecordedUtterance
 variable {G : Grid Contrib} {L : ClaimLanguage G}
 
 /-- The answered call is the call carried by the utterance's weld. -/
+@[simp]
 theorem answersCall_eq_weld_call (u : RecordedUtterance G L) :
     answersCall u = u.weld.call :=
   rfl
@@ -459,12 +420,12 @@ end RecordedUtterance
 namespace ErrorGrade
 
 /-- Verdict errors speak in the assertable voice. -/
-example :
+theorem verdict_voice_assertable :
     ErrorGrade.voice ErrorGrade.verdict = VerdictVoice.assertable :=
   rfl
 
 /-- Shortfall errors speak in the displayable voice. -/
-example :
+theorem shortfall_voice_displayable :
     ErrorGrade.voice ErrorGrade.shortfall = VerdictVoice.displayable :=
   rfl
 

@@ -1,134 +1,23 @@
 /-
 ================================================================================
-  The Weld and the Arrow — I. Theory
-  A Lean 4 formalization of `paper/Theory.md`
+  WeldAndArrow.Theory
+  Primitive signature and order-theoretic infrastructure
 ================================================================================
 
-STATUS: checked by `lake build`. The file is intentionally conservative:
-mostly term-mode proofs, no Mathlib dependency, and only the small amount of
-core Lean needed to keep the theory's primitive signature executable.
+This module contains the dependency-free core signature: a local preorder with
+bottom, the grid and weld types, configuration update, delivery structure,
+convention namespaces, tier machinery, and small concrete sanity witnesses.
 
-No `import`s. The order-theoretic notion is a hand-rolled `Preorder`, not
-Mathlib's `Preorder`, to stay dependency-free and make the exact assumptions
-visible.
-
-Downstream proof/theorem files should import this module, or the library root
-that re-exports it. This file is *only* Theory: the primitive sorts and the
-rules, plus a handful of sanity lemmas that check a definition does what the
-prose claims of it. Real theorems (backsliding is the one exception — see §2,
-it is stated as a theorem already in `Theory.md` itself) belong downstream.
-
---------------------------------------------------------------------------------
-Design log
---------------------------------------------------------------------------------
-
-* "Nothing self-indexed is stored" is enforced by TYPE DISCIPLINE, not by a
-  proved proposition. `Config` (§2) has exactly one field, a `Contrib`-valued
-  tendency, and no field of type `Weld` or `Being`-as-owner. That absence is
-  not a lemma with a proof term; it is a fact about a `structure` command,
-  visible by reading it. This is the positive-direction analogue of the
-  paper's internal mis-feed discipline: the elaborator accepts the field
-  residue and the stored tendency, but it is never given a stored owner. A
-  later weld's share is never a function of any `Config`, because no such
-  function exists anywhere in this signature for it to be one of.
-
-* Seeds are field-side. Where the paper speaks of the seeds around a
-  being, a "seed" names a standing delivery-line of the web
-  (`conditions`), never a potency stored in a being: the ālaya/bīja-as-
-  stored-state reading is deliberately not taken. "Potency" names a
-  family of such lines incident on a being's candidate receptions —
-  relational facts of the web, not carried capacity — so the disposition
-  the paper retypes is not readmitted: nothing here is *of* the being.
-  The lens is momentary and indexical: successive readings of a tenseless
-  web; a great upāya-weld does not *alter* the reading, it is included in
-  it — display, not mechanism, nothing travels. And it is descriptive
-  only: no comparison, domination, or prescription is defined over it.
-
-* Direction-freedom of `conditions` is a DECISION, not an omission. The
-  delivery relation carries no asymmetry, no irreflexivity, and no
-  transitivity axioms, and `ReceptionPair` asserts no ordering between its
-  two receptions. This is the formal face of the arrow's retype (Theory:
-  Karma, "The arrow retyped: direction as display"): the field carries
-  correlational structure; before/after is a reading projected into it by
-  gradient-embedded beings — the ratchet — never structure. The floor rule
-  here eats one more level, as it is licensed to ("the two truths
-  themselves are conventional"): act-time, the separate/fuse rule's own
-  pivot, is a tier WITHIN the thermodynamic convention. No circle — that
-  is precisely the convention beings live in, and why diagnosis happens
-  there; floor-fusion accordingly includes fusing before/after. Checked
-  counterparts: `ConditionsEither` (§1) and the direction-underdetermination
-  countermodel (Invariance). Nothing in any theorem consumes physics:
-  thermodynamics enters commentary as the mechanism of the READING, never
-  as a premise.
-
-* The `Weld`/`Index` order follows the central modelling choice here:
-  `Weld` is primitive (an agent, a call, a response, bundled — nothing else,
-  and in particular no separate prior `Act` a
-  `Weld` could be said to interpret, since MMK 8 is explicitly "neither
-  prior, neither based"), and `index`/`share` are *projections out of* a
-  completed `Weld`, never inputs to constructing one. There is no function
-  in this file of type `Config _ → Being` or `Call × Response → Being`
-  that is asserted total and correct — the one candidate that would be
-  (`recover`, in the Preview section) is refuted, not built. That is the
-  file's whole enforcement of "self-anchoring": no prior performer, because
-  nothing here ever manufactures an index without first being handed a
-  complete occurrence to project it from.
-
-* The tier machinery (separate/fuse) exposes the small deep interface
-  downstream theorem files will need: a `ClaimLanguage` gives an
-  object-language of claims together with tier-indexed satisfaction, a
-  `Distinction` stores two claim-objects rather than two bare `Tier → Prop`
-  predicates, and a `RecordedUtterance` stores the utterance's weld, offered
-  tier, and content. Theory.lean does not choose the concrete language or run
-  the taxonomy generator. That remains theorem-level content. The point of
-  the interface is only to prevent a shallow encoding from becoming a dead
-  end once the fox's sentence, Baizhang's rule, and other recorded utterances
-  have to be graded as inspectable objects.
-
-* Every `Contrib`-valued magnitude is kept under a hand-rolled `Preorder` —
-  reflexive and transitive, deliberately NOT required to be total. This is
-  not a shortcut, it is required by the source text: "some of them, where
-  call and self-maintenance interact in the driving, simply incomparable"
-  (Theory: Attainment). Mathlib's `Preorder`, notionally the "right" class,
-  would have worked identically here; a `LinearOrder` would have silently
-  contradicted the paper, which is the reason this file uses its own
-  `Preorder` rather than importing whatever the standard library offers.
-
-* The pole-class (the paper's prose "share-zero pole") is an order-class
-  (`AtBot`), not literal identity with the chosen representative `shareBot`.
-  Equality-to-`shareBot` lemmas are kept only as thin bridges into that class;
-  theorem-facing predicates should consult the order comparison. This is the
-  formal counterpart of treating contribution values as display conventions
-  over a preorder rather than operational tokens.
-
-* Kept at plain `Type` throughout rather than universe-polymorphic `Type*`
-  because the current examples and intended signatures all live in the first
-  universe. Upgrading to universe polymorphism later is routine and touches
-  no proofs, only signatures.
+Reading and motivation: Identification.lean, Commentary C.1.
 -/
 
 namespace WAA
 
-/- `waa_` marks identifiers whose names assert part of the paper's
-   karma-identification: ownership, appropriation, whose-ness, reach-back,
-   or sowing-side aiming/dedication. Unprefixed names are reserved for
-   neutral delivery/order structure, token-reflexive projection identities
-   (`index`, `SelfAnchored`), and Row-2 index-placement vocabulary
-   (`HasSelfPoleIndex`, `selfPoleIndex`, `Tier.hasLiveShare`): these assert
-   what a completed weld already displays, or where the index is placed, never
-   an appropriation. `Grid.DirectedConvention` is the second marking: it names
-   the directional reading of `conditions`. The two markings compose. -/
-
 /- ==============================================================================
-   §0  A dependency-free preorder for display-scalars
-
-   Row 2 "states a partial ordering, not a measure" (Theory: Attainment).
-   `Preorder` asks for exactly reflexivity and transitivity: nothing else,
-   on purpose, so that `Incomparable` below is a genuine possibility rather
-   than a defect a total order would rule out by fiat.
+   §0  Dependency-free preorder infrastructure
 ============================================================================== -/
 
-/-- A bare preorder, rolled by hand and *not* assumed total or antisymmetric. -/
+/-- A bare preorder, rolled by hand and not assumed total or antisymmetric. -/
 class Preorder (α : Type) where
   /-- The display-order relation: `a ≼ b` means `a` is no more self-driven
       than `b` in the ordinal Row-2 sense. -/
@@ -138,13 +27,18 @@ class Preorder (α : Type) where
 
 @[inherit_doc] infix:50 " ≼ " => Preorder.le
 
-/-- Neither side dominates — the formal home of "simply incomparable"
-    (Theory: Attainment), not a defect to be patched but a shape Row 2's
-    ordering is allowed to have. -/
+instance instTransPreorderLe [Preorder α] :
+    Trans (fun a b : α => a ≼ b) (fun a b : α => a ≼ b) (fun a b : α => a ≼ b) where
+  trans := fun h₁ h₂ => Preorder.le_trans h₁ h₂
+
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def Incomparable [Preorder α] (a b : α) : Prop := ¬ a ≼ b ∧ ¬ b ≼ a
 
 /-- Order-equivalence: neither more nor less self-driven. -/
 def OrderEq [Preorder α] (a b : α) : Prop := a ≼ b ∧ b ≼ a
+
+/-- Strict comparability in a preorder: `a` is below `b`, with no return comparison. -/
+def Strict [Preorder α] (a b : α) : Prop := a ≼ b ∧ ¬ b ≼ a
 
 theorem orderEq_refl [Preorder α] (a : α) : OrderEq a a :=
   ⟨Preorder.le_refl a, Preorder.le_refl a⟩
@@ -159,15 +53,19 @@ theorem orderEq_trans [Preorder α] {a b c : α}
   ⟨Preorder.le_trans hab.left hbc.left,
     Preorder.le_trans hbc.right hab.right⟩
 
-/-- The bottom is a genuine, ATTAINED element — the terminus, the paper's
-    prose "share-zero" pole
-    (Theory: Attainment, "an interior pole"), comparable to everything
-    below it by fiat, exactly as a least self-driven placement should be.
-    There is deliberately no dual `PreorderTop`: the solipsist is glossed
-    in the source as an ASYMPTOTE ("the share tending to totality" — never
-    reached, Theorems: Compound positions, "the grade's own asymptote"),
-    so positing an attained top would misrepresent the text. Its absence
-    here is a decision, not an oversight. -/
+theorem strict_irrefl [Preorder α] (a : α) : ¬ Strict a a :=
+  fun h => h.right h.left
+
+theorem not_strict_of_orderEq [Preorder α] {a b : α} (h : OrderEq a b) :
+    ¬ Strict a b :=
+  fun hs => hs.right h.right
+
+theorem no_strict_of_all_orderEq [Preorder α]
+    (h : ∀ a b : α, OrderEq a b) (a b : α) :
+    ¬ Strict a b :=
+  not_strict_of_orderEq (h a b)
+
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 class PreorderBot (α : Type) extends Preorder α where
   bot    : α
   bot_le : ∀ a, le bot a
@@ -180,9 +78,7 @@ theorem shareBot_le [PreorderBot α] (a : α) :
     (shareBot : α) ≼ a :=
   PreorderBot.bot_le a
 
-/-- The pole as an order-class: at or below the designated bottom.
-    Since `shareBot_le` gives the converse, this is order-equivalence with
-    `shareBot` — qualitative in the order, never identity with a token. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def AtBot [PreorderBot α] (a : α) : Prop := a ≼ shareBot
 
 theorem atBot_shareBot [PreorderBot α] : AtBot (shareBot : α) :=
@@ -207,27 +103,10 @@ theorem orderEq_shareBot_iff_atBot [PreorderBot α] (a : α) :
     OrderEq a shareBot ↔ AtBot a :=
   ⟨atBot_of_orderEq_shareBot, orderEq_shareBot_of_atBot⟩
 
-/- ==============================================================================
-   §1  The signature
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 
-   `RawWeld` is free-standing (no `Grid` needed to state it) so that `Grid`
-   itself can use it in its own field types without a self-reference problem.
-   `Grid` bundles everything else: a term of type `Grid Contrib` *is a model
-   of the theory* — which is exactly the scaffolding a later countermodel
-   (e.g. for prudential privilege, Theorems §1) needs: build one concretely
-   and show a property fails in it. A worked instance is built in the Preview
-   section to check the scaffolding is actually usable for this, not just
-   usable in principle.
-============================================================================== -/
-
-/-- An occurrence: a candidate agent, call, and response, bundled. There is
-    deliberately no separate `Act` type prior to this — modelling the doer
-    as available before the deed would already be the state-tool MMK 8
-    forecloses ("neither prior, neither based"). Not every `RawWeld` need
-    be `Grid.Actual` (below); the type is closed under hypothetical
-    variation on purpose, since the probe (§1, `ProbeConstant`) reasons
-    about a *family* of calls a being might face, most of which it never
-    actually answers. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
+@[ext]
 structure RawWeld (Being Call Response : Type) where
   agent    : Being
   call     : Call
@@ -235,46 +114,17 @@ structure RawWeld (Being Call Response : Type) where
 
 /-- The whole signature, bundled. -/
 structure Grid (Contrib : Type) [PreorderBot Contrib] where
-  /-- the primitive identity of a causal series (Proofs, disclaimer 4) — a
-      tag over a causally-connected run, not a first-personal owner.
-      Individuation is not ownership, which is the entire content of
-      disclaimer 4; `Being` is exactly as innocent as "chariot" is for
-      Siderits, and exactly as free: the fine structure privileges no
-      partition into beings (Invariance: `BeingNegative`). Which tags are
-      drawn is a reading, like the arrow's direction. The reading of tags
-      as beings lives in `Grid.DirectedConvention.BeingConvention`. `Being :=
-      Unit`, sentients-only, and gerrymandered tags are all legal model
-      choices; none is licensed by the signature as floor-furniture. -/
+  /- Reading and motivation: Identification.lean, Commentary C.1. -/
   Being      : Type
-  /-- a dharma arriving at Row 2. -/
+  /-- The input component of an occurrence. -/
   Call       : Type
   /-- what a mounted response produces. -/
   Response   : Type
-  /-- the dispositional, field-side fact: does this being mount a response
-      to this call at all, and which one. `none` for every call is the
-      stone (Theory: Attainment, "function-zero, outside the predicate's
-      domain") — an `Option`, so that "no response" is not a value of
-      `Response` but an absence, undefined rather than a numerically small
-      share. -/
+  /- Reading and motivation: Identification.lean, Commentary C.1. -/
   respondsTo : Being → Call → Option Response
-  /-- Row 2's reading of a mounted response: what the lens states, an
-      abstract point of the display-carrier. No claim is made that this is
-      a "component" of anything — the determination itself (what actually
-      drove the act) is deliberately not named in the signature. -/
+  /-- The contribution value assigned to a mounted response. -/
   grade      : Being → Call → Response → Contrib
-  /-- delivery: whether an earlier weld's deed conditions a later weld's
-      arrival — the field's business, index-free (Theory: Karma, "the
-      weld answers only the index-question over what arrives"). Kept
-      entirely separate from `respondsTo`/`grade`, which are about
-      *drive*, never about *delivery*: conflating the two is a taxonomy
-      error in its own right (Theorems, Grade 1, "Delivery-question /
-      index-question"). Note also the axioms this field does NOT carry:
-      no asymmetry, no irreflexivity, no transitivity. The "earlier"/
-      "later" above is gloss, not structure — the relation as typed is
-      direction-free, and its symmetric closure (`ConditionsEither`, below)
-      provably under-determines it (Invariance: the direction-
-      underdetermination witness). Like the absent `PreorderTop`, the
-      absence is a decision (Theory: Karma, "the arrow retyped"). -/
+  /- Reading and motivation: Identification.lean, Commentary C.1. -/
   conditions : RawWeld Being Call Response → RawWeld Being Call Response → Prop
 
 namespace Grid
@@ -300,10 +150,7 @@ def Actual (w : G.Weld) : Prop := G.respondsTo w.agent w.call = some w.response
     "this act's agent" that does not pass through a completed `Weld`. -/
 def index (w : G.Weld) : G.Being := w.agent
 
-/-- Row 2, the grade, read off the determination clause. States an
-    indexical fact (*this* weld's placement) in a third-personal register
-    (a plain `Contrib`-valued projection) — Theory: Attainment, "Row 2 ...
-    states an indexical fact in a third-personal register". -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def share (w : G.Weld) : Contrib := G.grade w.agent w.call w.response
 
 /-- Whether this occurrence makes a live self-pole index. The raw
@@ -312,15 +159,11 @@ def share (w : G.Weld) : Contrib := G.grade w.agent w.call w.response
     the pole-class. -/
 def HasSelfPoleIndex (w : G.Weld) : Prop := ¬ AtBot (G.share w)
 
-/-- The live self-pole index, when there is evidence that one is present.
-    This is proof-carrying rather than `Option`-valued on purpose: deciding
-    whether an arbitrary share is live would import excluded middle unless
-    a concrete model supplied a decision procedure. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def selfPoleIndex (w : G.Weld) (_h : G.HasSelfPoleIndex w) : G.Being := w.agent
 
-/-- WAA-appropriation, in the thin formal sense needed downstream: a reception
-    has a live self-pole index exactly when the share is live. -/
-def waa_Appropriates (reception : G.Weld) : Prop := G.HasSelfPoleIndex reception
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
+def WaaAppropriates (reception : G.Weld) : Prop := G.HasSelfPoleIndex reception
 
 /-- At the pole-class, no self-pole index is live. -/
 theorem no_self_pole_index_of_atBot (w : G.Weld) (h : AtBot (G.share w)) :
@@ -340,43 +183,28 @@ theorem selfPoleIndex_eq_agent_of_hasSelfPoleIndex
     G.selfPoleIndex w h = w.agent := rfl
 
 /-- At the pole-class there is no WAA-appropriation. -/
-theorem no_waa_appropriation_of_atBot (w : G.Weld) (h : AtBot (G.share w)) :
-    ¬ G.waa_Appropriates w :=
+theorem not_waaAppropriates_of_atBot (w : G.Weld) (h : AtBot (G.share w)) :
+    ¬ G.WaaAppropriates w :=
   G.no_self_pole_index_of_atBot w h
 
 /-- Literal equality with the designated bottom rules out WAA-appropriation
     by first entering the pole-class. -/
-theorem no_waa_appropriation_of_eq_shareBot
+theorem not_waaAppropriates_of_eq_shareBot
     (w : G.Weld) (h : G.share w = shareBot) :
-    ¬ G.waa_Appropriates w :=
-  G.no_waa_appropriation_of_atBot w (atBot_of_eq_shareBot h)
+    ¬ G.WaaAppropriates w :=
+  G.not_waaAppropriates_of_atBot w (atBot_of_eq_shareBot h)
 
-/-- Sanity check: the determination is not secretly the probe. This holds
-    by `rfl`, and holds *because* `share`'s definition above never
-    mentions anything the probe will be built from (`ProbeConstant`,
-    defined only after this point) — the file cannot be rearranged to
-    make this lemma non-trivial without changing `share` itself, which is
-    the point: "counterfactual variation ... is how a third party probes
-    the composition, a display over it, never what it consists in"
-    (Theory: Attainment). -/
-example (w : G.Weld) :
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
+theorem share_eq_grade_check (w : G.Weld) :
     G.share w = G.grade w.agent w.call w.response := rfl
 
-/-- The probe (Theory: Attainment): counterfactual call-variation,
-    available to any outside observer, that DISPLAYS a drive-composition
-    without being what the determination consists in. Formalized as the
-    bare fact that the readings are order-equivalent across a family of
-    ACTUAL welds by the same being at different calls in some class `cs` —
-    a symptom a third party can check, never the determination itself
-    (`Grid.share`, defined above, prior to and independently of any probing). -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def ProbeConstant (b : G.Being) (cs : G.Call → Prop) : Prop :=
   ∀ c₁ c₂, cs c₁ → cs c₂ →
     ∀ r₁ r₂, G.respondsTo b c₁ = some r₁ → G.respondsTo b c₂ = some r₂ →
       OrderEq (G.grade b c₁ r₁) (G.grade b c₂ r₂)
 
-/- --------------------------------------------------------------------------
-   Function / share
--------------------------------------------------------------------------- -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 
 /-- Mounting a response at all — the subject-function. Phrased with an
     existential rather than `Option.isSome` so this stays `Prop`-valued
@@ -393,16 +221,10 @@ def MountsSomewhere (b : G.Being) : Prop := ∃ c, G.MountsAt b c
     version when modelling deaf-blind limits or partial delivery. -/
 def RespondsToEveryCall (b : G.Being) : Prop := ∀ c, G.MountsAt b c
 
-/-- The stone: function-zero at EVERY call — "outside the predicate's
-    domain" rather than a limiting case within it (Theory: Attainment). -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def Stone (b : G.Being) : Prop := ∀ c, ¬ G.MountsAt b c
 
-/-- The terminus: every mounted response lies at the pole-class — "the other pole of
-    the domain, not its far edge" (Theory: Attainment). NOTE: no positivity
-    of function is imposed; the conditional is vacuously true of a `Stone`
-    (`stone_is_terminus`). "Function entire" is carried by
-    `RespondsToEveryCall`; the non-vacuous notions are `LiveTerminus` and
-    `ResponsiveTerminus`. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def Terminus (b : G.Being) : Prop :=
   ∀ c r, G.respondsTo b c = some r → AtBot (G.grade b c r)
 
@@ -412,9 +234,7 @@ def Terminus (b : G.Being) : Prop :=
     sparse. -/
 def LiveTerminus (b : G.Being) : Prop := G.MountsSomewhere b ∧ G.Terminus b
 
-/-- The strongest terminus predicate: every call gets a response, and every
-    response is at the pole-class. This is the theorem-facing version of
-    "function entire, share zero." -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def ResponsiveTerminus (b : G.Being) : Prop :=
   G.RespondsToEveryCall b ∧ G.Terminus b
 
@@ -434,32 +254,18 @@ theorem no_self_pole_index_of_terminus_response
     (G.atBot_of_terminus_response hterm hresp)
 
 /-- A terminus response does not WAA-appropriate. -/
-theorem no_waa_appropriation_of_terminus_response
+theorem not_waaAppropriates_of_terminus_response
     {b : G.Being} {c : G.Call} {r : G.Response}
     (hterm : G.Terminus b) (hresp : G.respondsTo b c = some r) :
-    ¬ G.waa_Appropriates ⟨b, c, r⟩ :=
-  G.no_waa_appropriation_of_atBot ⟨b, c, r⟩
+    ¬ G.WaaAppropriates ⟨b, c, r⟩ :=
+  G.not_waaAppropriates_of_atBot ⟨b, c, r⟩
     (G.atBot_of_terminus_response hterm hresp)
 
-/-- The zero-share pole's two attested arrivals (Theory: Attainment): a being sits at the
-    pole either by never mounting a response at all, or by mounting every
-    response with nothing self-pole driving it. Phrased as `∨`, not as an
-    iff or a case split, on purpose — the source is explicit these are
-    "two attested arrivals, not an exhaustive partition": nothing here
-    forbids a third witness satisfying neither disjunct trivially (an
-    ordinary partial-share agent), and nothing here forces the two
-    disjuncts to be exclusive either. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def AtPoleClass (b : G.Being) : Prop := G.Stone b ∨ G.Terminus b
 
-/-- The function/share split is not vacuous in one easy direction: a stone
-    is *vacuously* a terminus (there is nothing to check, since it never
-    mounts a response for the hypothesis of `Terminus` to fire on). The
-    interesting content of the split — that a `Terminus` being need NOT be
-    a `Stone` — is not a theorem of this shape (a universal witness would
-    need a specific counterexample instance); it is exhibited concretely
-    by `Clock.adaptive` in `clockGrid`, in the Preview section
-    (`adaptive_is_terminus`, `adaptive_not_stone`). -/
-theorem stone_is_terminus (b : G.Being) (h : G.Stone b) : G.Terminus b :=
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
+theorem stone_is_terminus_vacuously (b : G.Being) (h : G.Stone b) : G.Terminus b :=
   fun c r hr => absurd ⟨r, hr⟩ (h c)
 
 /-- Positive function at even one call rules out stone-typing. -/
@@ -480,32 +286,10 @@ theorem responsiveTerminus_live_of_call
 
 end Grid
 
-/- ==============================================================================
-   §2  What is carried, what is made, what is stated
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 
-   The load-bearing invariant of the whole system — "nothing self-indexed
-   is stored" — is enforced by what `Config` does NOT contain, not by a
-   proposition about what it contains. `Config` carries exactly one thing:
-   a `Contrib`-valued tendency (the seed), a field-fact about the series.
-   There is no field of type `Weld`, and — just as importantly — nothing
-   below ever defines a function FROM `Config` back INTO a `grade`
-   reading: the causal machinery that actually determines a later weld's
-   share (`Grid.grade`) never once takes a `Config` as input. That
-   disconnection is deliberate and is the architectural content of the
-   retyped disposition/act cell (Theory: Attainment, "the collapse is
-   inferential — the dated occurrence read off the standing tendency"):
-   there is no function in this signature for a later act's share to be
-   read off a standing tendency THROUGH, so the error the retype names is
-   not merely discouraged here, it is inexpressible.
-============================================================================== -/
-
-/-- What the field carries between acts: a tendency to arrogate, and
-    nothing else. This *is* the formalization of "nothing self-indexed is
-    stored" — not a theorem about `Config`, but `Config`'s definition, read
-    by what is and is not present in the type. There is deliberately no
-    association from `Config` to `Being` anywhere in the signature:
-    possessive readings ("this being's configuration") are downstream
-    glosses, never structure. -/
+/-- A carried contribution tendency. It stores no weld or being component. -/
+@[ext]
 structure Config (Contrib : Type) where
   tendency : Contrib
 
@@ -513,64 +297,30 @@ namespace Grid
 
 variable {Contrib : Type} [PreorderBot Contrib] (G : Grid Contrib)
 
-/-- Reception re-pitches the configuration the field carries forward — an
-    inga-fact, never a stored index (Theory: Karma). The new tendency is
-    read off the reception's OWN share and nothing else: no formula
-    relates it to `before`, which is one license-respecting instantiation
-    of "unconstrained by construction" (Theory: Karma, "one magnitude is
-    deliberately unconstrained... owned here as a feature") — not the
-    only possible one, but a simple one, and it already allows arbitrarily
-    large jumps between successive configs (Theorems: "Sudden and
-    gradual", "a one-step re-pitch from hell-typed to pole"). -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def rePitch (_before : Config Contrib) (received : G.Weld) : Config Contrib :=
   { tendency := G.share received }
 
-/-- A strict share-drop event, priced as the scalar itself is
-    priced — comparatively, not by how much (Theory: Attainment, "the
-    scalar priced as display"). A reception counts as a share-drop against a
-    prior tendency when its share sits at or below that tendency in the
-    order, and NOT at or above it — "markedly less claimed" read off `≼`
-    alone, no subtraction, no measure. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def IsShareDrop (before : Config Contrib) (received : G.Weld) : Prop :=
-  G.share received ≼ before.tendency ∧ ¬ before.tendency ≼ G.share received
+  Strict (G.share received) before.tendency
 
-/- Design note — no share-from-Config route exists.
-   The determination of a later weld's share never consults any `Config`:
-   there is no function `Config Contrib → Contrib` anywhere in `Grid`'s
-   signature for a later act to be constrained by.
-   This is exhibited by the shape of the signature, not provable as a
-   single theorem of it (any candidate statement collapses to `share`'s
-   own definition with unused binders — an earlier draft's
-   `share_independent_of_config` did exactly that and was removed). The
-   architectural content lives in §2's `Config` note: the file stores no
-   self-indexed attainment for a later act to be held to. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 
 /- --------------------------------------------------------------------------
-   Direction-free delivery structure
+   Delivery structure and symmetric closure
 -------------------------------------------------------------------------- -/
 
-/-- The symmetric closure of delivery: the two welds stand on a common
-    line, direction forgotten. This is the honest field-fact once the
-    arrow's retype is taken seriously (Theory: Karma, "the arrow
-    retyped"): what the field carries is correlational structure, and
-    which end is "earlier" is a reading. The countermodel in Invariance
-    shows the reading is genuinely extra — two grids can agree on
-    `ConditionsEither` everywhere and disagree on `conditions` — so direction
-    is not recoverable from the symmetric structure, exactly as the
-    agent is not recoverable from the field residue
-    (`no_agent_recovery_of_field_collision`). -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def ConditionsEither (w₁ w₂ : G.Weld) : Prop :=
   G.conditions w₁ w₂ ∨ G.conditions w₂ w₁
 
-/-- Symmetry, definitional to the closure: the one property the reading
-    cannot be read off. -/
+/-- Symmetry, definitional to the closure. -/
 theorem conditionsEither_symm {w₁ w₂ : G.Weld} (h : G.ConditionsEither w₁ w₂) :
     G.ConditionsEither w₂ w₁ :=
   h.elim Or.inr Or.inl
 
-/-- Reflexive-transitive closure of `ConditionsEither`: hang-together along
-    the field, direction forgotten. Consumed by being-convention grades and
-    witnesses, but by nothing that types a being as legitimate. -/
+/-- Reflexive-transitive closure of `ConditionsEither`. -/
 inductive ConditionsEitherChain : G.Weld → G.Weld → Prop
   | refl (w : G.Weld) : ConditionsEitherChain w w
   | step {w₁ w₂ w₃ : G.Weld} :
@@ -580,45 +330,27 @@ inductive ConditionsEitherChain : G.Weld → G.Weld → Prop
 
 namespace DirectedConvention
 
-/- Directional names here are a reading, not extra structure. They are the
-   thermodynamic convention's role-reading of `conditions`; the primitive
-   signature carries no asymmetry, irreflexivity, or transitivity as a
-   decision (Theory: Karma, "the arrow retyped").
+/-- The strictness relation, exposed under the name used by this namespace. -/
+abbrev TimeDirection {α : Type} [Preorder α] (a b : α) : Prop := Strict a b
 
-   Admission rule: any future delivery-facing result that claims direction owes
-   an explicit asymmetry or irreflexivity hypothesis on `conditions`, supplied
-   by the model. Without such a hypothesis, a direction-claim is misnamed.
-
-   Role-asymmetry is not temporal asymmetry. The `deed` and `reception` slots
-   are asymmetric in role: `Actual` attaches to the reception slot,
-   `IsShareDrop` reads the reception's share, and `EnvironsLine` reads the
-   reception's agent. The reception slot means where the welding happens, never
-   the later one. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 
 /- --------------------------------------------------------------------------
    The reception-weld: reach-back
 -------------------------------------------------------------------------- -/
 
-/-- The reach-back is *full* when the claimed deed actually conditions the
-    reception — a delivery-fact (Theory: Karma, "The reception-weld: loop-
-    closure as theorem"). -/
-def waa_ReachBackFull (deed reception : G.Weld) : Prop := G.conditions deed reception
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
+def WaaReachBackFull (deed reception : G.Weld) : Prop := G.conditions deed reception
 
-/- --------------------------------------------------------------------------
-   Delivery, landing, share-drop landing, adaptivity
--------------------------------------------------------------------------- -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 
 /-- A delivery-line from one occurrence to another, stated in field
     vocabulary. This is definitionally the same relation as
-    `waa_ReachBackFull`; the different name is for theorem statements where the
+    `WaaReachBackFull`; the different name is for theorem statements where the
     field-side role matters more than the reception-side appropriation. -/
 def DeliveredTo (deed reception : G.Weld) : Prop := G.conditions deed reception
 
-/-- Non-delivery: the field draws no line from this deed to this reception.
-    Deliberately unprefixed and deliberately thin — a reach-back made along
-    such an undrawn line is what the source calls *vacuous*, but the
-    vacuity belongs to the appropriating face (`waa_VacuousOwnershipFace`,
-    Identification.lean), not to this bare field-fact. -/
+/-- Non-delivery: the relation does not hold from this deed to this reception. -/
 def NotDeliveredTo (deed reception : G.Weld) : Prop := ¬ G.conditions deed reception
 
 /-- When a concrete model gives a decision procedure for delivery, delivery
@@ -640,41 +372,18 @@ def LandsAt (deed reception : G.Weld) : Prop :=
     somewhere. No self-pole index is implied for the occurrence pointed at. -/
 def ObjectAxisStanding (deed : G.Weld) : Prop := ∃ reception, DeliveredTo G deed reception
 
-/-- A share-ceding landing, relative to a supplied prior configuration.
-    This is the local witness used by effectiveness talk as display; it asserts
-    an actual landing and a share-drop reception, but no value. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def LandsWithShareDrop
     (before : Config Contrib) (deed reception : G.Weld) : Prop :=
   LandsAt G deed reception ∧ G.IsShareDrop before reception
 
-/-- A call/deed is effective relative to a prior receiver-configuration when
-    at least one of its landings is share-ceding. This is intentionally only
-    existential; no probability or measure is introduced. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def HasShareDropLanding (before : Config Contrib) (deed : G.Weld) : Prop :=
   ∃ reception, LandsWithShareDrop G before deed reception
 
-/- No comparative effectiveness relation is defined. An earlier draft's
-   `AtLeastAsEffective`, despite its ∀/∃ surface, was logically the bare
-   implication between two `HasShareDropLanding` propositions and has been
-   removed. If a downstream file ever wants ordinal comparison, the
-   intended shape is domination between environs-readings (below) —
-   theorem-level content, deliberately not fixed here. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 
-/- --------------------------------------------------------------------------
-   The environs lens
-
-   A descriptive, momentary reading of the web around a being: which
-   standing delivery-lines are incident on its candidate receptions, and
-   which of those would, against a supplied prior tendency, be
-   share-ceding. Everything here is a projection from `conditions` and
-   `IsShareDrop`; nothing is stored in, or of, the being.
-
-   Deliberately NOT operationalized: no comparison relation, no domination
-   order, no measure, no prescription. The lens says only, coarsely, what
-   stands around a being at a moment. Errors about the reading — attaching
-   to it, ranking beings by it — are for other beings to make or not, as
-   with the grid itself.
--------------------------------------------------------------------------- -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 
 /-- A standing line of the web incident on a being: an actual deed that
     the field delivers to one of the being's candidate receptions. The
@@ -685,12 +394,7 @@ def HasShareDropLanding (before : Config Contrib) (deed : G.Weld) : Prop :=
 def EnvironsLine (b : G.Being) (deed reception : G.Weld) : Prop :=
   G.Actual deed ∧ reception.agent = b ∧ G.conditions deed reception
 
-/-- A release-conducive standing line — the lens's whole content ("dharma-
-    potency of the environs, at that moment"): an environs-line whose
-    reception would be share-ceding against a supplied prior tendency.
-    The `before` is supplied, not looked up: there is no association from
-    `Config` to `Being` to look it up from. Nothing normative is derived
-    from this, here or downstream, on purpose. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def ShareDropLine
     (before : Config Contrib) (b : G.Being) (deed reception : G.Weld) : Prop :=
   EnvironsLine G b deed reception ∧ G.IsShareDrop before reception
@@ -720,10 +424,10 @@ namespace DirectedConvention
     licenses: the deed counts as aimed at this landing exactly when the
     field in fact delivers it there. No intention-primitive is introduced;
     stronger causal or intentional stories belong in downstream models. -/
-def waa_AimedAt (deed reception : G.Weld) : Prop := DeliveredTo G deed reception
+def WaaAimedAt (deed reception : G.Weld) : Prop := DeliveredTo G deed reception
 
-theorem deliveredTo_iff_waa_reachBackFull (deed reception : G.Weld) :
-    DeliveredTo G deed reception ↔ waa_ReachBackFull G deed reception :=
+theorem deliveredTo_iff_waaReachBackFull (deed reception : G.Weld) :
+    DeliveredTo G deed reception ↔ WaaReachBackFull G deed reception :=
   Iff.rfl
 
 theorem objectAxisStanding_of_landsAt
@@ -738,14 +442,9 @@ theorem objectAxisStanding_of_hasShareDropLanding
 
 namespace BeingConvention
 
-/- Beings are conventional truths downstream of the words and, ontologically,
-   of the arrow: selection-shaped gradient-readers. The tag `G.Being` stays at
-   the words-level; reading a tag as a macro-scale being lives here. Naming
-   suffices, so legitimacy never depends on these grades. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 
-/-- Re-rooted name for the function predicate under the being-convention
-    reading. The definition remains the primitive function/share interface;
-    this namespace records what the name presupposes when read as being-talk. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 abbrev MountsAt (b : G.Being) (c : G.Call) : Prop := G.MountsAt b c
 
 /-- Re-rooted name for mounting at some call. -/
@@ -754,7 +453,7 @@ abbrev MountsSomewhere (b : G.Being) : Prop := G.MountsSomewhere b
 /-- Re-rooted name for call-entire response. -/
 abbrev RespondsToEveryCall (b : G.Being) : Prop := G.RespondsToEveryCall b
 
-/-- Re-rooted name for the stone edge of the function/share split. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 abbrev Stone (b : G.Being) : Prop := G.Stone b
 
 /-- Re-rooted name for the pole-class responder. -/
@@ -774,11 +473,7 @@ abbrev AtPoleClass (b : G.Being) : Prop := G.AtPoleClass b
 abbrev ProbeConstant (b : G.Being) (cs : G.Call → Prop) : Prop :=
   G.ProbeConstant b cs
 
-/-- A being-coarsening reads fine-grid tags as tokens of a macro-scale tag.
-    Any projection is a legitimate designation: universe, gerrymander, stone,
-    buddha, hare's horn. What varies is grade and realization, never naming's
-    innocence. Coherence is therefore left as instance-level display, not a
-    type-forming predicate. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 structure BeingCoarsening (G : Grid Contrib) (Macro : Type) where
   proj : G.Being → Macro
 
@@ -789,8 +484,7 @@ variable {G : Grid Contrib} {Macro : Type} (κ : BeingCoarsening G Macro)
 /-- A weld lies in a macro tag's fiber when its fine agent projects there. -/
 def InFiber (b : Macro) (w : G.Weld) : Prop := κ.proj w.agent = b
 
-/-- Two fine tags share the same macro fiber. This is the boundary reading
-    varied by `BeingNegative`. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def SameFiber (p q : G.Being) : Prop := κ.proj p = κ.proj q
 
 /-- A fiber has at least one fine tag under it. -/
@@ -801,16 +495,11 @@ def FiberInhabited (b : Macro) : Prop := ∃ p : G.Being, κ.proj p = b
 def ActualFiberInhabited (b : Macro) : Prop :=
   ∃ w : G.Weld, G.Actual w ∧ κ.InFiber b w
 
-/-- Sentient tag: some fine tag in the fiber mounts a response somewhere.
-    The definiens is direction-free; the name reads the tag as a being, hence
-    its convention-internal home. -/
+/-- Some fine tag in the fiber mounts a response somewhere. -/
 def SentientTag (b : Macro) : Prop :=
   ∃ p : G.Being, κ.proj p = b ∧ G.MountsSomewhere p
 
-/-- Insentience is not a second namespace predicate. Constructively, a tag is
-    not sentient exactly when every fine tag in its fiber is stone-typed.
-    This is where the `mujō seppō` point lives: "insentient preaching" is not
-    a rival kind of macro soul, but the all-stone reading of a fiber. -/
+/-- A tag is not sentient exactly when every fine tag in its fiber is stone-typed. -/
 theorem not_sentientTag_iff_fiber_all_stone (b : Macro) :
     ¬ κ.SentientTag b ↔ ∀ p : G.Being, κ.proj p = b → G.Stone p := by
   constructor
@@ -820,10 +509,7 @@ theorem not_sentientTag_iff_fiber_all_stone (b : Macro) :
     rcases hsent with ⟨p, hp, c, hmount⟩
     exact hall p hp c hmount
 
-/-- Fiber-at-pole: every actual weld in the fiber lies at the pole-class.
-    No aggregate fiber-share is defined; the preorder is partial, not a
-    measure, so mixed fibers stay mixtures rather than scalars. Vacuous on
-    empty/no-actual fibers; use `LiveFiberAtPole` when inhabitation matters. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def FiberAtPole (b : Macro) : Prop :=
   ∀ w : G.Weld, G.Actual w → κ.InFiber b w → AtBot (G.share w)
 
@@ -831,10 +517,9 @@ def FiberAtPole (b : Macro) : Prop :=
 def LiveFiberAtPole (b : Macro) : Prop :=
   κ.ActualFiberInhabited b ∧ κ.FiberAtPole b
 
-/-- Self-apt tag: every actual weld in the fiber still carries a live
-    self-pole index. This marks where the self-convention is genuinely apt;
-    the soul-guard theorem below keeps that aptness per-weld. Vacuous on
-    empty/no-actual fibers; use `LiveSelfAptTag` when inhabitation matters. -/
+/-- Every actual weld in the fiber carries a live self-pole index.
+    Vacuous on empty or no-actual fibers; use `LiveSelfAptTag` when
+    inhabitation matters. -/
 def SelfAptTag (b : Macro) : Prop :=
   ∀ w : G.Weld, G.Actual w → κ.InFiber b w → G.HasSelfPoleIndex w
 
@@ -889,7 +574,7 @@ theorem liveSelfAptTag_not_fiberAtPole {b : Macro}
     ¬ κ.FiberAtPole b :=
   fun hpole => κ.fiberAtPole_selfAptTag_exclusive h.left hpole h.right
 
-/-- Directed refinement within sentience: the fiber carries at least one
+/-- Internal refinement within sentience: the fiber carries at least one
     internal delivery line. Any persistence theorem built from this owes a
     model-supplied asymmetry or irreflexivity hypothesis on `conditions`. -/
 def SelfConditioningTag (b : Macro) : Prop :=
@@ -904,9 +589,7 @@ def StrongSelfConditioningTag (b : Macro) : Prop :=
   ∀ reception : G.Weld, κ.InFiber b reception → G.Actual reception →
     ∃ deed : G.Weld, κ.InFiber b deed ∧ DeliveredTo G deed reception
 
-/-- Macro agency only by delegation: a macro-attributed act is an actual
-    fine weld in the macro fiber. The share remains the delegate weld's
-    share; the macro tag never enters the signature as a responder. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 structure Delegation (b : Macro) where
   weld : G.Weld
   actual : G.Actual weld
@@ -914,9 +597,10 @@ structure Delegation (b : Macro) where
 
 namespace Delegation
 
-/-- The displayed share of a delegation is exactly the delegate weld's share. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def share {b : Macro} (d : κ.Delegation b) : Contrib := G.share d.weld
 
+@[simp]
 theorem share_eq_delegate_share {b : Macro} (d : κ.Delegation b) :
     d.share = G.share d.weld :=
   rfl
@@ -942,15 +626,7 @@ structure ActualWeld (G : Grid Contrib) where
   weld   : G.Weld
   actual : G.Actual weld
 
-/-- A pair of actual receptions, kept deliberately neutral. Theory does not
-    say that either reception has prudential privilege over the other; it
-    only supplies the typed pair over which Theorems can formulate, test, or
-    refute such a privilege claim by countermodel. The neutrality is also
-    TEMPORAL, and is a decision: no before/after between `first` and
-    `second` is structure here. `rePitchSequence` below applies an order,
-    and that order is supplied by the caller as part of the thermodynamic
-    convention, never read off the pair (Theory: Karma, "the arrow
-    retyped"). -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 structure ReceptionPair (G : Grid Contrib) where
   first  : ActualWeld G
   second : ActualWeld G
@@ -962,7 +638,7 @@ namespace ReceptionPair
     downstream prudence theorem needs is a theorem-level choice; the carrier
     merely makes the relevant actual pair available. -/
 def FirstConditionsSecond {G : Grid Contrib} (p : ReceptionPair G) : Prop :=
-  DirectedConvention.waa_ReachBackFull G p.first.weld p.second.weld
+  DirectedConvention.WaaReachBackFull G p.first.weld p.second.weld
 
 /-- The pair's sequential re-pitched configurations, exposed for future
     two-step arguments. No ordering or privilege between them is asserted
@@ -976,25 +652,7 @@ end ReceptionPair
 
 end Grid
 
-/- ==============================================================================
-   §3  Row 1 and Row 3, briefly
-
-   "All acting is Row 3" (Theory: the act-grammar): Row 3 (shu) is not a
-   further reading that needs its own type, it IS `Weld` — there is no
-   separate act underneath the weld for shu to be a fact about. Likewise
-   Row 1 (genjō) at the grain of a single act is not a further condition,
-   it is the weld under its enactment-reading, and every weld satisfies it
-   trivially — which is why no `def` for either appears here: manufacturing
-   a nontrivial predicate for "this act manifests, full stop" or "this act
-   is practice" would be adding content the source explicitly declines to
-   add ("its three cells are the three parts of one sentence ... not three
-   agents"). The one Row-1 usage with real content is the DERIVED,
-   narrower sense — the grade's pole-class — and that one already has
-   a definition: `Grid.AtPoleClass` in §1. Row 2 (kannō-sōe,
-   the grade) is the only row this file gives independent definitional
-   content to, via `Grid.share`, which is exactly the source's own claim:
-   "Row 2 still does exactly one thing, the adverb."
-============================================================================== -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 
 /- ==============================================================================
    §4  The separate/fuse rule
@@ -1012,25 +670,14 @@ namespace Grid
 
 variable {Contrib : Type} [PreorderBot Contrib]
 
-/-- A tier at which a claim can be diagnosed: the self-emptying floor
-    (atemporal, one per `Grid` — Proofs, "The verdict's tier"), or a live
-    act-time diagnosis pinned to a specific weld. Act-time is itself a
-    tier WITHIN the thermodynamic convention (Theory: Karma, "the arrow
-    retyped"): the separate/fuse rule's own pivot is conventional — the
-    floor rule eating one more level, as it is licensed to ("the two
-    truths themselves are conventional"). No circle: the convention is
-    where beings live, hence where diagnosis is live. Floor-fusion
-    accordingly includes fusing before/after. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 inductive Tier (G : Grid Contrib)
   | floor
   | actTime (w : G.Weld)
 
 variable (G : Grid Contrib)
 
-/-- Whether a tier has live share for a distinction to separate over:
-    never at the floor (Proofs: "there is no agent and no fruit-for-anyone"
-    there), and not at an act-time tier whose weld is already at the
-    pole-class. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def Tier.hasLiveShare : Tier G → Prop
   | .floor     => False
   | .actTime w => G.HasSelfPoleIndex w
@@ -1090,25 +737,12 @@ structure Distinction (G : Grid Contrib) where
   sideA : language.Claim
   sideB : language.Claim
 
-/-- Fusion: at a tier with no live share left, the two sides of a
-    distinction are equivalent — read as the two sides becoming logically
-    interchangeable rather than as either being individually false, which
-    is the reading "held each at its tier, non-dual" (the fox's release,
-    Theory: "One act through the grid") licenses. This is a real
-    requirement, not a vacuous one: at `t = .floor` the antecedent
-    `¬ Tier.hasLiveShare G .floor` is `¬ False`, i.e. always true, so `Fused .floor`
-    reduces to requiring `sideA .floor ↔ sideB .floor` unconditionally —
-    exactly the non-duality the floor is supposed to make available, and
-    exactly the content a genuinely doctrinal `Distinction` (not the
-    trivial witness in the sanity example below) would have to earn. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def Distinction.Fused {G : Grid Contrib} (d : Distinction G) (t : Tier G) : Prop :=
   ¬ Tier.hasLiveShare G t →
     (d.language.TrueAt t d.sideA ↔ d.language.TrueAt t d.sideB)
 
-/-- Collapse: fusing a distinction WHERE IT SHOULD SEPARATE — asserting a
-    floor-tier content as though it settled a live, act-time diagnosis.
-    The fox's shape (Theorems, "The fox: not-fall asserted conventionally
-    — antinomianism"). -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def Distinction.Collapse {G : Grid Contrib} (d : Distinction G) (t : Tier G) : Prop :=
   Tier.hasLiveShare G t ∧
     (d.language.TrueAt t d.sideA ↔ d.language.TrueAt t d.sideB)
@@ -1126,10 +760,7 @@ def Distinction.Separated {G : Grid Contrib} (d : Distinction G) (t : Tier G) :
   Tier.hasLiveShare G t ∧
     ¬ (d.language.TrueAt t d.sideA ↔ d.language.TrueAt t d.sideB)
 
-/-- A distinction obeys the separate/fuse rule when it separates wherever
-    live share is live and fuses wherever it is not. This is a property of
-    concrete doctrinal distinctions, not an axiom imposed on every pair of
-    arbitrary claims. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def Distinction.ObeysSeparateFuse {G : Grid Contrib} (d : Distinction G) :
     Prop :=
   (∀ t, Tier.hasLiveShare G t →
@@ -1177,15 +808,8 @@ theorem not_freeze_of_obeysSeparateFuse
     ¬ d.Freeze :=
   fun hf => hf (h.right Tier.floor (fun hfloor => hfloor))
 
-/-- Sanity check, not a doctrinal claim: the definitions above are not
-    degenerate. A distinction whose two sides are the SAME claim-object
-    cannot freeze — confirming `Freeze` is not trivially true of every
-    `Distinction` and that `Fused`/`Freeze` actually consult the language's
-    satisfaction relation. This says nothing about which doctrinally-
-    motivated distinctions (function/share, the two middles, shō/satori,
-    ...) actually obey the rule; each of those needs its own, separate check
-    once it is built, which is Theorems.lean's job. -/
-example (L : ClaimLanguage G) (p : L.Claim) :
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
+theorem not_freeze_of_same_claim (L : ClaimLanguage G) (p : L.Claim) :
     ¬ ({ language := L, sideA := p, sideB := p } : Distinction G).Freeze :=
   fun h => h Iff.rfl
 
@@ -1270,25 +894,7 @@ theorem no_agent_recovery_of_field_collision
     hne (hex.elim (fun _recover hrec =>
       (hrec ⟨a₁, c, r⟩ h1).symm.trans (hrec ⟨a₂, c, r⟩ h2)))
 
-/- --------------------------------------------------------------------------
-   Wrinkle 2 — underivability claims need countermodels: scaffold checked
-
-   Outside note this responds to: "Underivability claims need
-   countermodels. 'Prudential privilege is underivable' is a non-
-   derivability result — you'd exhibit a model satisfying the axioms
-   where the privilege fails."
-
-   Prudential privilege itself is theorem-level content. This file supplies
-   the neutral carrier it will need (`ActualWeld`/`ReceptionPair`) but does
-   not formulate the privilege predicate or prove its failure.
-   What is checked here is narrower and prior: that "a model of the theory"
-   is not just a phrase but a term one can actually build and compute with,
-   because that is the one thing a later countermodel construction cannot
-   do without. `clockGrid` below is also, independently, the worked example
-   `Theory.md` itself gives for the domain joint (Theory: Attainment,
-   "The domain joint" — the manufactured cuckoo clock), so it is in scope
-   for this file on its own terms, not only as a preview.
--------------------------------------------------------------------------- -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 
 /-- Two devices, differing only in whether their chime is a function of
     who is listening. -/
@@ -1314,19 +920,7 @@ instance : PreorderBot Nat where
   bot      := 0
   bot_le   := Nat.zero_le
 
-/-- The rigid clock never mounts a response *to the call* at all — it
-    chimes on schedule regardless of who is present, which is not a
-    response with a small or zero share, it is outside the responds-to
-    relation altogether, exactly as the stone is (Theory: Attainment,
-    "The non-adaptive build chimes on schedule regardless of who is
-    present: no response mounted, function-zero, the stone's typing").
-    The adaptive clock times its chime for a listener that is actually
-    there, and — this is the manufactured case's whole point — its
-    response is read, via `grade`, at zero: function mounted, pole-class
-    share (Theory: Attainment, "So it reads function mounted, share zero:
-    terminus-typed"). The old call-driven gloss is now prose-only; no
-    theorem consumed it, and the signature deliberately records only the
-    Row-2 reading. -/
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
 def clockGrid : Grid Nat where
   Being      := Clock
   Call       := Listener
@@ -1348,12 +942,8 @@ theorem adaptive_is_terminus : clockGrid.Terminus Clock.adaptive :=
 theorem adaptive_not_stone : ¬ clockGrid.Stone Clock.adaptive :=
   fun h => h Listener.present ⟨Chime.chime, rfl⟩
 
-/-- The payoff stated together: one being is `Stone`, a different being of
-    the SAME `Grid` is `Terminus` and demonstrably NOT `Stone` — the
-    function/share split is not vacuous, exhibited rather than merely
-    defined. This is the concrete witness `Grid.stone_is_terminus`
-    promised was not the whole story. -/
-example :
+/- Reading and motivation: Identification.lean, Commentary C.1. -/
+theorem clockGrid_function_share_split_witness :
     clockGrid.Stone Clock.rigid ∧
     clockGrid.Terminus Clock.adaptive ∧
     ¬ clockGrid.Stone Clock.adaptive :=
@@ -1379,9 +969,7 @@ def registerClockGrid : Grid Nat where
   grade n _ _ := n
   conditions deed reception := reception.agent = deed.response
 
-/-- One innocent macro reading: all fine registers are diagnosed as one
-    macro device. Other coarsenings over the same grid would be equally
-    legitimate readings. -/
+/-- A macro coarsening that sends all fine registers to one macro tag. -/
 def registerClockCoarsening :
     Grid.DirectedConvention.BeingConvention.BeingCoarsening registerClockGrid Unit where
   proj _ := ()
