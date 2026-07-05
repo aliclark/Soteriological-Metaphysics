@@ -1,122 +1,17 @@
 /-
 ================================================================================
-  WeldAndArrow.Theory
-  Primitive signature and order-theoretic infrastructure
+  WeldAndArrow.Signature.Grid
+  Primitive grid signature and directed-convention primitives
 ================================================================================
 
-This module contains the dependency-free core signature: a local preorder with
-bottom, the grid and weld types, configuration update, delivery structure,
-convention namespaces, tier machinery, and small concrete sanity witnesses.
-
-Reading and motivation: Identification.lean, Commentary C.1.
+Reading and motivation: Identification/Commentary.lean, C.1.
 -/
+
+import WeldAndArrow.Signature.Order
 
 namespace WAA
 
-/- ==============================================================================
-   §0  Dependency-free preorder infrastructure
-============================================================================== -/
-
-/-- A bare preorder, rolled by hand and not assumed total or antisymmetric. -/
-class Preorder (α : Type) where
-  /-- The display-order relation: `a ≼ b` means `a` is no more self-driven
-      than `b` in the ordinal Row-2 sense. -/
-  le       : α → α → Prop
-  le_refl  : ∀ a, le a a
-  le_trans : ∀ {a b c : α}, le a b → le b c → le a c
-
-@[inherit_doc] infix:50 " ≼ " => Preorder.le
-
-instance instTransPreorderLe [Preorder α] :
-    Trans (fun a b : α => a ≼ b) (fun a b : α => a ≼ b) (fun a b : α => a ≼ b) where
-  trans := fun h₁ h₂ => Preorder.le_trans h₁ h₂
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-def Incomparable [Preorder α] (a b : α) : Prop := ¬ a ≼ b ∧ ¬ b ≼ a
-
-/-- Order-equivalence: neither more nor less self-driven. -/
-def OrderEq [Preorder α] (a b : α) : Prop := a ≼ b ∧ b ≼ a
-
-/-- Strict comparability in a preorder: `a` is below `b`, with no return comparison. -/
-def Strict [Preorder α] (a b : α) : Prop := a ≼ b ∧ ¬ b ≼ a
-
-theorem orderEq_refl [Preorder α] (a : α) : OrderEq a a :=
-  ⟨Preorder.le_refl a, Preorder.le_refl a⟩
-
-theorem orderEq_symm [Preorder α] {a b : α} (h : OrderEq a b) :
-    OrderEq b a :=
-  ⟨h.right, h.left⟩
-
-theorem orderEq_trans [Preorder α] {a b c : α}
-    (hab : OrderEq a b) (hbc : OrderEq b c) :
-    OrderEq a c :=
-  ⟨Preorder.le_trans hab.left hbc.left,
-    Preorder.le_trans hbc.right hab.right⟩
-
-theorem strict_irrefl [Preorder α] (a : α) : ¬ Strict a a :=
-  fun h => h.right h.left
-
-theorem not_strict_of_orderEq [Preorder α] {a b : α} (h : OrderEq a b) :
-    ¬ Strict a b :=
-  fun hs => hs.right h.right
-
-theorem no_strict_of_all_orderEq [Preorder α]
-    (h : ∀ a b : α, OrderEq a b) (a b : α) :
-    ¬ Strict a b :=
-  not_strict_of_orderEq (h a b)
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-def DirectionVoid (α : Type) [Preorder α] : Prop := ∀ a b : α, ¬ Strict a b
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-class PreorderBot (α : Type) extends Preorder α where
-  bot    : α
-  bot_le : ∀ a, le bot a
-
-/-- Shorthand for the bottom of whatever `Contrib` is in scope. -/
-def shareBot [PreorderBot α] : α := PreorderBot.bot
-
-/-- The designated bottom is below every display value. -/
-theorem shareBot_le [PreorderBot α] (a : α) :
-    (shareBot : α) ≼ a :=
-  PreorderBot.bot_le a
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-def AtBot [PreorderBot α] (a : α) : Prop := a ≼ shareBot
-
-theorem atBot_shareBot [PreorderBot α] : AtBot (shareBot : α) :=
-  Preorder.le_refl shareBot
-
-theorem atBot_of_eq_shareBot [PreorderBot α] {a : α}
-    (h : a = shareBot) :
-    AtBot a :=
-  h ▸ atBot_shareBot
-
-theorem orderEq_shareBot_of_atBot [PreorderBot α] {a : α}
-    (h : AtBot a) :
-    OrderEq a shareBot :=
-  ⟨h, shareBot_le a⟩
-
-theorem atBot_of_orderEq_shareBot [PreorderBot α] {a : α}
-    (h : OrderEq a shareBot) :
-    AtBot a :=
-  h.left
-
-theorem orderEq_shareBot_iff_atBot [PreorderBot α] (a : α) :
-    OrderEq a shareBot ↔ AtBot a :=
-  ⟨atBot_of_orderEq_shareBot, orderEq_shareBot_of_atBot⟩
-
-theorem strict_shareBot_iff_not_atBot [PreorderBot α] (a : α) :
-    Strict (shareBot : α) a ↔ ¬ AtBot a := by
-  constructor
-  · intro h
-    exact h.right
-  · intro h
-    exact ⟨shareBot_le a, h⟩
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 @[ext]
 structure RawWeld (Being Call Response : Type) where
   agent    : Being
@@ -125,17 +20,17 @@ structure RawWeld (Being Call Response : Type) where
 
 /-- The whole signature, bundled. -/
 structure Grid (Contrib : Type) [PreorderBot Contrib] where
-  /- Reading and motivation: Identification.lean, Commentary C.1. -/
+  /- Reading and motivation: Identification/Commentary.lean, C.1. -/
   Being      : Type
   /-- The input component of an occurrence. -/
   Call       : Type
   /-- what a mounted response produces. -/
   Response   : Type
-  /- Reading and motivation: Identification.lean, Commentary C.1. -/
+  /- Reading and motivation: Identification/Commentary.lean, C.1. -/
   respondsTo : Being → Call → Option Response
   /-- The contribution value assigned to a mounted response. -/
   grade      : Being → Call → Response → Contrib
-  /- Reading and motivation: Identification.lean, Commentary C.1. -/
+  /- Reading and motivation: Identification/Commentary.lean, C.1. -/
   conditions : RawWeld Being Call Response → RawWeld Being Call Response → Prop
 
 namespace Grid
@@ -161,7 +56,7 @@ def Actual (w : G.Weld) : Prop := G.respondsTo w.agent w.call = some w.response
     "this act's agent" that does not pass through a completed `Weld`. -/
 def index (w : G.Weld) : G.Being := w.agent
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def share (w : G.Weld) : Contrib := G.grade w.agent w.call w.response
 
 /-- Whether this occurrence makes a live self-pole index. The raw
@@ -170,7 +65,7 @@ def share (w : G.Weld) : Contrib := G.grade w.agent w.call w.response
     the pole-class. -/
 def HasSelfPoleIndex (w : G.Weld) : Prop := ¬ AtBot (G.share w)
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def selfPoleIndex (w : G.Weld) (_h : G.HasSelfPoleIndex w) : G.Being := w.agent
 
 /-- A live self-pole index gives a strict contribution witness above the
@@ -180,7 +75,7 @@ theorem strict_shareBot_of_hasSelfPoleIndex (w : G.Weld)
     Strict (shareBot : Contrib) (G.share w) :=
   ⟨shareBot_le (G.share w), h⟩
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def WaaAppropriates (reception : G.Weld) : Prop := G.HasSelfPoleIndex reception
 
 /-- At the pole-class, no self-pole index is live. -/
@@ -212,17 +107,17 @@ theorem not_waaAppropriates_of_eq_shareBot
     ¬ G.WaaAppropriates w :=
   G.not_waaAppropriates_of_atBot w (atBot_of_eq_shareBot h)
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 theorem share_eq_grade_check (w : G.Weld) :
     G.share w = G.grade w.agent w.call w.response := rfl
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def ProbeConstant (b : G.Being) (cs : G.Call → Prop) : Prop :=
   ∀ c₁ c₂, cs c₁ → cs c₂ →
     ∀ r₁ r₂, G.respondsTo b c₁ = some r₁ → G.respondsTo b c₂ = some r₂ →
       OrderEq (G.grade b c₁ r₁) (G.grade b c₂ r₂)
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 
 /-- Mounting a response at all — the subject-function. Phrased with an
     existential rather than `Option.isSome` so this stays `Prop`-valued
@@ -239,13 +134,13 @@ def MountsSomewhere (b : G.Being) : Prop := ∃ c, G.MountsAt b c
     version when modelling deaf-blind limits or partial delivery. -/
 def RespondsToEveryCall (b : G.Being) : Prop := ∀ c, G.MountsAt b c
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def Stone (b : G.Being) : Prop := ∀ c, ¬ G.MountsAt b c
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def AllStone : Prop := ∀ b : G.Being, G.Stone b
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def Terminus (b : G.Being) : Prop :=
   ∀ c r, G.respondsTo b c = some r → AtBot (G.grade b c r)
 
@@ -255,7 +150,7 @@ def Terminus (b : G.Being) : Prop :=
     sparse. -/
 def LiveTerminus (b : G.Being) : Prop := G.MountsSomewhere b ∧ G.Terminus b
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def ResponsiveTerminus (b : G.Being) : Prop :=
   G.RespondsToEveryCall b ∧ G.Terminus b
 
@@ -282,10 +177,10 @@ theorem not_waaAppropriates_of_terminus_response
   G.not_waaAppropriates_of_atBot ⟨b, c, r⟩
     (G.atBot_of_terminus_response hterm hresp)
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def AtPoleClass (b : G.Being) : Prop := G.Stone b ∨ G.Terminus b
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 theorem stone_is_terminus_vacuously (b : G.Being) (h : G.Stone b) : G.Terminus b :=
   fun c r hr => absurd ⟨r, hr⟩ (h c)
 
@@ -307,7 +202,7 @@ theorem responsiveTerminus_live_of_call
 
 end Grid
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 
 /-- A carried contribution tendency. It stores no weld or being component. -/
 @[ext]
@@ -318,21 +213,21 @@ namespace Grid
 
 variable {Contrib : Type} [PreorderBot Contrib] (G : Grid Contrib)
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def rePitch (_before : Config Contrib) (received : G.Weld) : Config Contrib :=
   { tendency := G.share received }
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def IsShareDrop (before : Config Contrib) (received : G.Weld) : Prop :=
   Strict (G.share received) before.tendency
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 
 /- --------------------------------------------------------------------------
    Delivery structure and symmetric closure
 -------------------------------------------------------------------------- -/
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def ConditionsEither (w₁ w₂ : G.Weld) : Prop :=
   G.conditions w₁ w₂ ∨ G.conditions w₂ w₁
 
@@ -360,16 +255,16 @@ theorem timeDirection_of_hasSelfPoleIndex
     TimeDirection (shareBot : Contrib) (G.share w) :=
   G.strict_shareBot_of_hasSelfPoleIndex w h
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 
 /- --------------------------------------------------------------------------
    The reception-weld: reach-back
 -------------------------------------------------------------------------- -/
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def WaaReachBackFull (deed reception : G.Weld) : Prop := G.conditions deed reception
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 
 /-- A delivery-line from one occurrence to another, stated in field
     vocabulary. This is definitionally the same relation as
@@ -399,18 +294,18 @@ def LandsAt (deed reception : G.Weld) : Prop :=
     somewhere. No self-pole index is implied for the occurrence pointed at. -/
 def ObjectAxisStanding (deed : G.Weld) : Prop := ∃ reception, DeliveredTo G deed reception
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def LandsWithShareDrop
     (before : Config Contrib) (deed reception : G.Weld) : Prop :=
   LandsAt G deed reception ∧ G.IsShareDrop before reception
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def HasShareDropLanding (before : Config Contrib) (deed : G.Weld) : Prop :=
   ∃ reception, LandsWithShareDrop G before deed reception
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 
 /-- A standing line of the web incident on a being: an actual deed that
     the field delivers to one of the being's candidate receptions. The
@@ -421,7 +316,7 @@ def HasShareDropLanding (before : Config Contrib) (deed : G.Weld) : Prop :=
 def EnvironsLine (b : G.Being) (deed reception : G.Weld) : Prop :=
   G.Actual deed ∧ reception.agent = b ∧ G.conditions deed reception
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def ShareDropLine
     (before : Config Contrib) (b : G.Being) (deed reception : G.Weld) : Prop :=
   EnvironsLine G b deed reception ∧ G.IsShareDrop before reception
@@ -469,9 +364,9 @@ theorem objectAxisStanding_of_hasShareDropLanding
 
 namespace BeingConvention
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 abbrev MountsAt (b : G.Being) (c : G.Call) : Prop := G.MountsAt b c
 
 /-- Re-rooted name for mounting at some call. -/
@@ -480,7 +375,7 @@ abbrev MountsSomewhere (b : G.Being) : Prop := G.MountsSomewhere b
 /-- Re-rooted name for call-entire response. -/
 abbrev RespondsToEveryCall (b : G.Being) : Prop := G.RespondsToEveryCall b
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 abbrev Stone (b : G.Being) : Prop := G.Stone b
 
 /-- Re-rooted name for the pole-class responder. -/
@@ -500,7 +395,7 @@ abbrev AtPoleClass (b : G.Being) : Prop := G.AtPoleClass b
 abbrev ProbeConstant (b : G.Being) (cs : G.Call → Prop) : Prop :=
   G.ProbeConstant b cs
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 structure BeingCoarsening (G : Grid Contrib) (Macro : Type) where
   proj : G.Being → Macro
 
@@ -511,7 +406,7 @@ variable {G : Grid Contrib} {Macro : Type} (κ : BeingCoarsening G Macro)
 /-- A weld lies in a macro tag's fiber when its fine agent projects there. -/
 def InFiber (b : Macro) (w : G.Weld) : Prop := κ.proj w.agent = b
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def SameFiber (p q : G.Being) : Prop := κ.proj p = κ.proj q
 
 /-- A fiber has at least one fine tag under it. -/
@@ -536,7 +431,7 @@ theorem not_sentientTag_iff_fiber_all_stone (b : Macro) :
     rcases hsent with ⟨p, hp, c, hmount⟩
     exact hall p hp c hmount
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def FiberAtPole (b : Macro) : Prop :=
   ∀ w : G.Weld, G.Actual w → κ.InFiber b w → AtBot (G.share w)
 
@@ -616,7 +511,7 @@ def StrongSelfConditioningTag (b : Macro) : Prop :=
   ∀ reception : G.Weld, κ.InFiber b reception → G.Actual reception →
     ∃ deed : G.Weld, κ.InFiber b deed ∧ DeliveredTo G deed reception
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 structure Delegation (b : Macro) where
   weld : G.Weld
   actual : G.Actual weld
@@ -624,7 +519,7 @@ structure Delegation (b : Macro) where
 
 namespace Delegation
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def share {b : Macro} (d : κ.Delegation b) : Contrib := G.share d.weld
 
 @[simp]
@@ -636,7 +531,7 @@ end Delegation
 
 end BeingCoarsening
 
-/- The innermost `GridConvention` namespace is opened in Theorems.lean for the
+/- The innermost `GridConvention` namespace is opened in Consequences/Basic.lean for the
    concrete claim-language rows. Keeping the abstract machinery at `Grid`
    level for now avoids a churn-only migration of structure fields whose
    eventual home may simply remain signature rather than reading. -/
@@ -653,7 +548,7 @@ structure ActualWeld (G : Grid Contrib) where
   weld   : G.Weld
   actual : G.Actual weld
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 structure ReceptionPair (G : Grid Contrib) where
   first  : ActualWeld G
   second : ActualWeld G
@@ -676,201 +571,6 @@ def rePitchSequence {G : Grid Contrib} (before : Config Contrib)
   (afterFirst, G.rePitch afterFirst p.second.weld)
 
 end ReceptionPair
-
-end Grid
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-
-/- ==============================================================================
-   §4  The separate/fuse rule
-
-   The rule is stated against a deliberately small deep interface. The
-   object language itself is abstract: future files choose a concrete
-   `Claim` type and a tier-indexed satisfaction relation. What Theory fixes
-   is the shape that later work needs: distinctions are pairs of claim
-   objects, and recorded utterances carry enough inspectable information for
-   a taxonomy generator to ask which call was answered, at which tier the
-   utterance was offered, and whether the content is satisfied there.
-============================================================================== -/
-
-namespace Grid
-
-variable {Contrib : Type} [PreorderBot Contrib]
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-inductive Tier (G : Grid Contrib)
-  | floor
-  | actTime (w : G.Weld)
-
-variable (G : Grid Contrib)
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-def Tier.hasLiveShare : Tier G → Prop
-  | .floor     => False
-  | .actTime w => G.HasSelfPoleIndex w
-
-/-- An abstract object language of claims, together with its tier-indexed
-    satisfaction relation. This is intentionally only an interface: later
-    files can instantiate `Claim` with the concrete syntax their theorem or
-    taxonomy needs, while Theory can already state the separate/fuse rule
-    over inspectable claim-objects rather than over anonymous predicates. -/
-structure ClaimLanguage (G : Grid Contrib) where
-  Claim : Type
-  Holds : Tier G → Claim → Prop
-
-namespace ClaimLanguage
-
-/-- The judgement form a later file can read as `⊢_t P`: claim `p` is
-    satisfied at tier `t` in language `L`. It is still a `Prop`, but it is
-    not merely a free-floating `Tier → Prop`; the claim being judged is an
-    object of the chosen language. -/
-def TrueAt {G : Grid Contrib} (L : ClaimLanguage G) (t : Tier G) (p : L.Claim) :
-    Prop :=
-  L.Holds t p
-
-end ClaimLanguage
-
-/-- A recorded utterance, typed as data the taxonomy can inspect. The `weld`
-    records who answered which call with which response; `offeredAt` records
-    the tier at which the utterance was made; `content` is a claim-object in
-    the chosen language. The proof of `actual` keeps this type for actual
-    recorded utterances rather than hypothetical ones. -/
-structure RecordedUtterance (G : Grid Contrib) (L : ClaimLanguage G) where
-  weld      : G.Weld
-  actual    : G.Actual weld
-  offeredAt : Tier G
-  content   : L.Claim
-
-namespace RecordedUtterance
-
-/-- The call this utterance answers, exposed as a projection so future
-    classifiers do not have to unpack the weld by hand. -/
-def answersCall {G : Grid Contrib} {L : ClaimLanguage G}
-    (u : RecordedUtterance G L) : G.Call :=
-  u.weld.call
-
-/-- Whether the utterance's content is satisfied at the tier at which it was
-    offered. Fox-style tier-errors are expected to fail this test; the
-    taxonomy that classifies such failures belongs downstream. -/
-def FitsOfferedTier {G : Grid Contrib} {L : ClaimLanguage G}
-    (u : RecordedUtterance G L) : Prop :=
-  L.TrueAt u.offeredAt u.content
-
-end RecordedUtterance
-
-/-- A distinction: two claim-objects a diagnosis might hold apart. -/
-structure Distinction (G : Grid Contrib) where
-  language : ClaimLanguage G
-  sideA : language.Claim
-  sideB : language.Claim
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-def Distinction.Fused {G : Grid Contrib} (d : Distinction G) (t : Tier G) : Prop :=
-  ¬ Tier.hasLiveShare G t →
-    (d.language.TrueAt t d.sideA ↔ d.language.TrueAt t d.sideB)
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-def Distinction.Collapse {G : Grid Contrib} (d : Distinction G) (t : Tier G) : Prop :=
-  Tier.hasLiveShare G t ∧
-    (d.language.TrueAt t d.sideA ↔ d.language.TrueAt t d.sideB)
-
-/-- Freeze: the rule's other violation — holding a distinction SEPARATE at
-    the floor, where it should fuse. -/
-def Distinction.Freeze {G : Grid Contrib} (d : Distinction G) : Prop :=
-  ¬ (d.language.TrueAt Tier.floor d.sideA ↔
-      d.language.TrueAt Tier.floor d.sideB)
-
-/-- Separation: at a live act-time tier, the two sides are not
-    interchangeable. -/
-def Distinction.Separated {G : Grid Contrib} (d : Distinction G) (t : Tier G) :
-    Prop :=
-  Tier.hasLiveShare G t ∧
-    ¬ (d.language.TrueAt t d.sideA ↔ d.language.TrueAt t d.sideB)
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-def Distinction.ObeysSeparateFuse {G : Grid Contrib} (d : Distinction G) :
-    Prop :=
-  (∀ t, Tier.hasLiveShare G t →
-      ¬ (d.language.TrueAt t d.sideA ↔ d.language.TrueAt t d.sideB)) ∧
-  (∀ t, ¬ Tier.hasLiveShare G t →
-      (d.language.TrueAt t d.sideA ↔ d.language.TrueAt t d.sideB))
-
-/-- The two voices of the system's diagnostics. -/
-inductive VerdictVoice
-  | assertable
-  | displayable
-
-/-- The two grades of error described in the theorem file. -/
-inductive ErrorGrade
-  | verdict
-  | shortfall
-
-namespace ErrorGrade
-
-/-- Grade 1 verdicts are asserted inside the lens; Grade 2 verdicts are
-    displayed without adding a value-command. -/
-def voice : ErrorGrade → VerdictVoice
-  | .verdict => .assertable
-  | .shortfall => .displayable
-
-end ErrorGrade
-
-/-- The generator's four possible public outcomes: the two violations of a
-    distinction, a declined classification, or a retyping that redraws the
-    distinction itself. -/
-inductive GeneratorOutcome (G : Grid Contrib)
-  | collapse (d : Distinction G) (t : Tier G) (h : d.Collapse t)
-  | freeze (d : Distinction G) (h : d.Freeze)
-  | declined
-  | retype (oldDistinction newDistinction : Distinction G)
-
-theorem not_collapse_of_obeysSeparateFuse
-    {G : Grid Contrib} {d : Distinction G} (h : d.ObeysSeparateFuse)
-    (t : Tier G) :
-    ¬ d.Collapse t :=
-  fun hc => (h.left t hc.left) hc.right
-
-theorem not_freeze_of_obeysSeparateFuse
-    {G : Grid Contrib} {d : Distinction G} (h : d.ObeysSeparateFuse) :
-    ¬ d.Freeze :=
-  fun hf => hf (h.right Tier.floor (fun hfloor => hfloor))
-
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
-theorem not_freeze_of_same_claim (L : ClaimLanguage G) (p : L.Claim) :
-    ¬ ({ language := L, sideA := p, sideB := p } : Distinction G).Freeze :=
-  fun h => h Iff.rfl
-
-end Grid
-
-namespace Grid
-
-namespace DirectedConvention
-namespace BeingConvention
-namespace GridConvention
-
-variable {Contrib : Type} [PreorderBot Contrib]
-
-/- The abstract separate/fuse machinery remains defined at `Grid` level for
-   compatibility; these aliases expose its innermost reading-home. -/
-
-abbrev Tier (G : Grid Contrib) := Grid.Tier G
-
-abbrev ClaimLanguage (G : Grid Contrib) := Grid.ClaimLanguage G
-
-abbrev RecordedUtterance (G : Grid Contrib) (L : Grid.ClaimLanguage G) :=
-  Grid.RecordedUtterance G L
-
-abbrev Distinction (G : Grid Contrib) := Grid.Distinction G
-
-abbrev VerdictVoice := Grid.VerdictVoice
-
-abbrev ErrorGrade := Grid.ErrorGrade
-
-abbrev GeneratorOutcome (G : Grid Contrib) := Grid.GeneratorOutcome G
-
-end GridConvention
-end BeingConvention
-end DirectedConvention
 
 end Grid
 
@@ -921,7 +621,7 @@ theorem no_agent_recovery_of_field_collision
     hne (hex.elim (fun _recover hrec =>
       (hrec ⟨a₁, c, r⟩ h1).symm.trans (hrec ⟨a₂, c, r⟩ h2)))
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 
 /-- Two devices, differing only in whether their chime is a function of
     who is listening. -/
@@ -947,7 +647,7 @@ instance : PreorderBot Nat where
   bot      := 0
   bot_le   := Nat.zero_le
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def clockGrid : Grid Nat where
   Being      := Clock
   Call       := Listener
@@ -969,7 +669,7 @@ theorem adaptive_is_terminus : clockGrid.Terminus Clock.adaptive :=
 theorem adaptive_not_stone : ¬ clockGrid.Stone Clock.adaptive :=
   fun h => h Listener.present ⟨Chime.chime, rfl⟩
 
-/- Reading and motivation: Identification.lean, Commentary C.1. -/
+/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 theorem clockGrid_function_share_split_witness :
     clockGrid.Stone Clock.rigid ∧
     clockGrid.Terminus Clock.adaptive ∧
@@ -1025,5 +725,6 @@ theorem registerClock_macro_selfConditioning :
     not get in the way. -/
 
 end Preview
+
 
 end WAA

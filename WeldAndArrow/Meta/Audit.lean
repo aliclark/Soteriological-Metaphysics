@@ -1,4 +1,4 @@
-import WeldAndArrow.Deliberation
+import WeldAndArrow.Meta.Deliberation
 
 namespace WAA
 
@@ -45,16 +45,16 @@ info: 'WAA.Grid.DirectedConvention.BeingConvention.BeingCoarsening.map_selfCondi
 #print axioms Grid.DirectedConvention.BeingConvention.BeingCoarsening.map_selfConditioningTag_iff
 
 /--
-info: 'WAA.Grid.DirectedConvention.sradPathOught_conditional' does not depend on any axioms
+info: 'WAA.Grid.DirectedConvention.waaPathOught_conditional' does not depend on any axioms
 -/
 #guard_msgs in
-#print axioms Grid.DirectedConvention.sradPathOught_conditional
+#print axioms Grid.DirectedConvention.waaPathOught_conditional
 
 /--
-info: 'WAA.Grid.DirectedConvention.no_srad_path_at_pole' does not depend on any axioms
+info: 'WAA.Grid.DirectedConvention.no_waa_path_at_pole' does not depend on any axioms
 -/
 #guard_msgs in
-#print axioms Grid.DirectedConvention.no_srad_path_at_pole
+#print axioms Grid.DirectedConvention.no_waa_path_at_pole
 
 /--
 info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.rowOf_obeys' does not depend on any axioms
@@ -99,16 +99,16 @@ info: 'WAA.standing_does_not_determine_dated' does not depend on any axioms
 #print axioms standing_does_not_determine_dated
 
 /--
-info: 'WAA.Grid.DirectedConvention.map_sradAversionContext_iff' does not depend on any axioms
+info: 'WAA.Grid.DirectedConvention.map_waaAversionContext_iff' does not depend on any axioms
 -/
 #guard_msgs in
-#print axioms Grid.DirectedConvention.map_sradAversionContext_iff
+#print axioms Grid.DirectedConvention.map_waaAversionContext_iff
 
 /--
-info: 'WAA.OrthogonalityNegative.sradFullyEnlightened_stronger_than_terminus' does not depend on any axioms
+info: 'WAA.OrthogonalityNegative.waaFullyEnlightened_stronger_than_terminus' does not depend on any axioms
 -/
 #guard_msgs in
-#print axioms OrthogonalityNegative.sradFullyEnlightened_stronger_than_terminus
+#print axioms OrthogonalityNegative.waaFullyEnlightened_stronger_than_terminus
 
 /--
 info: 'WAA.MisFeedNegative.fence_and_gate' does not depend on any axioms

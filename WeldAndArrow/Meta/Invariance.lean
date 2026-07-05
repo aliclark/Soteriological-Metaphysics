@@ -1,6 +1,6 @@
 /-
 ================================================================================
-  WeldAndArrow.Invariance
+  WeldAndArrow.Meta.Invariance
   Display reparameterization and recovery countermodels
 ================================================================================
 
@@ -8,11 +8,17 @@ This module transports grid predicates across display reparameterizations and
 records small countermodels for equality-at-bottom, direction recovery, and
 partition recovery.
 
-Reading and motivation: Identification.lean, Commentary C.3.
+Reading and motivation: Identification/Commentary.lean, C.3.
 -/
 
 import WeldAndArrow.Identification
-import WeldAndArrow.Sraddha
+import WeldAndArrow.Doctrines.Sraddha
+
+/-!
+Any predicate over the contribution carrier added anywhere in the library owes
+a `map_*` transport lemma in this file, or it counts as operational residue.
+Transport lemmas stay centralized here so a missing lemma is conspicuous.
+-/
 
 namespace WAA
 
@@ -254,12 +260,12 @@ theorem map_hasSelfPoleIndex_iff (w : G.Weld) :
     exact h ((f.atBot_iff (G.share w)).mp hbot)
 
 @[simp]
-theorem map_mismatchGrade (w : G.Weld) :
-    (G.map f).MismatchGrade w = f.toFun (G.MismatchGrade w) :=
+theorem map_waaMismatchGrade (w : G.Weld) :
+    (G.map f).WaaMismatchGrade w = f.toFun (G.WaaMismatchGrade w) :=
   rfl
 
-theorem map_mismatchLive_iff (w : G.Weld) :
-    (G.map f).MismatchLive w ↔ G.MismatchLive w := by
+theorem map_waaMismatchLive_iff (w : G.Weld) :
+    (G.map f).WaaMismatchLive w ↔ G.WaaMismatchLive w := by
   constructor
   · intro h
     exact ⟨(G.map_actual_iff f w).mp h.left,
@@ -545,9 +551,9 @@ theorem map_shortfallClosedAt_iff
       h horigLive ((map_deliveredTo_iff G f deed reception).mp hdel)
     exact (map_hasShareDropLanding_iff G f before deed).mpr hlanding
 
-theorem map_sradFullyEnlightened_reflect
-    {b : G.Being} (h : SradFullyEnlightened (G.map f) b) :
-    SradFullyEnlightened G b := by
+theorem map_waaFullyEnlightened_reflect
+    {b : G.Being} (h : WaaFullyEnlightened (G.map f) b) :
+    WaaFullyEnlightened G b := by
   constructor
   · exact (G.map_responsiveTerminus_iff f b).mp h.left
   · intro before deed reception hdeed
@@ -556,10 +562,10 @@ theorem map_sradFullyEnlightened_reflect
 
 /-- Preservation of the universally quantified faith closure needs the target
     display carrier to be covered by the reparameterization. -/
-theorem map_sradFullyEnlightened_of_surjective
+theorem map_waaFullyEnlightened_of_surjective
     (hsurj : ∀ b' : Contrib', ∃ a : Contrib, f.toFun a = b')
-    {b : G.Being} (h : SradFullyEnlightened G b) :
-    SradFullyEnlightened (G.map f) b := by
+    {b : G.Being} (h : WaaFullyEnlightened G b) :
+    WaaFullyEnlightened (G.map f) b := by
   constructor
   · exact (G.map_responsiveTerminus_iff f b).mpr h.left
   · intro before' deed reception hdeed
@@ -582,10 +588,10 @@ theorem map_sradFullyEnlightened_of_surjective
           (map_hasShareDropLanding_iff G f before deed).mpr hlanding
         simpa [Config.map, before, ha] using hmapped
 
-theorem map_sradAversionContext_iff
+theorem map_waaAversionContext_iff
     (before : Config Contrib) (reception : G.Weld) :
-    SradAversionContext (G.map f) (before.map f) reception ↔
-      SradAversionContext G before reception := by
+    WaaAversionContext (G.map f) (before.map f) reception ↔
+      WaaAversionContext G before reception := by
   constructor
   · intro h
     refine
@@ -593,14 +599,14 @@ theorem map_sradAversionContext_iff
         mismatchLive := ?_ }
     · intro hbot
       exact h.liveBefore ((f.atBot_iff before.tendency).mpr hbot)
-    · exact (G.map_mismatchLive_iff f reception).mp h.mismatchLive
+    · exact (G.map_waaMismatchLive_iff f reception).mp h.mismatchLive
   · intro h
     refine
       { liveBefore := ?_
         mismatchLive := ?_ }
     · intro hbot
       exact h.liveBefore ((f.atBot_iff before.tendency).mp hbot)
-    · exact (G.map_mismatchLive_iff f reception).mpr h.mismatchLive
+    · exact (G.map_waaMismatchLive_iff f reception).mpr h.mismatchLive
 
 end DirectedConvention
 
@@ -796,7 +802,7 @@ theorem oldEqTerminus_not_invariant :
 
 end InvarianceNegative
 
-/- Reading and motivation: Identification.lean, Commentary C.3. -/
+/- Reading and motivation: Identification/Commentary.lean, C.3. -/
 
 namespace DirectionNegative
 
@@ -844,7 +850,7 @@ theorem conditions_disagree :
   · intro h
     cases h.left
 
-/- Reading and motivation: Identification.lean, Commentary C.3. -/
+/- Reading and motivation: Identification/Commentary.lean, C.3. -/
 theorem no_direction_recovery_from_conditionsEither :
     ¬ ∃ recover : (W → W → Prop) → (W → W → Prop),
         recover forwardGrid.ConditionsEither = forwardGrid.conditions ∧
@@ -971,130 +977,6 @@ theorem contentBeforeAfterRow_not_obeys_twoBottom :
 end ContentNegative
 
 /- ==============================================================================
-   Mis-feed negative: the avyākata fence and delivery gate
-============================================================================== -/
-
-namespace MisFeedNegative
-
-variable {Contrib : Type} [PreorderBot Contrib]
-
-/-- The index-seeking question-form, modeled as its universe of candidate
-    answers: one purported self-pole index for each field residue. -/
-abbrev IndexSeekingForm (G : Grid Contrib) : Type :=
-  G.FieldFact → G.Being
-
-/-- Success for the form: correctness at every actual weld. -/
-def AnswersCorrectly (G : Grid Contrib) (ans : IndexSeekingForm G) : Prop :=
-  ∀ w : G.Weld, G.Actual w → ans (G.fieldOf w) = G.index w
-
-/-- A field collision: two actual welds with the same residue and distinct
-    agents. -/
-structure FieldCollision (G : Grid Contrib) where
-  w1 : G.Weld
-  w2 : G.Weld
-  actual1 : G.Actual w1
-  actual2 : G.Actual w2
-  same_field : G.fieldOf w1 = G.fieldOf w2
-  distinct_agent : w1.agent ≠ w2.agent
-
-/-- No answer-function for the index-seeking form is correct under a field
-    collision. The negation encloses the whole universe of candidate answers,
-    so the obstruction belongs to the question-shape, not to one bad answer. -/
-theorem no_indexSeeking_success_of_collision
-    {G : Grid Contrib} (c : FieldCollision G) :
-    ¬ ∃ ans : IndexSeekingForm G, AnswersCorrectly G ans := by
-  rintro ⟨ans, hans⟩
-  have hsame : G.index c.w1 = G.index c.w2 := by
-    calc
-      G.index c.w1 = ans (G.fieldOf c.w1) := (hans c.w1 c.actual1).symm
-      _ = ans (G.fieldOf c.w2) := congrArg ans c.same_field
-      _ = G.index c.w2 := hans c.w2 c.actual2
-  exact c.distinct_agent (by simpa [Grid.index] using hsame)
-
-/-- Claim-level face of the same obstruction: one field residue has two
-    actual-backed, distinct index claims. -/
-theorem indexClaim_not_functional_of_collision
-    {G : Grid Contrib} (c : FieldCollision G) :
-    ∃ f : G.FieldFact, ∃ b1 b2 : G.Being, b1 ≠ b2 ∧
-      (∃ w : G.Weld, G.Actual w ∧ G.fieldOf w = f ∧ w.agent = b1) ∧
-      (∃ w : G.Weld, G.Actual w ∧ G.fieldOf w = f ∧ w.agent = b2) :=
-  ⟨G.fieldOf c.w1, c.w1.agent, c.w2.agent, c.distinct_agent,
-    ⟨c.w1, c.actual1, rfl, rfl⟩,
-    ⟨c.w2, c.actual2, c.same_field.symm, rfl⟩⟩
-
-/-- Two beings, one call, one response: both actual welds have the same field
-    residue. -/
-inductive CollisionBeing
-  | left
-  | right
-deriving DecidableEq
-
-/-- A concrete grid witnessing a field collision while keeping delivery
-    answerable in the same model. -/
-def collisionGrid : Grid Nat where
-  Being      := CollisionBeing
-  Call       := Unit
-  Response   := Unit
-  respondsTo _ _ := some ()
-  grade _ _ _ := 0
-  conditions _ _ := True
-
-def wLeft : collisionGrid.Weld :=
-  ⟨CollisionBeing.left, (), ()⟩
-
-def wRight : collisionGrid.Weld :=
-  ⟨CollisionBeing.right, (), ()⟩
-
-/-- The fence's hypothesis, witnessed concretely. -/
-def collisionGrid_fieldCollision : FieldCollision collisionGrid where
-  w1 := wLeft
-  w2 := wRight
-  actual1 := rfl
-  actual2 := rfl
-  same_field := rfl
-  distinct_agent := by
-    intro h
-    cases h
-
-/-- The fence fired at the concrete witness. -/
-theorem collisionGrid_no_indexSeeking_success :
-    ¬ ∃ ans : IndexSeekingForm collisionGrid,
-        AnswersCorrectly collisionGrid ans :=
-  no_indexSeeking_success_of_collision collisionGrid_fieldCollision
-
-/-- The delivery-typed twin question-form in the concrete model. -/
-abbrev DeliveryForm : Type :=
-  collisionGrid.Weld → collisionGrid.Weld → Bool
-
-/-- Success for the delivery twin: agreement with `conditions` in the witness
-    grid. -/
-def DeliveryAnswersCorrectly (ans : DeliveryForm) : Prop :=
-  ∀ deed reception,
-    ans deed reception = true ↔ collisionGrid.conditions deed reception
-
-/-- A checked delivery answer for the concrete model. -/
-def deliveryTwinAnswer : DeliveryForm :=
-  fun _ _ => true
-
-/-- The delivery twin is answered in the same model. This is model-local: it
-    shows the index fence does not enclose delivery-typed questions. -/
-theorem deliveryTwinAnswers :
-    DeliveryAnswersCorrectly deliveryTwinAnswer := by
-  intro deed reception
-  dsimp [DeliveryAnswersCorrectly, deliveryTwinAnswer, collisionGrid]
-  exact ⟨fun _ => True.intro, fun _ => rfl⟩
-
-/-- Fence and gate together in the same concrete model. -/
-theorem fence_and_gate :
-    (¬ ∃ ans : IndexSeekingForm collisionGrid,
-        AnswersCorrectly collisionGrid ans) ∧
-      (∃ ans : DeliveryForm, DeliveryAnswersCorrectly ans) :=
-  ⟨collisionGrid_no_indexSeeking_success,
-    ⟨deliveryTwinAnswer, deliveryTwinAnswers⟩⟩
-
-end MisFeedNegative
-
-/- ==============================================================================
    Sraddha orthogonality countermodel
 ============================================================================== -/
 
@@ -1102,36 +984,36 @@ namespace OrthogonalityNegative
 
 open Grid.DirectedConvention
 
-/-- The same zero-effectiveness witness used by `SradNegative`: a responsive
+/-- The same zero-effectiveness witness used by `SraddhaNegative`: a responsive
     terminus whose delivered deed does not land as a share-drop for the live
     receiver context. -/
 abbrev zeroEffectGrid : Grid Nat :=
-  SradNegative.zeroEffectGrid
+  SraddhaNegative.zeroEffectGrid
 
 theorem responsiveTerminus_with_no_shareDropLanding :
-    zeroEffectGrid.ResponsiveTerminus SradNegative.Being.srad ∧
-      ¬ HasShareDropLanding zeroEffectGrid SradNegative.liveBefore SradNegative.deed :=
-  ⟨SradNegative.srad_responsiveTerminus,
-    SradNegative.not_hasShareDropLanding_liveBefore⟩
+    zeroEffectGrid.ResponsiveTerminus SraddhaNegative.Being.sraddha ∧
+      ¬ HasShareDropLanding zeroEffectGrid SraddhaNegative.liveBefore SraddhaNegative.deed :=
+  ⟨SraddhaNegative.sraddha_responsiveTerminus,
+    SraddhaNegative.not_hasShareDropLanding_liveBefore⟩
 
-theorem terminus_not_sradFullyEnlightened :
-    zeroEffectGrid.Terminus SradNegative.Being.srad ∧
-      ¬ SradFullyEnlightened zeroEffectGrid SradNegative.Being.srad :=
-  ⟨SradNegative.srad_responsiveTerminus.right,
-    SradNegative.not_sradFullyEnlightened⟩
+theorem terminus_not_waaFullyEnlightened :
+    zeroEffectGrid.Terminus SraddhaNegative.Being.sraddha ∧
+      ¬ WaaFullyEnlightened zeroEffectGrid SraddhaNegative.Being.sraddha :=
+  ⟨SraddhaNegative.sraddha_responsiveTerminus.right,
+    SraddhaNegative.not_waaFullyEnlightened⟩
 
-/-- `SradFullyEnlightened` is strictly stronger than terminus typing: it
+/-- `WaaFullyEnlightened` is strictly stronger than terminus typing: it
     implies terminus, and this concrete responsive terminus still fails the
     shortfall-closure conjunct. -/
-theorem sradFullyEnlightened_stronger_than_terminus :
-    (SradFullyEnlightened zeroEffectGrid SradNegative.Being.srad →
-        zeroEffectGrid.Terminus SradNegative.Being.srad) ∧
-      zeroEffectGrid.Terminus SradNegative.Being.srad ∧
-      ¬ SradFullyEnlightened zeroEffectGrid SradNegative.Being.srad := by
+theorem waaFullyEnlightened_stronger_than_terminus :
+    (WaaFullyEnlightened zeroEffectGrid SraddhaNegative.Being.sraddha →
+        zeroEffectGrid.Terminus SraddhaNegative.Being.sraddha) ∧
+      zeroEffectGrid.Terminus SraddhaNegative.Being.sraddha ∧
+      ¬ WaaFullyEnlightened zeroEffectGrid SraddhaNegative.Being.sraddha := by
   constructor
   · intro h
-    exact (responsiveTerminus_of_sradFullyEnlightened zeroEffectGrid h).right
-  · exact terminus_not_sradFullyEnlightened
+    exact (responsiveTerminus_of_waaFullyEnlightened zeroEffectGrid h).right
+  · exact terminus_not_waaFullyEnlightened
 
 end OrthogonalityNegative
 
@@ -1205,7 +1087,7 @@ theorem no_partition_recovery :
 
 end BeingNegative
 
-/- Reading and motivation: Identification.lean, Commentary C.3. -/
+/- Reading and motivation: Identification/Commentary.lean, C.3. -/
 
 namespace SelfLineWitness
 

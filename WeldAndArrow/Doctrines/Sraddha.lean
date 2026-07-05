@@ -1,6 +1,6 @@
 /-
 ================================================================================
-  WeldAndArrow.Sraddha
+  WeldAndArrow.Doctrines.Sraddha
   The checked sraddha conditional
 ================================================================================
 
@@ -8,7 +8,7 @@ The grid proves the implication. It does not discharge the antecedents and it
 does not assert the detached fourth-truth injunction in its own voice.
 -/
 
-import WeldAndArrow.FourTruths
+import WeldAndArrow.Doctrines.FourTruths
 
 namespace WAA
 
@@ -21,55 +21,55 @@ variable (G : Grid Contrib)
 
 /-- The receiver-side aversion context: a live prior tendency together with an
     actual live-mismatch reception. No imported desire primitive is added. -/
-structure SradAversionContext
+structure WaaAversionContext
     (before : Config Contrib) (reception : G.Weld) where
   liveBefore : ¬ AtBot before.tendency
-  mismatchLive : G.MismatchLive reception
+  mismatchLive : G.WaaMismatchLive reception
 
-theorem actual_of_sradAversionContext
+theorem actual_of_waaAversionContext
     {before : Config Contrib} {reception : G.Weld}
-    (h : SradAversionContext G before reception) :
+    (h : WaaAversionContext G before reception) :
     G.Actual reception :=
   h.mismatchLive.left
 
-theorem hasSelfPoleIndex_of_sradAversionContext
+theorem hasSelfPoleIndex_of_waaAversionContext
     {before : Config Contrib} {reception : G.Weld}
-    (h : SradAversionContext G before reception) :
+    (h : WaaAversionContext G before reception) :
     G.HasSelfPoleIndex reception :=
   h.mismatchLive.right
 
 /-- Given faith-shaped closure, delivery, and the receiver's live aversion
     context, the share-drop landing follows. -/
-theorem srad_path_landing
+theorem waa_path_landing
     {g : G.Being} {before : Config Contrib} {deed reception : G.Weld}
-    (hfaith : SradFullyEnlightened G g)
+    (hfaith : WaaFullyEnlightened G g)
     (hdeed : deed.agent = g)
     (hdel : DeliveredTo G deed reception)
-    (hctx : SradAversionContext G before reception) :
+    (hctx : WaaAversionContext G before reception) :
     HasShareDropLanding G before deed :=
   hfaith.right before deed reception hdeed hctx.liveBefore hdel
 
 /-- The fourth-truth ought as an implication type only. The detached consequent
     appears nowhere in this definition. -/
-def SradPathOught
+def WaaPathOught
     (g : G.Being) (before : Config Contrib) (deed reception : G.Weld) :
     Prop :=
-  SradFullyEnlightened G g →
+  WaaFullyEnlightened G g →
     deed.agent = g →
       DeliveredTo G deed reception →
-        SradAversionContext G before reception →
+        WaaAversionContext G before reception →
           HasShareDropLanding G before deed
 
 /-- The grid proves only the conditional: faith, delivery, and live aversion
     imply the landing. -/
-theorem sradPathOught_conditional
+theorem waaPathOught_conditional
     (g : G.Being) (before : Config Contrib) (deed reception : G.Weld) :
-    SradPathOught G g before deed reception := by
+    WaaPathOught G g before deed reception := by
   intro hfaith hdeed hdel hctx
-  exact srad_path_landing G hfaith hdeed hdel hctx
+  exact waa_path_landing G hfaith hdeed hdel hctx
 
 /-- At the pole-class, no share-drop landing can be constructed for any deed. -/
-theorem no_srad_path_at_pole
+theorem no_waa_path_at_pole
     {before : Config Contrib} (hbot : AtBot before.tendency)
     (deed : G.Weld) :
     ¬ HasShareDropLanding G before deed := by
@@ -77,29 +77,29 @@ theorem no_srad_path_at_pole
   exact G.not_isShareDrop_of_tendency_atBot hbot reception hland.right
 
 /-- At the pole-class, the live-aversion antecedent itself fails. -/
-theorem no_srad_aversion_context_at_pole
+theorem no_waa_aversion_context_at_pole
     {before : Config Contrib} (hbot : AtBot before.tendency)
     (reception : G.Weld) :
-    ¬ SradAversionContext G before reception :=
+    ¬ WaaAversionContext G before reception :=
   fun hctx => hctx.liveBefore hbot
 
 namespace BeingConvention
 namespace GridConvention
 
 /-- The checked conditional is a grammatical verdict item. -/
-def SradConditionalVoice : ErrorGrade :=
+def WaaConditionalVoice : ErrorGrade :=
   ErrorGrade.verdict
 
 /-- The detached injunction is only displayable as shortfall-voiced. -/
-def SradDetachedOughtVoice : ErrorGrade :=
+def WaaDetachedOughtVoice : ErrorGrade :=
   ErrorGrade.shortfall
 
-theorem srad_conditional_voice_assertable :
-    ErrorGrade.voice SradConditionalVoice = VerdictVoice.assertable :=
+theorem waa_conditional_voice_assertable :
+    ErrorGrade.voice WaaConditionalVoice = VerdictVoice.assertable :=
   rfl
 
-theorem srad_detached_ought_voice_displayable :
-    ErrorGrade.voice SradDetachedOughtVoice = VerdictVoice.displayable :=
+theorem waa_detached_ought_voice_displayable :
+    ErrorGrade.voice WaaDetachedOughtVoice = VerdictVoice.displayable :=
   rfl
 
 end GridConvention
@@ -113,12 +113,12 @@ end Grid
    Negative witnesses: both antecedents matter
 ============================================================================== -/
 
-namespace SradNegative
+namespace SraddhaNegative
 
 open Grid.DirectedConvention
 
 inductive Being
-  | srad
+  | sraddha
   | receiver
 
 inductive Call
@@ -136,10 +136,10 @@ def zeroEffectGrid : Grid Nat where
   respondsTo _ _ := some Response.response
   grade b _ _ :=
     match b with
-    | .srad => 0
+    | .sraddha => 0
     | .receiver => 1
   conditions deed reception :=
-    deed.agent = Being.srad ∧ reception.agent = Being.receiver
+    deed.agent = Being.sraddha ∧ reception.agent = Being.receiver
 
 def liveBefore : Config Nat :=
   { tendency := 1 }
@@ -148,7 +148,7 @@ def poleBefore : Config Nat :=
   { tendency := 0 }
 
 def deed : zeroEffectGrid.Weld :=
-  ⟨Being.srad, Call.call, Response.response⟩
+  ⟨Being.sraddha, Call.call, Response.response⟩
 
 def reception : zeroEffectGrid.Weld :=
   ⟨Being.receiver, Call.call, Response.response⟩
@@ -176,12 +176,12 @@ theorem reception_hasSelfPoleIndex :
   exact Nat.not_succ_le_zero 0 hbot
 
 theorem aversionContext :
-    SradAversionContext zeroEffectGrid liveBefore reception :=
+    WaaAversionContext zeroEffectGrid liveBefore reception :=
   { liveBefore := liveBefore_not_atBot
     mismatchLive := ⟨reception_actual, reception_hasSelfPoleIndex⟩ }
 
-theorem srad_responsiveTerminus :
-    zeroEffectGrid.ResponsiveTerminus Being.srad := by
+theorem sraddha_responsiveTerminus :
+    zeroEffectGrid.ResponsiveTerminus Being.sraddha := by
   constructor
   · intro _c
     exact ⟨Response.response, rfl⟩
@@ -198,36 +198,36 @@ theorem not_hasShareDropLanding_liveBefore :
     simpa [zeroEffectGrid, Grid.share, liveBefore, hreceiver] using hdrop
   exact strict_irrefl (1 : Nat) hstrict
 
-theorem not_sradFullyEnlightened :
-    ¬ SradFullyEnlightened zeroEffectGrid Being.srad := by
+theorem not_waaFullyEnlightened :
+    ¬ WaaFullyEnlightened zeroEffectGrid Being.sraddha := by
   intro hfaith
   exact not_hasShareDropLanding_liveBefore
     (hfaith.right liveBefore deed reception rfl liveBefore_not_atBot delivered)
 
 /-- Dropping the faith conjunct leaves delivery and aversion insufficient. -/
 theorem drop_faith_antecedent_fails :
-    zeroEffectGrid.ResponsiveTerminus Being.srad ∧
+    zeroEffectGrid.ResponsiveTerminus Being.sraddha ∧
       DeliveredTo zeroEffectGrid deed reception ∧
-      SradAversionContext zeroEffectGrid liveBefore reception ∧
+      WaaAversionContext zeroEffectGrid liveBefore reception ∧
       ¬ HasShareDropLanding zeroEffectGrid liveBefore deed :=
-  ⟨srad_responsiveTerminus, delivered, aversionContext,
+  ⟨sraddha_responsiveTerminus, delivered, aversionContext,
     not_hasShareDropLanding_liveBefore⟩
 
 theorem not_hasShareDropLanding_poleBefore :
     ¬ HasShareDropLanding zeroEffectGrid poleBefore deed :=
-  no_srad_path_at_pole zeroEffectGrid poleBefore_atBot deed
+  no_waa_path_at_pole zeroEffectGrid poleBefore_atBot deed
 
 /-- Dropping the aversion conjunct leaves a pole-prior case where no
     share-drop landing is constructible. -/
 theorem drop_aversion_antecedent_fails :
     AtBot poleBefore.tendency ∧
       DeliveredTo zeroEffectGrid deed reception ∧
-      ¬ SradAversionContext zeroEffectGrid poleBefore reception ∧
+      ¬ WaaAversionContext zeroEffectGrid poleBefore reception ∧
       ¬ HasShareDropLanding zeroEffectGrid poleBefore deed :=
   ⟨poleBefore_atBot, delivered,
-    no_srad_aversion_context_at_pole zeroEffectGrid poleBefore_atBot reception,
+    no_waa_aversion_context_at_pole zeroEffectGrid poleBefore_atBot reception,
     not_hasShareDropLanding_poleBefore⟩
 
-end SradNegative
+end SraddhaNegative
 
 end WAA

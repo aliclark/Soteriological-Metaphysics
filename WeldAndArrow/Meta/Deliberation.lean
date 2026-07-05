@@ -1,6 +1,6 @@
 /-
 ================================================================================
-  WeldAndArrow.Deliberation
+  WeldAndArrow.Meta.Deliberation
   Consequentialist display and deliberator-side underdetermination
 ================================================================================
 
@@ -9,10 +9,10 @@ a reading, the non-accumulation consequence of `rePitch`, the being-boundary and
 transfer countermodels, invariance of grade under delivery conditions, and a
 claim-language witness for delivery-arrogation.
 
-Reading and motivation: Identification.lean, Commentary C.5.
+Reading and motivation: Identification/Commentary.lean, C.5.
 -/
 
-import WeldAndArrow.Invariance
+import WeldAndArrow.Meta.Invariance
 
 namespace WAA
 

@@ -1,11 +1,10 @@
 # A Plain-English Reading of the Lean Theorems
 
 **Scope.** This document states, in plain English, what the Lean declarations in
-`Theory.lean`, `Theorems.lean`, `FourTruths.lean`, `Sraddha.lean`,
-`Identification.lean`, `Invariance.lean`, and `Audit.lean`
-assert. It reads the checked Lean surface: definitions, theorem statements, and
-proof status where that matters. Interpretive prose remains secondary to the
-formal statements.
+`Signature/*`, `Consequences/Basic.lean`, `Doctrines/*`, `Identification/*`,
+and `Meta/*` assert. It reads the checked Lean surface: definitions, theorem
+statements, and proof status where that matters. Interpretive prose remains
+secondary to the formal statements.
 
 The project is pinned to `leanprover/lean4:v4.31.0` in `lean-toolchain`.
 
@@ -15,16 +14,21 @@ assembly is described as such. A "weld" is always the triple `RawWeld` /
 `G.Weld`; "actual" always means the equation
 `respondsTo w.agent w.call = some w.response`.
 
-Identifiers beginning `Waa` mark names that assert the paper's identification content:
-ownership, appropriation, whose-ness, reach-back, or sowing-side aiming. The
-unprefixed vocabulary is neutral order/delivery vocabulary, including Row-2
+Identifiers beginning `Waa` mark system-POV readings: what the concept looks
+like from this grid, not what the concept is in detached doctrinal voice. The
+single marker covers ownership, appropriation, whose-ness, reach-back,
+sowing-side aiming, four-truths mismatch vocabulary, and sraddha conditional
+vocabulary. Doctrine words live in module names and prose; checked reading
+identifiers use `Waa`.
+
+The unprefixed vocabulary is neutral order/delivery vocabulary, including Row-2
 index-placement names such as `HasSelfPoleIndex`, `selfPoleIndex`, and
 `Tier.hasLiveShare`.
 
-Identifiers beginning `Srad` mark names that assert the sraddha conditional:
-faith-shaped reception, the fully enlightened pole hypothesis, and the path
-ought as an implication. As with `Waa`, the prefix is a reading marker, not a
-new primitive in the grid signature.
+In generated or prose presentations, the `Signature` layer is titled **Theory**
+and the `Consequences` layer is titled **Theorems**, matching the paper's part
+titles. The Lean module names state the role; the prose names state the
+correspondence.
 
 `Grid.DirectedConvention` is the second marking. It contains vocabulary that
 reads direction into the direction-free relation `conditions`: delivery,
@@ -35,10 +39,9 @@ transitivity for `conditions`. Role-asymmetry is not temporal asymmetry: the
 "where the welding happens", not "the later one".
 
 `Grid.DirectedConvention.TimeDirection` is an abbreviation of `Strict`; all
-strictness theorems apply to it transparently. The formal modules
-`Theory.lean`, `Theorems.lean`, and `Invariance.lean` keep their comments
-mathematical and point to `Identification.lean` Commentary C.1-C.4 for the
-paper-facing readings.
+strictness theorems apply to it transparently. The formal modules keep their
+comments mathematical and point to `Identification/Commentary.lean` C.1-C.5 for
+the paper-facing readings.
 
 The namespace tree now records ontological ordering. Floor/genjō and the bare
 signature sit outside the convention layers. `Grid.DirectedConvention` reads
@@ -148,19 +151,19 @@ before.tendency` and not `before.tendency ≼ share received`.
 - `LandsAt`, `ObjectAxisStanding`, `LandsWithShareDrop`, and
   `HasShareDropLanding`.
 - `EnvironsLine` and `ShareDropLine`.
-- `ShortfallClosedAt`, `SradFullyEnlightened`, `SradAversionContext`, and
-  `SradPathOught`.
+- `ShortfallClosedAt`, `WaaFullyEnlightened`, `WaaAversionContext`, and
+  `WaaPathOught`.
 - `WaaReportFace`, `WaaOwnershipFace`, `WaaVacuousOwnershipFace`, and
   `WaaDiachronicWhose`.
 
 All of these are definitions over `conditions`, `Actual`, `IsShareDrop`, and
 `WaaAppropriates`; none adds a new axiom to `conditions`.
 
-**Four truths and sraddha.** `MismatchGrade w` is definitionally `share w`.
-`MismatchLive w` means an actual occurrence with a live self-pole index; with
-actuality supplied, `mismatchLive_iff_hasSelfPoleIndex` gives the exact typing
-condition. `not_mismatchLive_of_stone` keeps stones outside the occurrence
-domain, and `mismatch_atBot_of_terminus_response` sends terminus responses to
+**Four truths and sraddha.** `WaaMismatchGrade w` is definitionally `share w`.
+`WaaMismatchLive w` means an actual occurrence with a live self-pole index; with
+actuality supplied, `waaMismatchLive_iff_hasSelfPoleIndex` gives the exact typing
+condition. `not_waaMismatchLive_of_stone` keeps stones outside the occurrence
+domain, and `waaMismatch_atBot_of_terminus_response` sends terminus responses to
 the pole-class. The fourth truth the grid can only display: Lean now proves
 the implication whose antecedents it never asserts. The detached injunction
 remains absent from the system's assertable voice.
@@ -178,7 +181,7 @@ iff with `AtBot` therefore requires decidability of the one proposition
 
 ---
 
-## 1. Theory.lean
+## 1. Signature Layer (`Signature/*`)
 
 `no_self_pole_index_of_atBot`: if `AtBot (share w)`, then `w` has no live
 self-pole index. This is direct contradiction with
@@ -264,7 +267,7 @@ fine registers into one macro tag at diagnosis-time. The checked facts are
 
 ---
 
-## 2. Theorems.lean
+## 2. Consequences and Rows (`Consequences/Basic.lean`, `Identification/Rows.lean`)
 
 **Function/share and poles.** `share_eq_grade` is definitional. The response
 facts `mountsAt_of_actual`, `mountsSomewhere_of_actual`,
@@ -315,9 +318,9 @@ share-drop line whose reception is actual assembles the existential
 as display.
 
 `ShortfallClosedAt` states local, delivered-pair shortfall closure for a live
-prior tendency. `SradFullyEnlightened` adds this universal closure conjunct to
-`ResponsiveTerminus`; `responsiveTerminus_of_sradFullyEnlightened` and
-`shortfallClosedAt_of_sradFullyEnlightened` project the two parts.
+prior tendency. `WaaFullyEnlightened` adds this universal closure conjunct to
+`ResponsiveTerminus`; `responsiveTerminus_of_waaFullyEnlightened` and
+`shortfallClosedAt_of_waaFullyEnlightened` project the two parts.
 
 **Delivery and share-drop landing.** The reach/aiming biconditionals are
 definitional (`Iff.rfl`). The remaining delivery theorems are projections from
@@ -353,8 +356,8 @@ tendencies are the two weld shares.
 `answersCall_eq_weld_call` and `fitsOfferedTier_iff_trueAt` are definitional.
 `verdict_voice_assertable` and `shortfall_voice_displayable` confirm the two
 `ErrorGrade.voice` assignments.
-`srad_conditional_voice_assertable` and
-`srad_detached_ought_voice_displayable` pin the new conditional/detached split:
+`waa_conditional_voice_assertable` and
+`waa_detached_ought_voice_displayable` pin the new conditional/detached split:
 the implication is verdict-voiced, while the detached injunction is only
 shortfall-voiced.
 
@@ -413,32 +416,32 @@ is the content instance under the non-stone aptness hypothesis.
 
 ---
 
-## 3. FourTruths.lean and Sraddha.lean
+## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha.lean`)
 
-`mismatchGrade_eq_share` is definitional. `mismatchGrade_le_of_share_le` is the
+`waaMismatchGrade_eq_share` is definitional. `waaMismatchGrade_le_of_share_le` is the
 ordinal covariation theorem: any share comparison is the corresponding
 mismatch-grade comparison.
 
-`MismatchLive` is actual occurrence plus live self-pole index.
-`mismatchLive_iff_hasSelfPoleIndex` removes the actuality conjunct when the
-occurrence is already known actual. `not_mismatchLive_of_stone` uses
-`not_actual_of_stone`; `mismatch_atBot_of_terminus_response` reuses
+`WaaMismatchLive` is actual occurrence plus live self-pole index.
+`waaMismatchLive_iff_hasSelfPoleIndex` removes the actuality conjunct when the
+occurrence is already known actual. `not_waaMismatchLive_of_stone` uses
+`not_actual_of_stone`; `waaMismatch_atBot_of_terminus_response` reuses
 `atBot_of_terminus_response`.
 
-`SradAversionContext` packages a live prior tendency and an actual
-live-mismatch reception. `srad_path_landing` proves the checked conditional:
-`SradFullyEnlightened`, a deed by that being, delivery to the reception, and
-the aversion context imply `HasShareDropLanding`. `SradPathOught` is only this
-implication type, and `sradPathOught_conditional` proves it.
+`WaaAversionContext` packages a live prior tendency and an actual
+live-mismatch reception. `waa_path_landing` proves the checked conditional:
+`WaaFullyEnlightened`, a deed by that being, delivery to the reception, and
+the aversion context imply `HasShareDropLanding`. `WaaPathOught` is only this
+implication type, and `waaPathOught_conditional` proves it.
 
-`no_srad_path_at_pole` proves that no share-drop landing can be constructed
-from an `AtBot` prior tendency. `no_srad_aversion_context_at_pole` shows the
-live-aversion antecedent fails there. `SradNegative` supplies concrete
+`no_waa_path_at_pole` proves that no share-drop landing can be constructed
+from an `AtBot` prior tendency. `no_waa_aversion_context_at_pole` shows the
+live-aversion antecedent fails there. `SraddhaNegative` supplies concrete
 countermodels for dropping faith or dropping aversion.
 
 ---
 
-## 4. Identification.lean
+## 4. Identification Layer (`Identification/*`)
 
 **Field residues.** `CorrectFieldRecovery recover` says that every actual
 weld's field residue recovers its index.
@@ -507,7 +510,7 @@ Sraddha entries, while `generatedTableStructure_number`,
 
 ---
 
-## 5. Invariance.lean
+## 5. Meta/Invariance.lean
 
 **Admission criterion.** Any future predicate over `grade` owes a transport
 lemma here, or it counts as operational residue. The file proves that the
@@ -544,7 +547,7 @@ Grade-facing transport facts:
 - `map_terminus_iff`, `map_liveTerminus_iff`, `map_responsiveTerminus_iff`,
   and `map_atPoleClass_iff`
 - `map_hasSelfPoleIndex_iff`
-- `map_mismatchGrade` and `map_mismatchLive_iff`
+- `map_waaMismatchGrade` and `map_waaMismatchLive_iff`
 - `map_probeConstant_iff`
 - `map_stateToolFits_iff`
 - `Tier.map` and `map_tier_hasLiveShare_iff`
@@ -554,9 +557,9 @@ Grade-facing transport facts:
 - `Grid.DirectedConvention.map_hasShareDropLanding_iff`
 - `Grid.DirectedConvention.map_shareDropLine_iff`
 - `Grid.DirectedConvention.map_shortfallClosedAt_iff`
-- `Grid.DirectedConvention.map_sradAversionContext_iff`
-- `Grid.DirectedConvention.map_sradFullyEnlightened_reflect` and
-  `map_sradFullyEnlightened_of_surjective`
+- `Grid.DirectedConvention.map_waaAversionContext_iff`
+- `Grid.DirectedConvention.map_waaFullyEnlightened_reflect` and
+  `map_waaFullyEnlightened_of_surjective`
 - `BeingCoarsening.displayMap` and its `map_*_iff` lemmas for
   `InFiber`, `SameFiber`, `FiberInhabited`, `ActualFiberInhabited`,
   `SentientTag`, `FiberAtPole`, `LiveFiberAtPole`, `SelfAptTag`,
@@ -648,10 +651,10 @@ owned as such. The third layer cannot be discharged in Lean, and the paper does
 not pretend otherwise; it is an aptness claim of the same standing as the
 content-row hypotheses beside `ContentNegative`.
 
-**`OrthogonalityNegative`.** Reuses the `SradNegative` zero-effectiveness grid:
-a responsive terminus can fail `SradFullyEnlightened` because the delivered
+**`OrthogonalityNegative`.** Reuses the `SraddhaNegative` zero-effectiveness grid:
+a responsive terminus can fail `WaaFullyEnlightened` because the delivered
 deed has no share-drop landing for the receiver's live prior tendency.
-`sradFullyEnlightened_stronger_than_terminus` proves the strictness.
+`waaFullyEnlightened_stronger_than_terminus` proves the strictness.
 
 **`BeingNegative`.** `twoBeingGrid` has two fine tags with identical response,
 grade, and symmetric delivery behavior. `κmerge` reads them as one macro tag;
@@ -676,9 +679,9 @@ regime fact to be supplied by a model, not a structural axiom.
 
 ---
 
-## 6. Audit.lean
+## 6. Meta/Audit.lean
 
-`Audit.lean` imports `Invariance.lean` and pins selected `#print axioms`
+`Meta/Audit.lean` imports `Meta/Deliberation.lean` and pins selected `#print axioms`
 outputs with `#guard_msgs`.
 
 The audited declarations are:
@@ -690,11 +693,11 @@ The audited declarations are:
 - `Grid.map_isShareDrop_iff`
 - `Grid.DirectedConvention.map_landsWithShareDrop_iff`
 - `Grid.DirectedConvention.BeingConvention.BeingCoarsening.map_selfConditioningTag_iff`
-- `Grid.DirectedConvention.sradPathOught_conditional`
-- `Grid.DirectedConvention.no_srad_path_at_pole`
-- `Grid.DirectedConvention.map_sradAversionContext_iff`
+- `Grid.DirectedConvention.waaPathOught_conditional`
+- `Grid.DirectedConvention.no_waa_path_at_pole`
+- `Grid.DirectedConvention.map_waaAversionContext_iff`
 - `MisFeedNegative.fence_and_gate`
-- `OrthogonalityNegative.sradFullyEnlightened_stronger_than_terminus`
+- `OrthogonalityNegative.waaFullyEnlightened_stronger_than_terminus`
 
 The pinned result is: no audited theorem depends on `sorry` or
 `Classical.choice`. All audited declarations are axiom-free except
@@ -712,7 +715,7 @@ The definitional identities include `share_eq_grade`, `selfAnchored`,
 `rePitch_tendency_eq_share`, the delivery/aiming biconditionals,
 `isShareDrop_iff_rePitch_tendency_drop`, the recorded-utterance identities,
 the reception-pair tendency lemmas, and the basic `map_*` identities in
-`Invariance.lean`.
+`Meta/Invariance.lean`.
 
 The elementary consequences are projections, witness assemblies,
 contradictions, and short order arguments. The important non-definitional order
