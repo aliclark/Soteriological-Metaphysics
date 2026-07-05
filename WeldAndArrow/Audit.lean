@@ -1,4 +1,4 @@
-import WeldAndArrow.Invariance
+import WeldAndArrow.Deliberation
 
 namespace WAA
 
@@ -115,5 +115,35 @@ info: 'WAA.MisFeedNegative.fence_and_gate' does not depend on any axioms
 -/
 #guard_msgs in
 #print axioms MisFeedNegative.fence_and_gate
+
+/--
+info: 'WAA.Grid.grade_independent_of_conditions' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.grade_independent_of_conditions
+
+/--
+info: 'WAA.Grid.rePitch_forgets' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.rePitch_forgets
+
+/--
+info: 'WAA.ObjectiveNegative.no_grid_data_objective_for_my_drops' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms ObjectiveNegative.no_grid_data_objective_for_my_drops
+
+/--
+info: 'WAA.TransferNegative.adaptive_track_record_underdetermines_new_effect' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms TransferNegative.adaptive_track_record_underdetermines_new_effect
+
+/--
+info: 'WAA.DeliveryArrogationNegative.command_utterance_not_fits' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms DeliveryArrogationNegative.command_utterance_not_fits
 
 end WAA

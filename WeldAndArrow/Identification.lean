@@ -175,6 +175,24 @@ The negative witnesses keep that conditional honest. `SradNegative` shows that
 dropping faith or dropping the live-aversion antecedent loses the landing, and
 `OrthogonalityNegative` shows that a responsive terminus need not be
 `SradFullyEnlightened`.
+
+C.5 Deliberation.lean
+
+`ConsequentialistConvention` is a descriptive reading layer. `DropCount` and
+`DropCountInFiber` count share-drop receptions across finite actual runs without
+adding probability, utility, or a command register. `ObjectiveNegative` reuses
+the merge/split being-convention pattern to show that "my drops" is not a
+function of grid data alone.
+
+`rePitch_forgets` and
+`accumulated_attainment_constant_of_same_final` restate backsliding in the form
+a maximizer needs: no accumulated attainment variable is stored in `Config`.
+`TransferNegative` records the adaptive track-record obstruction and the
+`ResponseInvariant` contrast case. `grade_independent_of_conditions` keeps the
+cetana claim at signature level: grade and share do not consume downstream
+delivery conditions. `DeliveryArrogationNegative` instantiates the
+`ClaimLanguage` machinery for a command-shaped delivery claim and checks that a
+recorded plan fails `FitsOfferedTier` where delivery is absent.
 -/
 
 namespace WAA

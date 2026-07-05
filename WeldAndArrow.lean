@@ -6,4 +6,5 @@ import WeldAndArrow.FourTruths
 import WeldAndArrow.Sraddha
 import WeldAndArrow.Identification
 import WeldAndArrow.Invariance
+import WeldAndArrow.Deliberation
 import WeldAndArrow.Audit
