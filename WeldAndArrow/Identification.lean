@@ -2,4 +2,5 @@ import WeldAndArrow.Identification.Commentary
 import WeldAndArrow.Identification.Residues
 import WeldAndArrow.Identification.Ownership
 import WeldAndArrow.Identification.Placements
+import WeldAndArrow.Identification.Registers
 import WeldAndArrow.Identification.Disclaimers

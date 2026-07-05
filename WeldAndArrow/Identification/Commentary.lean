@@ -202,4 +202,16 @@ cetana claim at signature level: grade and share do not consume downstream
 delivery conditions. `DeliveryArrogationNegative` instantiates the
 `ClaimLanguage` machinery for a command-shaped delivery claim and checks that a
 recorded plan fails `FitsOfferedTier` where delivery is absent.
+
+C.6 Identification/Placements.lean, Identification/Registers.lean, and
+    Identification/Disclaimers.lean
+
+The contemporary placements and disclaimer-5 register sorting are paper-facing
+taxonomies kept in the office/placement pattern: data plus `rfl` pins, not a
+semantic interpretation of grid vocabulary. `SortedFact.register` is total over
+the table instances, so exhaustiveness of the three registers is carried by the
+definition rather than asserted as a separate theorem. The
+`nothing_selfIndexed_carried` check is the enumerated face of the same
+discipline enforced architecturally by `Config`: no owner or self-index field is
+stored between deeds.
 -/

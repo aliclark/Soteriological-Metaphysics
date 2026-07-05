@@ -511,6 +511,14 @@ The two facts that this unfolds to `Tier.actTime w` and has exactly the weld's
 generator's retype constructor. The placement and disclaimer checks are named
 below.
 
+**Register sorting.** `Register`, `SortedFact`, and `SortedFact.register` record
+disclaimer 5's three-register sorting as inspectable data. The pins are
+`causalSeries_register`, `delivery_register`, `seed_register`,
+`arrogationTendency_register`, `agentIndex_register`, `forMeNess_register`,
+`receptionReachBack_register`, and `rowTwoPlacement_register`.
+`nothing_selfIndexed_carried` checks the refined premise that the self-indexed
+facts are not carried in the stored field register.
+
 **Self-line witness.** `SelfLineWitness.selfLineGrid` is a minimal `Nat` grid
 with one being, one call, one response, total response, grade `1`, and
 `conditions _ _ := True`. The checked examples show:

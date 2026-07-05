@@ -7,7 +7,7 @@
 Reading and motivation: Identification/Commentary.lean.
 -/
 
-import WeldAndArrow.Identification.Placements
+import WeldAndArrow.Identification.Registers
 
 namespace WAA
 
