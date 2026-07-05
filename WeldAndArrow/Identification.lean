@@ -86,9 +86,9 @@ C.2 Theorems.lean
 
 The theorem layer proves consequences of the definitions: function/share facts,
 share-drop obstruction at the pole, delivery and landing projections, tier
-diagnostics, and the generated convention rows. The paper's readings of these
-facts live here as commentary only; the theorem statements consume only the
-neutral definitions.
+diagnostics, and the generated table rows. The paper's readings of these facts
+live here as commentary only; the theorem statements consume only the neutral
+definitions.
 
 The strictness facts are now in `Theory.lean` as `Strict`, `strict_irrefl`,
 `not_strict_of_orderEq`, and `no_strict_of_all_orderEq`. The arrow-of-time gloss
@@ -99,20 +99,33 @@ direction witness against bottom. `DirectionVoid` names the absence of any
 strict comparison, while `AllStone` names the grid-wide absence of response
 function.
 
-The `beforeAfterRow`, `beingsRow`, and `gridLensRow` results are the formal
-checks behind the paper's collapse/freeze table: the rows obey separate/fuse,
-and their live-tier denials are self-refuting as diagnoses.
+`RowTag`, `RowClaim`, `rowLanguage`, and `rowOf` now generate the table's
+schema rows with pole-affirming semantics. `beforeAfterRow`, `beingsRow`, and
+`gridLensRow` are compatibility names for `.layer` tags in that schema. Their
+collapse and freeze checks remain hypothesis-free; their obedience theorems
+carry only the local `AtBot` stability needed for non-live genjo fusion. The
+full row list is Lean data as `tableOrder`.
 
 The `contentLayerLanguage` keeps the convention-live side as the live-share
 condition and gives row-specific content to the denial side. Its obedience
 theorems are aptness-conditional by design: where the denial is simply true,
-the convention row should not be held. `RecordedUtterance` supplies the
-actuality needed for the utterance-level self-refutation facts.
+the convention row should not be held. This track deliberately keeps
+`LayerClaim`: global denials such as all-stone or direction-void cannot be
+made pole-affirming by truth at a particular genjo weld. `RecordedUtterance`
+supplies the actuality needed for the content utterance checks, while
+`denied_misfits_live_offer` and `fox_utterance_misfits_live_offer` perform the
+same live-tier check for the schema language.
 
 The `reEmptied` transformer and `ladder` iterate the separate/fuse rule without
-adding a claim that quantifies over all levels. The "completed ladder" is an
-instructive absence: level quantification appears only in meta-theorems such as
-`ladder_obeys` and `no_level_final`.
+adding a claim that quantifies over all levels. `ErrorFree`,
+`reEmptied_obeys_of_errorFree`, and `ladder_obeys_of_errorFree` record the
+refutation-only route by which the implemented `finalBelow` side lets the
+ladder climb without an added stability premise above the seed. The "completed
+ladder" remains an instructive absence: level quantification appears only in
+meta-theorems such as `ladder_obeys`, `no_level_final`, and the existential
+guard `no_final_level`. Concrete witnesses such as
+`shareZero_not_functionZero_witness`, `rung_not_pole_witness`, and
+`standing_does_not_determine_dated` keep the row anchors model-checked.
 
 C.3 Invariance.lean
 
@@ -295,6 +308,16 @@ theorem waaDiachronicWhose_iff_delivery_and_waaAppropriates
     WaaDiachronicWhose G deed reception ↔
       DeliveredTo G deed reception ∧ G.WaaAppropriates reception :=
   Iff.rfl
+
+/-- Delivery alone never settles the diachronic whose-question; the fresh
+    reception-time appropriation conjunct is still required. -/
+theorem no_diachronicWhose_from_series_alone
+    {deed reception : G.Weld}
+    (hno : ¬ G.WaaAppropriates reception) :
+    ¬ WaaDiachronicWhose G deed reception := by
+  intro hwhose
+  exact hno ((waaDiachronicWhose_iff_delivery_and_waaAppropriates G
+    deed reception).mp hwhose).right
 
 end DirectedConvention
 
@@ -526,6 +549,10 @@ inductive Disclaimer
   | aptnessConditionality
   | sraddhaConditional
   | faithBothConjuncts
+  | generatedTableStructure
+  | poleAffirmingSemantics
+  | proseRows
+  | errorFreeReading
 
 namespace Disclaimer
 
@@ -574,6 +601,10 @@ def number : Disclaimer → Nat
   | .aptnessConditionality => 40
   | .sraddhaConditional => 41
   | .faithBothConjuncts => 42
+  | .generatedTableStructure => 43
+  | .poleAffirmingSemantics => 44
+  | .proseRows => 45
+  | .errorFreeReading => 46
 
 theorem waaKarmaIdentification_number :
     number Disclaimer.waaKarmaIdentification = 9 := rfl
@@ -589,6 +620,15 @@ theorem sraddhaConditional_number :
 
 theorem faithBothConjuncts_number :
     number Disclaimer.faithBothConjuncts = 42 := rfl
+
+theorem generatedTableStructure_number :
+    number Disclaimer.generatedTableStructure = 43 := rfl
+
+theorem poleAffirmingSemantics_number :
+    number Disclaimer.poleAffirmingSemantics = 44 := rfl
+
+theorem errorFreeReading_number :
+    number Disclaimer.errorFreeReading = 46 := rfl
 
 end Disclaimer
 

@@ -44,9 +44,9 @@ The namespace tree now records ontological ordering. Floor/genjō and the bare
 signature sit outside the convention layers. `Grid.DirectedConvention` reads
 the arrow; `Grid.DirectedConvention.BeingConvention` reads fine tags as
 macro-scale beings; `Grid.DirectedConvention.BeingConvention.GridConvention`
-contains the concrete convention-layer claim language used by the pilot
-taxonomy rows. Names are placed by what their reading presupposes, not by what
-their definition consumes.
+contains the pole-affirming row schema, the content-layer companion language,
+and the generated table-order data. Names are placed by what their reading
+presupposes, not by what their definition consumes.
 
 ---
 
@@ -358,21 +358,29 @@ tendencies are the two weld shares.
 the implication is verdict-voiced, while the detached injunction is only
 shortfall-voiced.
 
-**Pilot convention-layer rows.** Under
-`Grid.DirectedConvention.BeingConvention.GridConvention`, `ConventionLayer` has
-`directedTime`, `beings`, and `gridLens`. `LayerClaim` has
-`conventionLive l` and `layerDenied l`. `layerLanguage G` interprets all layer
-claims as true at `floor`, the live convention as `HasSelfPoleIndex w` at
-`actTime w`, and denials as false at act-time.
+**Generated table rows.** Under
+`Grid.DirectedConvention.BeingConvention.GridConvention`, `RowTag` names the
+schema-generated table rows, including the three `ConventionLayer` rows via
+`.layer`. `RowClaim` has `inForce r` and `denied r`, and `rowLanguage G` gives
+them pole-affirming semantics: at `floor` every row claim holds; at `actTime w`
+the conventional side holds, while the denial side holds exactly when
+`AtBot (G.share w)`.
 
-`beforeAfterRow G`, `beingsRow G`, and `gridLensRow G` instantiate
-`Distinction G` from this language. `beforeAfterRow_obeys`,
-`beingsRow_obeys`, and `gridLensRow_obeys` prove `ObeysSeparateFuse` by cases
-on the tier. `layerDenied_holds_only_where_no_live_share` is the branch-sawing
-lemma: if a denial holds, the tier has no live share.
-`no_time_collapse_self_refuting`, `no_beings_collapse_self_refuting`, and
-`lens_denial_collapse_self_refuting` rule out collapse for the checked rows;
-the corresponding `*_not_freeze` facts rule out freeze.
+`rowOf G r` instantiates `Distinction G` from this language.
+`rowOf_separated_at_live`, `rowOf_collapse_self_refuting`, `rowOf_not_freeze`,
+`denied_holds_only_where_no_live_share`, `rowOf_errorFree`, and
+`pole_validates_all_claims` are hypothesis-free. `rowOf_obeys` and
+`rowOf_obeys_iff_errorFree` carry only the local decidability/stability needed
+to turn non-live act-time into `AtBot`. `denied_misfits_live_offer` is the
+recorded-utterance check; `fox_utterance_misfits_live_offer` specializes it to
+the marquee fox row.
+
+The old pilot names are compatibility names for schema tags:
+`beforeAfterRow G`, `beingsRow G`, and `gridLensRow G` are
+`rowOf G (.layer ...)`. Their collapse and freeze names keep
+hypothesis-free statements; their `*_obeys` names carry the stability
+hypothesis. `tableOrder` records the full table shape as Lean data: sixteen
+schema rows, one ladder row, and six prose rows.
 
 **Content-bearing rows.** `contentLayerLanguage` uses the same `LayerClaim`
 syntax but gives content to denials: no strict direction, all beings stone, or
@@ -381,7 +389,9 @@ no live tier anywhere. `contentBeforeAfterRow`, `contentBeingsRow`, and
 conditional: `contentBeforeAfterRow_obeys_of_direction`,
 `contentBeingsRow_obeys_of_being`, and
 `contentGridLensRow_obeys_of_liveTier` require exactly the witness that makes
-the denial false at non-live act-time.
+the denial false at non-live act-time. These content rows keep the diagnostic
+live-side because their global denials cannot be made true by a particular
+pole-class weld; they answer aptness-to-hold, not truth-at-tier.
 
 `beings_denial_fits_only_floor` and
 `time_denial_unfit_for_appropriating_utterer` are utterance-level
@@ -391,11 +401,15 @@ share as a strict direction witness.
 
 **Re-emptying ladder.** `LadderSide`, `reEmptied`, and `ladder` generate the
 next distinction from the previous one. `reEmptied_obeysSeparateFuse` proves
-that obedience propagates, `ladder_obeys` iterates that proof, and
-`no_level_final` / `ladder_collapse_self_refuting` rule out freeze and collapse
-at every generated level. `beingsLadder` is the unconditional fiat instance;
-`contentBeingsLadder` is the content instance under the non-stone aptness
-hypothesis.
+that obedience propagates, while `ErrorFree`, `errorFree_of_obeys`,
+`reEmptied_obeys_of_errorFree`, `ladder_obeys_of_errorFree`, and
+`ladder_errorFree_of_errorFree` show the stronger refutation-only route above
+an error-free seed. `no_level_final`, `no_final_level`, and
+`ladder_collapse_self_refuting` rule out freeze and collapse at generated
+levels. `beingsLadder`, `beforeAfterLadder`, and `gridLensLadder` are schema
+seeds; their `_obeys_succ` facts are hypothesis-free, while all-level
+`*_obeys` names include the seed's stability hypothesis. `contentBeingsLadder`
+is the content instance under the non-stone aptness hypothesis.
 
 ---
 
@@ -475,15 +489,19 @@ below.
 The contemporary placement checks are `siderits_waaPlacement`,
 `ganeri_waaPlacement`, `zahavi_waaPlacement`, and `sartre_waaPlacement`.
 
-**Disclaimers.** `Disclaimer.number` now runs through 42. The new entries are
+**Disclaimers.** `Disclaimer.number` now runs through 46. The recent entries are
 `beingConvention` (35), `pilotGeneratedRows` (36), `beingTrichotomy` (37),
 `hareHornRegister` (38), `modalRealismFreeze` (39), and
 `aptnessConditionality` (40), `sraddhaConditional` (41), and
-`faithBothConjuncts` (42).
+`faithBothConjuncts` (42). The table-generation entries append after those
+existing pins: `generatedTableStructure` (43), `poleAffirmingSemantics` (44),
+`proseRows` (45), and `errorFreeReading` (46).
 `waaKarmaIdentification_number` pins `waaKarmaIdentification = 9`, and
 `modalRealismFreeze_number` pins `modalRealismFreeze = 39`.
 `aptnessConditionality_number` pins `aptnessConditionality = 40`;
 `sraddhaConditional_number` and `faithBothConjuncts_number` pin the two new
+Sraddha entries, while `generatedTableStructure_number`,
+`poleAffirmingSemantics_number`, and `errorFreeReading_number` pin the table
 entries.
 
 ---

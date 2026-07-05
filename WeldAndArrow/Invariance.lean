@@ -608,9 +608,17 @@ namespace DirectedConvention
 namespace BeingConvention
 namespace GridConvention
 
-theorem map_layerRow_obeys (l : ConventionLayer) :
+theorem map_rowOf_obeys
+    [∀ w : (G.map f).Weld, Decidable (AtBot ((G.map f).share w))]
+    (r : RowTag) :
+    (rowOf (G.map f) r).ObeysSeparateFuse :=
+  rowOf_obeys (G.map f) r
+
+theorem map_layerRow_obeys
+    [∀ w : (G.map f).Weld, Decidable (AtBot ((G.map f).share w))]
+    (l : ConventionLayer) :
     (layerRow (G.map f) l).ObeysSeparateFuse :=
-  layerRow_obeys (G.map f) l
+  map_rowOf_obeys G f (.layer l)
 
 theorem map_contentBeforeAfterRow_obeys_of_direction
     (h : ∃ a b : Contrib, Strict a b) :
@@ -630,9 +638,14 @@ theorem map_contentGridLensRow_obeys_of_liveTier
   contentGridLensRow_obeys_of_liveTier (G.map f)
     ((G.map_exists_liveTier_iff f).mpr h)
 
-theorem map_beingsLadder_obeys :
+theorem map_beingsLadder_obeys
+    [∀ w : (G.map f).Weld, Decidable (AtBot ((G.map f).share w))] :
     ∀ n, (beingsLadder (G.map f) n).ObeysSeparateFuse :=
   beingsLadder_obeys (G.map f)
+
+theorem map_beingsLadder_obeys_succ :
+    ∀ n, (beingsLadder (G.map f) (n + 1)).ObeysSeparateFuse :=
+  beingsLadder_obeys_succ (G.map f)
 
 end GridConvention
 end BeingConvention

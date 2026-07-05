@@ -57,6 +57,48 @@ info: 'WAA.Grid.DirectedConvention.no_srad_path_at_pole' does not depend on any 
 #print axioms Grid.DirectedConvention.no_srad_path_at_pole
 
 /--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.rowOf_obeys' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.rowOf_obeys
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.pole_validates_all_claims' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.pole_validates_all_claims
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.denied_misfits_live_offer' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.denied_misfits_live_offer
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.rowOf_obeys_iff_errorFree' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.rowOf_obeys_iff_errorFree
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.reEmptied_obeys_of_errorFree' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.reEmptied_obeys_of_errorFree
+
+/--
+info: 'WAA.rung_not_pole_witness' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms rung_not_pole_witness
+
+/--
+info: 'WAA.standing_does_not_determine_dated' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms standing_does_not_determine_dated
+
+/--
 info: 'WAA.Grid.DirectedConvention.map_sradAversionContext_iff' does not depend on any axioms
 -/
 #guard_msgs in
