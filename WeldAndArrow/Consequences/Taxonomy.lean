@@ -530,6 +530,30 @@ def tableOrder : List TableRow := [
 
 example : tableOrder.length = 23 := rfl
 
+/-- Metadata for whether a schema-generated row has a collapse occupant in the
+    paper's Grade-1 table. This records table prose; it is not extra grid
+    semantics. -/
+def hasCollapseOccupant : RowTag → Bool
+  | .perCallGlobal => false
+  | _ => true
+
+/-- Metadata for whether a schema-generated row has a freeze occupant in the
+    paper's Grade-1 table. This records table prose; it is not extra grid
+    semantics. -/
+def hasFreezeOccupant : RowTag → Bool
+  | _ => true
+
+/-- A generated table dash is data, while the row's refutations remain theorem
+    facts. The per-call/global row has no collapse occupant in the table, yet
+    collapse and freeze are still ruled out by the row checks. -/
+theorem perCallGlobal_empty_collapse_cell_anchor :
+    hasCollapseOccupant .perCallGlobal = false ∧
+      hasFreezeOccupant .perCallGlobal = true ∧
+        (∀ t, ¬ (perCallGlobalRow G).Collapse t) ∧
+          ¬ (perCallGlobalRow G).Freeze :=
+  ⟨rfl, rfl, fun t => perCallGlobal_collapse_self_refuting G t,
+    perCallGlobalRow_not_freeze G⟩
+
 end GridConvention
 end BeingConvention
 end DirectedConvention

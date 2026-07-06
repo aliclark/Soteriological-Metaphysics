@@ -409,7 +409,11 @@ The old pilot names are compatibility names for schema tags:
 `rowOf G (.layer ...)`. Their collapse and freeze names keep
 hypothesis-free statements; their `*_obeys` names carry the stability
 hypothesis. `tableOrder` records the full table shape as Lean data: sixteen
-schema rows, one ladder row, and six prose rows.
+schema rows, one ladder row, and six prose rows. Schema-row cell occupancy is
+also data now: `hasCollapseOccupant` and `hasFreezeOccupant` record where the
+paper's table has an occupant rather than a dash, and
+`perCallGlobal_empty_collapse_cell_anchor` checks the per-call/global dash
+without turning it into new grid semantics.
 
 **Concrete consequence witnesses.** The small model checks now include
 `shareZero_not_functionZero_witness`, `rung_not_pole_witness`,
@@ -729,6 +733,25 @@ disclaimer 5's three-register sorting as inspectable data. The pins are
 `receptionReachBack_register`, and `rowTwoPlacement_register`.
 `nothing_selfIndexed_carried` checks the refined premise that the self-indexed
 facts are not carried in the stored field register.
+
+**Instructive absences.** `InstructiveAbsence` records the current section 3
+list as Lean data, with `InstructiveAbsence.number` pinning the paper order
+1-9. `AbsenceStatus` states the membership rule explicitly: constructors track
+the section 3 list, while `InstructiveAbsence.status` tracks whether the world
+has retired an entry. The status pins are `emptyCells_standing`,
+`declinedCase_standing`, `foxNeverTestsPole_standing`, `thirdArrival_retired`,
+`whyCallsLand_standing`, `fourthTruthWithheld_standing`,
+`noSafeStage_standing`, `prudentialPrivilege_standing`, and
+`noMeasure_standing`.
+
+The anchors are intentionally thin: `emptyCells_anchor`,
+`foxWorkedUtterance_not_atBot`, `foxWorkedUtterance_not_atPoleClass`,
+`foxNeverTestsPole_misfit_anchor`, `thirdArrival_function_mounted_no_share`,
+`thirdArrival_not_waaMismatchLive`, `fourthTruthWithheld_conditional`,
+`fourthTruthWithheld_detached_voice`, `noSafeStage_anchor`, and
+`prudentialPrivilege_underivable_anchor`. The declined case, why-calls-land,
+and no-measure absences are pin-level data only; no theorem is manufactured for
+what the paper leaves ceded.
 
 **Self-line witness.** `SelfLineWitness.selfLineGrid` is a minimal `Nat` grid
 with one being, one call, one response, total response, grade `1`, and

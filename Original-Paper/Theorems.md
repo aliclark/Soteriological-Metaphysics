@@ -247,7 +247,7 @@ The stone is doubly mujō — impermanent (無常) and insentient (無情) — a
 
 ## §3 Instructive absences
 
-Absences the system generates deliberately, in both of the categories above — each doing diagnostic work rather than marking a gap:
+Absences the system generates deliberately, in both of the categories above — each doing diagnostic work rather than marking a gap. The list is mirrored in Lean as `InstructiveAbsence`, with `InstructiveAbsence.status` carrying the standing/retired distinction and `InstructiveAbsence.number` preserving the order below:
 
 - **Empty cells in the Grade 1 table.** Not every distinction is symmetric — some can only be frozen (the ladder's limit), some only collapsed. The asymmetry is itself informative: the errors do not lie on a line.
 - **The declined case.** The deaf-blind being classifies as *no error at all* — and the decline is as load-bearing as any positive verdict, since a taxonomy that over-generates has frozen itself. Every error in the vicinity belongs to the diagnostician.
@@ -299,4 +299,4 @@ Absences the system generates deliberately, in both of the categories above — 
 - **Subitism / gradualism** — subitism derived as possibility (`subitism_possibility_witness`, `waaSuddenArrival_witness`; re-pitch magnitude unconstrained); gradualism's legal face a staged run (`waaGradualArrival_witness`) plus rate-invariance (`rate_invisible_to_config`), its honesty clause `SuddenGradualNegative.subitism_frequency_underdetermined`, its metaphysical face the per-call/global freeze.
 - **Tariki / other-power** — no second act-grammar: reception is a deed either way; the difference is a delivery-regime — where the effective calls sit (`WaaTarikiLine`, `reception_typing_ignores_sower`, `TarikiCase.universal_fixed_call_lands_without_reading`, `OtherPowerNegative.regime_does_not_determine_share`).
 - **Pariṇāmanā / dedication** — sowing-side share-cession: fruit's landing given over rather than claimed, routing left to the field; svakarma demoted to a contingent delivery-regime.
-- **Instructive absences** — gaps the system generates deliberately, each doing diagnostic work (empty cells, the declined case, no measure, no fourth truth in the theory's voice, no stage immune to error).
+- **Instructive absences** — gaps the system generates deliberately, each doing diagnostic work, mirrored as Lean data (`InstructiveAbsence`, `InstructiveAbsence.status`, `InstructiveAbsence.number`; examples include empty cells, the declined case, no measure, no fourth truth in the theory's voice, and no stage immune to error).

@@ -1,0 +1,255 @@
+/-
+================================================================================
+  WeldAndArrow.Identification.Absences
+  Instructive absence enumeration and anchors
+================================================================================
+
+Reading and motivation: Identification/Commentary.lean, C.2a.
+-/
+
+import WeldAndArrow.Consequences.Ladder
+import WeldAndArrow.Doctrines.Sraddha
+import WeldAndArrow.Doctrines.EthicsNegative
+import WeldAndArrow.Identification.Ownership
+
+namespace WAA
+
+/- ==============================================================================
+   Section 3 instructive absences
+============================================================================== -/
+
+/-- Whether a section 3 absence is still open or has been delivered and retained
+    as a regression check.
+
+    Membership and status are deliberately separate: `InstructiveAbsence`
+    constructors track the paper's section 3 list, while `status` tracks the
+    world-facing fact of whether an entry is still standing. Retiring another
+    absence should change its status, not delete its constructor or renumber the
+    list. -/
+inductive AbsenceStatus where
+  | standing
+  | retiredAsCheck
+
+/-- The section 3 instructive absences: gaps the system generates deliberately,
+    each doing diagnostic work rather than marking a lacuna. -/
+inductive InstructiveAbsence where
+  /-- Empty cells in the Grade-1 table: not every distinction is symmetric.
+      The diagnostic work is the table asymmetry itself; errors do not lie on a
+      single line. -/
+  | emptyCells
+  /-- The declined case: the deaf-blind being receives no error verdict. The
+      diagnostic work is the refusal to over-generate; the errors nearby belong
+      to the diagnostician. -/
+  | declinedCase
+  /-- What the fox never tests: neither worked utterance occurs at the pole.
+      The diagnostic work is to force the terminus question to be answered
+      outside the paradigm case. -/
+  | foxNeverTestsPole
+  /-- The third arrival: the never-clenched candidate is delivered from the
+      stone side. The diagnostic work now lives as a check: function mounted,
+      no share ever claimed, dukkha-free by construction. -/
+  | thirdArrival
+  /-- Why calls land at all: receptive moments exist on the adaptive side and
+      any landing occurs on the fixed-call side. The diagnostic work is to leave
+      delivery ceded as a world-fact rather than a theorem manufactured by the
+      grid. -/
+  | whyCallsLand
+  /-- The fourth truth withheld from the theory's voice: the grid displays the
+      fourth-truth shape but does not utter the detached command. The diagnostic
+      work is the no-value clause itself: room and shape, no pull. -/
+  | fourthTruthWithheld
+  /-- No stage immune to error: a terminal safe cell would be a rank. The
+      diagnostic work is to keep even buddha-immunity per-call rather than
+      possessed. -/
+  | noSafeStage
+  /-- Prudential privilege underivable: special first-personal authority over
+      future concern is absent as a theorem. The diagnostic work is the
+      forward-facing twin of the cross-gap whose being refused. -/
+  | prudentialPrivilege
+  /-- No measure over the grade: the order is partial and display-facing. The
+      diagnostic work is to make the missing scalar deliberate; no probability
+      or metric apparatus is owed over grade or delivery. -/
+  | noMeasure
+
+namespace InstructiveAbsence
+
+open Grid
+open Grid.DirectedConvention
+open Grid.DirectedConvention.BeingConvention
+open Grid.DirectedConvention.BeingConvention.GridConvention
+
+/-- Preserve the paper's section 3 order without making the number itself carry
+    doctrinal weight. -/
+def number : InstructiveAbsence → Nat
+  | .emptyCells => 1
+  | .declinedCase => 2
+  | .foxNeverTestsPole => 3
+  | .thirdArrival => 4
+  | .whyCallsLand => 5
+  | .fourthTruthWithheld => 6
+  | .noSafeStage => 7
+  | .prudentialPrivilege => 8
+  | .noMeasure => 9
+
+/-- Current world-facing status of each paper entry. Constructors remain the
+    section 3 ledger; this function records retirement. -/
+def status : InstructiveAbsence → AbsenceStatus
+  | .thirdArrival => .retiredAsCheck
+  | _ => .standing
+
+theorem emptyCells_number :
+    number InstructiveAbsence.emptyCells = 1 := rfl
+
+theorem declinedCase_number :
+    number InstructiveAbsence.declinedCase = 2 := rfl
+
+theorem foxNeverTestsPole_number :
+    number InstructiveAbsence.foxNeverTestsPole = 3 := rfl
+
+theorem thirdArrival_number :
+    number InstructiveAbsence.thirdArrival = 4 := rfl
+
+theorem whyCallsLand_number :
+    number InstructiveAbsence.whyCallsLand = 5 := rfl
+
+theorem fourthTruthWithheld_number :
+    number InstructiveAbsence.fourthTruthWithheld = 6 := rfl
+
+theorem noSafeStage_number :
+    number InstructiveAbsence.noSafeStage = 7 := rfl
+
+theorem prudentialPrivilege_number :
+    number InstructiveAbsence.prudentialPrivilege = 8 := rfl
+
+theorem noMeasure_number :
+    number InstructiveAbsence.noMeasure = 9 := rfl
+
+theorem emptyCells_standing :
+    status InstructiveAbsence.emptyCells = AbsenceStatus.standing := rfl
+
+theorem declinedCase_standing :
+    status InstructiveAbsence.declinedCase = AbsenceStatus.standing := rfl
+
+theorem foxNeverTestsPole_standing :
+    status InstructiveAbsence.foxNeverTestsPole = AbsenceStatus.standing := rfl
+
+theorem thirdArrival_retired :
+    status InstructiveAbsence.thirdArrival = AbsenceStatus.retiredAsCheck := rfl
+
+theorem whyCallsLand_standing :
+    status InstructiveAbsence.whyCallsLand = AbsenceStatus.standing := rfl
+
+theorem fourthTruthWithheld_standing :
+    status InstructiveAbsence.fourthTruthWithheld = AbsenceStatus.standing := rfl
+
+theorem noSafeStage_standing :
+    status InstructiveAbsence.noSafeStage = AbsenceStatus.standing := rfl
+
+theorem prudentialPrivilege_standing :
+    status InstructiveAbsence.prudentialPrivilege = AbsenceStatus.standing := rfl
+
+theorem noMeasure_standing :
+    status InstructiveAbsence.noMeasure = AbsenceStatus.standing := rfl
+
+/- ------------------------------------------------------------------------------
+   Anchors
+------------------------------------------------------------------------------ -/
+
+/-- Empty cells are table metadata rather than new grid semantics: the
+    per-call/global row has no collapse occupant while its collapse and freeze
+    refutations remain checked. -/
+theorem emptyCells_anchor
+    {Contrib : Type} [PreorderBot Contrib] (G : Grid Contrib) :
+    hasCollapseOccupant RowTag.perCallGlobal = false ∧
+      hasFreezeOccupant RowTag.perCallGlobal = true ∧
+        (∀ t, ¬ (perCallGlobalRow G).Collapse t) ∧
+          ¬ (perCallGlobalRow G).Freeze :=
+  perCallGlobal_empty_collapse_cell_anchor (G := G)
+
+/-- The worked fox utterances are the two fox-row claims, offered at their own
+    live act-time. This records the shape whose absence says the worked case
+    never tests the pole. -/
+def FoxWorkedUtterance {Contrib : Type} [PreorderBot Contrib] (G : Grid Contrib)
+    (u : Grid.RecordedUtterance G (rowLanguage G)) : Prop :=
+  (u.content = RowClaim.inForce RowTag.foxWeld ∨
+      u.content = RowClaim.denied RowTag.foxWeld) ∧
+    u.offeredAt = Tier.actTime u.weld ∧
+      Tier.hasLiveShare G u.offeredAt
+
+/-- A worked fox utterance is not made at share-zero. -/
+theorem foxWorkedUtterance_not_atBot
+    {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib}
+    {u : Grid.RecordedUtterance G (rowLanguage G)}
+    (h : FoxWorkedUtterance G u) :
+    ¬ AtBot (G.share u.weld) := by
+  have hlive : Tier.hasLiveShare G u.offeredAt := h.right.right
+  rw [h.right.left] at hlive
+  simpa [Tier.hasLiveShare, Grid.HasSelfPoleIndex] using hlive
+
+/-- A worked fox utterance is not made by an agent already in the pole-class:
+    actuality rules out the stone side, and terminus-typing would force
+    share-zero. -/
+theorem foxWorkedUtterance_not_atPoleClass
+    {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib}
+    {u : Grid.RecordedUtterance G (rowLanguage G)}
+    (h : FoxWorkedUtterance G u) :
+    ¬ G.AtPoleClass u.weld.agent := by
+  intro hpole
+  rcases hpole with hstone | hterm
+  · exact G.not_stone_of_actual u.weld u.actual hstone
+  · exact foxWorkedUtterance_not_atBot (G := G) h
+      (G.atBot_of_terminus_response hterm u.actual)
+
+/-- The existing fox-row theorem remains the live-tier misfit anchor. -/
+theorem foxNeverTestsPole_misfit_anchor
+    {Contrib : Type} [PreorderBot Contrib] (G : Grid Contrib)
+    (u : Grid.RecordedUtterance G (rowLanguage G))
+    (hcontent : u.content = RowClaim.denied RowTag.foxWeld)
+    (hlive : Tier.hasLiveShare G u.offeredAt) :
+    ¬ u.FitsOfferedTier :=
+  fox_utterance_misfits_live_offer G u hcontent hlive
+
+/-- The delivered third arrival is the concrete function/share split: the
+    adaptive responder mounts function while its received share is at bottom. -/
+theorem thirdArrival_function_mounted_no_share :
+    AtBot (clockGrid.share ⟨Clock.adaptive, Listener.present, Chime.chime⟩) ∧
+      ¬ clockGrid.Stone Clock.adaptive :=
+  shareZero_not_functionZero_witness
+
+/-- The retired absence is kept as the dukkha-free-by-construction check:
+    a terminus response has no live mismatch. -/
+theorem thirdArrival_not_waaMismatchLive :
+    ¬ clockGrid.WaaMismatchLive
+        ⟨Clock.adaptive, Listener.present, Chime.chime⟩ :=
+  clockGrid.not_waaMismatchLive_of_terminus_response adaptive_is_terminus rfl
+
+/-- The fourth-truth anchor is still only an implication type: the grid proves
+    the conditional and does not detach the injunction. -/
+theorem fourthTruthWithheld_conditional
+    {Contrib : Type} [PreorderBot Contrib] (G : Grid Contrib)
+    (g : G.Being) (before : Config Contrib) (deed reception : G.Weld) :
+    WaaPathOught G g before deed reception :=
+  waaPathOught_conditional G g before deed reception
+
+/-- The detached fourth-truth injunction is displayable, not assertable. -/
+theorem fourthTruthWithheld_detached_voice :
+    ErrorGrade.voice WaaDetachedOughtVoice = VerdictVoice.displayable :=
+  waa_detached_ought_voice_displayable
+
+/-- A terminal safe stage would be a final ladder level; the ladder theorem
+    rules that out for an error-free seed. -/
+theorem noSafeStage_anchor
+    {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib}
+    {d : Grid.Distinction G} (h : Grid.ErrorFree G d) :
+    ¬ ∃ n, (ladder d n).Freeze :=
+  no_final_level (G := G) h
+
+/-- The prudential-privilege absence is owned as theorem in the witness module,
+    not promoted into a new table row. -/
+theorem prudentialPrivilege_underivable_anchor :
+    ¬ Grid.DirectedConvention.PrudentialPrivilegeNegative.PrudentialPrivilege :=
+  Grid.DirectedConvention.PrudentialPrivilegeNegative.not_prudentialPrivilege
+
+end InstructiveAbsence
+
+end WAA

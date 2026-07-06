@@ -150,6 +150,29 @@ rate-invariance anchor.
 real (`futility_delivery_loss_real`) while object-axis standing is unchanged
 (`Grid.DirectedConvention.staticized_objectAxisStanding_iff`).
 
+C.2a Identification/Absences.lean
+
+`InstructiveAbsence` mirrors the paper's section 3 list as inspectable data.
+The enum is not an editorial layer: entries remain members while the paper keeps
+them in section 3. `AbsenceStatus` records the mutable world-facing fact, so the
+third arrival is `retiredAsCheck` rather than deleted or renumbered. The same
+rule applies to future retirements: constructors track the section list, while
+`status` carries whether an entry still stands.
+
+The anchors are citations and shape checks, not new doctrine. Empty table cells
+are recorded beside `tableOrder` as `hasCollapseOccupant` and
+`hasFreezeOccupant`; `emptyCells_anchor` checks that a dash remains metadata
+while row refutations remain theorem facts. `FoxWorkedUtterance` records that
+the two fox-row utterance shapes are offered at live act-time, and the
+`foxWorkedUtterance_*` checks keep the worked case away from both share-zero and
+the pole-class. `thirdArrival_not_waaMismatchLive` reuses the terminus-response
+four-truth theorem: the retired absence is kept as the dukkha-free check. The
+fourth-truth, no-safe-stage, and prudential-privilege anchors cite
+`waaPathOught_conditional`, `no_final_level`, and
+`PrudentialPrivilegeNegative.not_prudentialPrivilege`. The declined case,
+why-calls-land, and no-measure entries deliberately have only data/status pins:
+their missing theorem is the content the paper assigns them.
+
 C.3 Meta/Invariance.lean and Meta/InvarianceNegative.lean
 
 `DisplayReparam` is the admission criterion for predicates that mention the
