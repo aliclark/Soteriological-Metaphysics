@@ -6,6 +6,9 @@
 definitions, theorem statements, and proof status where that matters.
 Interpretive prose remains secondary to the formal statements.
 
+For the canonical input-side assumption list, see
+`WeldAndArrow/Signature/Assumptions.lean`; this document reads theorem outputs.
+
 The project is pinned to `leanprover/lean4:v4.31.0` in `lean-toolchain`.
 
 **Conventions.** A theorem proved by `rfl` or `Iff.rfl` is true by unfolding

@@ -33,6 +33,10 @@ not add asymmetry, irreflexivity, or transitivity premises to `conditions`.
 C.1 Signature/Order.lean, Signature/Grid.lean, Signature/BeingConvention.lean,
     Signature/Models.lean, Signature/Claims.lean
 
+`Signature/Assumptions.lean` is the canonical, compile-checked list of the
+Signature layer's assumptions; this commentary supplies the paper-facing
+motivation around those inputs.
+
 `Config` is the formal place where "nothing self-indexed is stored" is enforced:
 it carries only a `Contrib`-valued tendency and no owner, being, or weld field.
 This is the type-level version of the paper's internal mis-feed discipline.
