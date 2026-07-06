@@ -745,13 +745,14 @@ has retired an entry. The status pins are `emptyCells_standing`,
 `noMeasure_standing`.
 
 The anchors are intentionally thin: `emptyCells_anchor`,
-`foxWorkedUtterance_not_atBot`, `foxWorkedUtterance_not_atPoleClass`,
-`foxNeverTestsPole_misfit_anchor`, `thirdArrival_function_mounted_no_share`,
-`thirdArrival_not_waaMismatchLive`, `fourthTruthWithheld_conditional`,
-`fourthTruthWithheld_detached_voice`, `noSafeStage_anchor`, and
-`prudentialPrivilege_underivable_anchor`. The declined case, why-calls-land,
-and no-measure absences are pin-level data only; no theorem is manufactured for
-what the paper leaves ceded.
+`foxNeverTestsPole_anchor`, `foxNeverTestsPole_recordedUtterance_not_atBot`,
+`foxNeverTestsPole_recordedUtterance_not_atPoleClass`,
+`foxNeverTestsPole_oldMan_misfit_anchor`,
+`thirdArrival_function_mounted_no_share`, `thirdArrival_not_waaMismatchLive`,
+`fourthTruthWithheld_conditional`, `fourthTruthWithheld_detached_voice`,
+`noSafeStage_anchor`, and `prudentialPrivilege_underivable_anchor`. The
+declined case, why-calls-land, and no-measure absences are pin-level data only;
+no theorem is manufactured for what the paper leaves ceded.
 
 **Self-line witness.** `SelfLineWitness.selfLineGrid` is a minimal `Nat` grid
 with one being, one call, one response, total response, grade `1`, and

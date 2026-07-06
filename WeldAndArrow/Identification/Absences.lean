@@ -8,6 +8,7 @@ Reading and motivation: Identification/Commentary.lean, C.2a.
 -/
 
 import WeldAndArrow.Consequences.Ladder
+import WeldAndArrow.Consequences.FoxCase
 import WeldAndArrow.Doctrines.Sraddha
 import WeldAndArrow.Doctrines.EthicsNegative
 import WeldAndArrow.Identification.Ownership
@@ -166,48 +167,42 @@ theorem emptyCells_anchor
           ¬ (perCallGlobalRow G).Freeze :=
   perCallGlobal_empty_collapse_cell_anchor (G := G)
 
-/-- The worked fox utterances are the two fox-row claims, offered at their own
-    live act-time. This records the shape whose absence says the worked case
-    never tests the pole. -/
-def FoxWorkedUtterance {Contrib : Type} [PreorderBot Contrib] (G : Grid Contrib)
-    (u : Grid.RecordedUtterance G (rowLanguage G)) : Prop :=
-  (u.content = RowClaim.inForce RowTag.foxWeld ∨
-      u.content = RowClaim.denied RowTag.foxWeld) ∧
-    u.offeredAt = Tier.actTime u.weld ∧
-      Tier.hasLiveShare G u.offeredAt
+/-- The concrete fox case never tests share-zero at any actual weld. -/
+theorem foxNeverTestsPole_anchor :
+    ∀ w : FoxCase.foxGrid.Weld,
+      FoxCase.foxGrid.Actual w → ¬ AtBot (FoxCase.foxGrid.share w) :=
+  FoxCase.fox_never_tests_pole
 
-/-- A worked fox utterance is not made at share-zero. -/
-theorem foxWorkedUtterance_not_atBot
-    {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib}
-    {u : Grid.RecordedUtterance G (rowLanguage G)}
-    (h : FoxWorkedUtterance G u) :
-    ¬ AtBot (G.share u.weld) := by
-  have hlive : Tier.hasLiveShare G u.offeredAt := h.right.right
-  rw [h.right.left] at hlive
-  simpa [Tier.hasLiveShare, Grid.HasSelfPoleIndex] using hlive
+/-- Any recorded utterance in the concrete fox grid is away from share-zero,
+    because recorded utterances carry actual welds. -/
+theorem foxNeverTestsPole_recordedUtterance_not_atBot
+    (u : Grid.RecordedUtterance FoxCase.foxGrid (rowLanguage FoxCase.foxGrid)) :
+    ¬ AtBot (FoxCase.foxGrid.share u.weld) :=
+  FoxCase.fox_never_tests_pole u.weld u.actual
 
-/-- A worked fox utterance is not made by an agent already in the pole-class:
+/-- An actual fox-case weld is not made by an agent already in the pole-class:
     actuality rules out the stone side, and terminus-typing would force
     share-zero. -/
-theorem foxWorkedUtterance_not_atPoleClass
-    {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib}
-    {u : Grid.RecordedUtterance G (rowLanguage G)}
-    (h : FoxWorkedUtterance G u) :
-    ¬ G.AtPoleClass u.weld.agent := by
+theorem foxNeverTestsPole_actual_not_atPoleClass
+    {w : FoxCase.foxGrid.Weld} (hactual : FoxCase.foxGrid.Actual w) :
+    ¬ FoxCase.foxGrid.AtPoleClass w.agent := by
   intro hpole
   rcases hpole with hstone | hterm
-  · exact G.not_stone_of_actual u.weld u.actual hstone
-  · exact foxWorkedUtterance_not_atBot (G := G) h
-      (G.atBot_of_terminus_response hterm u.actual)
+  · exact FoxCase.foxGrid.not_stone_of_actual w hactual hstone
+  · exact FoxCase.fox_never_tests_pole w hactual
+      (FoxCase.foxGrid.atBot_of_terminus_response hterm hactual)
 
-/-- The existing fox-row theorem remains the live-tier misfit anchor. -/
-theorem foxNeverTestsPole_misfit_anchor
-    {Contrib : Type} [PreorderBot Contrib] (G : Grid Contrib)
-    (u : Grid.RecordedUtterance G (rowLanguage G))
-    (hcontent : u.content = RowClaim.denied RowTag.foxWeld)
-    (hlive : Tier.hasLiveShare G u.offeredAt) :
-    ¬ u.FitsOfferedTier :=
-  fox_utterance_misfits_live_offer G u hcontent hlive
+/-- Any recorded utterance in the concrete fox grid is away from the pole-class
+    on its agent side. -/
+theorem foxNeverTestsPole_recordedUtterance_not_atPoleClass
+    (u : Grid.RecordedUtterance FoxCase.foxGrid (rowLanguage FoxCase.foxGrid)) :
+    ¬ FoxCase.foxGrid.AtPoleClass u.weld.agent :=
+  foxNeverTestsPole_actual_not_atPoleClass u.actual
+
+/-- The old man's recorded answer remains the fox-row live-tier misfit anchor. -/
+theorem foxNeverTestsPole_oldMan_misfit_anchor :
+    ¬ FoxCase.oldManUtterance.FitsOfferedTier :=
+  FoxCase.oldMan_utterance_misfits
 
 /-- The delivered third arrival is the concrete function/share split: the
     adaptive responder mounts function while its received share is at bottom. -/

@@ -162,10 +162,10 @@ rule applies to future retirements: constructors track the section list, while
 The anchors are citations and shape checks, not new doctrine. Empty table cells
 are recorded beside `tableOrder` as `hasCollapseOccupant` and
 `hasFreezeOccupant`; `emptyCells_anchor` checks that a dash remains metadata
-while row refutations remain theorem facts. `FoxWorkedUtterance` records that
-the two fox-row utterance shapes are offered at live act-time, and the
-`foxWorkedUtterance_*` checks keep the worked case away from both share-zero and
-the pole-class. `thirdArrival_not_waaMismatchLive` reuses the terminus-response
+while row refutations remain theorem facts. `foxNeverTestsPole_anchor` cites the
+concrete fox model's `fox_never_tests_pole`; the recorded-utterance and
+agent-side checks keep the worked case away from both share-zero and the
+pole-class. `thirdArrival_not_waaMismatchLive` reuses the terminus-response
 four-truth theorem: the retired absence is kept as the dukkha-free check. The
 fourth-truth, no-safe-stage, and prudential-privilege anchors cite
 `waaPathOught_conditional`, `no_final_level`, and
