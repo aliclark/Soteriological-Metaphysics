@@ -424,4 +424,30 @@ freedom witnesses: `regime_does_not_determine_share` shows that same-agent and
 cross-agent lines each allow live and pole-class receptions, while
 `share_does_not_determine_regime` shows that equal reception share does not
 recover the regime.
+
+C.10 Doctrines/Gradeability.lean
+
+`SeveredTranscript` is agent plus response rather than response alone because
+the strongest natural form of a quotation is still attributed. If even that
+stronger record cannot recover grade, then the bare response-only case is
+covered a fortiori. The type deliberately carries no `call`, no `offeredAt`,
+and no `actual`, so it cannot be fed to `RecordedUtterance.FitsOfferedTier`;
+there is no positioned utterance for the taxonomy to classify.
+
+`Grid.Weld.sever` and `Grid.RecordedUtterance.sever` are forgetting maps. The
+negative theorem `GradeabilityNegative.no_grade_recovery_from_severed` uses the
+standard collision pattern: two actual welds with the same severed transcript
+and different shares force any correct estimator to assign one value two ways.
+`backslideGrid` supplies the concrete carrier in the missing-call direction:
+one agent gives the same response to gentle and harsh calls, with different
+shares. This is named by
+`GradeabilityNegative.gradeability_severed_underdetermination_witness` and
+instantiated as `GradeabilityNegative.severed_transcript_ungradeable`.
+
+`recordedUtterance_grade_determined` is the positive half as an `rfl` pin: a
+recorded utterance carries the whole weld, so its grade factors through the
+record by definition. The koan-form identification, the normative rule "may
+grade only where the call is carried", the quotable/gradeable genre contrast,
+and the Hakuin-epigram pedigree flag remain prose. The code checks the
+underdetermination fact and the carried-call architecture only.
 -/

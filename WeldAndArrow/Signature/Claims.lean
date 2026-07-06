@@ -61,10 +61,13 @@ def TrueAt {G : Grid Contrib} (L : ClaimLanguage G) (t : Tier G) (p : L.Claim) :
 end ClaimLanguage
 
 /-- A recorded utterance, typed as data the taxonomy can inspect. The `weld`
-    records who answered which call with which response; `offeredAt` records
-    the tier at which the utterance was made; `content` is a claim-object in
-    the chosen language. The proof of `actual` keeps this type for actual
-    recorded utterances rather than hypothetical ones. -/
+    records who answered which call with which response; this architecturally
+    enforces the gradeability rule's positive half, since every utterance the
+    taxonomy inspects carries its call. `offeredAt` records the tier at which
+    the utterance was made; `content` is a claim-object in the chosen language.
+    The proof of `actual` keeps this type for actual recorded utterances rather
+    than hypothetical ones. The severed case is handled in
+    `Doctrines/Gradeability.lean`. -/
 structure RecordedUtterance (G : Grid Contrib) (L : ClaimLanguage G) where
   weld      : G.Weld
   actual    : G.Actual weld
@@ -73,8 +76,8 @@ structure RecordedUtterance (G : Grid Contrib) (L : ClaimLanguage G) where
 
 namespace RecordedUtterance
 
-/-- The call this utterance answers, exposed as a projection so future
-    classifiers do not have to unpack the weld by hand. -/
+/-- The call this utterance answers, exposed as a projection so classifiers can
+    respect the gradeability rule without unpacking the weld by hand. -/
 def answersCall {G : Grid Contrib} {L : ClaimLanguage G}
     (u : RecordedUtterance G L) : G.Call :=
   u.weld.call

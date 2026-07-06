@@ -453,7 +453,7 @@ is the content instance under the non-stone aptness hypothesis.
 
 ---
 
-## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Faith*.lean`, `Doctrines/Ethics*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Ledger.lean`, `Doctrines/Correlations*.lean`, `Doctrines/SuddenGradual*.lean`, `Doctrines/OtherPower*.lean`, `Doctrines/Fetters*.lean`)
+## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Faith*.lean`, `Doctrines/Ethics*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Gradeability.lean`, `Doctrines/Ledger.lean`, `Doctrines/Correlations*.lean`, `Doctrines/SuddenGradual*.lean`, `Doctrines/OtherPower*.lean`, `Doctrines/Fetters*.lean`)
 
 `waaMismatchGrade_eq_share` is definitional. `waaMismatchGrade_le_of_share_le` is the
 ordinal covariation theorem: any share comparison is the corresponding
@@ -523,6 +523,20 @@ cetana witnesses check same-field/different-share and live-share/no-standing
 cases. `DeliveryArrogationNegative` instantiates the
 `ClaimLanguage` machinery for a command-shaped delivery claim and checks that a
 recorded plan fails `FitsOfferedTier` where delivery is absent.
+
+**Gradeability.** `SeveredTranscript` is the strongest severed quotation form:
+an attributed agent-response pair with no call, no offered tier, and no
+actuality proof. `Grid.Weld.sever` and `Grid.RecordedUtterance.sever` forget
+the call; `severedVerdict` pins the generator's standing response to such data
+as `declined`. `GradeabilityNegative.no_grade_recovery_from_severed` proves
+that, under a same-agent/same-response collision with different shares, no
+function from severed transcripts can recover the grade for every actual weld.
+`gradeability_severed_underdetermination_witness` reuses `backslideGrid` as
+the concrete missing-call carrier, and `severed_transcript_ungradeable`
+instantiates the generic theorem there. The positive half is
+`recordedUtterance_grade_determined`, an `rfl` fact that a recorded utterance's
+grade is the grade of the whole weld it carries. The normative input rule and
+the koan-form genre claim remain prose.
 
 **Ledger.** `MountsOnlyIn b M` says `b` mounts responses only at calls in
 `M`. `modality_of_actual` and `landing_call_in_modality` are the
@@ -944,8 +958,8 @@ target and no `Main.lean`.
 The definitional identities include `share_eq_grade`, `selfAnchored`,
 `rePitch_tendency_eq_share`, the delivery/aiming biconditionals,
 `isShareDrop_iff_rePitch_tendency_drop`, the recorded-utterance identities,
-the reception-pair tendency lemmas, and the basic `map_*` identities in
-`Meta/Invariance.lean`.
+`recordedUtterance_grade_determined`, the reception-pair tendency lemmas, and
+the basic `map_*` identities in `Meta/Invariance.lean`.
 
 The elementary consequences are projections, witness assemblies,
 contradictions, and short order arguments. The important non-definitional order
@@ -954,11 +968,12 @@ display-reparameterization transport lemmas.
 
 The conditional impossibility results are the agent-recovery theorems, the
 direction negative witness, the being-boundary negative witness, the sraddha
-orthogonality witness, and the other-power regime/share negative. The concrete
-model results include `clockGrid`, `registerClockGrid`, `backslideGrid`,
-`gradingCollisionGrid`, and `TarikiCase.tarikiGrid`: they witness,
-respectively, function/share splitting, diagnosis-time macro coarsening,
-same-being backsliding, same-field/different-share grading, and fixed-call
+orthogonality witness, the severed-transcript gradeability negative, and the
+other-power regime/share negative. The concrete model results include
+`clockGrid`, `registerClockGrid`, `backslideGrid`, `gradingCollisionGrid`, and
+`TarikiCase.tarikiGrid`: they witness, respectively, function/share splitting,
+diagnosis-time macro coarsening, same-being backsliding plus severed-transcript
+grade underdetermination, same-field/different-share grading, and fixed-call
 landing without a second act grammar. The self-line
 witness is a permission witness, not an existence claim about any real regime.
 
