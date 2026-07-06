@@ -453,7 +453,7 @@ is the content instance under the non-stone aptness hypothesis.
 
 ---
 
-## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Faith*.lean`, `Doctrines/Ethics*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Ledger.lean`, `Doctrines/Correlations*.lean`, `Doctrines/Fetters*.lean`)
+## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Faith*.lean`, `Doctrines/Ethics*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Ledger.lean`, `Doctrines/Correlations*.lean`, `Doctrines/SuddenGradual*.lean`, `Doctrines/Fetters*.lean`)
 
 `waaMismatchGrade_eq_share` is definitional. `waaMismatchGrade_le_of_share_le` is the
 ordinal covariation theorem: any share comparison is the corresponding
@@ -573,6 +573,19 @@ version of the no-recovered-partition witness.
 `FiveRank`, `RankReading`, and `rankLanguage` keep the Five Ranks as
 utterance-diagnosis data. `kenChuTo_implies_waaBullTen` records the 到/Bull 10
 shape under the same coarsening.
+
+**Sudden/gradual.** `WaaSuddenArrival` packages an actual one-step share-drop
+from live prior tendency to the pole-class; `waaSuddenArrival_witness` names
+the clock-grid face of the older `subitism_possibility_witness`. `rePitchRun`
+folds a finite list of received welds, and `WaaGradualArrival` reads a staged
+`ShareDropRun` that reaches the pole-class; `waaGradualArrival_witness` checks
+the two-step register-clock case. `rate_invisible_to_config`,
+`rePitchRun_forgets_same_final`, and
+`score_of_rePitchRun_constant_of_same_final` are the no-rate-preference
+statements: anything that factors through the final `Config` cannot see the
+earlier rate once the final reception is fixed.
+`SuddenGradualNegative.subitism_frequency_underdetermined` supplies the
+honesty clause by varying delivery while response, grade, and share data agree.
 
 **Fetters.** `FiberAtPoleOn`, `LiveFiberAtPoleOn`, `FiberAtPoleOnWithin`, and
 `FiberAtPoleWithin` are neutral fiber predicates in

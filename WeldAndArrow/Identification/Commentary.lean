@@ -133,12 +133,18 @@ guard `no_final_level`. Concrete witnesses such as
 `shareZero_not_functionZero_witness`, `rung_not_pole_witness`,
 `backsliding_witness`, `backsliding_rePitchSequence_witness`,
 `standing_does_not_determine_dated`, `subitism_possibility_witness`,
+`waaSuddenArrival_witness`, `waaGradualArrival_witness`,
+`rate_invisible_to_config`,
 `cetana_grading_tracks_weld_not_field_witness`,
 `cetana_live_share_without_object_standing_witness`, and the
 `registerClock_staticized_*` checks keep the row anchors model-checked.
 `standing_does_not_determine_dated` and `subitism_possibility_witness` share
 the same clock-grid witness deliberately: the first serves the disposition/act
 retype, while the second names the sudden/gradual possibility claim.
+`waaSuddenArrival_witness` gives the doctrine-facing one-step form with
+actuality, `waaGradualArrival_witness` gives the register-clock staged form,
+and `rate_invisible_to_config` deliberately reuses `rePitch_forgets` as the
+rate-invariance anchor.
 `withRespondsTo` and `staticized` are the futility operation: delivery-loss is
 real (`futility_delivery_loss_real`) while object-axis standing is unchanged
 (`Grid.DirectedConvention.staticized_objectAxisStanding_iff`).
@@ -305,7 +311,8 @@ the first is the historians', the second is ungradeable by the no-value clause,
 the third is valence borrowed from the object.
 
 C.8 Doctrines/Correlations.lean, Doctrines/CorrelationsNegative.lean,
-    Doctrines/Fetters.lean, and Doctrines/FettersNegative.lean
+    Doctrines/SuddenGradual*.lean, Doctrines/Fetters.lean, and
+    Doctrines/FettersNegative.lean
 
 `Doctrines/Correlations.lean` treats the Ten Bulls, Five Ranks, and stage
 schemes as checked correlations over existing machinery. `StageScheme` is just
@@ -314,6 +321,17 @@ structure, not to any one ladder. `CorrelationsNegative.no_stage_boundary_recove
 duplicates the being-boundary no-recovery pattern for stage schemes so the
 uniform freeze clause is witnessed without importing `Meta` upward into
 `Doctrines`.
+
+`Doctrines/SuddenGradual.lean` names the §2 sudden/gradual split without new
+cells. `WaaSuddenArrival` is the actual one-step share-drop to the pole-class,
+and `waaSuddenArrival_witness` reuses the clock-grid possibility shape.
+`WaaGradualArrival` folds a `ShareDropRun` through `rePitchRun`, with
+`waaGradualArrival_witness` on `registerClockGrid`. `rate_invisible_to_config`
+is exactly `rePitch_forgets`; the run corollaries say config-factoring scores
+cannot read the earlier rate once the final reception is fixed.
+`SuddenGradualNegative.subitism_frequency_underdetermined` supplies the
+honesty clause: response/grade/share data agree while delivery of the
+pole-reaching weld differs.
 
 For the Ten Bulls, Bulls 1-6 are a `ShareDropRun`; Bull 7 is
 `WaaBullSeven`, probe-constancy plus a live self-pole index. The theorem

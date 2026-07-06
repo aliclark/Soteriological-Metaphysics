@@ -9,5 +9,7 @@ import WeldAndArrow.Doctrines.Deliberation
 import WeldAndArrow.Doctrines.Ledger
 import WeldAndArrow.Doctrines.Correlations
 import WeldAndArrow.Doctrines.CorrelationsNegative
+import WeldAndArrow.Doctrines.SuddenGradual
+import WeldAndArrow.Doctrines.SuddenGradualNegative
 import WeldAndArrow.Doctrines.Fetters
 import WeldAndArrow.Doctrines.FettersNegative
