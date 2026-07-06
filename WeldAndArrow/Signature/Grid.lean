@@ -297,6 +297,18 @@ def WaaReachBackFull (deed reception : G.Weld) : Prop := G.conditions deed recep
     field-side role matters more than the reception-side appropriation. -/
 def DeliveredTo (deed reception : G.Weld) : Prop := G.conditions deed reception
 
+/-- A delivery-line whose deed and reception carry the same agent tag. This is
+    only a fact about the supplied delivery relation and weld fields; see
+    `Identification/Commentary.lean`, C.9. -/
+def SameAgentDelivery (deed reception : G.Weld) : Prop :=
+  DeliveredTo G deed reception ∧ deed.agent = reception.agent
+
+/-- A delivery-line whose deed and reception carry different agent tags. This is
+    only a fact about the supplied delivery relation and weld fields; see
+    `Identification/Commentary.lean`, C.9. -/
+def CrossAgentDelivery (deed reception : G.Weld) : Prop :=
+  DeliveredTo G deed reception ∧ deed.agent ≠ reception.agent
+
 theorem transpose_deliveredTo_iff (deed reception : G.Weld) :
     DeliveredTo G.transpose deed reception ↔ DeliveredTo G reception deed :=
   Iff.rfl
@@ -446,7 +458,7 @@ variable {Contrib : Type} [PreorderBot Contrib] (G : Grid Contrib)
 
    Outside note this responds to: "Non-typeability is demonstrated by failed
    elaboration, not proved. The internal alternative is to model a universe of
-   designations and prove ¬∃ f : FieldFact → Index ... under your axioms."
+   designations and prove ¬∃ f : FieldFact → Index ... under your assumptions."
 
    The internal route is used here, with the modest scope made explicit.
 -------------------------------------------------------------------------- -/

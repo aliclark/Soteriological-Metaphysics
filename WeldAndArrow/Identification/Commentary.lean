@@ -20,14 +20,15 @@ the concept looks like from this grid, not what the concept is in a detached
 doctrinal voice. The marker covers ownership, appropriation, whose-ness,
 reach-back, sowing-side aiming, four-truths mismatch vocabulary, and sraddha
 conditional vocabulary such as `WaaMismatchGrade`, `WaaMismatchLive`,
-`WaaAversionContext`, and `WaaFullyEnlightened`. Doctrine names are carried by
-module names and commentary headings; checked reading identifiers use the single
-`Waa` marker.
+`WaaAversionContext`, `WaaFullyEnlightened`, and the tariki/jiriki line
+readings. Doctrine names are carried by module names and commentary headings;
+checked reading identifiers use the single `Waa` marker.
 
 Unprefixed names remain the neutral delivery, order, token-projection, and
-tier-placement vocabulary. `Grid.DirectedConvention` marks vocabulary that
-consumes the directional reading of `conditions`; the primitive signature itself
-does not add asymmetry, irreflexivity, or transitivity axioms to `conditions`.
+tier-placement vocabulary, including `SameAgentDelivery` and
+`CrossAgentDelivery`. `Grid.DirectedConvention` marks vocabulary that consumes
+the directional reading of `conditions`; the primitive signature itself does
+not add asymmetry, irreflexivity, or transitivity axioms to `conditions`.
 
 C.1 Signature/Order.lean, Signature/Grid.lean, Signature/BeingConvention.lean,
     Signature/Models.lean, Signature/Claims.lean
@@ -54,7 +55,7 @@ is the internal recovery obstruction corresponding to that gloss.
 `SelfLineWitness` records that self-lines are permitted by the signature and
 can satisfy the ownership-face vocabulary when the model supplies reflexive
 delivery. The paper's shushō-ittō discussion is a reading of that permission,
-not an axiom.
+not a premise.
 
 The hand-rolled `Preorder` is used for dependency-freedom and to keep the exact
 assumptions visible. Mathlib has the counterparts `Preorder`, `OrderBot`, and
@@ -393,4 +394,34 @@ transfer countermodel. A forward guarantee is hostable only as the conditionals
 conditional. The orthogonality note is checked by
 `unquiet_region_still_functions_witness`: region cuts speak to share; the uncut
 region's tags act as fully as the cut region's tags.
+
+C.9 Doctrines/OtherPower.lean and Doctrines/OtherPowerNegative.lean
+
+Other-power is now a checked delivery-regime correlation rather than a prose
+appendix to §2. `SameAgentDelivery` and `CrossAgentDelivery` are unprefixed
+because they are grid-recoverable facts about a delivery line: the line is
+delivered, and the two agent tags are equal or unequal. `WaaJirikiLine` and
+`WaaTarikiLine` carry the system-POV reading of those neutral facts.
+
+`reception_typing_ignores_sower` is near-definitional: swapping only
+`conditions` leaves a reception's grade, share, and actuality untouched.
+`waaReachBack_filled_either_regime` records the one-act-grammar point: once an
+actual reception is present, either regime supplies the same ordinary
+reach-back relation by projection from delivery.
+
+`TarikiCase` supplies the non-vacuity witness. The name is response-invariant
+(`name_responseInvariant`), function-mounted rather than stone
+(`name_not_stone`), and share-zero at its welds (`name_share_bot`).
+`name_object_axis_entire` delivers the name's weld to every invoker reception,
+while `universal_fixed_call_lands_without_reading` assembles the corresponding
+`HasShareDropLanding`. This is the effective corner opposite the zero-effect
+orthogonality witness: adaptivity and effectiveness are independent. The
+invoker's side remains an ordinary deed, checked by
+`invoker_reception_is_deed`.
+
+The module deliberately declines polemic. `OtherPowerNegative` gives the two
+freedom witnesses: `regime_does_not_determine_share` shows that same-agent and
+cross-agent lines each allow live and pole-class receptions, while
+`share_does_not_determine_regime` shows that equal reception share does not
+recover the regime.
 -/

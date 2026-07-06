@@ -40,7 +40,7 @@ transitivity for `conditions`. Role-asymmetry is not temporal asymmetry: the
 
 `Grid.DirectedConvention.TimeDirection` is an abbreviation of `Strict`; all
 strictness theorems apply to it transparently. The formal modules keep their
-comments mathematical and point to `Identification/Commentary.lean` C.1-C.8 for
+comments mathematical and point to `Identification/Commentary.lean` C.1-C.9 for
 the paper-facing readings.
 
 The namespace tree now records ontological ordering. Floor/genjō and the bare
@@ -453,7 +453,7 @@ is the content instance under the non-stone aptness hypothesis.
 
 ---
 
-## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Faith*.lean`, `Doctrines/Ethics*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Ledger.lean`, `Doctrines/Correlations*.lean`, `Doctrines/SuddenGradual*.lean`, `Doctrines/Fetters*.lean`)
+## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Faith*.lean`, `Doctrines/Ethics*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Ledger.lean`, `Doctrines/Correlations*.lean`, `Doctrines/SuddenGradual*.lean`, `Doctrines/OtherPower*.lean`, `Doctrines/Fetters*.lean`)
 
 `waaMismatchGrade_eq_share` is definitional. `waaMismatchGrade_le_of_share_le` is the
 ordinal covariation theorem: any share comparison is the corresponding
@@ -586,6 +586,25 @@ statements: anything that factors through the final `Config` cannot see the
 earlier rate once the final reception is fixed.
 `SuddenGradualNegative.subitism_frequency_underdetermined` supplies the
 honesty clause by varying delivery while response, grade, and share data agree.
+
+**Other-power.** `SameAgentDelivery` and `CrossAgentDelivery` add neutral
+delivery-regime vocabulary: the line is delivered, and the deed/reception agent
+tags are equal or unequal. `WaaJirikiLine` and `WaaTarikiLine` are only the
+system-POV readings of those facts. `reception_typing_ignores_sower` is
+near-definitional by design: changing only `conditions` leaves a reception's
+grade, share, and actuality unchanged. `waaReachBack_filled_either_regime`
+projects the shared reach-back conjunct from either same-agent or cross-agent
+delivery.
+
+`TarikiCase` discharges non-vacuity the way `LedgerCase` does: a fixed-call
+source is response-invariant (`name_responseInvariant`), function-mounted
+(`name_not_stone`), and share-zero at its welds (`name_share_bot`); its object
+axis reaches every invoker reception (`name_object_axis_entire`). The effective
+limit is checked by `universal_fixed_call_lands_without_reading`, while
+`invoker_reception_is_deed` keeps the receiver's act grammar ordinary and
+live. `OtherPowerNegative.regime_does_not_determine_share` and
+`OtherPowerNegative.share_does_not_determine_regime` witness the no-polemic
+clause: neither regime nor share recovers the other.
 
 **Fetters.** `FiberAtPoleOn`, `LiveFiberAtPoleOn`, `FiberAtPoleOnWithin`, and
 `FiberAtPoleWithin` are neutral fiber predicates in
@@ -934,11 +953,13 @@ arguments are the `AtBot` share-drop obstruction, `strict_irrefl`, and the
 display-reparameterization transport lemmas.
 
 The conditional impossibility results are the agent-recovery theorems, the
-direction negative witness, the being-boundary negative witness, and the
-sraddha orthogonality witness. The concrete model results include `clockGrid`,
-`registerClockGrid`, `backslideGrid`, and `gradingCollisionGrid`: they witness,
+direction negative witness, the being-boundary negative witness, the sraddha
+orthogonality witness, and the other-power regime/share negative. The concrete
+model results include `clockGrid`, `registerClockGrid`, `backslideGrid`,
+`gradingCollisionGrid`, and `TarikiCase.tarikiGrid`: they witness,
 respectively, function/share splitting, diagnosis-time macro coarsening,
-same-being backsliding, and same-field/different-share grading. The self-line
+same-being backsliding, same-field/different-share grading, and fixed-call
+landing without a second act grammar. The self-line
 witness is a permission witness, not an existence claim about any real regime.
 
 One structural caution remains: `Terminus` is vacuously true of every `Stone`;

@@ -175,6 +175,12 @@ theorem withConditions_share
     (G.withConditions conditions').share w = G.share w :=
   rfl
 
+@[simp]
+theorem withConditions_actual_iff
+    (conditions' : G.Weld -> G.Weld -> Prop) (w : G.Weld) :
+    (G.withConditions conditions').Actual w ↔ G.Actual w :=
+  Iff.rfl
+
 /-- Changing only `conditions` cannot change the grade assigned to a mounted
     response. This is the formal anchor for the cetana correlation at
     signature level: grade is blind to downstream delivery facts. -/
