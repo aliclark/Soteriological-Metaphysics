@@ -40,7 +40,7 @@ transitivity for `conditions`. Role-asymmetry is not temporal asymmetry: the
 
 `Grid.DirectedConvention.TimeDirection` is an abbreviation of `Strict`; all
 strictness theorems apply to it transparently. The formal modules keep their
-comments mathematical and point to `Identification/Commentary.lean` C.1-C.7 for
+comments mathematical and point to `Identification/Commentary.lean` C.1-C.8 for
 the paper-facing readings.
 
 The namespace tree now records ontological ordering. Floor/genjō and the bare
@@ -453,7 +453,7 @@ is the content instance under the non-stone aptness hypothesis.
 
 ---
 
-## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Faith*.lean`, `Doctrines/Ethics*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Correlations*.lean`, `Doctrines/Fetters*.lean`)
+## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Faith*.lean`, `Doctrines/Ethics*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Ledger.lean`, `Doctrines/Correlations*.lean`, `Doctrines/Fetters*.lean`)
 
 `waaMismatchGrade_eq_share` is definitional. `waaMismatchGrade_le_of_share_le` is the
 ordinal covariation theorem: any share comparison is the corresponding
@@ -523,6 +523,39 @@ cetana witnesses check same-field/different-share and live-share/no-standing
 cases. `DeliveryArrogationNegative` instantiates the
 `ClaimLanguage` machinery for a command-shaped delivery claim and checks that a
 recorded plan fails `FitsOfferedTier` where delivery is absent.
+
+**Ledger.** `MountsOnlyIn b M` says `b` mounts responses only at calls in
+`M`. `modality_of_actual` and `landing_call_in_modality` are the
+response-shape facts: an actual weld, and hence any landing, at a
+modality-restricted receiver carries a call in the modality; both are
+projection/rewrite proofs. `not_actual_outside_modality` and
+`no_landing_outside_modality` are the contrapositives.
+`fiber_landing_call_in_modality` lifts the fact to a coarsening fiber whose
+fine tags all satisfy `MountsOnlyIn` for the same `M`.
+
+`ReceptionCommand` and `receptionCommandLanguage` mirror the Deliberation
+delivery-command language with `LandsAt` as the satisfaction condition;
+`receptionCommand_unfit_of_no_landing` is the corresponding unfit theorem.
+
+`ledger_census_misfits_live_offer` and `ledger_prognosis_misfits_live_offer`
+are named faces of `denied_misfits_live_offer` at `.perCallGlobal` and
+`.standingDated`; the module adds no `RowTag`.
+
+`LedgerCase.ledgerGrid` is a three-being, three-call, three-response grid over
+`Nat` with constant live grade `1`; `conditions` delivers exactly the welds
+whose response is `code` or `comply`. The checked model facts:
+`official_mountsOnlyIn_economic`, `official_not_stone`,
+`official_landing_only_economic`, `floor_speech_never_lands_at_official`; the
+three landings of `codeWeld` with `one_act_two_receivers` and
+`code_ruler_not_exempt` (a self-line reception by the issuer);
+`sectorCoarsening` with `state_tag_sentient`, `state_fiber_shares_register`,
+and `state_fiber_landing_economic`; `decree_engineers_calls_not_receptions`
+(delivery holds, the commanded reception is not actual, the recorded decree
+fails `FitsOfferedTier`); and the purge block `purgedGrid :=
+ledgerGrid.staticized master` with `purge_delivery_loss_real`,
+`purge_adaptive_to_static`, `purge_loop_runs_on`,
+`purge_object_axis_subtraction_nil`, and `corpus_still_delivered`, all reusing
+the futility operation.
 
 **Correlations.** `StageScheme` is `BeingCoarsening`; `FiftyTwoStageScheme`
 adds no signature field. `ShareDropRun` and `BullAscent` type Bulls 1-6 as

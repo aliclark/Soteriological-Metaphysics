@@ -249,7 +249,62 @@ definition rather than asserted as a separate theorem. The
 discipline enforced architecturally by `Config`: no owner or self-index field is
 stored between deeds.
 
-C.7 Doctrines/Correlations.lean, Doctrines/CorrelationsNegative.lean,
+C.7 Doctrines/Ledger.lean
+
+The ledger case is run in code rather than read into it; this section is the
+reading, and the module's own header is the map. `MountsOnlyIn` is the
+function-side register/modality predicate - deliberately neutral vocabulary,
+like `MountsAt` and `ResponseInvariant`, because a receiver's open register is
+a fact about `respondsTo`, not a Waa reading. `landing_call_in_modality` is
+the response-shape fact the paper calls a theorem: any landing at a
+modality-restricted receiver carries a call in the modality, so the form of
+the answer that reaches the ledger is fixed by the ledger. The proof is
+near-definitional by design; `LedgerCase` discharges the non-vacuity duty the
+way `clockGrid` does for the function/share split. Hakuin's corrective, upaya,
+and the wisdom of the code remain display.
+
+`fiber_landing_call_in_modality` is the compression clause: where every fine
+tag under a macro tag shares the register, one answer reaches the fiber. The
+hypothesis is stated on `κ.proj` directly; `InFiber` unfolds to the same
+equation. Together with `sectorCoarsening` and `BeingNegative`, this is "the
+state's Row 2 is a display convention over the officials' welds" with its
+legality and its illegality both on record: legal as diagnosis-time coarsening,
+unrecoverable as grid-carried partition.
+
+`receptionCommandLanguage` is the deliberate sibling of
+`deliveryCommandLanguage` (C.5). The Deliberation negative shows a command over
+delivery failing where delivery is absent; the ledger's decree is the scale
+case with the opposite delivery polarity - delivered everywhere, landing
+nowhere it purports to command. `decree_engineers_calls_not_receptions` keeps
+both halves in one statement: suppression is grid-legal call-engineering, and
+the reception register stays uncommanded.
+
+The census's two named faces (`ledger_census_misfits_live_offer`,
+`ledger_prognosis_misfits_live_offer`) delegate to `denied_misfits_live_offer`
+at `.perCallGlobal` and `.standingDated`, exactly as the fox's marquee theorem
+does at `.foxWeld`. No `RowTag` is added: the module's checked form of "three
+errors, zero new cells" is that its taxonomy content is entirely delegation.
+The third error's anchors are section 2 of the module plus the Deliberation
+negative; the exit-collapse's corrective is model-checked as
+`purge_object_axis_subtraction_nil` with `corpus_still_delivered`.
+
+The Huichang face reuses the futility operation unchanged: `staticized`,
+`futility_delivery_loss_real`, `staticized_responseInvariant`, and
+`staticized_objectAxisStanding_iff` are consumed, not reproved.
+`purge_loop_runs_on` is the one genuinely new futility-face check: the
+non-staticized reception is still actual, which is the "loop ran on" clause
+stated as a model fact.
+
+Grades in `LedgerCase` are uniformly live and no being is pole-typed: the case
+asserts nothing about Baizhang's attainment, and the model is built so it
+cannot accidentally do so. The pedigree flag on the Pure Rules attribution is
+carried in the module header; the theorems consume the shape only. What the
+module declines is what the paper declines: no theorem asserts that the code
+saved Chan, that the state was wrong, or that the survival was worth having -
+the first is the historians', the second is ungradeable by the no-value clause,
+the third is valence borrowed from the object.
+
+C.8 Doctrines/Correlations.lean, Doctrines/CorrelationsNegative.lean,
     Doctrines/Fetters.lean, and Doctrines/FettersNegative.lean
 
 `Doctrines/Correlations.lean` treats the Ten Bulls, Five Ranks, and stage

@@ -3,6 +3,7 @@ import WeldAndArrow.Meta.InvarianceNegative
 import WeldAndArrow.Doctrines.SraddhaNegative
 import WeldAndArrow.Doctrines.FaithNegative
 import WeldAndArrow.Doctrines.Deliberation
+import WeldAndArrow.Doctrines.Ledger
 import WeldAndArrow.Doctrines.CorrelationsNegative
 import WeldAndArrow.Doctrines.FettersNegative
 
@@ -253,5 +254,23 @@ info: 'WAA.DeliveryArrogationNegative.command_utterance_not_fits' does not depen
 -/
 #guard_msgs in
 #print axioms DeliveryArrogationNegative.command_utterance_not_fits
+
+/--
+info: 'WAA.Grid.DirectedConvention.landing_call_in_modality' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.landing_call_in_modality
+
+/--
+info: 'WAA.LedgerCase.decree_engineers_calls_not_receptions' depends on axioms: [propext]
+-/
+#guard_msgs in
+#print axioms LedgerCase.decree_engineers_calls_not_receptions
+
+/--
+info: 'WAA.LedgerCase.purge_loop_runs_on' depends on axioms: [propext]
+-/
+#guard_msgs in
+#print axioms LedgerCase.purge_loop_runs_on
 
 end WAA

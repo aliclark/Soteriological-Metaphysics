@@ -6,6 +6,7 @@ import WeldAndArrow.Doctrines.FaithNegative
 import WeldAndArrow.Doctrines.Ethics
 import WeldAndArrow.Doctrines.EthicsNegative
 import WeldAndArrow.Doctrines.Deliberation
+import WeldAndArrow.Doctrines.Ledger
 import WeldAndArrow.Doctrines.Correlations
 import WeldAndArrow.Doctrines.CorrelationsNegative
 import WeldAndArrow.Doctrines.Fetters
