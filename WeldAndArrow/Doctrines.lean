@@ -3,6 +3,8 @@ import WeldAndArrow.Doctrines.Sraddha
 import WeldAndArrow.Doctrines.SraddhaNegative
 import WeldAndArrow.Doctrines.Faith
 import WeldAndArrow.Doctrines.FaithNegative
+import WeldAndArrow.Doctrines.Ethics
+import WeldAndArrow.Doctrines.EthicsNegative
 import WeldAndArrow.Doctrines.Deliberation
 import WeldAndArrow.Doctrines.Correlations
 import WeldAndArrow.Doctrines.CorrelationsNegative

@@ -453,7 +453,7 @@ is the content instance under the non-stone aptness hypothesis.
 
 ---
 
-## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Faith*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Correlations*.lean`, `Doctrines/Fetters*.lean`)
+## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Faith*.lean`, `Doctrines/Ethics*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Correlations*.lean`, `Doctrines/Fetters*.lean`)
 
 `waaMismatchGrade_eq_share` is definitional. `waaMismatchGrade_le_of_share_le` is the
 ordinal covariation theorem: any share comparison is the corresponding
@@ -493,6 +493,16 @@ fragment where full enlightenment itself supplies the claim truth.
 the landing through recorded testimony. `FaithNegative` shows that neither
 faith as the enlightenment premise itself nor free faith validates the
 principle.
+
+**Ethics.** `WaaEthicsStance` bundles the faith principle with faith in one
+faith-object; `WaaEthicalCode` generalizes the fourth-truth ought across that
+object's recorded testimony while remaining an implication type.
+`waaEthicalCode_conditional` is the hypothesis-free conditional. The voice
+pair is split by `waa_ethics_conditional_voice_assertable` and
+`waa_ethics_detached_voice_displayable`: the conditional is verdict-voiced, the
+detached injunction shortfall-voiced. `EthicsNegative` supplies
+`no_ethics_bearing_at_pole`, `no_stance_over_false_testimony`, and
+`ethicalCode_relative_to_faith_object`.
 
 **Deliberation.** `ConsequentialistConvention` is a descriptive reading layer.
 `DropCount` and `DropCountInFiber` count share-drop receptions across finite

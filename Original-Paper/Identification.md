@@ -112,6 +112,8 @@ The following are conventional and my own -- original moves, each flagged agains
 50. **Stage-schemes as coarsenings** -- the 52 stages, Bulls, and Ranks are legal as diagnosis-time `BeingCoarsening`s; the freeze warning attaches uniformly to holding any scheme as grid-carried structure.
 51. **Fetter-cut typing** -- fetter cutting read as class-restricted fiber-at-pole typing (`FiberAtPoleOn`), with provocation classes model-supplied; whole-fiber irreversibility is definitional, finite-run diagnosis is underdetermined, and the practical forward guarantee remains conditional.
 52. **Two-axis fetter lattice** -- fetter cutting extended to the (call-class × tag-class) product; arhat and buddha typed as two cut-points of one predicate family, the buddha as the univ-point identical to `FiberAtPole` by theorem; region boundary shown underdetermined.
+53. **Ethics as a bundled conditional code** -- faith-transmitted truth times the receiver's own live aversion, held as one hypothesis-free implication theorem; the detached injunction remains outside the assertable voice.
+54. **The code's three honesty clauses** -- empty at the pole, unsatisfiable over false testimony, relative to the faith-object.
 
 ## Glossary
 

@@ -175,7 +175,7 @@ carrier make the relevant denials true at non-live act-time, so fusion fails
 there.
 
 C.4 Doctrines/FourTruths.lean, Doctrines/Sraddha.lean,
-    Doctrines/Faith.lean, and the sibling negative modules
+    Doctrines/Faith.lean, Doctrines/Ethics.lean, and the sibling negative modules
 
 `WaaMismatchGrade` is definitionally `share`; this is the formal honesty clause
 for dukkha-talk as covariation rather than a second measure. `WaaMismatchLive`
@@ -196,6 +196,15 @@ enlightenment transmits truth to recorded utterances, with
 physician's sentence. `FaithNegative` shows the principle exceeds its own
 faith-object, so the "never discharged by field facts" clause survives the
 abstraction.
+
+`WaaEthicsStance` bundles the two undischarged antecedents -- principle and
+faith -- as the agent's contribution; `WaaEthicalCode` is the fourth-truth
+ought generalized over the faith-object's recorded testimony, still an
+implication type only. The deontic work is done by the receiver's own
+`WaaAversionContext`, not by testimony's truth: the physician's sentence is
+practical only where shortfall is live. `EthicsNegative` keeps the code honest
+three ways: empty at the pole, unsatisfiable over false testimony, and relative
+to the faith-object.
 
 `Doctrines/SraddhaNegative.lean` keeps that conditional honest.
 `SraddhaNegative` shows that dropping faith or dropping the live-aversion
