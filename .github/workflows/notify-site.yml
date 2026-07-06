@@ -11,7 +11,7 @@ jobs:
       - name: Dispatch site rebuild
         env:
           GH_TOKEN: ${{ secrets.SITE_DISPATCH_TOKEN }}
-          SITE_REPO: ${{ github.repository_owner }}/weld-and-arrow-site
+          SITE_REPO: ${{ github.repository_owner }}/website
           SOURCE_SHA: ${{ github.sha }}
         run: |
           gh api "repos/${SITE_REPO}/dispatches" \
