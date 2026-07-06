@@ -419,8 +419,9 @@ schema rows, one ladder row, and six prose rows.
 `cetana_live_share_without_object_standing_witness`,
 `registerClock_staticized_zero_stone`,
 `registerClock_staticized_objectAxisStanding_iff`, and
-`pole_tier_buddha_inhabited`. These are witness assemblies over the concrete
-grids, mostly by unfolding and `decide`.
+`pole_tier_buddha_inhabited`, with the fox run-through now checked in
+`FoxCase.foxGrid`. These are witness assemblies over the concrete grids, mostly
+by unfolding and `decide`.
 
 **Content-bearing rows.** `contentLayerLanguage` uses the same `LayerClaim`
 syntax but gives content to denials: no strict direction, all beings stone, or
@@ -573,6 +574,21 @@ ledgerGrid.staticized master` with `purge_delivery_loss_real`,
 `purge_adaptive_to_static`, `purge_loop_runs_on`,
 `purge_object_axis_subtraction_nil`, and `corpus_still_delivered`, all reusing
 the futility operation.
+
+`FoxCase.foxGrid` is a natural-numbered life series: life 0 answers the
+question, later lives receive the fruit, and the turning word releases at
+share 1 rather than at the pole. The checked model facts are
+`fox_sentence_live_selfPole`, `fox_arrow_index_free`,
+`fox_returns_delivered`, `fox_reception_clenched`, `fox_release_rung_not_pole`,
+`fox_reachBack_full_at_release`, `fox_nothing_kept`, and
+`fox_never_tests_pole`. `foxSeriesCoarsening` merges the fine lives into the
+display tag "the fox" while `fox_consecutive_lives_distinct` keeps the fine
+series individuated. The Dogen gloss is typed by
+`daishugyo_diagnosis_fits`, `jinshinInga_instruction_fits`,
+`jinshinInga_floor_voicing_would_misfit`, and `dogen_doubling_both_fit`; these
+check only the grid-internal speech-act gloss, not the historical contra.
+`Doctrines/FoxCase.lean` adds `fox_dukkha_per_life`, because that theorem
+consumes the Four Truths mismatch vocabulary.
 
 **Correlations.** `StageScheme` is `BeingCoarsening`; `FiftyTwoStageScheme`
 adds no signature field. `ShareDropRun` and `BullAscent` type Bulls 1-6 as
@@ -981,17 +997,20 @@ the basic `map_*` identities in `Meta/Invariance.lean`.
 The elementary consequences are projections, witness assemblies,
 contradictions, and short order arguments. The important non-definitional order
 arguments are the `AtBot` share-drop obstruction, `strict_irrefl`, and the
-display-reparameterization transport lemmas.
+display-reparameterization transport lemmas. The `FoxCase` checks sit here too:
+their proofs unfold concrete responses, project existing identities, or close
+short `Nat` order goals with `decide`.
 
 The conditional impossibility results are the agent-recovery theorems, the
 direction negative witness, the being-boundary negative witness, the sraddha
 orthogonality witness, the severed-transcript gradeability negative, and the
 other-power regime/share negative. The concrete model results include
-`clockGrid`, `registerClockGrid`, `backslideGrid`, `gradingCollisionGrid`, and
-`TarikiCase.tarikiGrid`: they witness, respectively, function/share splitting,
-diagnosis-time macro coarsening, same-being backsliding plus severed-transcript
-grade underdetermination, same-field/different-share grading, and fixed-call
-landing without a second act grammar. The self-line
+`clockGrid`, `registerClockGrid`, `backslideGrid`, `gradingCollisionGrid`,
+`FoxCase.foxGrid`, and `TarikiCase.tarikiGrid`: they witness, respectively,
+function/share splitting, diagnosis-time macro coarsening, same-being
+backsliding plus severed-transcript grade underdetermination,
+same-field/different-share grading, the fox run-through with no pole-arrival,
+and fixed-call landing without a second act grammar. The self-line
 witness is a permission witness, not an existence claim about any real regime.
 
 One structural caution remains: `Terminus` is vacuously true of every `Stone`;

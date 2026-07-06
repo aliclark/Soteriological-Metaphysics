@@ -1,4 +1,5 @@
 import WeldAndArrow.Doctrines.FourTruths
+import WeldAndArrow.Doctrines.FoxCase
 import WeldAndArrow.Doctrines.Sraddha
 import WeldAndArrow.Doctrines.SraddhaNegative
 import WeldAndArrow.Doctrines.Faith

@@ -320,6 +320,38 @@ saved Chan, that the state was wrong, or that the survival was worth having -
 the first is the historians', the second is ungradeable by the no-value clause,
 the third is valence borrowed from the object.
 
+C.7a Consequences/FoxCase.lean and Doctrines/FoxCase.lean
+
+`FoxCase.foxGrid` runs the paper's paradigm case as a concrete `Grid Nat`.
+Life 0 is the old man's answering life, later naturals are fox-life tags, and
+the display convention "the fox" is `foxSeriesCoarsening`, a diagnosis-time
+merge rather than a stored being. `foxSeries_macro_sentient`,
+`foxSeries_macro_selfConditioning`, and `fox_consecutive_lives_distinct` are
+the coarsening checks: the macro tag is legal and live, while the fine lives
+remain distinct.
+
+The per-beat checks are deliberately small. `fox_sentence_live_selfPole`
+records the old answer as actual and live; `fox_arrow_index_free` instantiates
+the grade/share independence of delivery; `fox_returns_delivered` gives the
+return line from the sentence into later lives; `fox_reception_clenched`,
+`fox_config_carries_only_tendency`, and `fox_rePitch_forgets` keep the
+receptions actual, live, and non-storing; `fox_release_rung_not_pole`,
+`fox_reachBack_full_at_release`, and `fox_nothing_kept` record the turning-word
+release as a share-drop, not a pole-arrival or possession. `fox_never_tests_pole`
+is intentionally true by construction: no grade in the model is zero, so the
+absence of pole-arrival is a displayed boundary of the koan, not a hidden
+answer to the terminus question.
+
+The Dogen doubling checks are grid-internal only. `oldMan_utterance_misfits`
+delegates the old answer to the fox row's live-tier misfit;
+`daishugyo_diagnosis_fits`, `jinshinInga_instruction_fits`,
+`jinshinInga_floor_voicing_would_misfit`, and `dogen_doubling_both_fit` type
+the two speech-act faces and the counterfactual floor-voicing. They do not
+prove the historical claim that this paper follows Daishugyo against the late
+Dogen; that disagreement stays prose. The dukkha-facing name
+`fox_dukkha_per_life` lives one layer down in `Doctrines/FoxCase.lean` because
+it consumes `WaaMismatchGrade` from `FourTruths`.
+
 C.8 Doctrines/Correlations.lean, Doctrines/CorrelationsNegative.lean,
     Doctrines/SuddenGradual*.lean, Doctrines/Fetters.lean, and
     Doctrines/FettersNegative.lean
