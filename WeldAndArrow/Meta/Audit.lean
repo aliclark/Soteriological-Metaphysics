@@ -1,6 +1,7 @@
 import WeldAndArrow.Meta.Invariance
 import WeldAndArrow.Meta.InvarianceNegative
 import WeldAndArrow.Doctrines.SraddhaNegative
+import WeldAndArrow.Doctrines.FaithNegative
 import WeldAndArrow.Doctrines.Deliberation
 import WeldAndArrow.Doctrines.CorrelationsNegative
 import WeldAndArrow.Doctrines.FettersNegative
@@ -132,6 +133,24 @@ info: 'WAA.Grid.DirectedConvention.waaPathOught_conditional' does not depend on 
 -/
 #guard_msgs in
 #print axioms Grid.DirectedConvention.waaPathOught_conditional
+
+/--
+info: 'WAA.Grid.DirectedConvention.waaFaithOught_conditional' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.waaFaithOught_conditional
+
+/--
+info: 'WAA.Grid.DirectedConvention.map_waaFaithPrinciple_reflect' depends on axioms: [propext]
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.map_waaFaithPrinciple_reflect
+
+/--
+info: 'WAA.FaithNegative.waaFaithPrinciple_id_fails' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms FaithNegative.waaFaithPrinciple_id_fails
 
 /--
 info: 'WAA.Grid.DirectedConvention.no_waa_path_at_pole' does not depend on any axioms

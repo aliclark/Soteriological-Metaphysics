@@ -174,8 +174,8 @@ content rows: an all-stone/no-live grid and the two-bottom direction-void
 carrier make the relevant denials true at non-live act-time, so fusion fails
 there.
 
-C.4 Doctrines/FourTruths.lean, Doctrines/Sraddha.lean, and
-    Doctrines/SraddhaNegative.lean
+C.4 Doctrines/FourTruths.lean, Doctrines/Sraddha.lean,
+    Doctrines/Faith.lean, and the sibling negative modules
 
 `WaaMismatchGrade` is definitionally `share`; this is the formal honesty clause
 for dukkha-talk as covariation rather than a second measure. `WaaMismatchLive`
@@ -189,6 +189,13 @@ possession. `WaaFullyEnlightened` deliberately has two conjuncts: terminus
 typing and universal shortfall closure for delivered deeds. The physician
 simile belongs exactly there: the grid can prove `waaPathOught_conditional`,
 but the antecedents are faith-shaped and are never discharged by field facts.
+
+`WaaFaithPrinciple` abstracts the sraddha antecedent to testimony: faith in
+enlightenment transmits truth to recorded utterances, with
+`waaPathClaimLanguage` instantiating the `ClaimLanguage` interface for the
+physician's sentence. `FaithNegative` shows the principle exceeds its own
+faith-object, so the "never discharged by field facts" clause survives the
+abstraction.
 
 `Doctrines/SraddhaNegative.lean` keeps that conditional honest.
 `SraddhaNegative` shows that dropping faith or dropping the live-aversion

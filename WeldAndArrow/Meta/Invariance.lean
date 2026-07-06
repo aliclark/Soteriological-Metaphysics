@@ -13,6 +13,7 @@ Reading and motivation: Identification/Commentary.lean, C.3.
 import WeldAndArrow.Consequences.ContentRows
 import WeldAndArrow.Identification
 import WeldAndArrow.Doctrines.Sraddha
+import WeldAndArrow.Doctrines.Faith
 import WeldAndArrow.Doctrines.Correlations
 
 /-!
@@ -697,6 +698,69 @@ theorem map_waaFullyEnlightened_of_surjective
         have hmapped :=
           (map_hasShareDropLanding_iff G f before deed).mpr hlanding
         simpa [Config.map, before, ha] using hmapped
+
+/-- Transport of a path claim: reparameterize the stored configuration; the
+    welds are carried unchanged. -/
+def WaaPathClaim.map (c : WaaPathClaim G) : WaaPathClaim (G.map f) :=
+  { before := c.before.map f
+    deed := c.deed
+    reception := c.reception }
+
+/-- Truth of a path claim is display-invariant. The language ignores the tier,
+    so the tiers on the two sides are unconstrained. -/
+theorem map_waaPathClaim_holds_iff
+    (t' : Tier (G.map f)) (t : Tier G) (c : WaaPathClaim G) :
+    (waaPathClaimLanguage (G.map f)).Holds t' (WaaPathClaim.map G f c) ↔
+      (waaPathClaimLanguage G).Holds t c := by
+  simpa [waaPathClaimLanguage, WaaPathClaim.map] using
+    (map_shortfallClosedAt_iff G f c.before c.deed c.reception)
+
+/-- With target-carrier coverage, full enlightenment is display-invariant
+    outright. -/
+theorem map_waaFullyEnlightened_iff
+    (hsurj : ∀ b' : Contrib', ∃ a : Contrib, f.toFun a = b')
+    (b : G.Being) :
+    WaaFullyEnlightened (G.map f) b ↔ WaaFullyEnlightened G b :=
+  ⟨fun h => map_waaFullyEnlightened_reflect G f h,
+    fun h => map_waaFullyEnlightened_of_surjective G f hsurj h⟩
+
+/-- Faith has no monotonicity or congruence law. Under coverage, the mapped
+    faith-object is propositionally the same object, so transport goes through
+    propositional extensionality. -/
+theorem map_faith_object_eq
+    (hsurj : ∀ b' : Contrib', ∃ a : Contrib, f.toFun a = b')
+    (Faith : Prop → Prop) (b : G.Being) :
+    Faith (WaaFullyEnlightened (G.map f) b) =
+      Faith (WaaFullyEnlightened G b) := by
+  rw [propext (map_waaFullyEnlightened_iff G f hsurj b)]
+
+/-- Reflection of the faith principle across a covering display
+    reparameterization, for the path-claim language. -/
+theorem map_waaFaithPrinciple_reflect
+    (hsurj : ∀ b' : Contrib', ∃ a : Contrib, f.toFun a = b')
+    {Faith : Prop → Prop}
+    (h : WaaFaithPrinciple (G.map f) (waaPathClaimLanguage (G.map f)) Faith) :
+    WaaFaithPrinciple G (waaPathClaimLanguage G) Faith := by
+  intro b hfaith u hutter
+  have hfaith' : Faith (WaaFullyEnlightened (G.map f) b) := by
+    rw [map_faith_object_eq G f hsurj Faith b]
+    exact hfaith
+  let u' : RecordedUtterance (G.map f) (waaPathClaimLanguage (G.map f)) :=
+    { weld := u.weld
+      actual := u.actual
+      offeredAt := Tier.floor
+      content := WaaPathClaim.map G f u.content }
+  have hfit' : u'.FitsOfferedTier :=
+    h b hfaith' u' hutter
+  change (waaPathClaimLanguage G).TrueAt u.offeredAt u.content
+  have hholds :
+      (waaPathClaimLanguage G).Holds u.offeredAt u.content :=
+    (map_waaPathClaim_holds_iff G f u'.offeredAt u.offeredAt
+      u.content).mp (by
+        change (waaPathClaimLanguage (G.map f)).TrueAt u'.offeredAt
+          u'.content at hfit'
+        simpa [ClaimLanguage.TrueAt, u'] using hfit')
+  simpa [ClaimLanguage.TrueAt] using hholds
 
 theorem map_waaAversionContext_iff
     (before : Config Contrib) (reception : G.Weld) :

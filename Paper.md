@@ -154,6 +154,7 @@ before.tendency` and not `before.tendency ≼ share received`.
 - `EnvironsLine` and `ShareDropLine`.
 - `ShortfallClosedAt`, `WaaFullyEnlightened`, `WaaAversionContext`, and
   `WaaPathOught`.
+- `WaaPathClaim`, `WaaFaithPrinciple`, and `WaaFaithOught`.
 - `WaaReportFace`, `WaaOwnershipFace`, `WaaVacuousOwnershipFace`, and
   `WaaDiachronicWhose`.
 
@@ -447,7 +448,7 @@ is the content instance under the non-stone aptness hypothesis.
 
 ---
 
-## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Correlations*.lean`, `Doctrines/Fetters*.lean`)
+## 3. Doctrines (`Doctrines/FourTruths.lean`, `Doctrines/Sraddha*.lean`, `Doctrines/Faith*.lean`, `Doctrines/Deliberation.lean`, `Doctrines/Correlations*.lean`, `Doctrines/Fetters*.lean`)
 
 `waaMismatchGrade_eq_share` is definitional. `waaMismatchGrade_le_of_share_le` is the
 ordinal covariation theorem: any share comparison is the corresponding
@@ -474,6 +475,19 @@ concrete countermodels for dropping faith or dropping aversion.
 a responsive terminus can fail `WaaFullyEnlightened` because the delivered
 deed has no share-drop landing for the receiver's live prior tendency.
 `waaFullyEnlightened_stronger_than_terminus` proves the strictness.
+
+**Faith.** `WaaPathClaim` packages the local claim that a prior configuration,
+deed, and reception satisfy `ShortfallClosedAt`; `waaPathClaimLanguage` makes
+that claim a `ClaimLanguage`. `WaaFaithPrinciple` is the testimonial
+antecedent: faith in a fully enlightened being makes that being's recorded
+utterances fit their offered tier. `waa_says_true_of_faith` is the direct
+projection of the principle, while
+`fitsOfferedTier_of_waaFullyEnlightened_ownDeed` records the old own-deed
+fragment where full enlightenment itself supplies the claim truth.
+`waa_path_landing_of_faithPrinciple` and `waaFaithOught_conditional` rederive
+the landing through recorded testimony. `FaithNegative` shows that neither
+faith as the enlightenment premise itself nor free faith validates the
+principle.
 
 **Deliberation.** `ConsequentialistConvention` is a descriptive reading layer.
 `DropCount` and `DropCountInFiber` count share-drop receptions across finite
@@ -675,6 +689,9 @@ Grade-facing transport facts:
 - `Grid.DirectedConvention.map_waaAversionContext_iff`
 - `Grid.DirectedConvention.map_waaFullyEnlightened_reflect` and
   `map_waaFullyEnlightened_of_surjective`
+- `Grid.DirectedConvention.WaaPathClaim.map`,
+  `map_waaPathClaim_holds_iff`, `map_waaFullyEnlightened_iff`,
+  `map_faith_object_eq`, and `map_waaFaithPrinciple_reflect`
 - `BeingCoarsening.displayMap` and its `map_*_iff` lemmas for
   `InFiber`, `SameFiber`, `FiberInhabited`, `ActualFiberInhabited`,
   `SentientTag`, `FiberAtPole`, `ActualFiberInhabitedOn`, `FiberAtPoleOn`,
@@ -781,9 +798,10 @@ that the being-boundary is a reading, not grid-carried structure.
 ## 6. Meta/Audit.lean
 
 `Meta/Audit.lean` imports `Meta/Invariance.lean`,
-`Meta/InvarianceNegative.lean`, `Doctrines/SraddhaNegative.lean`, and
-`Doctrines/Deliberation.lean`, plus the new correlations and fetters negative
-modules, then pins selected `#print axioms` outputs with `#guard_msgs`.
+`Meta/InvarianceNegative.lean`, `Doctrines/SraddhaNegative.lean`,
+`Doctrines/FaithNegative.lean`, and `Doctrines/Deliberation.lean`, plus the
+new correlations and fetters negative modules, then pins selected
+`#print axioms` outputs with `#guard_msgs`.
 
 The audited declarations are:
 
@@ -808,6 +826,9 @@ The audited declarations are:
 - `Grid.waaIrreversibleRegime_conditional`
 - `FettersNegative.seen_run_underdetermines_fetterCut`
 - `Grid.DirectedConvention.waaPathOught_conditional`
+- `Grid.DirectedConvention.waaFaithOught_conditional`
+- `Grid.DirectedConvention.map_waaFaithPrinciple_reflect`
+- `FaithNegative.waaFaithPrinciple_id_fails`
 - `Grid.DirectedConvention.no_waa_path_at_pole`
 - `Grid.DirectedConvention.map_waaAversionContext_iff`
 - `MisFeedNegative.fence_and_gate`
@@ -817,7 +838,8 @@ The pinned result is: no audited theorem depends on `sorry` or
 `Classical.choice`. All audited declarations are axiom-free except
 `DirectionNegative.no_direction_recovery_from_conditionsEither`, which depends
 on exactly `[propext, Quot.sound]`, and
-`FettersNegative.seen_run_underdetermines_fetterCut`, which depends on
+`FettersNegative.seen_run_underdetermines_fetterCut` and
+`Grid.DirectedConvention.map_waaFaithPrinciple_reflect`, which depend on
 `[propext]`.
 
 The Lake build now targets the library `WeldAndArrow`; there is no `lean_exe`

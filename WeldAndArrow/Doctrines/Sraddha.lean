@@ -6,6 +6,10 @@
 
 The grid proves the implication. It does not discharge the antecedents and it
 does not assert the detached fourth-truth injunction in its own voice.
+
+The faith antecedent is abstracted to a testimony principle in
+`Doctrines/Faith.lean`; the conditional here remains the direct,
+non-testimonial route.
 -/
 
 import WeldAndArrow.Doctrines.FourTruths

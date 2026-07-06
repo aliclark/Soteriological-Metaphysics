@@ -1,6 +1,8 @@
 import WeldAndArrow.Doctrines.FourTruths
 import WeldAndArrow.Doctrines.Sraddha
 import WeldAndArrow.Doctrines.SraddhaNegative
+import WeldAndArrow.Doctrines.Faith
+import WeldAndArrow.Doctrines.FaithNegative
 import WeldAndArrow.Doctrines.Deliberation
 import WeldAndArrow.Doctrines.Correlations
 import WeldAndArrow.Doctrines.CorrelationsNegative
