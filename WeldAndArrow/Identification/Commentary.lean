@@ -326,9 +326,10 @@ C.5 Doctrines/Deliberation.lean
 
 `ConsequentialistConvention` is a descriptive reading layer. `DropCount` and
 `DropCountInFiber` count share-drop receptions across finite actual runs without
-adding probability, utility, or a command register. `ObjectiveNegative` reuses
-the merge/split being-convention pattern to show that "my drops" is not a
-function of grid data alone.
+adding probability, utility, or a command register. Their transport lemmas in
+`Meta/Invariance.lean` discharge the C.3 admission criterion for using them as
+display readings. `ObjectiveNegative` reuses the merge/split being-convention
+pattern to show that "my drops" is not a function of grid data alone.
 
 `backsliding_witness` gives the direct same-grid shape: a share-drop reception
 to the pole-class followed by a later actual live-share weld by the same

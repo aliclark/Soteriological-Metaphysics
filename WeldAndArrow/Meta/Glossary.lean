@@ -468,7 +468,9 @@ def glossary : List GlossaryEntry := [
     gloss := "The deliberator theorem blocks a maximizer at three joints: supplied being-convention, absent accumulator, and failed command over delivery. It is a check on consequentialist reuse of the grid."
     anchors := [``ObjectiveNegative.no_grid_data_objective_for_my_drops,
       ``TransferNegative.adaptive_track_record_underdetermines_new_effect,
-      ``DeliveryArrogationNegative.command_utterance_not_fits]
+      ``DeliveryArrogationNegative.command_utterance_not_fits,
+      ``Grid.ConsequentialistConvention.map_dropCount,
+      ``Grid.ConsequentialistConvention.map_dropCountInFiber]
     seeAlso := ["being-convention", "re-pitch", "delivery-arrogation"] },
   { term := "covariation"
     kind := .coinage .theorems

@@ -13,6 +13,7 @@ Reading and motivation: Identification/Commentary.lean, C.3.
 import WeldAndArrow.Consequences.ContentRows
 import WeldAndArrow.Signature.DirectionConvention
 import WeldAndArrow.Identification
+import WeldAndArrow.Doctrines.Deliberation
 import WeldAndArrow.Doctrines.Sraddha
 import WeldAndArrow.Doctrines.Faith
 import WeldAndArrow.Doctrines.Correlations
@@ -183,6 +184,21 @@ theorem map_exists_actual_iff :
     exact ⟨w, (G.map_actual_iff f w).mp hactual⟩
   · rintro ⟨w, hactual⟩
     exact ⟨w, (G.map_actual_iff f w).mpr hactual⟩
+
+namespace ActualWeld
+
+/-- Transport an actual weld along a display reparameterization. The weld is the
+    same occurrence; only the contribution display has moved. -/
+def map {G : Grid Contrib} (f : DisplayReparam Contrib Contrib') :
+    ActualWeld G -> ActualWeld (G.map f)
+  | ⟨w, h⟩ => ⟨w, (G.map_actual_iff f w).mpr h⟩
+
+@[simp]
+theorem map_weld {G : Grid Contrib} (f : DisplayReparam Contrib Contrib')
+    (aw : ActualWeld G) : (aw.map f).weld = aw.weld :=
+  rfl
+
+end ActualWeld
 
 theorem map_mountsAt_iff (b : G.Being) (c : G.Call) :
     (G.map f).MountsAt b c ↔ G.MountsAt b c :=
@@ -724,6 +740,118 @@ def map_bullAscent (a : G.BullAscent) :
   before := a.before.map f
   run    := a.run
   drops  := G.map_shareDropRun f a.drops
+
+namespace ConsequentialistConvention
+
+/-- Transport a finite deliberation sample across a display
+    reparameterization. The actual receptions are the same welds, re-read in
+    the mapped display. -/
+def DeliberationSample.map (s : DeliberationSample G) :
+    DeliberationSample (G.map f) where
+  before := s.before.map f
+  run    := s.run.map (ActualWeld.map f)
+
+@[simp]
+theorem deliberationSample_map_before (s : DeliberationSample G) :
+    (DeliberationSample.map G f s).before = s.before.map f :=
+  rfl
+
+@[simp]
+theorem deliberationSample_map_run (s : DeliberationSample G) :
+    (DeliberationSample.map G f s).run = s.run.map (ActualWeld.map f) :=
+  rfl
+
+/-- Drop-counting is invariant under display reparameterization. -/
+theorem map_dropCount
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    [∀ before received, Decidable ((G.map f).IsShareDrop before received)]
+    (before : Config Contrib) (run : List (ActualWeld G)) :
+    DropCount (G.map f) (before.map f) (run.map (ActualWeld.map f)) =
+      DropCount G before run := by
+  induction run generalizing before with
+  | nil =>
+      rfl
+  | cons aw rest ih =>
+      unfold DropCount
+      by_cases hdrop : G.IsShareDrop before aw.weld
+      · have hmapped :
+            (G.map f).IsShareDrop (before.map f) aw.weld := by
+          simpa using (G.map_isShareDrop_iff f before aw.weld).mpr hdrop
+        simp [hmapped, hdrop, Grid.map_rePitch, ih]
+      · have hmapped :
+            ¬ (G.map f).IsShareDrop (before.map f) aw.weld := by
+          intro h
+          exact hdrop ((G.map_isShareDrop_iff f before aw.weld).mp h)
+        simp [hmapped, hdrop, Grid.map_rePitch, ih]
+
+/-- Fiber-restricted drop-counting is invariant under display
+    reparameterization when the supplied being-coarsening is transported too. -/
+theorem map_dropCountInFiber
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    [∀ before received, Decidable ((G.map f).IsShareDrop before received)]
+    {Macro : Type}
+    (κ : DirectedConvention.BeingConvention.BeingCoarsening G Macro)
+    [∀ b w, Decidable (κ.InFiber b w)]
+    [∀ b w, Decidable ((κ.displayMap f).InFiber b w)]
+    (b : Macro) (before : Config Contrib) (run : List (ActualWeld G)) :
+    DropCountInFiber (G.map f) (κ.displayMap f) b (before.map f)
+        (run.map (ActualWeld.map f)) =
+      DropCountInFiber G κ b before run := by
+  induction run generalizing before with
+  | nil =>
+      rfl
+  | cons aw rest ih =>
+      unfold DropCountInFiber
+      by_cases hfiber : κ.InFiber b aw.weld
+      · have hmappedFiber :
+            (κ.displayMap f).InFiber b aw.weld := by
+          simpa using
+            (DirectedConvention.BeingConvention.BeingCoarsening.map_inFiber_iff
+              κ f b aw.weld).mpr hfiber
+        by_cases hdrop : G.IsShareDrop before aw.weld
+        · have hmappedDrop :
+              (G.map f).IsShareDrop (before.map f) aw.weld := by
+            simpa using (G.map_isShareDrop_iff f before aw.weld).mpr hdrop
+          simp [hmappedFiber, hfiber, hmappedDrop, hdrop, Grid.map_rePitch, ih]
+        · have hmappedDrop :
+              ¬ (G.map f).IsShareDrop (before.map f) aw.weld := by
+            intro h
+            exact hdrop ((G.map_isShareDrop_iff f before aw.weld).mp h)
+          simp [hmappedFiber, hfiber, hmappedDrop, hdrop, Grid.map_rePitch, ih]
+      · have hmappedFiber :
+            ¬ (κ.displayMap f).InFiber b aw.weld := by
+          intro h
+          exact hfiber
+            ((DirectedConvention.BeingConvention.BeingCoarsening.map_inFiber_iff
+              κ f b aw.weld).mp h)
+        simp [hmappedFiber, hfiber, Grid.map_rePitch, ih]
+
+theorem map_dropCount_sample
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    [∀ before received, Decidable ((G.map f).IsShareDrop before received)]
+    (s : DeliberationSample G) :
+    DropCount (G.map f) (DeliberationSample.map G f s).before
+        (DeliberationSample.map G f s).run =
+      DropCount G s.before s.run := by
+  simpa [DeliberationSample.map] using
+    (map_dropCount G f s.before s.run)
+
+theorem map_dropCountInFiber_sample
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    [∀ before received, Decidable ((G.map f).IsShareDrop before received)]
+    {Macro : Type}
+    (κ : DirectedConvention.BeingConvention.BeingCoarsening G Macro)
+    [∀ b w, Decidable (κ.InFiber b w)]
+    [∀ b w, Decidable ((κ.displayMap f).InFiber b w)]
+    (b : Macro) (s : DeliberationSample G) :
+    DropCountInFiber (G.map f) (κ.displayMap f) b
+        (DeliberationSample.map G f s).before
+        (DeliberationSample.map G f s).run =
+      DropCountInFiber G κ b s.before s.run := by
+  simpa [DeliberationSample.map] using
+    (map_dropCountInFiber G f κ b s.before s.run)
+
+end ConsequentialistConvention
 
 namespace DirectedConvention
 

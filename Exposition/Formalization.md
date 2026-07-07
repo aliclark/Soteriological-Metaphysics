@@ -535,6 +535,9 @@ detached injunction shortfall-voiced. `EthicsNegative` supplies
 **Deliberation.** `ConsequentialistConvention` is a descriptive reading layer.
 `DropCount` and `DropCountInFiber` count share-drop receptions across finite
 actual runs without adding probability, utility, or a command register.
+They are legal display readings: `map_dropCount` and `map_dropCountInFiber`
+show that reparameterizing the contribution display does not change either
+count.
 `ObjectiveNegative` reuses the merge/split being-convention pattern to show
 that "my drops" is not a function of grid data alone.
 
@@ -886,6 +889,9 @@ Grade-facing transport facts:
 - `Tier.map` and `map_tier_hasLiveShare_iff`
 - `map_rePitch`
 - `map_isShareDrop_iff`
+- `ActualWeld.map`, `ConsequentialistConvention.DeliberationSample.map`,
+  `ConsequentialistConvention.map_dropCount`, and
+  `ConsequentialistConvention.map_dropCountInFiber`
 - `Grid.DirectedConvention.map_landsWithShareDrop_iff`
 - `Grid.DirectedConvention.map_hasShareDropLanding_iff`
 - `Grid.DirectedConvention.map_shareDropLine_iff`
