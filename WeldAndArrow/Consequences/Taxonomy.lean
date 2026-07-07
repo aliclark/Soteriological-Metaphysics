@@ -27,6 +27,7 @@ namespace GridConvention
 /-- The nested conventions as objects the lens can diagnose claims about. -/
 inductive ConventionLayer
   | directedTime
+  | intraWeldArrow
   | beings
   | gridLens
   | weldGrain
@@ -44,6 +45,7 @@ inductive RowTag
   | layer (l : ConventionLayer)
   | foxWeld
   | rungPole
+  | doerDeed
   | functionShare
   | karmaInga
   | sowingReaping
@@ -213,6 +215,9 @@ abbrev gridLensRow (G : Grid Contrib) : Distinction G :=
 abbrev weldRow (G : Grid Contrib) : Distinction G :=
   rowOf G (.layer .weldGrain)
 
+abbrev intraWeldArrowRow (G : Grid Contrib) : Distinction G :=
+  rowOf G (.layer .intraWeldArrow)
+
 theorem layerRow_obeys
     [∀ w : G.Weld, Decidable (AtBot (G.share w))]
     (l : ConventionLayer) :
@@ -238,6 +243,11 @@ theorem weldRow_obeys
     [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
     (weldRow G).ObeysSeparateFuse :=
   rowOf_obeys G (.layer .weldGrain)
+
+theorem intraWeldArrowRow_obeys
+    [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
+    (intraWeldArrowRow G).ObeysSeparateFuse :=
+  rowOf_obeys G (.layer .intraWeldArrow)
 
 /-- Compatibility name for the migrated layer denials. -/
 theorem layerDenied_holds_only_where_no_live_share
@@ -290,6 +300,16 @@ theorem weld_denial_collapse_self_refuting (t : Tier G) :
     ¬ (weldRow G).Collapse t :=
   rowOf_collapse_self_refuting G (.layer .weldGrain) t
 
+theorem intraWeldArrowRow_not_freeze :
+    ¬ (intraWeldArrowRow G).Freeze :=
+  rowOf_not_freeze G (.layer .intraWeldArrow)
+
+/-- "No call/response order, so no acts", offered live, is refuted by its own
+    act-time tier. -/
+theorem no_order_collapse_self_refuting (t : Tier G) :
+    ¬ (intraWeldArrowRow G).Collapse t :=
+  rowOf_collapse_self_refuting G (.layer .intraWeldArrow) t
+
 abbrev rungPoleRow (G : Grid Contrib) : Distinction G :=
   rowOf G .rungPole
 
@@ -332,6 +352,24 @@ theorem fox_utterance_misfits_live_offer
     (hlive : Tier.hasLiveShare G u.offeredAt) :
     ¬ RecordedUtterance.FitsOfferedTier u :=
   denied_misfits_live_offer G .foxWeld u hcontent hlive
+
+abbrev doerDeedRow (G : Grid Contrib) : Distinction G :=
+  rowOf G .doerDeed
+
+theorem doerDeedRow_obeys
+    [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
+    (doerDeedRow G).ObeysSeparateFuse :=
+  rowOf_obeys G .doerDeed
+
+theorem doerDeedRow_not_freeze :
+    ¬ (doerDeedRow G).Freeze :=
+  rowOf_not_freeze G .doerDeed
+
+/-- "No doer, only deeds", offered as live diagnosis, is mounted by the very
+    act-time being answering a call. -/
+theorem no_prior_doer_collapse_self_refuting (t : Tier G) :
+    ¬ (doerDeedRow G).Collapse t :=
+  rowOf_collapse_self_refuting G .doerDeed t
 
 abbrev functionShareRow (G : Grid Contrib) : Distinction G :=
   rowOf G .functionShare
@@ -534,6 +572,7 @@ def tableOrder : List TableRow := [
   .prose .shoSatori,
   .generated .foxWeld,
   .prose .row2Row3,
+  .generated .doerDeed,
   .generated .functionShare,
   .generated .karmaInga,
   .generated .sowingReaping,
@@ -548,10 +587,11 @@ def tableOrder : List TableRow := [
   .generated .terminusExit,
   .generated .selfPoleTransposed,
   .generated (.layer .directedTime),
+  .generated (.layer .intraWeldArrow),
   .generated (.layer .beings),
   .generated (.layer .weldGrain) ]
 
-example : tableOrder.length = 24 := rfl
+example : tableOrder.length = 26 := rfl
 
 /-- Metadata for whether a schema-generated row has a collapse occupant in the
     paper's Grade-1 table. This records table prose; it is not extra grid

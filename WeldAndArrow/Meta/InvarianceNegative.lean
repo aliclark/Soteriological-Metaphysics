@@ -405,6 +405,52 @@ theorem contentBeforeAfterRow_not_obeys_twoBottom :
     (InvarianceNegative.twoBottomGrid.fused_of_obeysSeparateFuse h
       (Grid.Tier.actTime twoBottomWeld))
 
+def constantResponseGrid : Grid InvarianceNegative.TwoBottom where
+  Being      := Unit
+  Call       := Bool
+  Response   := Unit
+  respondsTo _ _ := some ()
+  grade _ _ _ := InvarianceNegative.TwoBottom.chosen
+  conditions _ _ := False
+
+def constantResponseWeld : constantResponseGrid.Weld :=
+  ⟨(), false, ()⟩
+
+theorem constantResponseGrid_no_variation :
+    ∀ b : constantResponseGrid.Being,
+      ¬ constantResponseGrid.ResponseVariesWithCall b := by
+  intro _b h
+  rcases h with ⟨_c₁, _c₂, r₁, r₂, _h₁, _h₂, hne⟩
+  cases r₁
+  cases r₂
+  exact hne rfl
+
+theorem constantResponseWeld_no_live_share :
+    ¬ Grid.Tier.hasLiveShare constantResponseGrid
+        (Grid.Tier.actTime constantResponseWeld) := by
+  intro hidx
+  exact hidx True.intro
+
+theorem contentIntraWeldArrowRow_not_fused_constantResponse :
+    ¬ (contentIntraWeldArrowRow constantResponseGrid).Fused
+        (Grid.Tier.actTime constantResponseWeld) := by
+  intro hfused
+  have hiff := hfused constantResponseWeld_no_live_share
+  have hdenial :
+      (contentLayerLanguage constantResponseGrid).TrueAt
+        (Grid.Tier.actTime constantResponseWeld)
+        (.layerDenied .intraWeldArrow) := by
+    dsimp [contentLayerLanguage, Grid.ClaimLanguage.TrueAt]
+    exact constantResponseGrid_no_variation
+  exact constantResponseWeld_no_live_share (hiff.mpr hdenial)
+
+theorem contentIntraWeldArrowRow_not_obeys_constantResponse :
+    ¬ (contentIntraWeldArrowRow constantResponseGrid).ObeysSeparateFuse := by
+  intro h
+  exact contentIntraWeldArrowRow_not_fused_constantResponse
+    (constantResponseGrid.fused_of_obeysSeparateFuse h
+      (Grid.Tier.actTime constantResponseWeld))
+
 end ContentNegative
 
 /- ==============================================================================
@@ -663,5 +709,58 @@ theorem no_weld_boundary_recovery :
   exact hsplitNot hmerged
 
 end WeldNegative
+
+/- ==============================================================================
+   §P  Doer/deed priority freedom: priority is not grid-carried
+
+   MMK 8 anchor: kāraka proceeds dependent on karman; neither side is prior
+   or independently based. The witness keeps priority as a reading over visible
+   grid data rather than adding a priority primitive to `Grid`.
+============================================================================== -/
+
+namespace DoerDeedNegative
+
+/-- Reuse the small two-call grid shape: one visible doer tag and two visible
+    deeds, with no priority field in the data. -/
+abbrev W := RawWeld Unit Bool Bool
+
+abbrev GridData : Type :=
+  (Unit → Bool → Option Bool) ×
+    (Unit → Bool → Bool → Nat) × (W → W → Prop)
+
+def gridData : GridData :=
+  (WeldNegative.twoWeldGrid.respondsTo,
+    WeldNegative.twoWeldGrid.grade,
+    WeldNegative.twoWeldGrid.conditions)
+
+/-- Priority reading: the visible being is read as standing prior to its deed. -/
+def beingPriorReading (_b : Unit) (_deed : W) : Prop := True
+
+/-- Mutual-dependence reading: the same visible data are read with no prior
+    doer standing behind the deed. -/
+def mutualReading (_b : Unit) (_deed : W) : Prop := False
+
+theorem priority_readings_disagree :
+    beingPriorReading () WeldNegative.wFalse ∧
+      ¬ mutualReading () WeldNegative.wFalse := by
+  constructor
+  · exact True.intro
+  · intro h
+    exact h
+
+theorem no_priority_recovery :
+    ¬ ∃ recover : GridData → Unit → W → Prop,
+        recover gridData = beingPriorReading ∧
+        recover gridData = mutualReading := by
+  rintro ⟨recover, hprior, hmutual⟩
+  have hPrior : recover gridData () WeldNegative.wFalse := by
+    rw [hprior]
+    exact priority_readings_disagree.left
+  have hMutualNot : ¬ recover gridData () WeldNegative.wFalse := by
+    rw [hmutual]
+    exact priority_readings_disagree.right
+  exact hMutualNot hPrior
+
+end DoerDeedNegative
 
 end WAA

@@ -129,6 +129,38 @@ schema. Their collapse and freeze checks remain hypothesis-free; their
 obedience theorems carry only the local `AtBot` stability needed for non-live
 genjo fusion. The full row list is Lean data as `tableOrder`.
 
+`intraWeldArrow` is a `ConventionLayer`, not a bare row tag, because it names
+the convention by which the two faces of a weld are ordered. Its content denial
+is response-invariance: if no being's response varies with call, the call-face
+does no work, so there is no interior order to read. The conditional obedience
+theorem therefore asks for `∃ b, G.ResponseVariesWithCall b`, parallel to the
+directed-time row's strictness witness. A single recorded utterance of the
+content denial does not by itself extract two different responses from two
+calls, so the shipped utterance theorem is the schema-level live-tier misfit
+form, routed through `denied_misfits_live_offer`.
+
+`doerDeed` is a schema-only `RowTag`. The tempting content form, "the doer is
+prior to the deed", would require adding a priority structure to the opaque
+signature, thereby installing exactly the furniture MMK 8 is being used to
+deny. The floor-furniture flank is instead carried by
+`DoerDeedNegative.no_priority_recovery`, a witness that the same visible grid
+data support both a prior-doer reading and a mutual-dependence reading. Fusion
+remains ordinary row trivialization: the code nowhere says that doer and deed
+merge into one thing.
+
+The generator-discipline check is the same one that motivated `weldRow`: a
+generated row should name the convention whose collapse/freeze it diagnoses.
+`intraWeldArrow` names the face-order convention; `doerDeed` names the
+doer/deed ordering, with the `RawWeld` being component as its concrete anchor
+but without promoting priority to a field. The labels "coming-to" and
+"going-from" are display names for transposed readings of the two weld faces,
+not new tier names.
+
+`ReflexivityWitness.ladderRungGrid` is deliberately only one legal grid: it
+instantiates `Being` with `Nat` read as rung labels and then reruns the beings
+ladder. This does not define beings as rungs, and it leaves
+`BeingNegative.no_partition_recovery` untouched.
+
 `Consequences/Compounds.lean` records the compound-position decompositions as
 the same kind of paper-facing data plus `rfl` pins used by placements and the
 table order. Its components are classificatory rather than probative: citing a

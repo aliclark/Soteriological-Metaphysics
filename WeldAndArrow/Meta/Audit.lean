@@ -1,5 +1,6 @@
 import WeldAndArrow.Meta.Invariance
 import WeldAndArrow.Meta.InvarianceNegative
+import WeldAndArrow.Meta.ReflexivityWitness
 import WeldAndArrow.Meta.VerdictLedger
 import WeldAndArrow.Doctrines.SraddhaNegative
 import WeldAndArrow.Doctrines.FaithNegative
@@ -490,5 +491,233 @@ info: 'WAA.LedgerCase.purge_loop_runs_on' depends on axioms: [propext]
 -/
 #guard_msgs in
 #print axioms LedgerCase.purge_loop_runs_on
+
+/--
+info: 'WAA.InteriorDirectionNegative.transposeCR_involutive' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms InteriorDirectionNegative.transposeCR_involutive
+
+/--
+info: 'WAA.InteriorDirectionNegative.unorderedCRContent_transpose_invariant' depends on axioms: [propext]
+-/
+#guard_msgs in
+#print axioms InteriorDirectionNegative.unorderedCRContent_transpose_invariant
+
+/--
+info: 'WAA.InteriorDirectionNegative.transpose_swaps_readings' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms InteriorDirectionNegative.transpose_swaps_readings
+
+/--
+info: 'WAA.DoerDeedNegative.priority_readings_disagree' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms DoerDeedNegative.priority_readings_disagree
+
+/--
+info: 'WAA.DoerDeedNegative.no_priority_recovery' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms DoerDeedNegative.no_priority_recovery
+
+/--
+info: 'WAA.ContentNegative.constantResponseGrid_no_variation' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms ContentNegative.constantResponseGrid_no_variation
+
+/--
+info: 'WAA.ContentNegative.constantResponseWeld_no_live_share' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms ContentNegative.constantResponseWeld_no_live_share
+
+/--
+info: 'WAA.ContentNegative.contentIntraWeldArrowRow_not_fused_constantResponse' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms ContentNegative.contentIntraWeldArrowRow_not_fused_constantResponse
+
+/--
+info: 'WAA.ContentNegative.contentIntraWeldArrowRow_not_obeys_constantResponse' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms ContentNegative.contentIntraWeldArrowRow_not_obeys_constantResponse
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.intraWeldArrowRow_obeys' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.intraWeldArrowRow_obeys
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.intraWeldArrowRow_not_freeze' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.intraWeldArrowRow_not_freeze
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.no_order_collapse_self_refuting' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.no_order_collapse_self_refuting
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.doerDeedRow_obeys' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.doerDeedRow_obeys
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.doerDeedRow_not_freeze' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.doerDeedRow_not_freeze
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.no_prior_doer_collapse_self_refuting' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.no_prior_doer_collapse_self_refuting
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.contentLayerRow_obeys_of_variation' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.contentLayerRow_obeys_of_variation
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.contentIntraWeldArrowRow_obeys_of_variation' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.contentIntraWeldArrowRow_obeys_of_variation
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.interior_order_denial_unfit_for_live_utterer' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.interior_order_denial_unfit_for_live_utterer
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.intraWeldArrowLadder_obeys' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.intraWeldArrowLadder_obeys
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.intraWeldArrowLadder_obeys_succ' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.intraWeldArrowLadder_obeys_succ
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.intraWeldArrowLadder_no_level_final' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.intraWeldArrowLadder_no_level_final
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.doerDeedLadder_obeys' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.doerDeedLadder_obeys
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.doerDeedLadder_obeys_succ' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.doerDeedLadder_obeys_succ
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.doerDeedLadder_no_level_final' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.doerDeedLadder_no_level_final
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.Nishitani.intraWeldArrow_sunyata' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.Nishitani.intraWeldArrow_sunyata
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.Nishitani.doerDeed_sunyata' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.Nishitani.doerDeed_sunyata
+
+/--
+info: 'WAA.Grid.map_responseVariesWithCall_iff' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.map_responseVariesWithCall_iff
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.map_intraWeldArrowRow_obeys' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.map_intraWeldArrowRow_obeys
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.map_doerDeedRow_obeys' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.map_doerDeedRow_obeys
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.map_contentIntraWeldArrowRow_obeys_of_variation' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.map_contentIntraWeldArrowRow_obeys_of_variation
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.map_intraWeldArrowLadder_obeys' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.map_intraWeldArrowLadder_obeys
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.map_intraWeldArrowLadder_obeys_succ' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.map_intraWeldArrowLadder_obeys_succ
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.map_intraWeldArrowLadder_no_level_final' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.map_intraWeldArrowLadder_no_level_final
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.map_doerDeedLadder_obeys' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.map_doerDeedLadder_obeys
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.map_doerDeedLadder_obeys_succ' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.map_doerDeedLadder_obeys_succ
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.map_doerDeedLadder_no_level_final' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.map_doerDeedLadder_no_level_final
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.ladderRungGrid_beings_sunyata' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.ladderRungGrid_beings_sunyata
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.GridConvention.ladderRungGrid_no_level_final' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.GridConvention.ladderRungGrid_no_level_final
 
 end WAA

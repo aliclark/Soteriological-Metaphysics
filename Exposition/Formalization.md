@@ -410,7 +410,7 @@ shortfall-voiced.
 
 **Generated table rows.** Under
 `Grid.DirectedConvention.BeingConvention.GridConvention`, `RowTag` names the
-schema-generated table rows, including the four `ConventionLayer` rows via
+schema-generated table rows, including the five `ConventionLayer` rows via
 `.layer`. `RowClaim` has `inForce r` and `denied r`, and `rowLanguage G` gives
 them pole-affirming semantics: at `floor` every row claim holds; at `actTime w`
 the conventional side holds, while the denial side holds exactly when
@@ -426,12 +426,13 @@ recorded-utterance check; `fox_utterance_misfits_live_offer` specializes it to
 the marquee fox row.
 
 The old pilot names are compatibility names for schema tags:
-`beforeAfterRow G`, `beingsRow G`, `gridLensRow G`, and `weldRow G` are
-`rowOf G (.layer ...)`. Their collapse and freeze names keep
-hypothesis-free statements; their `*_obeys` names carry the stability
-hypothesis. `tableOrder` records the full table shape as Lean data: seventeen
-schema rows, one ladder row, and six prose rows. Schema-row cell occupancy is
-also data now: `hasCollapseOccupant` and `hasFreezeOccupant` record where the
+`beforeAfterRow G`, `intraWeldArrowRow G`, `beingsRow G`, `gridLensRow G`, and
+`weldRow G` are `rowOf G (.layer ...)`; `doerDeedRow G` is the schema-only
+MMK 8 row. Their collapse and freeze names keep hypothesis-free statements;
+their `*_obeys` names carry the stability hypothesis. `tableOrder` records the
+full table shape as Lean data: nineteen schema rows, one ladder row, and six
+prose rows. Schema-row cell occupancy is also data now:
+`hasCollapseOccupant` and `hasFreezeOccupant` record where the
 paper's table has an occupant rather than a dash, and
 `perCallGlobal_empty_collapse_cell_anchor` checks the per-call/global dash
 without turning it into new grid semantics.
@@ -449,12 +450,14 @@ without turning it into new grid semantics.
 by unfolding and `decide`.
 
 **Content-bearing rows.** `contentLayerLanguage` uses the same `LayerClaim`
-syntax but gives content to denials: no strict direction, all beings stone, no
-live tier anywhere, or no actual welds. `contentBeforeAfterRow`,
-`contentBeingsRow`, `contentGridLensRow`, and `contentWeldRow` are the four
-content rows. Their obedience theorems are
-conditional: `contentBeforeAfterRow_obeys_of_direction`,
-`contentBeingsRow_obeys_of_being`, and
+syntax but gives content to denials: no strict direction, no response variation
+with call, all beings stone, no live tier anywhere, or no actual welds.
+`contentBeforeAfterRow`, `contentIntraWeldArrowRow`, `contentBeingsRow`,
+`contentGridLensRow`, and `contentWeldRow` are the content rows. Their
+obedience theorems are conditional:
+`contentBeforeAfterRow_obeys_of_direction`,
+`contentIntraWeldArrowRow_obeys_of_variation`,
+`contentBeingsRow_obeys_of_being`,
 `contentGridLensRow_obeys_of_liveTier`, and
 `contentWeldRow_obeys_of_actual` require exactly the witness that makes the
 denial false at non-live act-time. These content rows keep the diagnostic
@@ -465,7 +468,10 @@ pole-class weld; they answer aptness-to-hold, not truth-at-tier.
 `time_denial_unfit_for_appropriating_utterer` are utterance-level
 self-refutation results. The beings theorem uses the `RecordedUtterance`
 actuality field to get a non-stone utterer; the time theorem uses the live
-share as a strict direction witness.
+share as a strict direction witness. The intra-weld utterance theorem is the
+weaker schema-language live-tier check,
+`interior_order_denial_unfit_for_live_utterer`; one recorded utterance does not
+by itself supply two distinct responses.
 
 **Re-emptying ladder.** `LadderSide`, `reEmptied`, and `ladder` generate the
 next distinction from the previous one. `reEmptied_obeysSeparateFuse` proves
@@ -474,11 +480,11 @@ that obedience propagates, while `ErrorFree`, `errorFree_of_obeys`,
 `ladder_errorFree_of_errorFree` show the stronger refutation-only route above
 an error-free seed. `no_level_final`, `no_final_level`, and
 `ladder_collapse_self_refuting` rule out freeze and collapse at generated
-levels. `beingsLadder`, `beforeAfterLadder`, `gridLensLadder`, and
-`weldLadder` are schema
-seeds; their `_obeys_succ` facts are hypothesis-free, while all-level
-`*_obeys` names include the seed's stability hypothesis. `contentBeingsLadder`
-is the content instance under the non-stone aptness hypothesis.
+levels. `beingsLadder`, `beforeAfterLadder`, `intraWeldArrowLadder`,
+`gridLensLadder`, `weldLadder`, and `doerDeedLadder` are schema seeds; their
+`_obeys_succ` facts are hypothesis-free, while all-level `*_obeys` names
+include the seed's stability hypothesis. `contentBeingsLadder` is the content
+instance under the non-stone aptness hypothesis.
 
 ---
 
@@ -894,7 +900,19 @@ correlation and disclaimer pins are `tenBullsTyped_number`, `fiveRanksRetype_num
 
 ---
 
-## 5. Meta/Invariance.lean and Meta/InvarianceNegative.lean
+## 5. Meta/Nishitani.lean, Meta/ReflexivityWitness.lean, Meta/Invariance.lean, and Meta/InvarianceNegative.lean
+
+**Śūnyatā wrappers.** `Meta/Nishitani.lean` defines `Sunyata d` as the absence
+of any frozen level in `ladder d`. The new row instantiations
+`intraWeldArrow_sunyata` and `doerDeed_sunyata` join the existing beings,
+time, weld, and content-beings instantiations as direct consumers of the
+ladder no-final-freeze theorems.
+
+**Reflexivity witness.** `Meta/ReflexivityWitness.lean` defines
+`ladderRungGrid`, a single legal `Grid Nat` whose `Being` carrier is read as
+rung labels. `ladderRungGrid_beings_sunyata` instantiates `beings_sunyata`,
+and `ladderRungGrid_no_level_final` reruns the beings ladder over that grid.
+The file is a witness, not a new universal claim about beings.
 
 **Admission criterion.** Any future predicate over `grade` owes a transport
 lemma here, or it counts as operational residue. The file proves that the
@@ -924,7 +942,8 @@ Definitional transport facts:
 
 - `map_grade` and `map_share`
 - `map_actual_iff`, `map_mountsAt_iff`, `map_mountsSomewhere_iff`,
-  `map_respondsToEveryCall_iff`, and `map_stone_iff`
+  `map_respondsToEveryCall_iff`, `map_responseVariesWithCall_iff`, and
+  `map_stone_iff`
 - `Grid.DirectedConvention.map_deliveredTo_iff`,
   `Grid.DirectedConvention.map_landsAt_iff`, and
   `Grid.DirectedConvention.map_environsLine_iff`
@@ -967,6 +986,14 @@ Grade-facing transport facts:
 - `DirectionCoarsening.displayMapDir`, `mapDir_sameTick_iff`,
   `mapDir_resolutionBounded_iff`, and
   `resolutionBounded_of_reparam_collapses`
+- The grid-convention row transports:
+  `map_intraWeldArrowRow_obeys`, `map_doerDeedRow_obeys`,
+  `map_contentIntraWeldArrowRow_obeys_of_variation`,
+  `map_intraWeldArrowLadder_obeys`,
+  `map_intraWeldArrowLadder_obeys_succ`,
+  `map_intraWeldArrowLadder_no_level_final`,
+  `map_doerDeedLadder_obeys`, `map_doerDeedLadder_obeys_succ`, and
+  `map_doerDeedLadder_no_level_final`
 
 Together these say that all current pole, probe, tier, configuration,
 direction-coarsening, share-drop, and share-drop-line predicates are legal
@@ -1023,10 +1050,13 @@ direction is not carried by the correlational structure.
 two-bottom negative carrier.
 
 **`InteriorDirectionNegative`.** `RawWeld.transposeCR` swaps the call and
-response faces when they share a carrier. `no_interior_direction_recovery`
-uses the same collision shape one grain down: unordered call/response content
-does not recover which face is call. This is the formal certificate that the
-intra-weld arrow is display, not a field-carried before/after.
+response faces when they share a carrier. `transposeCR_involutive`,
+`unorderedCRContent_transpose_invariant`, and `transpose_swaps_readings` pin
+the transposition behavior: unordered content is unchanged while the display
+labels reverse. `no_interior_direction_recovery` uses the same collision shape
+one grain down: unordered call/response content does not recover which face is
+call. This is the formal certificate that the intra-weld arrow is display, not
+a field-carried before/after.
 
 **`DirectionCoarseningWitness`.** `registerClockUnitTick` gives the raw
 register clock one universal tick. `registerClock_unitTick_not_resolutionBounded`
@@ -1055,7 +1085,10 @@ separate two vacuities: `emptyCallGrid_false_stone_and_respondsToEveryCall`
 shows that an empty call axis collapses stone with call-entire response, while
 `emptyBeingGrid_no_liveTier` and `contentBeingsRow_obeys_emptyBeing` show that
 an empty being axis has no act-time counterexample and the beings row fuses
-vacuously.
+vacuously. `constantResponseGrid_no_variation` and
+`contentIntraWeldArrowRow_not_obeys_constantResponse` are the intra-weld
+content countermodel: if every call gets the same response, the response-
+variation aptness hypothesis is load-bearing.
 
 **`CoverageNegative`.** `embedIntoNat` sends the one-point carrier to `0` in
 `Nat`, leaving all target strictness at and above `1` outside the image.
@@ -1119,6 +1152,13 @@ macro act; `σsplit` splits them by weld-grain. `merge_same_pairing` and
 recovers both. This is the formal certificate that weld individuation is a
 segmentation convention, not grid-carried structure.
 
+**`DoerDeedNegative`.** The doer/deed witness reuses a small two-call grid
+data shape and supplies two readings over it: `beingPriorReading` and
+`mutualReading`. `priority_readings_disagree` pins the collision, and
+`no_priority_recovery` proves no function of the visible grid data recovers a
+unique priority relation. This is why `doerDeedRow` remains schema-only rather
+than adding a priority primitive to `Grid`.
+
 **Verdict ledger.** `Meta/VerdictLedger.lean` records the verdict-history
 paragraph as `generatorRecord`. The four retypes are four entries; the
 checked count is `generatorRecord_retype_count`, and
@@ -1143,7 +1183,8 @@ canonical caveats remain prose; the Disclaimers carry expert-facing departures.
 ## 6. Meta/Audit.lean
 
 `Meta/Audit.lean` imports `Meta/Invariance.lean`,
-`Meta/InvarianceNegative.lean`, `Meta/VerdictLedger.lean`,
+`Meta/InvarianceNegative.lean`, `Meta/ReflexivityWitness.lean`,
+`Meta/VerdictLedger.lean`,
 `Doctrines/SraddhaNegative.lean`,
 `Doctrines/FaithNegative.lean`, and `Doctrines/Deliberation.lean`, plus the
 new correlations, fetters, and factors negative modules, then pins selected
@@ -1206,6 +1247,18 @@ The audited declarations are:
 - `ContentNegative.emptyCallGrid_false_stone_and_respondsToEveryCall`,
   `ContentNegative.emptyBeingGrid_no_liveTier`, and
   `ContentNegative.contentBeingsRow_obeys_emptyBeing`
+- The new intra-weld/doer-deed/reflexivity surface:
+  `InteriorDirectionNegative.transposeCR_involutive`,
+  `InteriorDirectionNegative.unorderedCRContent_transpose_invariant`,
+  `InteriorDirectionNegative.transpose_swaps_readings`,
+  `DoerDeedNegative.no_priority_recovery`,
+  `ContentNegative.contentIntraWeldArrowRow_not_obeys_constantResponse`,
+  `intraWeldArrowRow_*`, `doerDeedRow_*`,
+  `contentIntraWeldArrowRow_obeys_of_variation`,
+  `intraWeldArrowLadder_*`, `doerDeedLadder_*`,
+  `Nishitani.intraWeldArrow_sunyata`, `Nishitani.doerDeed_sunyata`,
+  the new `map_*` row/ladder theorems, and the two `ladderRungGrid_*`
+  reflexivity witness theorems
 - `Grid.ConsequentialistConvention.dropCountInFiber_le_dropCount`,
   `Grid.ConsequentialistConvention.dropCount_eq_sum_dropCountInFiber`, and
   `Grid.ConsequentialistConvention.map_dropCountInFiberSum`
@@ -1215,6 +1268,7 @@ The pinned result is: no audited theorem depends on `sorry` or
 `Classical.choice`. All audited declarations are axiom-free except
 `DirectionNegative.no_direction_recovery_from_conditionsEither`, which depends
 on exactly `[propext, Quot.sound]`, and
+`InteriorDirectionNegative.unorderedCRContent_transpose_invariant`, plus
 `FettersNegative.seen_run_underdetermines_fetterCut`,
 `Grid.waaOnceReturner_attenuation_witness`,
 `FactorsNegative.seen_run_underdetermines_factorOrder`, and

@@ -14,7 +14,9 @@ import Lean
 import WeldAndArrow.Consequences.Compounds
 import WeldAndArrow.Doctrines
 import WeldAndArrow.Identification
+import WeldAndArrow.Meta.InvarianceNegative
 import WeldAndArrow.Meta.Nishitani
+import WeldAndArrow.Meta.ReflexivityWitness
 import WeldAndArrow.Meta.VerdictLedger
 
 namespace WAA
@@ -535,11 +537,31 @@ def glossary : List GlossaryEntry := [
     gloss := "Grid data do not recover a unique weld-segmentation. Merge and split readings of what counts as one call-response pairing are both legal over the same field."
     anchors := [``WeldNegative.no_weld_boundary_recovery]
     seeAlso := ["weld", "being-convention", "freedom witness"] },
-  { term := "intra-weld arrow"
+  { term := "intra-weld arrow row"
     kind := .coinage .theorems
-    gloss := "The intra-weld arrow is the call-to-response direction inside a weld, treated as display rather than floor furniture. MMK 8 is the anchor: doer and deed depend on one another, neither prior."
-    anchors := [``InteriorDirectionNegative.no_interior_direction_recovery]
-    seeAlso := ["arrow", "weld"] },
+    gloss := "The intra-weld arrow row checks the call-to-response direction inside a weld as a convention layer. Its content form denies response-variation, and its witness says the unordered residue does not recover an interior arrow."
+    anchors := [``Grid.DirectedConvention.BeingConvention.GridConvention.intraWeldArrowRow,
+      ``Grid.DirectedConvention.BeingConvention.GridConvention.Nishitani.intraWeldArrow_sunyata,
+      ``InteriorDirectionNegative.no_interior_direction_recovery]
+    seeAlso := ["arrow", "weld", "weld-boundary witness"] },
+  { term := "doer/deed row"
+    kind := .coinage .theorems
+    gloss := "The doer/deed row is the schema-only MMK 8 cell: a prior-doer reading is diagnosed without adding priority as a primitive field of the grid."
+    anchors := [``Grid.DirectedConvention.BeingConvention.GridConvention.doerDeedRow,
+      ``Grid.DirectedConvention.BeingConvention.GridConvention.Nishitani.doerDeed_sunyata,
+      ``DoerDeedNegative.no_priority_recovery]
+    seeAlso := ["weld", "collapse/freeze", "intra-weld arrow row"] },
+  { term := "coming-to / going-from"
+    kind := .coinage .theory
+    gloss := "Coming-to and going-from are display labels for the two orientation readings of a weld's faces. Transposition reverses the labels; they are not tier names."
+    anchors := [``InteriorDirectionNegative.transpose_swaps_readings,
+      ``InteriorDirectionNegative.no_interior_direction_recovery]
+    seeAlso := ["arrow", "weld", "intra-weld arrow row"] },
+  { term := "reflexivity witness"
+    kind := .coinage .theorems
+    gloss := "The reflexivity witness instantiates a grid's being carrier with rung labels, showing that the beings ladder still has no final freeze when read over its own indices."
+    anchors := [``Grid.DirectedConvention.BeingConvention.GridConvention.ladderRungGrid_beings_sunyata]
+    seeAlso := ["being-convention", "Sunyata"] },
   { term := "weld row / weld śūnyatā"
     kind := .coinage .theorems
     gloss := "The weld row names the weld-grain distinction as a convention layer, and weld śūnyatā says its re-emptying ladder has no final frozen level."
@@ -800,7 +822,7 @@ def seeAlsoTargetsEarlierFrom (seen : List String) :
 def seeAlsoTargetsEarlier : Bool :=
   seeAlsoTargetsEarlierFrom [] glossary
 
-example : glossary.length = 137 := rfl
+example : glossary.length = 140 := rfl
 
 example : glossaryTerms.Nodup := by
   native_decide

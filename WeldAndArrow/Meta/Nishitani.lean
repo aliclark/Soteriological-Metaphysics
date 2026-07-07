@@ -80,8 +80,10 @@ At `GridConvention` level: `LadderSide`, `reEmptied`, `ladder`,
 `ladder_obeys`, `ladder_errorFree_of_errorFree`,
 `ladder_collapse_self_refuting`, `no_level_final`, `no_final_level`,
 `beingsRow`, `beingsLadder_no_level_final`, `beforeAfterRow`,
-`beforeAfterLadder_no_level_final`, `weldRow`,
-`weldLadder_no_level_final`, `contentBeingsRow`,
+`beforeAfterLadder_no_level_final`, `intraWeldArrowRow`,
+`intraWeldArrowLadder_no_level_final`, `weldRow`,
+`weldLadder_no_level_final`, `doerDeedRow`,
+`doerDeedLadder_no_level_final`, `contentBeingsRow`,
 `contentBeingsLadder_no_level_final_of_being`.
 
 The two theorems the draft marked (†) — the only places a tier is mentioned
@@ -255,11 +257,24 @@ theorem beings_sunyata (G : Grid Contrib) : Sunyata (beingsRow G) :=
 theorem time_sunyata (G : Grid Contrib) : Sunyata (beforeAfterRow G) :=
   fun ⟨n, hf⟩ => beforeAfterLadder_no_level_final G n hf
 
+/-- Śūnyatā of the intra-weld arrow: the interior order functions where live
+    and claims no floor. MMK 8's checked interior form joins the ladder rather
+    than becoming hidden furniture inside a weld. -/
+theorem intraWeldArrow_sunyata (G : Grid Contrib) :
+    Sunyata (intraWeldArrowRow G) :=
+  fun ⟨n, hf⟩ => intraWeldArrowLadder_no_level_final G n hf
+
 /-- Śūnyatā of the weld-grain distinction: the weld held as svabhāva is the
     last unemptied level only while unnamed. Once named as a convention layer,
     it enters the same re-emptying ladder as the other readings. -/
 theorem weld_sunyata (G : Grid Contrib) : Sunyata (weldRow G) :=
   fun ⟨n, hf⟩ => weldLadder_no_level_final G n hf
+
+/-- Śūnyatā of doer/deed dependence: the mutual dependence itself is empty,
+    so the row that denies a prior doer also refuses to freeze that denial as
+    a final floor. -/
+theorem doerDeed_sunyata (G : Grid Contrib) : Sunyata (doerDeedRow G) :=
+  fun ⟨n, hf⟩ => doerDeedLadder_no_level_final G n hf
 
 /-- 真空妙有 — true emptiness, wondrous being: the śūnyatā of contentful
     beings is available *only given a being*. The hypothesis is not a

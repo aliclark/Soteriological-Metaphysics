@@ -161,11 +161,17 @@ def beingsLadder (G : Grid Contrib) : Nat → Distinction G :=
 def beforeAfterLadder (G : Grid Contrib) : Nat → Distinction G :=
   ladder (beforeAfterRow G)
 
+def intraWeldArrowLadder (G : Grid Contrib) : Nat → Distinction G :=
+  ladder (intraWeldArrowRow G)
+
 def gridLensLadder (G : Grid Contrib) : Nat → Distinction G :=
   ladder (gridLensRow G)
 
 def weldLadder (G : Grid Contrib) : Nat → Distinction G :=
   ladder (weldRow G)
+
+def doerDeedLadder (G : Grid Contrib) : Nat → Distinction G :=
+  ladder (doerDeedRow G)
 
 theorem beingsLadder_obeys
     [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
@@ -203,6 +209,26 @@ theorem beforeAfterLadder_no_level_final :
   | succ n =>
       exact Grid.not_freeze_of_obeysSeparateFuse (beforeAfterLadder_obeys_succ G n)
 
+theorem intraWeldArrowLadder_obeys
+    [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
+    ∀ n, (intraWeldArrowLadder G n).ObeysSeparateFuse :=
+  ladder_obeys (G := G) (intraWeldArrowRow_obeys G)
+
+theorem intraWeldArrowLadder_obeys_succ :
+    ∀ n, (intraWeldArrowLadder G (n + 1)).ObeysSeparateFuse :=
+  ladder_obeys_of_errorFree (G := G)
+    (rowOf_errorFree G (.layer .intraWeldArrow))
+
+theorem intraWeldArrowLadder_no_level_final :
+    ∀ n, ¬ (intraWeldArrowLadder G n).Freeze := by
+  intro n
+  cases n with
+  | zero =>
+      exact intraWeldArrowRow_not_freeze G
+  | succ n =>
+      exact Grid.not_freeze_of_obeysSeparateFuse
+        (intraWeldArrowLadder_obeys_succ G n)
+
 theorem gridLensLadder_obeys
     [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
     ∀ n, (gridLensLadder G n).ObeysSeparateFuse :=
@@ -238,6 +264,25 @@ theorem weldLadder_no_level_final :
       exact weldRow_not_freeze G
   | succ n =>
       exact Grid.not_freeze_of_obeysSeparateFuse (weldLadder_obeys_succ G n)
+
+theorem doerDeedLadder_obeys
+    [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
+    ∀ n, (doerDeedLadder G n).ObeysSeparateFuse :=
+  ladder_obeys (G := G) (doerDeedRow_obeys G)
+
+theorem doerDeedLadder_obeys_succ :
+    ∀ n, (doerDeedLadder G (n + 1)).ObeysSeparateFuse :=
+  ladder_obeys_of_errorFree (G := G) (rowOf_errorFree G .doerDeed)
+
+theorem doerDeedLadder_no_level_final :
+    ∀ n, ¬ (doerDeedLadder G n).Freeze := by
+  intro n
+  cases n with
+  | zero =>
+      exact doerDeedRow_not_freeze G
+  | succ n =>
+      exact Grid.not_freeze_of_obeysSeparateFuse
+        (doerDeedLadder_obeys_succ G n)
 
 end GridConvention
 end BeingConvention

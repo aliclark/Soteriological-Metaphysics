@@ -221,6 +221,10 @@ theorem map_respondsToEveryCall_iff (b : G.Being) :
     (G.map f).RespondsToEveryCall b ↔ G.RespondsToEveryCall b :=
   Iff.rfl
 
+theorem map_responseVariesWithCall_iff (b : G.Being) :
+    (G.map f).ResponseVariesWithCall b ↔ G.ResponseVariesWithCall b :=
+  Iff.rfl
+
 theorem map_stone_iff (b : G.Being) :
     (G.map f).Stone b ↔ G.Stone b :=
   Iff.rfl
@@ -1081,10 +1085,27 @@ theorem map_weldRow_obeys
     (weldRow (G.map f)).ObeysSeparateFuse :=
   map_rowOf_obeys G f (.layer .weldGrain)
 
+theorem map_intraWeldArrowRow_obeys
+    [∀ w : (G.map f).Weld, Decidable (AtBot ((G.map f).share w))] :
+    (intraWeldArrowRow (G.map f)).ObeysSeparateFuse :=
+  map_rowOf_obeys G f (.layer .intraWeldArrow)
+
+theorem map_doerDeedRow_obeys
+    [∀ w : (G.map f).Weld, Decidable (AtBot ((G.map f).share w))] :
+    (doerDeedRow (G.map f)).ObeysSeparateFuse :=
+  map_rowOf_obeys G f .doerDeed
+
 theorem map_contentBeforeAfterRow_obeys_of_direction
     (h : ∃ a b : Contrib, Strict a b) :
     (contentBeforeAfterRow (G.map f)).ObeysSeparateFuse :=
   contentBeforeAfterRow_obeys_of_direction (G.map f) (f.exists_strict_map h)
+
+theorem map_contentIntraWeldArrowRow_obeys_of_variation
+    (h : ∃ b : G.Being, G.ResponseVariesWithCall b) :
+    (contentIntraWeldArrowRow (G.map f)).ObeysSeparateFuse := by
+  apply contentIntraWeldArrowRow_obeys_of_variation
+  rcases h with ⟨b, hvaries⟩
+  exact ⟨b, (G.map_responseVariesWithCall_iff f b).mpr hvaries⟩
 
 theorem map_contentBeingsRow_obeys_of_being
     (h : ∃ b : G.Being, ¬ G.Stone b) :
@@ -1126,6 +1147,32 @@ theorem map_weldLadder_obeys_succ :
 theorem map_weldLadder_no_level_final :
     ∀ n, ¬ (weldLadder (G.map f) n).Freeze :=
   weldLadder_no_level_final (G.map f)
+
+theorem map_intraWeldArrowLadder_obeys
+    [∀ w : (G.map f).Weld, Decidable (AtBot ((G.map f).share w))] :
+    ∀ n, (intraWeldArrowLadder (G.map f) n).ObeysSeparateFuse :=
+  intraWeldArrowLadder_obeys (G.map f)
+
+theorem map_intraWeldArrowLadder_obeys_succ :
+    ∀ n, (intraWeldArrowLadder (G.map f) (n + 1)).ObeysSeparateFuse :=
+  intraWeldArrowLadder_obeys_succ (G.map f)
+
+theorem map_intraWeldArrowLadder_no_level_final :
+    ∀ n, ¬ (intraWeldArrowLadder (G.map f) n).Freeze :=
+  intraWeldArrowLadder_no_level_final (G.map f)
+
+theorem map_doerDeedLadder_obeys
+    [∀ w : (G.map f).Weld, Decidable (AtBot ((G.map f).share w))] :
+    ∀ n, (doerDeedLadder (G.map f) n).ObeysSeparateFuse :=
+  doerDeedLadder_obeys (G.map f)
+
+theorem map_doerDeedLadder_obeys_succ :
+    ∀ n, (doerDeedLadder (G.map f) (n + 1)).ObeysSeparateFuse :=
+  doerDeedLadder_obeys_succ (G.map f)
+
+theorem map_doerDeedLadder_no_level_final :
+    ∀ n, ¬ (doerDeedLadder (G.map f) n).Freeze :=
+  doerDeedLadder_no_level_final (G.map f)
 
 end GridConvention
 end BeingConvention

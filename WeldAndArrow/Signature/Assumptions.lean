@@ -209,6 +209,25 @@ def callResponseReading (w : W) : Prop :=
 def responseCallReading (w : W) : Prop :=
   w = responseThenCall
 
+theorem transposeCR_involutive :
+    ∀ w : W, w.transposeCR.transposeCR = w :=
+  fun w => RawWeld.transposeCR_transposeCR w
+
+theorem unorderedCRContent_transpose_invariant :
+    ∀ w, unorderedCRContent w ↔ unorderedCRContent w.transposeCR := by
+  intro w
+  cases w with
+  | mk agent call response =>
+      cases agent
+      cases call <;> cases response <;>
+        simp [unorderedCRContent, callThenResponse, responseThenCall,
+          RawWeld.transposeCR]
+
+theorem transpose_swaps_readings :
+    callResponseReading callThenResponse ∧
+      responseCallReading (callThenResponse.transposeCR) := by
+  constructor <;> rfl
+
 theorem call_response_readings_disagree :
     callResponseReading callThenResponse ∧
       ¬ responseCallReading callThenResponse := by
