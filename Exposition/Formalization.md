@@ -68,6 +68,10 @@ The preorder facts are:
 
 - `incomparable_symm`, `not_le_of_incomparable`, and `not_ge_of_incomparable`.
 - `strict_irrefl`: strict direction is never reflexive.
+- `strict_asymm` and `strict_trans`: strict direction is asymmetric and
+  transitive as soon as it is read from the preorder.
+- `strict_of_le_of_strict` and `strict_of_strict_of_le`: strict comparison
+  composes with weak comparison on either side.
 - `not_strict_of_orderEq` and `no_strict_of_all_orderEq`: order-equivalence
   kills direction, pointwise or carrier-wide.
 
@@ -537,7 +541,12 @@ detached injunction shortfall-voiced. `EthicsNegative` supplies
 actual runs without adding probability, utility, or a command register.
 They are legal display readings: `map_dropCount` and `map_dropCountInFiber`
 show that reparameterizing the contribution display does not change either
-count.
+count. `dropCountInFiber_le_dropCount` gives the per-fiber bound, while
+`dropCount_eq_sum_dropCountInFiber` says that a noduplicate complete supplied
+tag list adds the fiber counts back to the total. The local sum itself
+transports by `map_dropCountInFiberSum`, and
+`ObjectiveNegative.split_dropCount_sum_eq_mergedDropCount` checks the
+`[false, true]` split against the merged objective example.
 `ObjectiveNegative` reuses the merge/split being-convention pattern to show
 that "my drops" is not a function of grid data alone.
 
@@ -671,7 +680,9 @@ clause: neither regime nor share recovers the other.
 `Signature/BeingConvention.lean`. `FetterReading` supplies model-side
 provocation classes, `SomaReading` supplies model-side tag-regions, and
 `FetterCutWithin` means quietness at pole on the relevant call-class inside
-the supplied tag-class. `Path.cutClasses` gives the nested path profiles;
+the supplied tag-class. `Fetter.kind_lower_iff_cut_by_nonReturn` records the
+enumeration coherence: exactly the lower fetters are cut by non-return.
+`Path.cutClasses` gives the nested path profiles;
 `PathQuietWithin`, `arhatPathQuietWithin_iff_fiberAtPoleWithin`, and
 `arhatWithin_univTags_iff_fiberAtPole` close the two-axis lattice back to
 ordinary `FiberAtPole` at total calls and total tags. That top point is the
@@ -686,7 +697,8 @@ zero-effect delivery can make full enlightenment fail, while
 `waaFullyEnlightened_of_responsiveTerminus_of_undelivered` makes it hold
 vacuously under sealed delivery. The checked anchors are
 `classQuiet_no_clench_in_class`, `identityView_excluded_at_arhatFiber`,
-`conceit_excluded_at_arhatFiber`, `arhatFiber_of_termini`,
+`conceit_excluded_at_arhatFiber`, `all_fetters_cut_at_arhatFiber`,
+`arhatFiber_of_termini`,
 `identityView_excluded_at_speechThoughtRegion`, `conceit_excluded_within`,
 `regionFiber_of_termini`, and `unquiet_region_still_functions_witness`.
 
@@ -931,6 +943,12 @@ directed refinement reversing exactly at the delivery line while fiber
 membership and actuality stay put. This gives future delivery-facing results a
 quick test: if they claim direction, they owe model-supplied asymmetry or
 irreflexivity.
+The axis operations are pinned as orthogonal: `transpose_transpose` is the
+involution, `map_transpose` commutes display reparameterization with
+transposition, `staticized_transpose` commutes function removal with
+transposition, and `map_staticized` commutes display reparameterization with
+function removal. These are definitional equalities, so the detector is not
+carrying extra operational content.
 `DirectionCoarsening.transpose_subTickDelivery` is the delivery-axis companion:
 tick equality survives transposition, while the delivery line reverses.
 
@@ -992,7 +1010,12 @@ all stone-typed and whose act-time tiers have no live share. It proves
 `contentGridLensRow_not_obeys_noLive`. The existing two-bottom carrier gives
 `twoBottomGrid_directionVoid`, and
 `contentBeforeAfterRow_not_obeys_twoBottom` shows the directed-time content row
-also needs its strict-direction aptness hypothesis.
+also needs its strict-direction aptness hypothesis. The empty-domain witnesses
+separate two vacuities: `emptyCallGrid_false_stone_and_respondsToEveryCall`
+shows that an empty call axis collapses stone with call-entire response, while
+`emptyBeingGrid_no_liveTier` and `contentBeingsRow_obeys_emptyBeing` show that
+an empty being axis has no act-time counterexample and the beings row fuses
+vacuously.
 
 **`CoverageNegative`.** `embedIntoNat` sends the one-point carrier to `0` in
 `Nat`, leaving all target strictness at and above `1` outside the image.
@@ -1037,10 +1060,14 @@ owned as such. The third layer cannot be discharged in Lean, and the paper does
 not pretend otherwise; it is an aptness claim of the same standing as the
 content-row hypotheses beside `ContentNegative`.
 
-**`BeingNegative`.** `twoBeingGrid` has two fine tags with identical response,
-grade, and symmetric delivery behavior. `κmerge` reads them as one macro tag;
-`κsplit` keeps them split. `merge_same_fiber` and `split_not_same_fiber` show
-the readings disagree at `false`/`true`, and `no_partition_recovery` proves no
+**`BeingNegative`.** The signature-level `BeingCoarsening.id` and
+`BeingCoarsening.total` already show that identity and universal merge
+partitions are legal for any grid; `total_sameFiber` and
+`id_not_sameFiber_of_ne` pin the disagreement for any distinct fine tags.
+Downstream, `twoBeingGrid` has two fine tags with identical response, grade,
+and symmetric delivery behavior. `κmerge` reads them as one macro tag; `κsplit`
+keeps them split. `merge_same_fiber` and `split_not_same_fiber` show the
+readings disagree at `false`/`true`, and `no_partition_recovery` proves no
 function of the shared grid data recovers both. This is the formal certificate
 that the being-boundary is a reading, not grid-carried structure.
 
@@ -1091,6 +1118,8 @@ The audited declarations are:
 - `Grid.stateToolFits_iff_atBot`
 - `Grid.map_actual_iff`
 - `Grid.map_isShareDrop_iff`
+- `strict_asymm`, `strict_trans`, and `Grid.transpose_transpose`
+- `Grid.map_transpose`, `Grid.staticized_transpose`, and `Grid.map_staticized`
 - `Grid.DirectedConvention.DirectionCoarsening.mapDir_resolutionBounded_iff`
 - `DirectionCoarseningWitness.registerClock_unitTick_not_resolutionBounded`
 - `DirectionCoarseningWitness.unit_directionVoid_via_mergeToUnit`
@@ -1099,6 +1128,8 @@ The audited declarations are:
 - `Grid.DirectedConvention.map_landsWithShareDrop_iff`
 - `Grid.DirectedConvention.BeingConvention.BeingCoarsening.map_selfConditioningTag_iff`
 - `Grid.DirectedConvention.BeingConvention.BeingCoarsening.map_fiberAtPoleOn_iff`
+- `Grid.DirectedConvention.BeingConvention.BeingCoarsening.total_sameFiber`
+- `Grid.DirectedConvention.BeingConvention.BeingCoarsening.id_not_sameFiber_of_ne`
 - `Grid.map_waaBullSeven_iff`
 - `Grid.map_waaBullTen_iff`
 - `Grid.bullSeven_not_bullEight`
@@ -1106,7 +1137,9 @@ The audited declarations are:
 - `CorrelationsNegative.pratyekabuddha_countermodel`
 - `CorrelationsNegative.no_stage_boundary_recovery`
 - `Grid.classQuiet_no_clench_in_class`
+- `Fetter.kind_lower_iff_cut_by_nonReturn`
 - `Grid.arhatPathQuiet_iff_fiberAtPole`
+- `Grid.all_fetters_cut_at_arhatFiber`
 - `Grid.identityView_excluded_at_arhatFiber`
 - `Grid.conceit_excluded_at_arhatFiber`
 - `Grid.waaIrreversibleRegime_conditional`
@@ -1120,13 +1153,25 @@ The audited declarations are:
 - `MisFeedNegative.fence_and_gate`
 - `misFeed_entries_carry_decomposition`
 - `OrthogonalityNegative.waaFullyEnlightened_stronger_than_terminus`
+- `Grid.stone_of_no_call`, `Grid.respondsToEveryCall_of_no_call`, and
+  `Grid.allStone_of_no_being`
+- `ContentNegative.emptyCallGrid_false_stone_and_respondsToEveryCall`,
+  `ContentNegative.emptyBeingGrid_no_liveTier`, and
+  `ContentNegative.contentBeingsRow_obeys_emptyBeing`
+- `Grid.ConsequentialistConvention.dropCountInFiber_le_dropCount`,
+  `Grid.ConsequentialistConvention.dropCount_eq_sum_dropCountInFiber`, and
+  `Grid.ConsequentialistConvention.map_dropCountInFiberSum`
+- `ObjectiveNegative.split_dropCount_sum_eq_mergedDropCount`
 
 The pinned result is: no audited theorem depends on `sorry` or
 `Classical.choice`. All audited declarations are axiom-free except
 `DirectionNegative.no_direction_recovery_from_conditionsEither`, which depends
 on exactly `[propext, Quot.sound]`, and
 `FettersNegative.seen_run_underdetermines_fetterCut` and
-`Grid.DirectedConvention.map_waaFaithPrinciple_reflect`, which depend on
+`Grid.DirectedConvention.map_waaFaithPrinciple_reflect`, plus the three
+census theorems `Grid.ConsequentialistConvention.dropCountInFiber_le_dropCount`,
+`Grid.ConsequentialistConvention.dropCount_eq_sum_dropCountInFiber`, and
+`Grid.ConsequentialistConvention.map_dropCountInFiberSum`, which depend on
 `[propext]`.
 
 The Lake build targets the library `WeldAndArrow` by default and also defines

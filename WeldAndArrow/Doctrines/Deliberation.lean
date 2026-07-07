@@ -53,6 +53,18 @@ def DropCount
       let tail := DropCount after rest
       if G.IsShareDrop before aw.weld then tail + 1 else tail
 
+theorem dropCount_eq_match
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    (before : Config Contrib) (run : List (ActualWeld G)) :
+    DropCount G before run =
+      match run with
+      | [] => 0
+      | aw :: rest =>
+          let after := G.rePitch before aw.weld
+          let tail := DropCount G after rest
+          if G.IsShareDrop before aw.weld then tail + 1 else tail := by
+  cases run <;> rfl
+
 /-- The same count restricted by a supplied being-coarsening. The run still
     re-pitches at every actual reception; only the counted events are filtered
     by the convention. -/
@@ -69,6 +81,192 @@ def DropCountInFiber
       if κ.InFiber b aw.weld then
         if G.IsShareDrop before aw.weld then tail + 1 else tail
       else tail
+
+theorem dropCountInFiber_eq_match
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    {Macro : Type} (κ : BeingCoarsening G Macro)
+    [∀ b w, Decidable (κ.InFiber b w)]
+    (b : Macro) (before : Config Contrib) (run : List (ActualWeld G)) :
+    DropCountInFiber G κ b before run =
+      match run with
+      | [] => 0
+      | aw :: rest =>
+          let after := G.rePitch before aw.weld
+          let tail := DropCountInFiber G κ b after rest
+          if κ.InFiber b aw.weld then
+            if G.IsShareDrop before aw.weld then tail + 1 else tail
+          else tail := by
+  cases run <;> rfl
+
+/-- Sum fiber-restricted drop counts over a supplied finite macro-tag list. -/
+def DropCountInFiberSum
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    {Macro : Type} (κ : BeingCoarsening G Macro)
+    [∀ b w, Decidable (κ.InFiber b w)]
+    (tags : List Macro) (before : Config Contrib)
+    (run : List (ActualWeld G)) : Nat :=
+  match tags with
+  | [] => 0
+  | b :: rest =>
+      DropCountInFiber G κ b before run +
+        DropCountInFiberSum κ rest before run
+
+theorem dropCountInFiber_le_dropCount
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    {Macro : Type} (κ : BeingCoarsening G Macro)
+    [∀ b w, Decidable (κ.InFiber b w)]
+    (b : Macro) (before : Config Contrib)
+    (run : List (ActualWeld G)) :
+    DropCountInFiber G κ b before run ≤ DropCount G before run := by
+  induction run generalizing before with
+  | nil =>
+      exact Nat.le_refl 0
+  | cons aw rest ih =>
+      unfold DropCountInFiber DropCount
+      by_cases hfiber : κ.InFiber b aw.weld
+      · by_cases hdrop : G.IsShareDrop before aw.weld
+        · simp [hfiber, hdrop, ih]
+        · simp [hfiber, hdrop, ih]
+      · by_cases hdrop : G.IsShareDrop before aw.weld
+        · simp [hfiber, hdrop]
+          exact Nat.le_trans (ih (G.rePitch before aw.weld))
+            (Nat.le_succ _)
+        · simp [hfiber, hdrop, ih]
+
+theorem dropCountInFiberSum_nil_run
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    {Macro : Type} (κ : BeingCoarsening G Macro)
+    [∀ b w, Decidable (κ.InFiber b w)]
+    (tags : List Macro) (before : Config Contrib) :
+    DropCountInFiberSum G κ tags before [] = 0 := by
+  induction tags with
+  | nil =>
+      rfl
+  | cons b rest ih =>
+      unfold DropCountInFiberSum DropCountInFiber
+      simp [ih]
+
+theorem dropCountInFiberSum_cons_run_of_agent_not_mem
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    {Macro : Type} (κ : BeingCoarsening G Macro)
+    [∀ b w, Decidable (κ.InFiber b w)]
+    (tags : List Macro) (before : Config Contrib)
+    (aw : ActualWeld G) (rest : List (ActualWeld G))
+    (hnotmem : κ.proj aw.weld.agent ∉ tags) :
+    DropCountInFiberSum G κ tags before (aw :: rest) =
+      DropCountInFiberSum G κ tags (G.rePitch before aw.weld) rest := by
+  induction tags with
+  | nil =>
+      rfl
+  | cons b tags ih =>
+      simp at hnotmem
+      have hnotFiber : ¬ κ.InFiber b aw.weld := by
+        intro hfiber
+        exact hnotmem.left hfiber
+      unfold DropCountInFiberSum DropCountInFiber
+      simp [hnotFiber, ih hnotmem.right]
+      rw [← dropCountInFiber_eq_match (G := G) κ b
+        (G.rePitch before aw.weld) rest]
+
+theorem dropCountInFiberSum_cons_run_of_not_shareDrop
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    {Macro : Type} (κ : BeingCoarsening G Macro)
+    [∀ b w, Decidable (κ.InFiber b w)]
+    (tags : List Macro) (before : Config Contrib)
+    (aw : ActualWeld G) (rest : List (ActualWeld G))
+    (hdrop : ¬ G.IsShareDrop before aw.weld) :
+    DropCountInFiberSum G κ tags before (aw :: rest) =
+      DropCountInFiberSum G κ tags (G.rePitch before aw.weld) rest := by
+  induction tags with
+  | nil =>
+      rfl
+  | cons b tags ih =>
+      unfold DropCountInFiberSum DropCountInFiber
+      by_cases hfiber : κ.InFiber b aw.weld
+      · simp [hfiber, hdrop, ih]
+        rw [← dropCountInFiber_eq_match (G := G) κ b
+          (G.rePitch before aw.weld) rest]
+      · simp [hfiber, ih]
+        rw [← dropCountInFiber_eq_match (G := G) κ b
+          (G.rePitch before aw.weld) rest]
+
+theorem dropCountInFiberSum_cons_run_of_shareDrop
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    {Macro : Type} (κ : BeingCoarsening G Macro)
+    [∀ b w, Decidable (κ.InFiber b w)]
+    (tags : List Macro) (before : Config Contrib)
+    (aw : ActualWeld G) (rest : List (ActualWeld G))
+    (hnodup : tags.Nodup)
+    (hmem : κ.proj aw.weld.agent ∈ tags)
+    (hdrop : G.IsShareDrop before aw.weld) :
+    DropCountInFiberSum G κ tags before (aw :: rest) =
+      DropCountInFiberSum G κ tags (G.rePitch before aw.weld) rest + 1 := by
+  induction tags with
+  | nil =>
+      cases hmem
+  | cons b tags ih =>
+      cases hnodup with
+      | cons hnotmem hnodup =>
+          by_cases hfiber : κ.InFiber b aw.weld
+          · have htailNotMem : κ.proj aw.weld.agent ∉ tags := by
+              intro htail
+              exact (hnotmem (κ.proj aw.weld.agent) htail) hfiber.symm
+            have htail :=
+              dropCountInFiberSum_cons_run_of_agent_not_mem
+                (G := G) κ tags before aw rest htailNotMem
+            unfold DropCountInFiberSum DropCountInFiber
+            simp [hfiber, hdrop, htail]
+            rw [← dropCountInFiber_eq_match (G := G) κ b
+              (G.rePitch before aw.weld) rest]
+            simp [Nat.add_assoc, Nat.add_comm]
+          · have hneq : κ.proj aw.weld.agent ≠ b := hfiber
+            have htailMem : κ.proj aw.weld.agent ∈ tags := by
+              simpa [hneq] using hmem
+            have htail := ih hnodup htailMem
+            unfold DropCountInFiberSum DropCountInFiber
+            simp [hfiber, htail, Nat.add_assoc]
+            rw [← dropCountInFiber_eq_match (G := G) κ b
+              (G.rePitch before aw.weld) rest]
+
+theorem dropCount_eq_sum_dropCountInFiber
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    {Macro : Type} (κ : BeingCoarsening G Macro)
+    [∀ b w, Decidable (κ.InFiber b w)]
+    (tags : List Macro) (hnodup : tags.Nodup)
+    (hmem : ∀ p : G.Being, κ.proj p ∈ tags)
+    (before : Config Contrib) (run : List (ActualWeld G)) :
+    DropCountInFiberSum G κ tags before run = DropCount G before run := by
+  induction run generalizing before with
+  | nil =>
+      simpa [DropCount] using
+        (dropCountInFiberSum_nil_run (G := G) κ tags before)
+  | cons aw rest ih =>
+      by_cases hdrop : G.IsShareDrop before aw.weld
+      · calc
+          DropCountInFiberSum G κ tags before (aw :: rest)
+              = DropCountInFiberSum G κ tags (G.rePitch before aw.weld) rest + 1 :=
+                dropCountInFiberSum_cons_run_of_shareDrop
+                  (G := G) κ tags before aw rest hnodup (hmem aw.weld.agent) hdrop
+          _ = DropCount G (G.rePitch before aw.weld) rest + 1 := by
+                exact congrArg (fun n => n + 1)
+                  (ih (G.rePitch before aw.weld))
+          _ = DropCount G before (aw :: rest) := by
+                unfold DropCount
+                simp [hdrop]
+                rw [← dropCount_eq_match (G := G)
+                  (G.rePitch before aw.weld) rest]
+      · calc
+          DropCountInFiberSum G κ tags before (aw :: rest)
+              = DropCountInFiberSum G κ tags (G.rePitch before aw.weld) rest :=
+                dropCountInFiberSum_cons_run_of_not_shareDrop
+                  (G := G) κ tags before aw rest hdrop
+          _ = DropCount G (G.rePitch before aw.weld) rest := by
+                exact ih (G.rePitch before aw.weld)
+          _ = DropCount G before (aw :: rest) := by
+                unfold DropCount
+                simp [hdrop]
+                rw [← dropCount_eq_match (G := G)
+                  (G.rePitch before aw.weld) rest]
 
 /-- Claim object for a plan that treats delivery as commanded: this deed's
     fruit is asserted to land at that reception. -/
@@ -194,6 +392,9 @@ def splitFalseDropCount : Nat :=
 def splitTrueDropCount : Nat :=
   DropCountInFiber objectiveGrid splitCoarsening true before run
 
+def splitDropCountSum : Nat :=
+  DropCountInFiberSum objectiveGrid splitCoarsening [false, true] before run
+
 theorem merge_dropCount :
     mergedDropCount = 2 := by
   decide
@@ -204,6 +405,14 @@ theorem split_false_dropCount :
 
 theorem split_true_dropCount :
     splitTrueDropCount = 1 := by
+  decide
+
+theorem split_dropCount_sum :
+    splitDropCountSum = 2 := by
+  decide
+
+theorem split_dropCount_sum_eq_mergedDropCount :
+    splitDropCountSum = mergedDropCount := by
   decide
 
 /-- The same finite run receives different "my drops" counts under different

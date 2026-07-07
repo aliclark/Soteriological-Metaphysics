@@ -170,6 +170,15 @@ theorem map_share (w : G.Weld) :
     (G.map f).share w = f.toFun (G.share w) :=
   rfl
 
+theorem map_transpose :
+    (G.map f).transpose = G.transpose.map f :=
+  rfl
+
+theorem map_staticized [h : DecidableEq G.Being] (b : G.Being) :
+    @Grid.staticized Contrib' _ (G.map f) h b =
+      (@Grid.staticized Contrib _ G h b).map f :=
+  rfl
+
 /-- Function-side predicates do not mention the contribution carrier, so they
     transport by definitional unfolding. -/
 theorem map_actual_iff (w : G.Weld) :
@@ -825,6 +834,24 @@ theorem map_dropCountInFiber
             ((DirectedConvention.BeingConvention.BeingCoarsening.map_inFiber_iff
               κ f b aw.weld).mp h)
         simp [hmappedFiber, hfiber, Grid.map_rePitch, ih]
+
+theorem map_dropCountInFiberSum
+    [∀ before received, Decidable (G.IsShareDrop before received)]
+    [∀ before received, Decidable ((G.map f).IsShareDrop before received)]
+    {Macro : Type}
+    (κ : DirectedConvention.BeingConvention.BeingCoarsening G Macro)
+    [∀ b w, Decidable (κ.InFiber b w)]
+    [∀ b w, Decidable ((κ.displayMap f).InFiber b w)]
+    (tags : List Macro) (before : Config Contrib) (run : List (ActualWeld G)) :
+    DropCountInFiberSum (G.map f) (κ.displayMap f) tags (before.map f)
+        (run.map (ActualWeld.map f)) =
+      DropCountInFiberSum G κ tags before run := by
+  induction tags with
+  | nil =>
+      rfl
+  | cons b rest ih =>
+      unfold DropCountInFiberSum
+      simp [map_dropCountInFiber G f κ b before run, ih]
 
 theorem map_dropCount_sample
     [∀ before received, Decidable (G.IsShareDrop before received)]

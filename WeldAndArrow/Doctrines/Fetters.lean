@@ -304,6 +304,34 @@ theorem nonReturn_cutClasses_subset_arhatship
 
 end Path
 
+namespace Fetter
+
+theorem kind_lower_iff_cut_by_nonReturn (f : Fetter) :
+    kind f = FetterClass.lower ↔ Path.cutsFetter Path.nonReturn f := by
+  cases f <;> constructor <;> intro h
+  · exact Or.inl rfl
+  · rfl
+  · exact Or.inl rfl
+  · rfl
+  · exact Or.inl rfl
+  · rfl
+  · exact Or.inr rfl
+  · rfl
+  · exact Or.inr rfl
+  · rfl
+  · cases h
+  · rcases h with h | h <;> cases h
+  · cases h
+  · rcases h with h | h <;> cases h
+  · cases h
+  · rcases h with h | h <;> cases h
+  · cases h
+  · rcases h with h | h <;> cases h
+  · cases h
+  · rcases h with h | h <;> cases h
+
+end Fetter
+
 namespace Grid
 
 open DirectedConvention
@@ -342,6 +370,12 @@ theorem arhatPathQuiet_iff_fiberAtPole
   change κ.FiberAtPoleOn Path.arhatship (fun _ => True) ↔
     κ.FiberAtPole Path.arhatship
   exact (G.fiberAtPole_iff_classQuiet_univ κ Path.arhatship).symm
+
+theorem all_fetters_cut_at_arhatFiber
+    {κ : G.PathScheme} (fr : G.FetterReading)
+    (h : κ.FiberAtPole Path.arhatship) :
+    ∀ f : Fetter, G.FetterCut κ Path.arhatship fr f :=
+  fun _f w hactual hfiber _hclass => h w hactual hfiber
 
 /-- At arhatship the call-class is total, so path quietness within a region is
     exactly tag-restricted fiber-at-pole. -/

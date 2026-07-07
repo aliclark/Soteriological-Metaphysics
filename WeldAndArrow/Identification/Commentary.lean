@@ -111,7 +111,9 @@ content-bearing layer rows live in `Consequences/ContentRows.lean`. The paper's
 readings of these facts live here as commentary only; the theorem statements
 consume only the neutral definitions.
 
-The strictness facts are now in `Signature/Order.lean` as `Strict`, `strict_irrefl`,
+The strictness facts are now in `Signature/Order.lean` as `Strict`,
+`strict_irrefl`, `strict_asymm`, `strict_trans`,
+`strict_of_le_of_strict`, `strict_of_strict_of_le`,
 `not_strict_of_orderEq`, and `no_strict_of_all_orderEq`. The arrow-of-time gloss
 uses `Grid.DirectedConvention.TimeDirection`, an abbreviation of `Strict`.
 `strict_shareBot_of_hasSelfPoleIndex` and its re-rooted
@@ -222,6 +224,10 @@ The condition-transpose operation and its being-coarsening companion now live in
 the signature layer, beside the `conditions`, `DeliveredTo`, and
 `BeingCoarsening` vocabulary they transport. `Meta/Invariance.lean` remains the
 central home for `DisplayReparam` and all `map_*` transport lemmas.
+`transpose_transpose`, `map_transpose`, `staticized_transpose`, and
+`map_staticized` pin the three axis operations as definitionally orthogonal:
+reversing delivery, changing display, and removing a response function do not
+secretly implement one another.
 `DirectionCoarsening.transpose_subTickDelivery` is the delivery-axis companion:
 tick equality survives transposition, while the delivery line reverses.
 `DirectionCoarsening.displayMapDir`, `mapDir_sameTick_iff`, and
@@ -268,7 +274,11 @@ freeze and collapse the row is supposed to catch.
 `ContentNegative` supplies the countermodels for the aptness hypotheses on
 content rows: an all-stone/no-live grid and the two-bottom direction-void
 carrier make the relevant denials true at non-live act-time, so fusion fails
-there.
+there. The empty-domain witnesses separate two additional vacuities:
+`emptyCallGrid_false_stone_and_respondsToEveryCall` shows that no calls make
+stone and call-entire response coincide, while `emptyBeingGrid_no_liveTier` and
+`contentBeingsRow_obeys_emptyBeing` show that no beings leave no act-time tier
+on which the content row can fail to fuse.
 
 `CoverageNegative` certifies the coverage hypotheses on
 `directionVoid_of_surjective` and `map_waaFullyEnlightened_of_surjective`:
@@ -328,8 +338,12 @@ C.5 Doctrines/Deliberation.lean
 `DropCountInFiber` count share-drop receptions across finite actual runs without
 adding probability, utility, or a command register. Their transport lemmas in
 `Meta/Invariance.lean` discharge the C.3 admission criterion for using them as
-display readings. `ObjectiveNegative` reuses the merge/split being-convention
-pattern to show that "my drops" is not a function of grid data alone.
+display readings. `dropCountInFiber_le_dropCount` gives the per-fiber bound,
+and `dropCount_eq_sum_dropCountInFiber` says a complete noduplicate tag list
+adds the fibers back to the total; `map_dropCountInFiberSum` transports the
+sum. `ObjectiveNegative` reuses the merge/split being-convention pattern to
+show that "my drops" is not a function of grid data alone, with
+`split_dropCount_sum_eq_mergedDropCount` as the concrete census check.
 
 `backsliding_witness` gives the direct same-grid shape: a share-drop reception
 to the pole-class followed by a later actual live-share weld by the same
@@ -501,8 +515,11 @@ is the freedom witness on the tag axis.
 
 The path scheme is nested class quietness. `Path.cutClasses` gives the stream,
 once-return, non-return, and arhat call-classes; once-return adds no new cut
-class, matching the prose weakening clause. `arhatPathQuiet_iff_fiberAtPole`
-says the arhat class is total, so arhat path-quietness is ordinary
+class, matching the prose weakening clause. `Fetter.kind_lower_iff_cut_by_nonReturn`
+pins the table coherence: exactly the lower fetters are cut by non-return.
+`all_fetters_cut_at_arhatFiber` upgrades the arhat case from samples to
+`∀ f : Fetter`. `arhatPathQuiet_iff_fiberAtPole` says the arhat class is total,
+so arhat path-quietness is ordinary
 `FiberAtPole`. The within-family adds the tag cut. Sravaka-arhat is
 `PathQuietWithin` at `SomaReading.speechThoughtTag`; the total calls/total tags
 point is neutral, theorem-identical to ordinary `FiberAtPole` by

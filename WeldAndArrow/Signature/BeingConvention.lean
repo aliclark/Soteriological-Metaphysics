@@ -58,11 +58,49 @@ namespace BeingCoarsening
 
 variable {G : Grid Contrib} {Macro : Type} (κ : BeingCoarsening G Macro)
 
+/-- The identity being coarsening: every fine tag remains its own macro tag. -/
+protected def id (G : Grid Contrib) : BeingCoarsening G G.Being where
+  proj := id
+
+@[simp]
+theorem id_proj (p : G.Being) :
+    (BeingCoarsening.id G).proj p = p :=
+  rfl
+
+/-- The total being coarsening: all fine tags are read as one macro tag. -/
+def total (G : Grid Contrib) : BeingCoarsening G Unit where
+  proj _ := ()
+
+@[simp]
+theorem total_proj (p : G.Being) :
+    (BeingCoarsening.total G).proj p = () :=
+  rfl
+
+/-- Post-compose a being coarsening with a macro-tag map. -/
+def comp {Macro' : Type} (κ : BeingCoarsening G Macro)
+    (f : Macro → Macro') :
+    BeingCoarsening G Macro' where
+  proj := fun p => f (κ.proj p)
+
+@[simp]
+theorem comp_proj {Macro' : Type} (κ : BeingCoarsening G Macro)
+    (f : Macro → Macro') (p : G.Being) :
+    (κ.comp f).proj p = f (κ.proj p) :=
+  rfl
+
 /-- A weld lies in a macro tag's fiber when its fine agent projects there. -/
 def InFiber (b : Macro) (w : G.Weld) : Prop := κ.proj w.agent = b
 
 /- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def SameFiber (p q : G.Being) : Prop := κ.proj p = κ.proj q
+
+theorem total_sameFiber (p q : G.Being) :
+    (BeingCoarsening.total G).SameFiber p q :=
+  rfl
+
+theorem id_not_sameFiber_of_ne {p q : G.Being} (h : p ≠ q) :
+    ¬ (BeingCoarsening.id G).SameFiber p q :=
+  fun hsame => h hsame
 
 /-- A fiber has at least one fine tag under it. -/
 def FiberInhabited (b : Macro) : Prop := ∃ p : G.Being, κ.proj p = b

@@ -52,6 +52,28 @@ theorem orderEq_trans [Preorder α] {a b c : α}
 theorem strict_irrefl [Preorder α] (a : α) : ¬ Strict a a :=
   fun h => h.right h.left
 
+theorem strict_asymm [Preorder α] {a b : α} (h : Strict a b) :
+    ¬ Strict b a :=
+  fun hba => h.right hba.left
+
+theorem strict_trans [Preorder α] {a b c : α}
+    (hab : Strict a b) (hbc : Strict b c) :
+    Strict a c :=
+  ⟨Preorder.le_trans hab.left hbc.left,
+    fun hca => hab.right (Preorder.le_trans hbc.left hca)⟩
+
+theorem strict_of_le_of_strict [Preorder α] {a b c : α}
+    (hab : a ≼ b) (hbc : Strict b c) :
+    Strict a c :=
+  ⟨Preorder.le_trans hab hbc.left,
+    fun hca => hbc.right (Preorder.le_trans hca hab)⟩
+
+theorem strict_of_strict_of_le [Preorder α] {a b c : α}
+    (hab : Strict a b) (hbc : b ≼ c) :
+    Strict a c :=
+  ⟨Preorder.le_trans hab.left hbc,
+    fun hca => hab.right (Preorder.le_trans hbc hca)⟩
+
 theorem not_strict_of_orderEq [Preorder α] {a b : α} (h : OrderEq a b) :
     ¬ Strict a b :=
   fun hs => hs.right h.right

@@ -307,6 +307,72 @@ theorem contentGridLensRow_not_obeys_noLive :
   exact contentGridLensRow_not_fused_noLive
     (allStoneGrid.fused_of_obeysSeparateFuse h (Grid.Tier.actTime allStoneWeld))
 
+/-- Empty calls make stone-typing and call-entire response coincide vacuously;
+    this is the function-axis analogue of a collapsed share axis. -/
+def emptyCallGrid : Grid InvarianceNegative.TwoBottom where
+  Being      := Bool
+  Call       := Empty
+  Response   := Unit
+  respondsTo _ c := Empty.elim c
+  grade _ _ _ := InvarianceNegative.TwoBottom.chosen
+  conditions _ _ := False
+
+theorem emptyCallGrid_stone_iff_respondsToEveryCall (b : emptyCallGrid.Being) :
+    emptyCallGrid.Stone b ↔ emptyCallGrid.RespondsToEveryCall b :=
+  emptyCallGrid.stone_iff_respondsToEveryCall_of_no_call
+    (fun c => Empty.elim c) b
+
+theorem emptyCallGrid_false_stone_and_respondsToEveryCall :
+    emptyCallGrid.Stone false ∧ emptyCallGrid.RespondsToEveryCall false :=
+  ⟨emptyCallGrid.stone_of_no_call (fun c => Empty.elim c) false,
+    emptyCallGrid.respondsToEveryCall_of_no_call (fun c => Empty.elim c) false⟩
+
+def emptyBeingGrid : Grid InvarianceNegative.TwoBottom where
+  Being      := Empty
+  Call       := Unit
+  Response   := Unit
+  respondsTo b _ := Empty.elim b
+  grade b _ _ := Empty.elim b
+  conditions _ _ := False
+
+theorem emptyBeingGrid_allStone : emptyBeingGrid.AllStone :=
+  emptyBeingGrid.allStone_of_no_being (fun b => Empty.elim b)
+
+theorem emptyBeingGrid_no_liveTier (t : Grid.Tier emptyBeingGrid) :
+    ¬ Grid.Tier.hasLiveShare emptyBeingGrid t := by
+  cases t with
+  | floor =>
+      intro h
+      exact h
+  | actTime w =>
+      cases w.agent
+
+theorem emptyBeingGrid_contentBeings_denial (t : Grid.Tier emptyBeingGrid) :
+    (contentLayerLanguage emptyBeingGrid).TrueAt t (.layerDenied .beings) := by
+  cases t with
+  | floor =>
+      exact True.intro
+  | actTime _ =>
+      dsimp [contentLayerLanguage, Grid.ClaimLanguage.TrueAt]
+      exact emptyBeingGrid_allStone
+
+theorem contentBeingsRow_fused_emptyBeing (t : Grid.Tier emptyBeingGrid) :
+    (contentBeingsRow emptyBeingGrid).Fused t := by
+  intro _hnot
+  cases t with
+  | floor =>
+      constructor <;> intro _ <;> exact True.intro
+  | actTime w =>
+      cases w.agent
+
+theorem contentBeingsRow_obeys_emptyBeing :
+    (contentBeingsRow emptyBeingGrid).ObeysSeparateFuse := by
+  constructor
+  · intro t hlive
+    exact False.elim (emptyBeingGrid_no_liveTier t hlive)
+  · intro t hnot
+    exact contentBeingsRow_fused_emptyBeing t hnot
+
 def twoBottomWeld : InvarianceNegative.twoBottomGrid.Weld :=
   ⟨(), (), ()⟩
 

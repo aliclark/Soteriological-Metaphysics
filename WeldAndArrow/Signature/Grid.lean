@@ -295,6 +295,10 @@ theorem transpose_conditions (w₁ w₂ : G.Weld) :
     G.transpose.conditions w₁ w₂ = G.conditions w₂ w₁ :=
   rfl
 
+theorem transpose_transpose :
+    G.transpose.transpose = G :=
+  rfl
+
 theorem transpose_conditionsEither_iff (w₁ w₂ : G.Weld) :
     G.transpose.ConditionsEither w₁ w₂ ↔ G.ConditionsEither w₁ w₂ :=
   ⟨fun h => h.elim Or.inr Or.inl,

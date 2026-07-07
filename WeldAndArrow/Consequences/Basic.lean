@@ -82,6 +82,24 @@ theorem not_stone_of_response
     ¬ G.Stone b :=
   fun hstone => hstone c ⟨r, hresp⟩
 
+theorem stone_of_no_call (h : G.Call → False) (b : G.Being) :
+    G.Stone b :=
+  fun c _hmount => False.elim (h c)
+
+theorem respondsToEveryCall_of_no_call (h : G.Call → False) (b : G.Being) :
+    G.RespondsToEveryCall b :=
+  fun c => False.elim (h c)
+
+theorem stone_iff_respondsToEveryCall_of_no_call
+    (h : G.Call → False) (b : G.Being) :
+    G.Stone b ↔ G.RespondsToEveryCall b :=
+  ⟨fun _ => G.respondsToEveryCall_of_no_call h b,
+    fun _ => G.stone_of_no_call h b⟩
+
+theorem allStone_of_no_being (h : G.Being → False) :
+    G.AllStone :=
+  fun b => False.elim (h b)
+
 /- Reading and motivation: Identification/Commentary.lean, C.2. -/
 theorem atPoleClass_of_stone (b : G.Being) (hstone : G.Stone b) :
     G.AtPoleClass b :=
@@ -238,6 +256,11 @@ theorem withRespondsTo_conditions
     removed; nothing else in the grid moves. -/
 def staticized [DecidableEq G.Being] (b : G.Being) : Grid Contrib :=
   G.withRespondsTo (fun b' c => if b' = b then none else G.respondsTo b' c)
+
+theorem staticized_transpose [h : DecidableEq G.Being] (b : G.Being) :
+    (@Grid.staticized Contrib _ G h b).transpose =
+      @Grid.staticized Contrib _ G.transpose h b :=
+  rfl
 
 /-- Staticizing leaves other beings' response functions untouched. -/
 theorem staticized_respondsTo_of_ne

@@ -17,6 +17,24 @@ info: 'WAA.no_agent_recovery_of_field_collision' does not depend on any axioms
 #print axioms no_agent_recovery_of_field_collision
 
 /--
+info: 'WAA.strict_asymm' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms strict_asymm
+
+/--
+info: 'WAA.strict_trans' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms strict_trans
+
+/--
+info: 'WAA.Grid.transpose_transpose' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.transpose_transpose
+
+/--
 info: 'WAA.DirectionNegative.no_direction_recovery_from_conditionsEither' depends on axioms: [propext, Quot.sound]
 -/
 #guard_msgs in
@@ -51,6 +69,24 @@ info: 'WAA.Grid.map_isShareDrop_iff' does not depend on any axioms
 -/
 #guard_msgs in
 #print axioms Grid.map_isShareDrop_iff
+
+/--
+info: 'WAA.Grid.map_transpose' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.map_transpose
+
+/--
+info: 'WAA.Grid.staticized_transpose' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.staticized_transpose
+
+/--
+info: 'WAA.Grid.map_staticized' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.map_staticized
 
 /--
 info: 'WAA.Grid.DirectedConvention.DirectionCoarsening.mapDir_resolutionBounded_iff' does not depend on any axioms
@@ -101,6 +137,18 @@ info: 'WAA.Grid.DirectedConvention.BeingConvention.BeingCoarsening.map_fiberAtPo
 #print axioms Grid.DirectedConvention.BeingConvention.BeingCoarsening.map_fiberAtPoleOn_iff
 
 /--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.BeingCoarsening.total_sameFiber' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.BeingCoarsening.total_sameFiber
+
+/--
+info: 'WAA.Grid.DirectedConvention.BeingConvention.BeingCoarsening.id_not_sameFiber_of_ne' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.BeingConvention.BeingCoarsening.id_not_sameFiber_of_ne
+
+/--
 info: 'WAA.Grid.map_waaBullSeven_iff' does not depend on any axioms
 -/
 #guard_msgs in
@@ -143,10 +191,22 @@ info: 'WAA.Grid.classQuiet_no_clench_in_class' does not depend on any axioms
 #print axioms Grid.classQuiet_no_clench_in_class
 
 /--
+info: 'WAA.Fetter.kind_lower_iff_cut_by_nonReturn' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Fetter.kind_lower_iff_cut_by_nonReturn
+
+/--
 info: 'WAA.Grid.arhatPathQuiet_iff_fiberAtPole' does not depend on any axioms
 -/
 #guard_msgs in
 #print axioms Grid.arhatPathQuiet_iff_fiberAtPole
+
+/--
+info: 'WAA.Grid.all_fetters_cut_at_arhatFiber' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.all_fetters_cut_at_arhatFiber
 
 /--
 info: 'WAA.Grid.identityView_excluded_at_arhatFiber' does not depend on any axioms
@@ -281,10 +341,70 @@ info: 'WAA.Grid.rePitch_forgets' does not depend on any axioms
 #print axioms Grid.rePitch_forgets
 
 /--
+info: 'WAA.Grid.stone_of_no_call' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.stone_of_no_call
+
+/--
+info: 'WAA.Grid.respondsToEveryCall_of_no_call' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.respondsToEveryCall_of_no_call
+
+/--
+info: 'WAA.Grid.allStone_of_no_being' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.allStone_of_no_being
+
+/--
+info: 'WAA.ContentNegative.emptyCallGrid_false_stone_and_respondsToEveryCall' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms ContentNegative.emptyCallGrid_false_stone_and_respondsToEveryCall
+
+/--
+info: 'WAA.ContentNegative.emptyBeingGrid_no_liveTier' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms ContentNegative.emptyBeingGrid_no_liveTier
+
+/--
+info: 'WAA.ContentNegative.contentBeingsRow_obeys_emptyBeing' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms ContentNegative.contentBeingsRow_obeys_emptyBeing
+
+/--
 info: 'WAA.Grid.DirectedConvention.PrudentialPrivilegeNegative.prudentialPrivilege_failure_modes' does not depend on any axioms
 -/
 #guard_msgs in
 #print axioms Grid.DirectedConvention.PrudentialPrivilegeNegative.prudentialPrivilege_failure_modes
+
+/--
+info: 'WAA.Grid.ConsequentialistConvention.dropCountInFiber_le_dropCount' depends on axioms: [propext]
+-/
+#guard_msgs in
+#print axioms Grid.ConsequentialistConvention.dropCountInFiber_le_dropCount
+
+/--
+info: 'WAA.Grid.ConsequentialistConvention.dropCount_eq_sum_dropCountInFiber' depends on axioms: [propext]
+-/
+#guard_msgs in
+#print axioms Grid.ConsequentialistConvention.dropCount_eq_sum_dropCountInFiber
+
+/--
+info: 'WAA.Grid.ConsequentialistConvention.map_dropCountInFiberSum' depends on axioms: [propext]
+-/
+#guard_msgs in
+#print axioms Grid.ConsequentialistConvention.map_dropCountInFiberSum
+
+/--
+info: 'WAA.ObjectiveNegative.split_dropCount_sum_eq_mergedDropCount' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms ObjectiveNegative.split_dropCount_sum_eq_mergedDropCount
 
 /--
 info: 'WAA.ObjectiveNegative.no_grid_data_objective_for_my_drops' does not depend on any axioms

@@ -53,7 +53,8 @@ or type drift in the Signature surface turns into a build failure.
 
 3. No privileged person-partition. A being boundary is supplied by a
    diagnosis-time `BeingCoarsening`, not stored as a field of `Grid`. The
-   downstream `BeingNegative` witness elaborates this as non-recovery of a
+   signature already admits both identity and total coarsenings for any grid;
+   the downstream `BeingNegative` witness elaborates this as non-recovery of a
    unique partition from grid data.
 
 4. Direction resolution is display, not signature furniture. A clock's finite
@@ -310,8 +311,12 @@ example (w : G.Weld) (h : G.HasSelfPoleIndex w) :
 #check Grid.DirectedConvention.BeingConvention.BeingCoarsening -- proof
 #check Grid.DirectedConvention.BeingConvention.BeingCoarsening.InFiber -- proof
 #check Grid.DirectedConvention.BeingConvention.BeingCoarsening.SameFiber -- proof
+#check Grid.DirectedConvention.BeingConvention.BeingCoarsening.id -- witness
+#check Grid.DirectedConvention.BeingConvention.BeingCoarsening.total -- witness
+#check Grid.DirectedConvention.BeingConvention.BeingCoarsening.total_sameFiber -- witness
+#check Grid.DirectedConvention.BeingConvention.BeingCoarsening.id_not_sameFiber_of_ne -- witness
 #check AssumptionLocalWitnesses.partition_merge_split_disagree -- witness
--- TODO(assumptions): The fuller named witness is
+-- The fuller non-recovery certificate remains
 -- `BeingNegative.no_partition_recovery` downstream in `Meta.InvarianceNegative`;
 -- importing it here would violate the layer DAG.
 
