@@ -767,7 +767,7 @@ facts are not carried in the stored field register.
 
 **Instructive absences.** `InstructiveAbsence` records the current section 3
 list as Lean data, with `InstructiveAbsence.number` pinning the paper order
-1-9. `AbsenceStatus` states the membership rule explicitly: constructors track
+1-10. `AbsenceStatus` states the membership rule explicitly: constructors track
 the section 3 list, while `InstructiveAbsence.status` tracks whether the world
 has retired an entry. The status pins are `emptyCells_standing`,
 `declinedCase_standing`, `foxNeverTestsPole_standing`, `thirdArrival_retired`,
@@ -781,9 +781,11 @@ The anchors are intentionally thin: `emptyCells_anchor`,
 `foxNeverTestsPole_oldMan_misfit_anchor`,
 `thirdArrival_function_mounted_no_share`, `thirdArrival_not_waaMismatchLive`,
 `fourthTruthWithheld_conditional`, `fourthTruthWithheld_detached_voice`,
-`noSafeStage_anchor`, and `prudentialPrivilege_underivable_anchor`. The
-declined case, why-calls-land, and no-measure absences are pin-level data only;
-no theorem is manufactured for what the paper leaves ceded.
+`noSafeStage_anchor`, `prudentialPrivilege_underivable_anchor`,
+`icchantikaDeclined_agent_anchor`, `icchantikaDeclined_receiver_anchor`, and
+`icchantikaDeclined_nonforeclosure_anchor`. The declined deaf-blind case,
+why-calls-land, and no-measure absences are pin-level data only; no theorem is
+manufactured for what the paper leaves ceded.
 
 **Self-line witness.** `SelfLineWitness.selfLineGrid` is a minimal `Nat` grid
 with one being, one call, one response, total response, grade `1`, and

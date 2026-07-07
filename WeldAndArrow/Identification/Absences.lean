@@ -10,6 +10,7 @@ Reading and motivation: Identification/Commentary.lean, C.2a.
 import WeldAndArrow.Consequences.Ladder
 import WeldAndArrow.Consequences.FoxCase
 import WeldAndArrow.Doctrines.Sraddha
+import WeldAndArrow.Doctrines.Icchantika
 import WeldAndArrow.Doctrines.EthicsNegative
 import WeldAndArrow.Identification.Ownership
 
@@ -71,6 +72,12 @@ inductive InstructiveAbsence where
       diagnostic work is to make the missing scalar deliberate; no probability
       or metric apparatus is owed over grade or delivery. -/
   | noMeasure
+  /-- The icchantika declined: a non-stone being live at every mounted call
+      (the terminus's inverse) is reachable as a receiver and un-seatable as an
+      enlightened agent on its run, yet receives no permanent "cannot become
+      buddha" verdict. The diagnostic work is the refusal to type foreclosure as
+      a stored kind; defiance is a seed, not a rank. -/
+  | icchantikaDeclined
 
 namespace InstructiveAbsence
 
@@ -91,11 +98,13 @@ def number : InstructiveAbsence → Nat
   | .noSafeStage => 7
   | .prudentialPrivilege => 8
   | .noMeasure => 9
+  | .icchantikaDeclined => 10
 
 /-- Current world-facing status of each paper entry. Constructors remain the
     section 3 ledger; this function records retirement. -/
 def status : InstructiveAbsence → AbsenceStatus
   | .thirdArrival => .retiredAsCheck
+  | .icchantikaDeclined => .standing
   | _ => .standing
 
 theorem emptyCells_number :
@@ -125,6 +134,9 @@ theorem prudentialPrivilege_number :
 theorem noMeasure_number :
     number InstructiveAbsence.noMeasure = 9 := rfl
 
+theorem icchantikaDeclined_number :
+    number InstructiveAbsence.icchantikaDeclined = 10 := rfl
+
 theorem emptyCells_standing :
     status InstructiveAbsence.emptyCells = AbsenceStatus.standing := rfl
 
@@ -151,6 +163,9 @@ theorem prudentialPrivilege_standing :
 
 theorem noMeasure_standing :
     status InstructiveAbsence.noMeasure = AbsenceStatus.standing := rfl
+
+theorem icchantikaDeclined_standing :
+    status InstructiveAbsence.icchantikaDeclined = AbsenceStatus.standing := rfl
 
 /- ------------------------------------------------------------------------------
    Anchors
@@ -244,6 +259,41 @@ theorem noSafeStage_anchor
 theorem prudentialPrivilege_underivable_anchor :
     ¬ Grid.DirectedConvention.PrudentialPrivilegeNegative.PrudentialPrivilege :=
   Grid.DirectedConvention.PrudentialPrivilegeNegative.not_prudentialPrivilege
+
+/-- The icchantika decline records the honest agent-side bar without turning it
+    into a permanent foreclosure verdict. -/
+theorem icchantikaDeclined_agent_anchor
+    {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib} {b : G.Being}
+    (h : Icchantika G b) :
+    ¬ G.Stone b ∧ ¬ G.Terminus b ∧ ¬ WaaFullyEnlightened G b :=
+  ⟨icchantika_not_stone (G := G) h,
+    icchantika_not_terminus (G := G) h,
+    not_waaFullyEnlightened_of_icchantika (G := G) h⟩
+
+/-- The receiver-side half of the icchantika decline: actual icchantika
+    receptions discharge the live-aversion antecedent. -/
+theorem icchantikaDeclined_receiver_anchor
+    {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib}
+    {before : Config Contrib} {b : G.Being} {reception : G.Weld}
+    (hagent : reception.agent = b) (hic : Icchantika G b)
+    (hactual : G.Actual reception) (hlive : ¬ AtBot before.tendency) :
+    WaaAversionContext G before reception :=
+  aversionContext_of_icchantika_reception
+    (G := G) hagent hic hactual hlive
+
+/-- The concrete non-foreclosure witness is part of the absence anchor: the
+    icchantika run does not recover a permanent "no landing ever" verdict. -/
+theorem icchantikaDeclined_nonforeclosure_anchor :
+    ∃ (before : Config Nat) (b : IcchantikaCase.grid.Being)
+      (deed reception : IcchantikaCase.grid.Weld),
+      Icchantika IcchantikaCase.grid b ∧
+        reception.agent = b ∧
+          IcchantikaCase.grid.Actual reception ∧
+            ¬ AtBot before.tendency ∧
+              DeliveredTo IcchantikaCase.grid deed reception ∧
+                IcchantikaCase.grid.IsShareDrop before reception ∧
+                  HasShareDropLanding IcchantikaCase.grid before deed :=
+  icchantika_release_not_foreclosed
 
 end InstructiveAbsence
 

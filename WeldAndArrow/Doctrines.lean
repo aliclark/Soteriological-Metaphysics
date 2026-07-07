@@ -1,6 +1,7 @@
 import WeldAndArrow.Doctrines.FourTruths
 import WeldAndArrow.Doctrines.FoxCase
 import WeldAndArrow.Doctrines.Sraddha
+import WeldAndArrow.Doctrines.Icchantika
 import WeldAndArrow.Doctrines.SraddhaNegative
 import WeldAndArrow.Doctrines.Faith
 import WeldAndArrow.Doctrines.FaithNegative

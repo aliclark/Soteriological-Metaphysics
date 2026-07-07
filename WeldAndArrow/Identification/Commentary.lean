@@ -644,4 +644,28 @@ all named Lean anchors exist in the environment. Empty anchors are allowed for
 terms whose public gloss is prose-only. Gloss accuracy, canonical nuance, and
 the adequacy of each gloss for newcomers remain prose obligations; expert
 caveats live in the Disclaimers.
+
+C.13 Doctrines/Icchantika.lean
+
+`Icchantika` is entered as a declined foreclosure case rather than as a stored
+negative kind. The formal reading is deliberately literal and run-shaped:
+function is mounted somewhere, and every mounted response is live at the
+self-pole index. That makes the being non-stone and anti-terminus on its run,
+so `not_waaFullyEnlightened_of_icchantika` gives the honest agent-role bar:
+this run cannot seat the icchantika as the enlightened agent, because
+`WaaFullyEnlightened` includes terminus typing.
+
+The receiver-side result points the other way.
+`aversionContext_of_icchantika_reception` says an actual icchantika reception
+with live prior tendency supplies the `WaaAversionContext` antecedent, and
+`icchantika_reachable` routes that antecedent through the existing sraddha
+conditional. Thus the icchantika is maximally available as receiver exactly
+where it is unseatable as terminus-agent on the same run.
+
+`icchantika_release_not_foreclosed` is the anti-rank check. A concrete
+icchantika-typed receiver can itself be part of a share-drop landing from a
+higher prior tendency, so the run's clenched profile does not recover a
+permanent no-landing verdict. This is the same discipline as backsliding in
+reverse: attainment is not stored, and neither is non-attainment. The fighting
+stance is a seed, not a rank.
 -/

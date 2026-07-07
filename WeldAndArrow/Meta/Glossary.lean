@@ -634,6 +634,13 @@ def glossary : List GlossaryEntry := [
     anchors := [``Grid.DirectedConvention.WaaFaithPrinciple,
       ``Grid.DirectedConvention.waaFaithOught_conditional]
     seeAlso := ["buddha-side shortfall", "delivery"] },
+  { term := "icchantika"
+    kind := .canonical
+    gloss := "Icchantika ordinarily names a being cut off from buddhahood. Here it is the terminus's inverse: non-stone, with a live self-pole index at every mounted response. It is reachable as a receiver and cannot be seated as an enlightened agent on its run. The permanent cannot-become-buddha verdict is declined, because foreclosure would be a stored rank the system forbids; defiance is a seed, not a rank."
+    anchors := [``Icchantika, ``not_waaFullyEnlightened_of_icchantika,
+      ``aversionContext_of_icchantika_reception,
+      ``icchantika_release_not_foreclosed]
+    seeAlso := ["defiance", "terminus", "backsliding theorem", "śraddhā"] },
   { term := "tariki / other-power"
     kind := .canonical
     gloss := "Tariki means other-power. In this system it is a delivery-regime reading, not a second act-grammar: the reception is still an ordinary weld."
@@ -740,7 +747,7 @@ def seeAlsoTargetsEarlierFrom (seen : List String) :
 def seeAlsoTargetsEarlier : Bool :=
   seeAlsoTargetsEarlierFrom [] glossary
 
-example : glossary.length = 127 := rfl
+example : glossary.length = 128 := rfl
 
 example : glossaryTerms.Nodup := by
   native_decide
