@@ -84,7 +84,7 @@ And the speech-guard carries over unchanged: fusion is indexed to the act, per-c
 
 ### A taxonomy of error
 
-The grid does not carry a list of spiritual errors; it carries a **generator**. Every distinction the system holds is governed by the one separate/fuse rule — separate under act-time diagnosis, fuse at the floor and at genjō — so every distinction yields exactly two errors:
+The grid errors are generated; the distinctions are curated under a discipline, and the curation is answerable but not derived. Every distinction the system holds is governed by the one separate/fuse rule — separate under act-time diagnosis, fuse at the floor and at genjō — so every distinction yields exactly two errors:
 
 - **Collapse** — fusing a distinction *under act-time diagnosis*. The fox is the paradigm: not-fall spoken where not-obscure was called for.
 - **Freeze** — separating, holding, reifying a distinction *as a floor-claim*. Reading 無位真人 as a rank one rests at is the paradigm — the 乾屎橛 error.
