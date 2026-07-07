@@ -85,6 +85,15 @@ hare's-horn, buddha, and generated-boundary cases without adding a privileged
 partition to `Grid`. `Signature/Models.lean` holds the concrete clock and
 register-clock witnesses consumed by later taxonomy checks.
 
+`Signature/DirectionConvention.lean` records the parallel delivery-axis reading
+in which a model may be diagnosed through finite clock resolution. A
+`DirectionCoarsening` supplies ticks over welds without adding a field to
+`Grid`; `ResolutionBounded` says only that same-tick welds have
+order-equivalent shares in the chosen display. The point is deliberately
+display-side: sub-tick delivery cannot carry strict `TimeDirection`, but no
+stone, terminus, sentience, pole-class, or self-index predicate consumes the
+coarsening.
+
 The separate/fuse interface (`ClaimLanguage`, `Distinction`,
 `RecordedUtterance`, `Tier`) is the small formal surface needed for the fox,
 Baizhang, shō/shu, genjō, and verdict-tier discussions. The formal module keeps
@@ -213,6 +222,10 @@ The condition-transpose operation and its being-coarsening companion now live in
 the signature layer, beside the `conditions`, `DeliveredTo`, and
 `BeingCoarsening` vocabulary they transport. `Meta/Invariance.lean` remains the
 central home for `DisplayReparam` and all `map_*` transport lemmas.
+`DirectionCoarsening.transpose_subTickDelivery` is the delivery-axis companion:
+tick equality survives transposition, while the delivery line reverses.
+`DirectionCoarsening.displayMapDir`, `mapDir_sameTick_iff`, and
+`mapDir_resolutionBounded_iff` centralize its display transport.
 
 `Meta/InvarianceNegative.lean` holds the countermodels. `InvarianceNegative`
 explains why equality with the chosen bottom is not the system predicate:
@@ -230,6 +243,14 @@ self-pole demotion. `RawWeld.transposeCR` is only a smuggling detector on
 same-carrier call/response examples: unordered pair-content cannot recover
 which face is call, so the intra-weld arrow is not before-and-after furniture
 inside the weld.
+
+`DirectionCoarseningWitness` adds the finite-resolution check. The raw
+register clock cannot be given a universal tick with `ResolutionBounded` over
+the injective `Nat` display; a lawful fully coarse display uses the one-point
+carrier, whose `DirectionVoid` is obtained through the existing legal
+all-equivalent display collapse. The independence witness keeps the register
+clock's macro sentience and self-conditioning separate from any direction
+coarsening or resolution-bound hypothesis.
 
 `BeingNegative` is the parallel countermodel for designation: one fine grid
 allows both merge and split macro readings, so a unique being-boundary is not

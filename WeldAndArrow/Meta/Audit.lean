@@ -41,6 +41,36 @@ info: 'WAA.Grid.map_isShareDrop_iff' does not depend on any axioms
 #print axioms Grid.map_isShareDrop_iff
 
 /--
+info: 'WAA.Grid.DirectedConvention.DirectionCoarsening.mapDir_resolutionBounded_iff' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.DirectionCoarsening.mapDir_resolutionBounded_iff
+
+/--
+info: 'WAA.DirectionCoarseningWitness.registerClock_unitTick_not_resolutionBounded' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms DirectionCoarseningWitness.registerClock_unitTick_not_resolutionBounded
+
+/--
+info: 'WAA.DirectionCoarseningWitness.unit_directionVoid_via_mergeToUnit' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms DirectionCoarseningWitness.unit_directionVoid_via_mergeToUnit
+
+/--
+info: 'WAA.DirectionCoarseningWitness.fullyCoarseRegisterClock_no_timeDirection' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms DirectionCoarseningWitness.fullyCoarseRegisterClock_no_timeDirection
+
+/--
+info: 'WAA.DirectionCoarseningWitness.registerClock_directionCoarsening_independence' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms DirectionCoarseningWitness.registerClock_directionCoarsening_independence
+
+/--
 info: 'WAA.Grid.DirectedConvention.map_landsWithShareDrop_iff' does not depend on any axioms
 -/
 #guard_msgs in

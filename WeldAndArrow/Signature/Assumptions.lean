@@ -1,6 +1,7 @@
 import WeldAndArrow.Signature.Order
 import WeldAndArrow.Signature.Grid
 import WeldAndArrow.Signature.BeingConvention
+import WeldAndArrow.Signature.DirectionConvention
 import WeldAndArrow.Signature.Models
 import WeldAndArrow.Signature.Claims
 
@@ -55,7 +56,12 @@ or type drift in the Signature surface turns into a build failure.
    downstream `BeingNegative` witness elaborates this as non-recovery of a
    unique partition from grid data.
 
-4. Contribution values are display, not operational tokens. The Signature
+4. Direction resolution is display, not signature furniture. A clock's finite
+   delivery-axis resolution is supplied by a diagnosis-time
+   `DirectionCoarsening`, not by a `Grid` field and not by any pole or
+   legitimacy predicate.
+
+5. Contribution values are display, not operational tokens. The Signature
    layer itself uses only order and pole vocabulary around `share`. The
    downstream `DisplayReparam` / `InvarianceNegative` modules give the full
    transport discipline: order- and pole-preserving display changes preserve
@@ -309,7 +315,18 @@ example (w : G.Weld) (h : G.HasSelfPoleIndex w) :
 -- `BeingNegative.no_partition_recovery` downstream in `Meta.InvarianceNegative`;
 -- importing it here would violate the layer DAG.
 
-/- B.4 Contribution values are display, not operational tokens. -/
+/- B.4 Direction resolution is display, not signature furniture. -/
+#check Grid.DirectedConvention.DirectionCoarsening -- proof
+#check Grid.DirectedConvention.DirectionCoarsening.SameTick -- proof
+#check Grid.DirectedConvention.DirectionCoarsening.ResolutionBounded -- proof
+#check Grid.DirectedConvention.DirectionCoarsening.no_timeDirection_within_tick -- proof
+#check Grid.DirectedConvention.DirectionCoarsening.no_timeDirection_of_resolutionBounded_subsingleton -- proof
+#check Grid.DirectedConvention.DirectionCoarsening.transpose_subTickDelivery -- witness
+-- TODO(assumptions): The register-clock direction-coarsening witnesses live
+-- downstream in `Meta.InvarianceNegative.DirectionCoarseningWitness`; importing
+-- them here would violate the layer DAG.
+
+/- B.5 Contribution values are display, not operational tokens. -/
 #check Grid.share_eq_grade_check -- proof
 #check AtBot -- proof
 #check OrderEq -- proof
@@ -346,6 +363,18 @@ info: 'WAA.no_agent_recovery_of_field_collision' does not depend on any axioms
 -/
 #guard_msgs in
 #print axioms no_agent_recovery_of_field_collision
+
+/--
+info: 'WAA.Grid.DirectedConvention.DirectionCoarsening.no_timeDirection_within_tick' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.DirectionCoarsening.no_timeDirection_within_tick
+
+/--
+info: 'WAA.Grid.DirectedConvention.DirectionCoarsening.no_timeDirection_of_resolutionBounded_subsingleton' does not depend on any axioms
+-/
+#guard_msgs in
+#print axioms Grid.DirectedConvention.DirectionCoarsening.no_timeDirection_of_resolutionBounded_subsingleton
 
 end AssumptionAnchors
 

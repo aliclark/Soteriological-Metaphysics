@@ -11,6 +11,7 @@ Reading and motivation: Identification/Commentary.lean, C.3.
 -/
 
 import WeldAndArrow.Consequences.ContentRows
+import WeldAndArrow.Signature.DirectionConvention
 import WeldAndArrow.Identification
 import WeldAndArrow.Doctrines.Sraddha
 import WeldAndArrow.Doctrines.Faith
@@ -219,6 +220,49 @@ theorem map_environsLine_iff
     (b : G.Being) (deed reception : G.Weld) :
     EnvironsLine (G.map f) b deed reception ↔ EnvironsLine G b deed reception :=
   Iff.rfl
+
+namespace DirectionCoarsening
+
+variable {G : Grid Contrib} {Tick : Type}
+
+/-- Direction-coarsening transported across a display reparameterization.
+    Ticks are display-side data over unchanged welds. -/
+def displayMapDir (ρ : DirectionCoarsening G Tick)
+    (f : DisplayReparam Contrib Contrib') :
+    DirectionCoarsening (G.map f) Tick where
+  tick := ρ.tick
+
+theorem mapDir_sameTick_iff (ρ : DirectionCoarsening G Tick)
+    (f : DisplayReparam Contrib Contrib') (w₁ w₂ : G.Weld) :
+    (displayMapDir ρ f).SameTick w₁ w₂ ↔ ρ.SameTick w₁ w₂ :=
+  Iff.rfl
+
+theorem mapDir_resolutionBounded_iff (ρ : DirectionCoarsening G Tick)
+    (f : DisplayReparam Contrib Contrib') :
+    (displayMapDir ρ f).ResolutionBounded ↔ ρ.ResolutionBounded := by
+  constructor
+  · intro h w₁ w₂ hsame
+    have hmapped : OrderEq (f.toFun (G.share w₁)) (f.toFun (G.share w₂)) := by
+      simpa [Grid.map_share] using h w₁ w₂ hsame
+    exact (f.orderEq_iff (G.share w₁) (G.share w₂)).mp hmapped
+  · intro h w₁ w₂ hsame
+    have horig : OrderEq (G.share w₁) (G.share w₂) :=
+      h w₁ w₂ hsame
+    have hmapped : OrderEq (f.toFun (G.share w₁)) (f.toFun (G.share w₂)) :=
+      (f.orderEq_iff (G.share w₁) (G.share w₂)).mpr horig
+    simpa [Grid.map_share] using hmapped
+
+/-- If the display reparameterization collapses within-tick shares to
+    order-equivalence in the target, the mapped grid is resolution-bounded. -/
+theorem resolutionBounded_of_reparam_collapses
+    (ρ : DirectionCoarsening G Tick) (f : DisplayReparam Contrib Contrib')
+    (hcollapse : ∀ w₁ w₂ : G.Weld, ρ.SameTick w₁ w₂ ->
+      OrderEq (f.toFun (G.share w₁)) (f.toFun (G.share w₂))) :
+    (displayMapDir ρ f).ResolutionBounded := by
+  intro w₁ w₂ hsame
+  simpa [Grid.map_share] using hcollapse w₁ w₂ hsame
+
+end DirectionCoarsening
 
 end DirectedConvention
 

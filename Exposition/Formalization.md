@@ -147,6 +147,20 @@ Under a coarsening `κ`:
 - `Delegation b` packages an actual fine weld in the macro fiber; its share is
   definitionally the delegate weld's share.
 
+**DirectionConvention definitions.** `DirectionCoarsening G Tick` is the
+delivery-axis twin of `BeingCoarsening`: a diagnosis-time tick projection over
+welds, not a field of `Grid`. `SameTick` is tick equality and is symmetric;
+`ResolvedDelivery` is delivered across distinct ticks; `SubTickDelivery` is
+delivered inside one tick.
+
+`ResolutionBounded` is a model-supplied display coherence condition: same-tick
+welds have order-equivalent shares. It is not a legitimacy, pole, or sentience
+predicate. `no_timeDirection_within_tick` proves that sub-tick delivery carries
+no strict `TimeDirection`, and
+`no_timeDirection_of_resolutionBounded_subsingleton` is the one-tick limit over
+weld shares. Transposition leaves `SameTick` and `ResolutionBounded` unchanged
+while `transpose_subTickDelivery` reverses only the delivery line.
+
 **Configurations and share-drops.** `Config` has one field,
 `tendency : Contrib`; it stores no `Being`, no `Weld`, and no owner.
 `rePitch before received` returns the config with tendency `share received`;
@@ -885,10 +899,14 @@ Grade-facing transport facts:
   `LiveFiberAtPoleWithin`, `SelfAptTag`, `SelfAptTagWithin`,
   `LiveSelfAptTag`, `Patchy`, `SelfConditioningTag`, and
   `StrongSelfConditioningTag`
+- `DirectionCoarsening.displayMapDir`, `mapDir_sameTick_iff`,
+  `mapDir_resolutionBounded_iff`, and
+  `resolutionBounded_of_reparam_collapses`
 
 Together these say that all current pole, probe, tier, configuration,
-share-drop, and share-drop-line predicates are legal display predicates:
-changing the carrier by a reparameterization changes notation, not truth.
+direction-coarsening, share-drop, and share-drop-line predicates are legal
+display predicates: changing the carrier by a reparameterization changes
+notation, not truth.
 
 **Direction-smuggling detector.** The transpose operation now lives in the
 signature layer, beside the vocabulary it transports. `Grid.transpose` reverses
@@ -900,6 +918,8 @@ directed refinement reversing exactly at the delivery line while fiber
 membership and actuality stay put. This gives future delivery-facing results a
 quick test: if they claim direction, they owe model-supplied asymmetry or
 irreflexivity.
+`DirectionCoarsening.transpose_subTickDelivery` is the delivery-axis companion:
+tick equality survives transposition, while the delivery line reverses.
 
 **Negative examples.** `Meta/InvarianceNegative.lean` holds these countermodels.
 `InvarianceNegative.TwoBottom` is a two-element carrier
@@ -936,6 +956,22 @@ response faces when they share a carrier. `no_interior_direction_recovery`
 uses the same collision shape one grain down: unordered call/response content
 does not recover which face is call. This is the formal certificate that the
 intra-weld arrow is display, not a field-carried before/after.
+
+**`DirectionCoarseningWitness`.** `registerClockUnitTick` gives the raw
+register clock one universal tick. `registerClock_unitTick_not_resolutionBounded`
+proves this cannot be coherent over the injective `Nat` display: registers `0`
+and `1` share a tick but do not have order-equivalent shares.
+
+The positive slow-clock limit is modeled on a lawful one-point display:
+`fullyCoarseRegisterClockGrid` keeps the register-clock response and delivery
+shape while grading every weld in `Unit`. `unit_directionVoid_via_mergeToUnit`
+gets `DirectionVoid Unit` through the existing legal display collapse from the
+all-equivalent `TwoBottom` carrier, and
+`fullyCoarseRegisterClock_no_timeDirection` applies the one-tick
+resolution-bound theorem to the fully coarse grid. The theorem
+`registerClock_directionCoarsening_independence` is the soul-guard: macro
+sentience and self-conditioning for the register clock do not consume either a
+direction coarsening or a resolution-bound hypothesis.
 
 **`ContentNegative`.** `allStoneGrid` is a no-response grid whose beings are
 all stone-typed and whose act-time tiers have no live share. It proves
@@ -1031,6 +1067,11 @@ The audited declarations are:
 - `Grid.stateToolFits_iff_atBot`
 - `Grid.map_actual_iff`
 - `Grid.map_isShareDrop_iff`
+- `Grid.DirectedConvention.DirectionCoarsening.mapDir_resolutionBounded_iff`
+- `DirectionCoarseningWitness.registerClock_unitTick_not_resolutionBounded`
+- `DirectionCoarseningWitness.unit_directionVoid_via_mergeToUnit`
+- `DirectionCoarseningWitness.fullyCoarseRegisterClock_no_timeDirection`
+- `DirectionCoarseningWitness.registerClock_directionCoarsening_independence`
 - `Grid.DirectedConvention.map_landsWithShareDrop_iff`
 - `Grid.DirectedConvention.BeingConvention.BeingCoarsening.map_selfConditioningTag_iff`
 - `Grid.DirectedConvention.BeingConvention.BeingCoarsening.map_fiberAtPoleOn_iff`

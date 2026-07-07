@@ -148,6 +148,94 @@ theorem not_strict_twoBottom (a b : InvarianceNegative.TwoBottom) : ¬ Strict a 
 end DirectionNegative
 
 /- ==============================================================================
+   Direction-coarsening witnesses
+============================================================================== -/
+
+namespace DirectionCoarseningWitness
+
+open Grid.DirectedConvention
+open Grid.DirectedConvention.DirectionCoarsening
+
+/-- The raw register-clock read through a one-tick delivery clock. -/
+def registerClockUnitTick : DirectionCoarsening registerClockGrid Unit where
+  tick _ := ()
+
+def registerClockLow : registerClockGrid.Weld :=
+  ⟨(0 : Nat), (), (1 : Nat)⟩
+
+def registerClockHigh : registerClockGrid.Weld :=
+  ⟨(1 : Nat), (), (2 : Nat)⟩
+
+/-- Honest snag: the raw `Nat` register display is injective on registers, so a
+    universal tick cannot be resolution-bounded. -/
+theorem registerClock_unitTick_not_resolutionBounded :
+    ¬ registerClockUnitTick.ResolutionBounded := by
+  intro h
+  have hEq : OrderEq (registerClockGrid.share registerClockLow)
+      (registerClockGrid.share registerClockHigh) :=
+    h registerClockLow registerClockHigh rfl
+  have hle : (1 : Nat) ≼ 0 := by
+    simpa [Grid.share, registerClockGrid, registerClockLow, registerClockHigh] using hEq.right
+  change (1 : Nat) ≤ 0 at hle
+  cases hle
+
+/-- A fully coarse display of the same register-clock response and delivery
+    shape. The carrier is already one-point, so this is the slow-clock limit
+    after display choice, not a collapse of the raw `Nat` order. -/
+def fullyCoarseRegisterClockGrid : Grid Unit where
+  Being      := Nat
+  Call       := Unit
+  Response   := Nat
+  respondsTo n _ := some (n + 1)
+  grade _ _ _ := ()
+  conditions deed reception := reception.agent = deed.response
+
+def fullyCoarseRegisterClockUnitTick :
+    DirectionCoarsening fullyCoarseRegisterClockGrid Unit where
+  tick _ := ()
+
+/-- The fully coarse display is resolution-bounded by construction. -/
+theorem fullyCoarseRegisterClock_resolutionBounded :
+    fullyCoarseRegisterClockUnitTick.ResolutionBounded := by
+  intro _w₁ _w₂ _hsame
+  exact ⟨True.intro, True.intro⟩
+
+/-- The target one-point carrier is direction-void, obtained through the
+    existing legal display collapse from the all-equivalent `TwoBottom`
+    carrier. -/
+theorem unit_directionVoid_via_mergeToUnit : DirectionVoid Unit :=
+  DisplayReparam.directionVoid_of_surjective InvarianceNegative.mergeToUnit
+    (fun b => ⟨InvarianceNegative.TwoBottom.chosen, by cases b; rfl⟩)
+    (fun a b => DirectionNegative.not_strict_twoBottom a b)
+
+/-- In the fully coarse register-clock display, no pair of weld-shares carries
+    strict time-direction. -/
+theorem fullyCoarseRegisterClock_no_timeDirection
+    (w₁ w₂ : fullyCoarseRegisterClockGrid.Weld) :
+    ¬ TimeDirection (fullyCoarseRegisterClockGrid.share w₁)
+        (fullyCoarseRegisterClockGrid.share w₂) :=
+  fullyCoarseRegisterClockUnitTick.no_timeDirection_of_resolutionBounded_subsingleton
+    fullyCoarseRegisterClock_resolutionBounded (fun _ _ => rfl) w₁ w₂
+
+/-- Function and internal-delivery witnesses for the macro register clock do
+    not consume direction-coarsening or resolution-boundedness hypotheses. -/
+theorem registerClock_directionCoarsening_independence :
+    (∀ {Tick : Type} (_ρ : DirectionCoarsening registerClockGrid Tick),
+        registerClockCoarsening.SentientTag () ∧
+          registerClockCoarsening.SelfConditioningTag ()) ∧
+      (∀ {Tick : Type} (ρ : DirectionCoarsening registerClockGrid Tick),
+        ρ.ResolutionBounded ->
+          registerClockCoarsening.SentientTag () ∧
+            registerClockCoarsening.SelfConditioningTag ()) := by
+  constructor
+  · intro _Tick _ρ
+    exact ⟨registerClock_macro_sentient, registerClock_macro_selfConditioning⟩
+  · intro _Tick _ρ _hbounded
+    exact ⟨registerClock_macro_sentient, registerClock_macro_selfConditioning⟩
+
+end DirectionCoarseningWitness
+
+/- ==============================================================================
    Content-row countermodels
 ============================================================================== -/
 
