@@ -1,9 +1,9 @@
 import WeldAndArrow.Gen.AssumptionsLib
 import WeldAndArrow.Gen.ExpositionLib
 
-namespace WAA.Gen.TestExpositionGeneration
+namespace WAA.Gen.FullExpositionGeneration
 
-def outputRoot : String := ".lake/exposition-test"
+def outputRoot : String := ".lake/exposition-full"
 
 def expositionDir : String := outputRoot ++ "/Exposition"
 
@@ -33,7 +33,7 @@ def run : IO Unit := do
   for file in expectedFiles do
     checkNonempty file
 
-end WAA.Gen.TestExpositionGeneration
+end WAA.Gen.FullExpositionGeneration
 
 def main : IO Unit := do
-  WAA.Gen.TestExpositionGeneration.run
+  WAA.Gen.FullExpositionGeneration.run
