@@ -257,7 +257,7 @@ end ContentNegative
    §N  Being-boundary freedom: designation is not grid-carried
 
    The witness is parallel in scope to `DirectionNegative`. A single grid has
-   two fact-identical fine tags and admits both a merge and a split coarsening.
+   two fact-identical fine tags and supports both a merge and a split coarsening.
    They disagree on the fiber boundary at a concrete pair. This certifies
    freedom, not failure: naming suffices, while holding one partition as floor
    furniture claims a fact the grid's data does not carry.
@@ -322,5 +322,93 @@ theorem no_partition_recovery :
   exact hsplitNot hmerged
 
 end BeingNegative
+
+/- ==============================================================================
+   §O  Weld-boundary freedom: pairing is not grid-carried
+
+   This is one level below the being-boundary witness. `no_partition_recovery`
+   freed the who; this frees what counts as one act. The same field data support
+   both a merged reading of the call-response pairings and a split reading by
+   weld-grain. Holding one weld-grain as floor furniture claims a fact the
+   grid's data does not carry.
+============================================================================== -/
+
+namespace WeldNegative
+
+/-- A diagnosis-time segmentation of welds into macro pairings. Kept local to
+    the witness so weld individuation remains a reading rather than a field of
+    `Grid`. -/
+structure WeldSegmentation (G : Grid Nat) (Macro : Type) where
+  proj : G.Weld → Macro
+
+namespace WeldSegmentation
+
+variable {G : Grid Nat} {Macro : Type} (σ : WeldSegmentation G Macro)
+
+def SamePairing (p q : G.Weld) : Prop := σ.proj p = σ.proj q
+
+end WeldSegmentation
+
+/-- Two fact-identical fine exchanges over a symmetric field. -/
+def twoWeldGrid : Grid Nat where
+  Being      := Unit
+  Call       := Bool
+  Response   := Bool
+  respondsTo _ c := some c
+  grade _ _ _ := 0
+  conditions _ _ := True
+
+def wFalse : twoWeldGrid.Weld := ⟨(), false, false⟩
+
+def wTrue : twoWeldGrid.Weld := ⟨(), true, true⟩
+
+/-- Merged reading: both fine welds are one macro act. -/
+def σmerge : WeldSegmentation twoWeldGrid Unit where
+  proj _ := ()
+
+/-- Split reading: each fine weld remains its own act-grain. -/
+def σsplit : WeldSegmentation twoWeldGrid Bool where
+  proj w := w.call
+
+theorem merge_same_pairing : σmerge.SamePairing wFalse wTrue :=
+  rfl
+
+theorem split_not_same_pairing : ¬ σsplit.SamePairing wFalse wTrue := by
+  intro h
+  cases h
+
+/-- The grid data visible to a would-be weld-boundary recovery function. -/
+abbrev W := RawWeld Unit Bool Bool
+
+abbrev GridData : Type :=
+  (Unit → Bool → Option Bool) ×
+    (Unit → Bool → Bool → Nat) × (W → W → Prop)
+
+def gridData : GridData :=
+  (twoWeldGrid.respondsTo, twoWeldGrid.grade, twoWeldGrid.conditions)
+
+def mergedPairing (_p _q : W) : Prop := True
+
+def splitPairing (p q : W) : Prop := p.call = q.call
+
+/-- The weld's individuation is a segmentation convention over the
+    correlational field, never recoverable from it. The same grid data support
+    both merge and split readings, which disagree on the concrete false/true
+    pair. -/
+theorem no_weld_boundary_recovery :
+    ¬ ∃ recover : GridData → W → W → Prop,
+        recover gridData = mergedPairing ∧
+        recover gridData = splitPairing := by
+  rintro ⟨recover, hmerge, hsplit⟩
+  have hmerged : recover gridData wFalse wTrue := by
+    rw [hmerge]
+    exact True.intro
+  have hsplitNot : ¬ recover gridData wFalse wTrue := by
+    rw [hsplit]
+    intro h
+    cases h
+  exact hsplitNot hmerged
+
+end WeldNegative
 
 end WAA

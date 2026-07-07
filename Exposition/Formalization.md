@@ -392,7 +392,7 @@ shortfall-voiced.
 
 **Generated table rows.** Under
 `Grid.DirectedConvention.BeingConvention.GridConvention`, `RowTag` names the
-schema-generated table rows, including the three `ConventionLayer` rows via
+schema-generated table rows, including the four `ConventionLayer` rows via
 `.layer`. `RowClaim` has `inForce r` and `denied r`, and `rowLanguage G` gives
 them pole-affirming semantics: at `floor` every row claim holds; at `actTime w`
 the conventional side holds, while the denial side holds exactly when
@@ -408,10 +408,10 @@ recorded-utterance check; `fox_utterance_misfits_live_offer` specializes it to
 the marquee fox row.
 
 The old pilot names are compatibility names for schema tags:
-`beforeAfterRow G`, `beingsRow G`, and `gridLensRow G` are
+`beforeAfterRow G`, `beingsRow G`, `gridLensRow G`, and `weldRow G` are
 `rowOf G (.layer ...)`. Their collapse and freeze names keep
 hypothesis-free statements; their `*_obeys` names carry the stability
-hypothesis. `tableOrder` records the full table shape as Lean data: sixteen
+hypothesis. `tableOrder` records the full table shape as Lean data: seventeen
 schema rows, one ladder row, and six prose rows. Schema-row cell occupancy is
 also data now: `hasCollapseOccupant` and `hasFreezeOccupant` record where the
 paper's table has an occupant rather than a dash, and
@@ -431,13 +431,15 @@ without turning it into new grid semantics.
 by unfolding and `decide`.
 
 **Content-bearing rows.** `contentLayerLanguage` uses the same `LayerClaim`
-syntax but gives content to denials: no strict direction, all beings stone, or
-no live tier anywhere. `contentBeforeAfterRow`, `contentBeingsRow`, and
-`contentGridLensRow` are the three content rows. Their obedience theorems are
+syntax but gives content to denials: no strict direction, all beings stone, no
+live tier anywhere, or no actual welds. `contentBeforeAfterRow`,
+`contentBeingsRow`, `contentGridLensRow`, and `contentWeldRow` are the four
+content rows. Their obedience theorems are
 conditional: `contentBeforeAfterRow_obeys_of_direction`,
 `contentBeingsRow_obeys_of_being`, and
-`contentGridLensRow_obeys_of_liveTier` require exactly the witness that makes
-the denial false at non-live act-time. These content rows keep the diagnostic
+`contentGridLensRow_obeys_of_liveTier`, and
+`contentWeldRow_obeys_of_actual` require exactly the witness that makes the
+denial false at non-live act-time. These content rows keep the diagnostic
 live-side because their global denials cannot be made true by a particular
 pole-class weld; they answer aptness-to-hold, not truth-at-tier.
 
@@ -454,7 +456,8 @@ that obedience propagates, while `ErrorFree`, `errorFree_of_obeys`,
 `ladder_errorFree_of_errorFree` show the stronger refutation-only route above
 an error-free seed. `no_level_final`, `no_final_level`, and
 `ladder_collapse_self_refuting` rule out freeze and collapse at generated
-levels. `beingsLadder`, `beforeAfterLadder`, and `gridLensLadder` are schema
+levels. `beingsLadder`, `beforeAfterLadder`, `gridLensLadder`, and
+`weldLadder` are schema
 seeds; their `_obeys_succ` facts are hypothesis-free, while all-level
 `*_obeys` names include the seed's stability hypothesis. `contentBeingsLadder`
 is the content instance under the non-stone aptness hypothesis.
@@ -928,6 +931,12 @@ direction is not carried by the correlational structure.
 `not_strict_twoBottom` records the carrier-wide strictness failure on the
 two-bottom negative carrier.
 
+**`InteriorDirectionNegative`.** `RawWeld.transposeCR` swaps the call and
+response faces when they share a carrier. `no_interior_direction_recovery`
+uses the same collision shape one grain down: unordered call/response content
+does not recover which face is call. This is the formal certificate that the
+intra-weld arrow is display, not a field-carried before/after.
+
 **`ContentNegative`.** `allStoneGrid` is a no-response grid whose beings are
 all stone-typed and whose act-time tiers have no live share. It proves
 `contentBeingsRow_not_obeys_allStone` and
@@ -977,15 +986,23 @@ the readings disagree at `false`/`true`, and `no_partition_recovery` proves no
 function of the shared grid data recovers both. This is the formal certificate
 that the being-boundary is a reading, not grid-carried structure.
 
+**`WeldNegative`.** `twoWeldGrid` has two fine call-response pairings over the
+same response, grade, and symmetric delivery data. `σmerge` reads them as one
+macro act; `σsplit` splits them by weld-grain. `merge_same_pairing` and
+`split_not_same_pairing` show the readings disagree, and
+`no_weld_boundary_recovery` proves no function of the shared grid data
+recovers both. This is the formal certificate that weld individuation is a
+segmentation convention, not grid-carried structure.
+
 **Verdict ledger.** `Meta/VerdictLedger.lean` records the verdict-history
-paragraph as `generatorRecord`. The three retypes are three entries; the
+paragraph as `generatorRecord`. The four retypes are four entries; the
 checked count is `generatorRecord_retype_count`, and
 `generatorRecord_newCell_count` records that no new row is added. The six-kind
 view is the projection `restraintKind`, checked by
 `generatorRecord_restraintKind_seen_count` and
 `restraintKind_exhaustive_on_record`. Lean anchors are pinned by examples that
-name `DirectionNegative`, the transposition pair, the fox theorem, and
-`MisFeedNegative.fence_and_gate`. The checkable half of the falsifier is
+name `DirectionNegative`, `InteriorDirectionNegative`, the transposition pair,
+the fox theorem, and `MisFeedNegative.fence_and_gate`. The checkable half of the falsifier is
 `misFeed_entries_carry_decomposition`; the rate-trend half remains prose.
 
 **Glossary.** `Meta/Glossary.lean` is the canonical source for glossary data.
@@ -1068,16 +1085,20 @@ their proofs unfold concrete responses, project existing identities, or close
 short `Nat` order goals with `decide`.
 
 The conditional impossibility results are the agent-recovery theorems, the
-direction negative witness, the being-boundary negative witness, the sraddha
-orthogonality witness, the severed-transcript gradeability negative, and the
-other-power regime/share negative. The concrete model results include
-`clockGrid`, `registerClockGrid`, `backslideGrid`, `gradingCollisionGrid`,
-`FoxCase.foxGrid`, and `TarikiCase.tarikiGrid`: they witness, respectively,
-function/share splitting, diagnosis-time macro coarsening, same-being
-backsliding plus severed-transcript grade underdetermination,
-same-field/different-share grading, the fox run-through with no pole-arrival,
-and fixed-call landing without a second act grammar. The self-line
-witness is a permission witness, not an existence claim about any real regime.
+direction negative witness, the intra-weld direction witness, the
+being-boundary negative witness, the weld-boundary negative witness, the
+sraddha orthogonality witness, the severed-transcript gradeability negative,
+and the other-power regime/share negative. The concrete model and carrier
+results include `clockGrid`, `registerClockGrid`, `backslideGrid`,
+`gradingCollisionGrid`, `WeldNegative.twoWeldGrid`, `FoxCase.foxGrid`, and
+`TarikiCase.tarikiGrid`, plus the `InteriorDirectionNegative` two-face raw
+weld carrier: they witness, respectively, function/share splitting,
+diagnosis-time macro coarsening, same-being backsliding plus
+severed-transcript grade underdetermination, same-field/different-share
+grading, weld-boundary underdetermination, the fox run-through with no
+pole-arrival, fixed-call landing without a second act grammar, and intra-weld
+orientation underdetermination. The self-line witness is a permission witness,
+not an existence claim about any real regime.
 
 One structural caution remains: `Terminus` is vacuously true of every `Stone`;
 use `LiveTerminus` or `ResponsiveTerminus` when non-vacuous response-function

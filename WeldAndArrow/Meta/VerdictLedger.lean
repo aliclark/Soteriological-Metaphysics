@@ -13,7 +13,7 @@ What this module can check is the office discipline around that testimony. The
 ledger stores episode-grained entries, then derives the paragraph's aggregate
 claims from the list: the number of retypes, the six displayed restraint kinds,
 anchor cross-references, and the structural half of the falsifier. In
-particular, the three retypes are three entries, not one entry carrying a
+particular, the four retypes are four entries, not one entry carrying a
 multiplicity field.
 -/
 
@@ -43,6 +43,7 @@ inductive LedgerCaseName
   | zahavi
   | dispositionActCell
   | arrow
+  | intraWeldArrow
   | terminusQuestion
   | foxQuestion
   | deafBlind
@@ -72,6 +73,7 @@ deriving DecidableEq, Repr, BEq
     declarations by name so ordinary renames break this module. -/
 inductive LeanAnchor
   | directionNegative
+  | interiorDirectionNegative
   | transpositionPair
   | foxLiveOffer
   | misFeedFenceGate
@@ -114,6 +116,11 @@ def generatorRecord : List RecordEntry := [
     anchors := [.lean .directionNegative]
     requiresDecomposition := false
     decompositionCarried := false },
+  { name := .intraWeldArrow
+    outcome := .verdict .retype
+    anchors := [.lean .interiorDirectionNegative]
+    requiresDecomposition := false
+    decompositionCarried := false },
   { name := .terminusQuestion
     outcome := .verdict .landed
     anchors := [.lean .transpositionPair, .lean .misFeedFenceGate]
@@ -141,17 +148,18 @@ def generatorRecord : List RecordEntry := [
     decompositionCarried := false }
 ]
 
-example : generatorRecord.length = 8 := rfl
+example : generatorRecord.length = 9 := rfl
 
 example :
     generatorRecord.map RecordEntry.name =
-      [.zahavi, .dispositionActCell, .arrow, .terminusQuestion, .foxQuestion,
-        .deafBlind, .openDeliveryQuestions, .seriesQuestions] := rfl
+      [.zahavi, .dispositionActCell, .arrow, .intraWeldArrow,
+        .terminusQuestion, .foxQuestion, .deafBlind, .openDeliveryQuestions,
+        .seriesQuestions] := rfl
 
-/-- The paragraph's "three retypes" claim is derived from the episode list. -/
+/-- The paragraph's "four retypes" claim is derived from the episode list. -/
 theorem generatorRecord_retype_count :
     (generatorRecord.filter
-      (fun e => e.outcome == Outcome.verdict Verdict.retype)).length = 3 := rfl
+      (fun e => e.outcome == Outcome.verdict Verdict.retype)).length = 4 := rfl
 
 /-- No current episode forces a new row; the ledger adds no `RowTag`. -/
 theorem generatorRecord_newCell_count :
@@ -179,6 +187,7 @@ def restraintKind (e : RecordEntry) : RestraintKind :=
   | .zahavi => .forcedRetype
   | .dispositionActCell => .forcedRetype
   | .arrow => .forcedRetype
+  | .intraWeldArrow => .forcedRetype
   | .terminusQuestion => .answeredAtCheapDissolution
   | .foxQuestion => .answeredAvyakataShaped
   | .deafBlind => .declinedNoError
@@ -216,6 +225,8 @@ theorem restraintKind_exhaustive_on_record :
 ============================================================================== -/
 
 example := @DirectionNegative.no_direction_recovery_from_conditionsEither
+
+example := @InteriorDirectionNegative.no_interior_direction_recovery
 
 example :=
   @Grid.DirectedConvention.BeingConvention.GridConvention.exit_collapse_self_refuting

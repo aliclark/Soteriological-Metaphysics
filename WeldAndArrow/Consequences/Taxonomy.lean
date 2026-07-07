@@ -29,6 +29,7 @@ inductive ConventionLayer
   | directedTime
   | beings
   | gridLens
+  | weldGrain
 
 /-- Claims for convention-layer rows. `conventionLive l` says the layer's
     distinction is in force; `layerDenied l` is the deflation. -/
@@ -209,6 +210,9 @@ abbrev beingsRow (G : Grid Contrib) : Distinction G :=
 abbrev gridLensRow (G : Grid Contrib) : Distinction G :=
   rowOf G (.layer .gridLens)
 
+abbrev weldRow (G : Grid Contrib) : Distinction G :=
+  rowOf G (.layer .weldGrain)
+
 theorem layerRow_obeys
     [∀ w : G.Weld, Decidable (AtBot (G.share w))]
     (l : ConventionLayer) :
@@ -229,6 +233,11 @@ theorem gridLensRow_obeys
     [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
     (gridLensRow G).ObeysSeparateFuse :=
   rowOf_obeys G (.layer .gridLens)
+
+theorem weldRow_obeys
+    [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
+    (weldRow G).ObeysSeparateFuse :=
+  rowOf_obeys G (.layer .weldGrain)
 
 /-- Compatibility name for the migrated layer denials. -/
 theorem layerDenied_holds_only_where_no_live_share
@@ -267,6 +276,19 @@ theorem gridLensRow_not_freeze :
 theorem lens_denial_collapse_self_refuting (t : Tier G) :
     ¬ (gridLensRow G).Collapse t :=
   rowOf_collapse_self_refuting G (.layer .gridLens) t
+
+theorem weldRow_not_freeze :
+    ¬ (weldRow G).Freeze :=
+  rowOf_not_freeze G (.layer .weldGrain)
+
+theorem weldRow_errorFree :
+    ErrorFree G (weldRow G) :=
+  rowOf_errorFree G (.layer .weldGrain)
+
+/-- "No acts happen", offered as a live diagnosis, is refuted by its own tier. -/
+theorem weld_denial_collapse_self_refuting (t : Tier G) :
+    ¬ (weldRow G).Collapse t :=
+  rowOf_collapse_self_refuting G (.layer .weldGrain) t
 
 abbrev rungPoleRow (G : Grid Contrib) : Distinction G :=
   rowOf G .rungPole
@@ -526,9 +548,10 @@ def tableOrder : List TableRow := [
   .generated .terminusExit,
   .generated .selfPoleTransposed,
   .generated (.layer .directedTime),
-  .generated (.layer .beings) ]
+  .generated (.layer .beings),
+  .generated (.layer .weldGrain) ]
 
-example : tableOrder.length = 23 := rfl
+example : tableOrder.length = 24 := rfl
 
 /-- Metadata for whether a schema-generated row has a collapse occupant in the
     paper's Grade-1 table. This records table prose; it is not extra grid

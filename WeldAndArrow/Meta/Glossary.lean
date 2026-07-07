@@ -14,6 +14,7 @@ import Lean
 import WeldAndArrow.Consequences.Compounds
 import WeldAndArrow.Doctrines
 import WeldAndArrow.Identification
+import WeldAndArrow.Meta.Nishitani
 import WeldAndArrow.Meta.VerdictLedger
 
 namespace WAA
@@ -512,6 +513,11 @@ def glossary : List GlossaryEntry := [
     gloss := "The four verdicts are existing-cell, new-cell, declined, and retype. They are the public outcomes available when the generator meets a candidate error."
     anchors := [``Verdict, ``generatorRecord_newCell_count]
     seeAlso := ["generator"] },
+  { term := "Sunyata"
+    kind := .canonical
+    gloss := "Sunyata means emptiness. In this system it is the no-final-freeze property of a distinction's re-emptying ladder."
+    anchors := [``Grid.DirectedConvention.BeingConvention.GridConvention.Nishitani.Sunyata]
+    seeAlso := ["collapse/freeze"] },
   { term := "direction-underdetermination witness"
     kind := .coinage .theorems
     gloss := "This witness shows that symmetric field residue does not determine direction. Two grids can agree on the undirected relation and disagree on the directed one."
@@ -522,6 +528,22 @@ def glossary : List GlossaryEntry := [
     gloss := "This witness shows that grid data do not recover a unique being-boundary. Merge and split coarsenings can both be legal over the same fine grid."
     anchors := [``BeingNegative.no_partition_recovery]
     seeAlso := ["being-convention", "freedom witness"] },
+  { term := "weld-boundary witness"
+    kind := .coinage .theorems
+    gloss := "Grid data do not recover a unique weld-segmentation. Merge and split readings of what counts as one call-response pairing are both legal over the same field."
+    anchors := [``WeldNegative.no_weld_boundary_recovery]
+    seeAlso := ["weld", "being-convention", "freedom witness"] },
+  { term := "intra-weld arrow"
+    kind := .coinage .theorems
+    gloss := "The intra-weld arrow is the call-to-response direction inside a weld, treated as display rather than floor furniture. MMK 8 is the anchor: doer and deed depend on one another, neither prior."
+    anchors := [``InteriorDirectionNegative.no_interior_direction_recovery]
+    seeAlso := ["arrow", "weld"] },
+  { term := "weld row / weld śūnyatā"
+    kind := .coinage .theorems
+    gloss := "The weld row names the weld-grain distinction as a convention layer, and weld śūnyatā says its re-emptying ladder has no final frozen level."
+    anchors := [``Grid.DirectedConvention.BeingConvention.GridConvention.weldRow,
+      ``Grid.DirectedConvention.BeingConvention.GridConvention.Nishitani.weld_sunyata]
+    seeAlso := ["collapse/freeze", "Sunyata"] },
   { term := "declined case"
     kind := .coinage .theorems
     gloss := "A declined case is a candidate that the taxonomy refuses to mark as error. The deaf-blind example matters because over-generating error would itself freeze the lens."
@@ -718,7 +740,7 @@ def seeAlsoTargetsEarlierFrom (seen : List String) :
 def seeAlsoTargetsEarlier : Bool :=
   seeAlsoTargetsEarlierFrom [] glossary
 
-example : glossary.length = 123 := rfl
+example : glossary.length = 127 := rfl
 
 example : glossaryTerms.Nodup := by
   native_decide

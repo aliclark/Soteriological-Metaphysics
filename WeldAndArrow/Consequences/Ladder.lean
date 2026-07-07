@@ -164,6 +164,9 @@ def beforeAfterLadder (G : Grid Contrib) : Nat → Distinction G :=
 def gridLensLadder (G : Grid Contrib) : Nat → Distinction G :=
   ladder (gridLensRow G)
 
+def weldLadder (G : Grid Contrib) : Nat → Distinction G :=
+  ladder (weldRow G)
+
 theorem beingsLadder_obeys
     [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
     ∀ n, (beingsLadder G n).ObeysSeparateFuse :=
@@ -217,6 +220,24 @@ theorem gridLensLadder_no_level_final :
       exact gridLensRow_not_freeze G
   | succ n =>
       exact Grid.not_freeze_of_obeysSeparateFuse (gridLensLadder_obeys_succ G n)
+
+theorem weldLadder_obeys
+    [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
+    ∀ n, (weldLadder G n).ObeysSeparateFuse :=
+  ladder_obeys (G := G) (weldRow_obeys G)
+
+theorem weldLadder_obeys_succ :
+    ∀ n, (weldLadder G (n + 1)).ObeysSeparateFuse :=
+  ladder_obeys_of_errorFree (G := G) (rowOf_errorFree G (.layer .weldGrain))
+
+theorem weldLadder_no_level_final :
+    ∀ n, ¬ (weldLadder G n).Freeze := by
+  intro n
+  cases n with
+  | zero =>
+      exact weldRow_not_freeze G
+  | succ n =>
+      exact Grid.not_freeze_of_obeysSeparateFuse (weldLadder_obeys_succ G n)
 
 end GridConvention
 end BeingConvention

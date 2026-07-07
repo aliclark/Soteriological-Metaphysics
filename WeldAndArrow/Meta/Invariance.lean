@@ -172,6 +172,15 @@ theorem map_actual_iff (w : G.Weld) :
     (G.map f).Actual w ↔ G.Actual w :=
   Iff.rfl
 
+theorem map_exists_actual_iff :
+    (∃ w : (G.map f).Weld, (G.map f).Actual w) ↔
+      ∃ w : G.Weld, G.Actual w := by
+  constructor
+  · rintro ⟨w, hactual⟩
+    exact ⟨w, (G.map_actual_iff f w).mp hactual⟩
+  · rintro ⟨w, hactual⟩
+    exact ⟨w, (G.map_actual_iff f w).mpr hactual⟩
+
 theorem map_mountsAt_iff (b : G.Being) (c : G.Call) :
     (G.map f).MountsAt b c ↔ G.MountsAt b c :=
   Iff.rfl
@@ -864,6 +873,11 @@ theorem map_layerRow_obeys
     (layerRow (G.map f) l).ObeysSeparateFuse :=
   map_rowOf_obeys G f (.layer l)
 
+theorem map_weldRow_obeys
+    [∀ w : (G.map f).Weld, Decidable (AtBot ((G.map f).share w))] :
+    (weldRow (G.map f)).ObeysSeparateFuse :=
+  map_rowOf_obeys G f (.layer .weldGrain)
+
 theorem map_contentBeforeAfterRow_obeys_of_direction
     (h : ∃ a b : Contrib, Strict a b) :
     (contentBeforeAfterRow (G.map f)).ObeysSeparateFuse :=
@@ -882,6 +896,12 @@ theorem map_contentGridLensRow_obeys_of_liveTier
   contentGridLensRow_obeys_of_liveTier (G.map f)
     ((G.map_exists_liveTier_iff f).mpr h)
 
+theorem map_contentWeldRow_obeys_of_actual
+    (h : ∃ w : G.Weld, G.Actual w) :
+    (contentWeldRow (G.map f)).ObeysSeparateFuse :=
+  contentWeldRow_obeys_of_actual (G.map f)
+    ((G.map_exists_actual_iff f).mpr h)
+
 theorem map_beingsLadder_obeys
     [∀ w : (G.map f).Weld, Decidable (AtBot ((G.map f).share w))] :
     ∀ n, (beingsLadder (G.map f) n).ObeysSeparateFuse :=
@@ -890,6 +910,19 @@ theorem map_beingsLadder_obeys
 theorem map_beingsLadder_obeys_succ :
     ∀ n, (beingsLadder (G.map f) (n + 1)).ObeysSeparateFuse :=
   beingsLadder_obeys_succ (G.map f)
+
+theorem map_weldLadder_obeys
+    [∀ w : (G.map f).Weld, Decidable (AtBot ((G.map f).share w))] :
+    ∀ n, (weldLadder (G.map f) n).ObeysSeparateFuse :=
+  weldLadder_obeys (G.map f)
+
+theorem map_weldLadder_obeys_succ :
+    ∀ n, (weldLadder (G.map f) (n + 1)).ObeysSeparateFuse :=
+  weldLadder_obeys_succ (G.map f)
+
+theorem map_weldLadder_no_level_final :
+    ∀ n, ¬ (weldLadder (G.map f) n).Freeze :=
+  weldLadder_no_level_final (G.map f)
 
 end GridConvention
 end BeingConvention

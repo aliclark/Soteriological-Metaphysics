@@ -180,6 +180,57 @@ theorem signature_self_line_permitted :
 
 end AssumptionLocalWitnesses
 
+namespace InteriorDirectionNegative
+
+/-- A one-being carrier where call and response use the same two-point display
+    type, so the two faces can be transposed without changing their raw
+    unordered content. -/
+abbrev W := RawWeld Unit Bool Bool
+
+def callThenResponse : W := ⟨(), false, true⟩
+
+def responseThenCall : W := callThenResponse.transposeCR
+
+/-- The unordered residue of the two faces: either orientation of the same
+    false/true pair counts as the same displayed content. -/
+def unorderedCRContent (w : W) : Prop :=
+  w = callThenResponse ∨ w = responseThenCall
+
+def callResponseReading (w : W) : Prop :=
+  w = callThenResponse
+
+def responseCallReading (w : W) : Prop :=
+  w = responseThenCall
+
+theorem call_response_readings_disagree :
+    callResponseReading callThenResponse ∧
+      ¬ responseCallReading callThenResponse := by
+  constructor
+  · rfl
+  · intro h
+    cases h
+
+/-- No recovery function from unordered call/response content can determine
+    which face is the call. Reading "something arrives, then something
+    answers" is already a direction-projection at the smallest grain: by the
+    MMK 8 discipline, doer and deed are mutually dependent, neither prior.
+    The `RawWeld` field names remain useful display labels, not a recovered
+    before-and-after inside the weld. -/
+theorem no_interior_direction_recovery :
+    ¬ ∃ recover : (W → Prop) → W → Prop,
+        recover unorderedCRContent = callResponseReading ∧
+        recover unorderedCRContent = responseCallReading := by
+  rintro ⟨recover, hcall, hresponse⟩
+  have hcallHolds : recover unorderedCRContent callThenResponse := by
+    rw [hcall]
+    exact call_response_readings_disagree.left
+  have hresponseNot : ¬ recover unorderedCRContent callThenResponse := by
+    rw [hresponse]
+    exact call_response_readings_disagree.right
+  exact hresponseNot hcallHolds
+
+end InteriorDirectionNegative
+
 section AssumptionAnchors
 
 variable {Contrib : Type} [PreorderBot Contrib]
@@ -236,7 +287,9 @@ example (w : G.Weld) (h : G.HasSelfPoleIndex w) :
 #check Grid.transpose -- witness
 #check Grid.transpose_conditionsEither_iff -- witness
 #check Grid.DirectedConvention.transpose_deliveredTo_iff -- witness
+#check RawWeld.transposeCR -- witness
 #check AssumptionLocalWitnesses.no_direction_recovery_from_conditionsEither -- witness
+#check InteriorDirectionNegative.no_interior_direction_recovery -- witness
 -- TODO(assumptions): The fuller named witness is
 -- `DirectionNegative.no_direction_recovery_from_conditionsEither` downstream in
 -- `Meta.InvarianceNegative`; importing it here would violate the layer DAG.

@@ -112,11 +112,11 @@ strict comparison, while `AllStone` names the grid-wide absence of response
 function.
 
 `RowTag`, `RowClaim`, `rowLanguage`, and `rowOf` now generate the table's
-schema rows with pole-affirming semantics. `beforeAfterRow`, `beingsRow`, and
-`gridLensRow` are compatibility names for `.layer` tags in that schema. Their
-collapse and freeze checks remain hypothesis-free; their obedience theorems
-carry only the local `AtBot` stability needed for non-live genjo fusion. The
-full row list is Lean data as `tableOrder`.
+schema rows with pole-affirming semantics. `beforeAfterRow`, `beingsRow`,
+`gridLensRow`, and `weldRow` are compatibility names for `.layer` tags in that
+schema. Their collapse and freeze checks remain hypothesis-free; their
+obedience theorems carry only the local `AtBot` stability needed for non-live
+genjo fusion. The full row list is Lean data as `tableOrder`.
 
 `Consequences/Compounds.lean` records the compound-position decompositions as
 the same kind of paper-facing data plus `rfl` pins used by placements and the
@@ -137,11 +137,12 @@ The `contentLayerLanguage` keeps the convention-live side as the live-share
 condition and gives row-specific content to the denial side. Its obedience
 theorems are aptness-conditional by design: where the denial is simply true,
 the convention row should not be held. This track deliberately keeps
-`LayerClaim`: global denials such as all-stone or direction-void cannot be
-made pole-affirming by truth at a particular genjo weld. `RecordedUtterance`
-supplies the actuality needed for the content utterance checks, while
-`denied_misfits_live_offer` and `fox_utterance_misfits_live_offer` perform the
-same live-tier check for the schema language.
+`LayerClaim`: global denials such as all-stone, direction-void, no-live-tier,
+or no-actual-weld cannot be made pole-affirming by truth at a particular genjo
+weld. `RecordedUtterance` supplies the actuality needed for the content
+utterance checks, while `denied_misfits_live_offer` and
+`fox_utterance_misfits_live_offer` perform the same live-tier check for the
+schema language.
 
 The `reEmptied` transformer and `ladder` iterate the separate/fuse rule without
 adding a claim that quantifies over all levels. `ErrorFree`,
@@ -222,9 +223,26 @@ retyped": two grids agree on `ConditionsEither` and disagree on `conditions`, so
 the symmetric field structure does not recover direction. The physics and
 thermodynamics language motivates the reading, but no theorem depends on it.
 
+`InteriorDirectionNegative` is the same demotion one grain down. `RawWeld`
+keeps its named `call` and `response` fields because those names are useful
+display labels, just as `index` remains a useful projection after the
+self-pole demotion. `RawWeld.transposeCR` is only a smuggling detector on
+same-carrier call/response examples: unordered pair-content cannot recover
+which face is call, so the intra-weld arrow is not before-and-after furniture
+inside the weld.
+
 `BeingNegative` is the parallel countermodel for designation: one fine grid
 allows both merge and split macro readings, so a unique being-boundary is not
 recoverable from the grid data alone.
+
+`WeldNegative` lowers the same freedom witness from who-counts-as-one-being to
+what-counts-as-one-act. Its `WeldSegmentation` is deliberately local to the
+negative witness: segmentation is a diagnosis-time reading over completed
+welds, not a new `RawWeld` field and not a new `Grid` parameter. The layer
+route for `weldRow` follows from that choice. The weld-grain is a convention
+the lens can diagnose exactly like directed time, beings, and the grid-lens;
+a bare `RowTag` would have named a row without naming the convention whose
+freeze and collapse the row is supposed to catch.
 
 `ContentNegative` supplies the countermodels for the aptness hypotheses on
 content rows: an all-stone/no-live grid and the two-bottom direction-void
@@ -571,17 +589,20 @@ C.11 Meta/VerdictLedger.lean
 
 `generatorRecord` is the theorem-file verdict history rendered as data, not as
 a semantic interpretation of the generator. Its entries are episode-grained:
-Zahavi, the disposition/act cell, and the arrow are three retypes, so
-`generatorRecord_retype_count` is a check over the list rather than a stored
-multiplicity. The `anchors` field records the heterogeneity the paragraph
-needs: Zahavi and the disposition/act retype are prose-anchored, the arrow pins
-`DirectionNegative`, and the answered cases name their theorem anchors.
+Zahavi, the disposition/act cell, the arrow, and the intra-weld arrow are four
+retypes, so `generatorRecord_retype_count` is a check over the list rather
+than a stored multiplicity. The `anchors` field records the heterogeneity the
+paragraph needs: Zahavi and the disposition/act retype are prose-anchored, the
+arrow pins `DirectionNegative`, the intra-weld arrow pins
+`InteriorDirectionNegative`, and the answered cases name their theorem
+anchors.
 
-`restraintKind` is the legal coarsening. It projects the eight entries to the
+`restraintKind` is the legal coarsening. It projects the nine entries to the
 six display kinds, while `generatorRecord_restraintKind_seen_count` and
-`restraintKind_exhaustive_on_record` check the image. No `RowTag` is added:
-`generatorRecord_newCell_count` is zero, so the ledger records the generator's
-self-restraint without expanding the table.
+`restraintKind_exhaustive_on_record` check the image. The ledger still adds no
+new-cell entry: `generatorRecord_newCell_count` is zero, so it records the
+generator's self-restraint independently of the weld-grain row added by the
+convention-layer schema.
 
 `misFeed_entries_carry_decomposition` checks only the structural half of the
 falsifier: entries tagged as requiring a mis-feed decomposition carry one. The

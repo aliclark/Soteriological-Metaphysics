@@ -33,6 +33,7 @@ def contentLayerLanguage (G : Grid Contrib) : ClaimLanguage G where
     | .actTime _, .layerDenied .directedTime => DirectionVoid Contrib
     | .actTime _, .layerDenied .beings => G.AllStone
     | .actTime _, .layerDenied .gridLens => ∀ t : Tier G, ¬ Tier.hasLiveShare G t
+    | .actTime _, .layerDenied .weldGrain => ¬ ∃ w : G.Weld, G.Actual w
 
 def contentLayerRow (G : Grid Contrib) (l : ConventionLayer) : Distinction G :=
   { language := contentLayerLanguage G
@@ -47,6 +48,9 @@ def contentBeingsRow (G : Grid Contrib) : Distinction G :=
 
 def contentGridLensRow (G : Grid Contrib) : Distinction G :=
   contentLayerRow G .gridLens
+
+def contentWeldRow (G : Grid Contrib) : Distinction G :=
+  contentLayerRow G .weldGrain
 
 theorem contentLayerRow_obeys_of_direction
     (h : ∃ a b : Contrib, Strict a b) :
@@ -123,6 +127,30 @@ theorem contentLayerRow_obeys_of_liveTier
         · intro hnoLive
           exact False.elim (hnoLive liveTier hLiveTier)
 
+theorem contentLayerRow_obeys_of_actual
+    (h : ∃ w : G.Weld, G.Actual w) :
+    (contentLayerRow G .weldGrain).ObeysSeparateFuse := by
+  constructor
+  · intro t hLive
+    cases t with
+    | floor =>
+        cases hLive
+    | actTime _ =>
+        dsimp [contentLayerRow, contentLayerLanguage, ClaimLanguage.TrueAt]
+        intro hiff
+        exact (hiff.mp hLive) h
+  · intro t hNotLive
+    cases t with
+    | floor =>
+        constructor <;> intro _ <;> exact True.intro
+    | actTime _ =>
+        dsimp [contentLayerRow, contentLayerLanguage, ClaimLanguage.TrueAt]
+        constructor
+        · intro hLive
+          exact False.elim (hNotLive hLive)
+        · intro hnone
+          exact False.elim (hnone h)
+
 theorem contentBeforeAfterRow_obeys_of_direction
     (h : ∃ a b : Contrib, Strict a b) :
     (contentBeforeAfterRow G).ObeysSeparateFuse :=
@@ -137,6 +165,11 @@ theorem contentGridLensRow_obeys_of_liveTier
     (h : ∃ t : Tier G, Tier.hasLiveShare G t) :
     (contentGridLensRow G).ObeysSeparateFuse :=
   contentLayerRow_obeys_of_liveTier G h
+
+theorem contentWeldRow_obeys_of_actual
+    (h : ∃ w : G.Weld, G.Actual w) :
+    (contentWeldRow G).ObeysSeparateFuse :=
+  contentLayerRow_obeys_of_actual G h
 
 /-- An actual utterance of the beings-denial cannot fit an act-time tier:
     the utterer's actual response supplies a non-stone witness. -/

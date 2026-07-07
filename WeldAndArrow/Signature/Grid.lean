@@ -18,6 +18,37 @@ structure RawWeld (Being Call Response : Type) where
   call     : Call
   response : Response
 
+namespace RawWeld
+
+/-- Swap the call and response faces of a weld when they use the same carrier.
+    This changes no signature fields; it is a display-side involution for
+    checking whether an interior call→response arrow has been smuggled in. -/
+def transposeCR {Being CR : Type} (w : RawWeld Being CR CR) :
+    RawWeld Being CR CR :=
+  ⟨w.agent, w.response, w.call⟩
+
+@[simp]
+theorem transposeCR_agent {Being CR : Type} (w : RawWeld Being CR CR) :
+    w.transposeCR.agent = w.agent :=
+  rfl
+
+@[simp]
+theorem transposeCR_call {Being CR : Type} (w : RawWeld Being CR CR) :
+    w.transposeCR.call = w.response :=
+  rfl
+
+@[simp]
+theorem transposeCR_response {Being CR : Type} (w : RawWeld Being CR CR) :
+    w.transposeCR.response = w.call :=
+  rfl
+
+@[simp]
+theorem transposeCR_transposeCR {Being CR : Type} (w : RawWeld Being CR CR) :
+    w.transposeCR.transposeCR = w :=
+  rfl
+
+end RawWeld
+
 /-- The whole signature, bundled. -/
 structure Grid (Contrib : Type) [PreorderBot Contrib] where
   /- Reading and motivation: Identification/Commentary.lean, C.1. -/
