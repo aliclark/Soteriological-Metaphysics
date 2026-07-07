@@ -252,8 +252,6 @@ def rePitch (_before : Config Contrib) (received : G.Weld) : Config Contrib :=
 def IsShareDrop (before : Config Contrib) (received : G.Weld) : Prop :=
   Strict (G.share received) before.tendency
 
-/- Reading and motivation: Identification/Commentary.lean, C.1. -/
-
 /- --------------------------------------------------------------------------
    Delivery structure and symmetric closure
 -------------------------------------------------------------------------- -/
@@ -378,8 +376,6 @@ def LandsWithShareDrop
 /- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def HasShareDropLanding (before : Config Contrib) (deed : G.Weld) : Prop :=
   ∃ reception, LandsWithShareDrop G before deed reception
-
-/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 
 /- Reading and motivation: Identification/Commentary.lean, C.1. -/
 

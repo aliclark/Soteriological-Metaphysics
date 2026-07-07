@@ -20,8 +20,6 @@ namespace DirectedConvention
 namespace BeingConvention
 
 /- Reading and motivation: Identification/Commentary.lean, C.1. -/
-
-/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 abbrev MountsAt (b : G.Being) (c : G.Call) : Prop := G.MountsAt b c
 
 /-- Re-rooted name for mounting at some call. -/

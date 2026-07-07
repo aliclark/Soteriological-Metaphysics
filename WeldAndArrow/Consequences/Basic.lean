@@ -123,8 +123,6 @@ theorem not_stone_of_responsiveTerminus_of_call
   G.liveTerminus_not_stone b (G.responsiveTerminus_live_of_call b c h)
 
 /- Reading and motivation: Identification/Commentary.lean, C.2. -/
-
-/- Reading and motivation: Identification/Commentary.lean, C.2. -/
 theorem rePitch_tendency_eq_share
     (before : Config Contrib) (received : G.Weld) :
     (G.rePitch before received).tendency = G.share received :=

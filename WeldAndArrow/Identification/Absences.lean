@@ -252,7 +252,7 @@ theorem noSafeStage_anchor
     {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib}
     {d : Grid.Distinction G} (h : Grid.ErrorFree G d) :
     ¬ ∃ n, (ladder d n).Freeze :=
-  no_final_level (G := G) h
+  no_final_level_of_errorFree (G := G) h
 
 /-- The prudential-privilege absence is owned as theorem in the witness module,
     not promoted into a new table row. -/

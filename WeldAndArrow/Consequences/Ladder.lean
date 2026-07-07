@@ -132,14 +132,14 @@ theorem ladder_errorFree_of_errorFree
   intro n
   exact Grid.errorFree_of_obeys G (ladder_obeys_of_errorFree (G := G) h n)
 
-theorem no_level_final {d : Distinction G} (h : d.ObeysSeparateFuse) :
+theorem no_level_final_of_obeys {d : Distinction G} (h : d.ObeysSeparateFuse) :
     ∀ n, ¬ (ladder d n).Freeze := by
   intro n
   exact Grid.not_freeze_of_obeysSeparateFuse (ladder_obeys (G := G) h n)
 
 /-- Emptiness-sickness has no final level to name: with an error-free seed,
     neither level zero nor any positive re-emptying level can freeze. -/
-theorem no_final_level {d : Distinction G} (h : ErrorFree G d) :
+theorem no_final_level_of_errorFree {d : Distinction G} (h : ErrorFree G d) :
     ¬ ∃ n, (ladder d n).Freeze := by
   rintro ⟨n, hfreeze⟩
   cases n with

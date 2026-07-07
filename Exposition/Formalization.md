@@ -481,7 +481,7 @@ next distinction from the previous one. `reEmptied_obeysSeparateFuse` proves
 that obedience propagates, while `ErrorFree`, `errorFree_of_obeys`,
 `reEmptied_obeys_of_errorFree`, `ladder_obeys_of_errorFree`, and
 `ladder_errorFree_of_errorFree` show the stronger refutation-only route above
-an error-free seed. `no_level_final`, `no_final_level`, and
+an error-free seed. `no_level_final_of_obeys`, `no_final_level_of_errorFree`, and
 `ladder_collapse_self_refuting` rule out freeze and collapse at generated
 levels. `beingsLadder`, `beforeAfterLadder`, `intraWeldArrowLadder`,
 `gridLensLadder`, `weldLadder`, and `doerDeedLadder` are schema seeds; their
@@ -855,6 +855,8 @@ manufactured for what the paper leaves ceded.
 with one being, one call, one response, total response, grade `1`, and
 `conditions _ _ := True`. The checked examples show:
 
+- `w_waaAppropriates`: the self-line witness weld carries
+  `Grid.WaaAppropriates`.
 - `selfLine_conditions_self`: `conditions w w` holds.
 - `selfLine_landsAt_self`: `Grid.DirectedConvention.LandsAt selfLineGrid w w`
   holds.

@@ -247,6 +247,7 @@ example (w : G.Weld) (h : G.HasSelfPoleIndex w) :
 /- B.2 No PreorderTop. -/
 #check PreorderBot -- proof
 #check AtBot -- proof
+-- The strong self-conditioning tag is shelved here as the no-top asymptote.
 #check Grid.DirectedConvention.BeingConvention.BeingCoarsening.StrongSelfConditioningTag -- comment
 #check AssumptionLocalWitnesses.nat_preorderBot_has_no_top -- witness
 

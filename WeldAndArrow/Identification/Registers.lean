@@ -4,7 +4,7 @@
   Disclaimer 5 register sorting
 ================================================================================
 
-Reading and motivation: Identification/Commentary.lean.
+Reading and motivation: Identification/Commentary.lean, C.1.
 -/
 
 import WeldAndArrow.Identification.Placements

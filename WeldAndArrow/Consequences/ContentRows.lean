@@ -256,7 +256,7 @@ theorem contentBeingsLadder_obeys_of_being
 theorem contentBeingsLadder_no_level_final_of_being
     (h : ∃ b : G.Being, ¬ G.Stone b) :
     ∀ n, ¬ (contentBeingsLadder G n).Freeze :=
-  no_level_final (G := G) (contentBeingsRow_obeys_of_being G h)
+  no_level_final_of_obeys (G := G) (contentBeingsRow_obeys_of_being G h)
 end GridConvention
 end BeingConvention
 end DirectedConvention

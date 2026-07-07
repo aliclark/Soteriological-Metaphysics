@@ -40,6 +40,8 @@ motivation around those inputs.
 `Config` is the formal place where "nothing self-indexed is stored" is enforced:
 it carries only a `Contrib`-valued tendency and no owner, being, or weld field.
 This is the type-level version of the paper's internal mis-feed discipline.
+`Identification/Registers.lean` records the register table for the same sorting:
+field facts are carried, weld facts are spent, and grade statements are stated.
 
 Seeds, potency, and environs talk in the paper are read here as field-side
 delivery lines (`conditions`) and candidate receptions, not as capacities stored
@@ -103,7 +105,7 @@ only the abstract interface; this commentary retains the textual motivation.
 
 C.2 Consequences/Basic.lean, Consequences/Taxonomy.lean,
     Consequences/Compounds.lean, Consequences/Ladder.lean, and
-    Consequences/ContentRows.lean
+    Consequences/ContentRows.lean; Identification/Ownership.lean
 
 The consequence layer proves neutral facts about the definitions: function/share
 facts, share-drop obstruction at the pole, delivery and landing projections, and
@@ -195,8 +197,8 @@ adding a claim that quantifies over all levels. `ErrorFree`,
 refutation-only route by which the implemented `finalBelow` side lets the
 ladder climb without an added stability premise above the seed. The "completed
 ladder" remains an instructive absence: level quantification appears only in
-meta-theorems such as `ladder_obeys`, `no_level_final`, and the existential
-guard `no_final_level`. Concrete witnesses such as
+meta-theorems such as `ladder_obeys`, `no_level_final_of_obeys`, and the
+existential guard `no_final_level_of_errorFree`. Concrete witnesses such as
 `shareZero_not_functionZero_witness`, `rung_not_pole_witness`,
 `backsliding_witness`, `backsliding_rePitchSequence_witness`,
 `standing_does_not_determine_dated`, `subitism_possibility_witness`,
@@ -241,7 +243,7 @@ agent-side checks keep the worked case away from both share-zero and the
 pole-class. `thirdArrival_not_waaMismatchLive` reuses the terminus-response
 four-truth theorem: the retired absence is kept as the dukkha-free check. The
 fourth-truth, no-safe-stage, and prudential-privilege anchors cite
-`waaPathOught_conditional`, `no_final_level`, and
+`waaPathOught_conditional`, `no_final_level_of_errorFree`, and
 `PrudentialPrivilegeNegative.not_prudentialPrivilege`. The declined case,
 why-calls-land, and no-measure entries deliberately have only data/status pins:
 their missing theorem is the content the paper assigns them.

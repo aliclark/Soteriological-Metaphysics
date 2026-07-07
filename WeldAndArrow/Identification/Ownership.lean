@@ -539,7 +539,7 @@ def selfLineGrid : Grid Nat where
 def w : selfLineGrid.Weld :=
   ⟨Being.one, Call.call, Response.response⟩
 
-theorem w_has_live_share : selfLineGrid.WaaAppropriates w := by
+theorem w_waaAppropriates : selfLineGrid.WaaAppropriates w := by
   intro hbot
   cases hbot
 
@@ -551,7 +551,7 @@ theorem selfLine_landsAt_self : Grid.DirectedConvention.LandsAt selfLineGrid w w
 
 theorem selfLine_waaOwnershipFace_self :
     Grid.DirectedConvention.WaaOwnershipFace selfLineGrid w w :=
-  ⟨⟨True.intro, rfl⟩, w_has_live_share⟩
+  ⟨⟨True.intro, rfl⟩, w_waaAppropriates⟩
 
 end SelfLineWitness
 

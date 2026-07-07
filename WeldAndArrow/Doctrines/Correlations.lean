@@ -42,6 +42,8 @@ abbrev CoarseningBoundary {Macro : Type} (κ : BeingCoarsening G Macro) :
    Ten Bulls
 ============================================================================== -/
 
+-- TODO(prose): verify Kuòān verse locus.
+
 /-- The ten pictures, as data. The interpretation lives in the predicates
     below and the commentary. -/
 inductive BullStage

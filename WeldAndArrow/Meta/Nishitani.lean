@@ -63,7 +63,7 @@ v2's Part III (the syntactic `Position` ladder) is **superseded**:
 | totality of `Field.polarity`            | totality of `language.Holds`               |
 | `SelfNature`, `AbsoluteNothingEntity`   | `Distinction.Freeze` ("survives the floor") |
 | `no_reified_absolute_nothing`           | `Grid.not_freeze_of_obeysSeparateFuse`     |
-| `Position` ladder, `no_final_ultimate`  | `ladder`, `no_final_level`                 |
+| `Position` ladder, `no_final_ultimate`  | `ladder`, `no_final_level_of_errorFree`    |
 | rung-4 ineffability                     | floor trivialization (`words_idle_at_floor`) |
 | `provisionally_designated_middle`       | `ObeysSeparateFuse` + `ladder_obeys`       |
 | (unguarded flank in v1/v2)              | `Collapse`, `ladder_collapse_self_refuting` |
@@ -78,7 +78,8 @@ At `Grid` level: `Grid Contrib`, `G.Weld`, `G.Being`, `G.Stone`,
 
 At `GridConvention` level: `LadderSide`, `reEmptied`, `ladder`,
 `ladder_obeys`, `ladder_errorFree_of_errorFree`,
-`ladder_collapse_self_refuting`, `no_level_final`, `no_final_level`,
+`ladder_collapse_self_refuting`, `no_level_final_of_obeys`,
+`no_final_level_of_errorFree`,
 `beingsRow`, `beingsLadder_no_level_final`, `beforeAfterRow`,
 `beforeAfterLadder_no_level_final`, `intraWeldArrowRow`,
 `intraWeldArrowLadder_no_level_final`, `weldRow`,
@@ -142,12 +143,12 @@ def Sunyata (d : Distinction G) : Prop :=
     for free — 空空 costs nothing after the first emptying. -/
 theorem sunyata_of_errorFree {d : Distinction G} (h : ErrorFree G d) :
     Sunyata d :=
-  no_final_level (G := G) h
+  no_final_level_of_errorFree (G := G) h
 
 /-- Alternatively, from full obedience of the seed. -/
 theorem sunyata_of_middle {d : Distinction G} (h : d.ObeysSeparateFuse) :
     Sunyata d :=
-  fun ⟨n, hf⟩ => no_level_final (G := G) h n hf
+  fun ⟨n, hf⟩ => no_level_final_of_obeys (G := G) h n hf
 
 /-- 空空 — the emptiness of emptiness, rebased: every re-emptied level is
     itself error-free, hence itself empty-able. In v1 this was a hypothesis
@@ -242,7 +243,7 @@ theorem nihilist_thesis_is_something (d : Distinction G) :
 theorem nihilist_refuted_at_every_rung {d : Distinction G}
     (h : ErrorFree G d) :
     ∀ n, ¬ Absolutized (ladder d n) :=
-  fun n hf => no_final_level (G := G) h ⟨n, hf⟩
+  fun n hf => no_final_level_of_errorFree (G := G) h ⟨n, hf⟩
 
 /-! ## Instantiations at the concrete rows -/
 
