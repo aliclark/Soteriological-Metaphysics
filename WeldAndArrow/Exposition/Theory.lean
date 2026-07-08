@@ -18,11 +18,15 @@ The development is Lean-first: a layered library (Signature → Consequences →
 
 ### Not Nothing
 
-Per Nishitani — absolute non-being is not a privative void but lies beyond the being/non-being distinction. What stands in its place is the *provisionally-designated middle*.
+Per Nishitani — absolute non-being is not a privative void, but beyond being/non-being distinction.
+
+### Śūnyatā
+
+Why not leave it at Nishitani? It would be a mistake of analysis: "beyond being/non-being" is itself a designation, and analysis, wherever applied, finds no own-being in its designatum — the ultimate included. Per Nāgārjuna — whatever is dependently originated is emptiness, and that, being a dependent designation, is itself the middle path (*MMK* 24.18). And emptiness is not exempt from the analysis that produced it: śūnyatā, analysed, is empty (空空). Every stated ultimate is a prajñapti — a finding, not a caution.
 
 ### Provisionally-designated middle
 
-Jizang — the ultimate is the self-emptying floor; every level is conventional (Nāgārjuna's *Mūlamadhyamakakārikā*, MMK 24: emptiness = dependent origination = conventional designation), and the two-truths distinction is itself conventional — Jizang's fourfold two truths (四重二諦), each pair re-emptied as merely conventional at the next level, so no level is a final floor. This is **genjō**, the provisional middle: manifestation, always going out into a particular case.
+Why not leave it at Nāgārjuna? Because 空空 stated once settles a fact but not a structure. "Emptiness is empty" is itself a designation, so the analysis applies again — and again — and nothing in a single application determines what the regress is: vicious, terminating at some fifth resting point, or benign. Per Jizang — the fourfold two truths (四重二諦) is the structure: one operation iterated, in which each level's stated ultimate — including the two-truths sorting itself — is, definitionally, the next level's conventional content; no level is a final floor; and the terminus is not a further negation but 言忘慮絶, the tier at which words do no separating work. The regress is uniform and benign — a theorem, not a hope. This is **genjō**, the provisional middle: manifestation, always going out into a particular case.
 
 Distinct from it, and never equated with it, is the **non-attaining middle** at the floor. Read Linji's 無位真人 along its own seam: 無位 (no rank) is the floor-face — no metaphysical rank, anātman; 真人…出入 (the true person going in and out) is the *acting*; and the whole compound 無位真人 is the weld of the two — shushō-ittō, the true person going in and out. The non-attaining middle is the 無位 alone — **shō**: realization as anātman, agential only because welded, never a still attainment. It is *not* the whole true-person, which is the weld (reading 無位真人 as a rank one rests at is exactly the reification Linji shoves off as 乾屎橛 — the more common reading takes the shit-stick as shock-deflation of the *question* itself rather than of rank-reification specifically; the rank-reading is compatible with it and is the one used here). Two middles, then: genjō provisional, shō non-attaining. The system turns on keeping them apart — but *at act-time*, and by the same separate/fuse rule that governs everything here (stated as a rule below): the two-middles distinction is itself a conventional-tier diagnosis. It separates under act-time diagnosis, where *which middle?* is live, and fuses at the floor and at genjō. "Keeping them apart" is an act-time imperative, not a final floor-claim.
 
