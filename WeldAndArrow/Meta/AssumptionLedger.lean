@@ -236,12 +236,18 @@ def assumptionLedger : List AssumptionEntry := [
     ] },
   { «section» := .declined
     number := 6
-    title := "Standing effectiveness is display; full enlightenment is the two-obscurations faith-object"
-    statement := "The operational, assertable effectiveness content is per-occurrence: `WaaEffectiveOccurrence` states an actual pole-deed landing as a share-drop against a live prior tendency. The descriptive universal `WaaEffectiveTerminus` remains legal as run-display and direct-path hypothesis, but no estimator from actual-run response/share data decides it. The sealed-regime route is vacuous and is fenced from the enacted form by `WaaEffectivenessEnacted` and `not_effectivenessEnacted_of_undelivered`. Testimonial `WaaFullyEnlightened` additionally requires `WaaNoDelusion`."
+    title := "The enlightenment ladder names standing and enacted vacuity"
+    statement := "The operational, assertable effectiveness content is per-occurrence: `WaaEffectiveOccurrence` states an actual pole-deed landing as a share-drop against a live prior tendency. The descriptive universal `WaaEffectiveTerminus` remains legal as run-display and direct-path hypothesis, but no estimator from actual-run response/share data decides it. Standing `WaaFullyEnlightened` adds positive act-time `WaaNoDelusion` while permitting sealed and silent pratyekabuddha faces. `WaaFullyEnlightenedEnacted` adds both an effective deed witness and faithful, fitting act-time speech; the two strictness theorems check the ladder to the samyaksambuddha rung."
     anchors := [
       downProof ``Grid.DirectedConvention.WaaEffectiveOccurrence,
       downProof ``Grid.DirectedConvention.WaaEffectivenessEnacted,
       downProof ``Grid.DirectedConvention.not_effectivenessEnacted_of_undelivered,
+      downProof ``Grid.DirectedConvention.WaaFullyEnlightened,
+      downProof ``Grid.DirectedConvention.WaaFullyEnlightenedEnacted,
+      downWitness ``FaithNegative.effectiveTerminus_strictly_weaker_than_fullyEnlightened,
+      downWitness ``FaithNegative.fullyEnlightened_strictly_weaker_than_enacted,
+      downWitness ``FaithNegative.buddha_enacted_faces_absent_silent,
+      downWitness ``FaithNegative.EnactedWitness.fullyEnlightenedEnacted,
       downWitness ``EffectiveTerminusNegative.actual_run_data_underdetermines_effectiveTerminus,
       downProof ``Grid.DirectedConvention.BeingConvention.GridConvention.waa_effective_occurrence_voice_assertable,
       downProof ``Grid.DirectedConvention.BeingConvention.GridConvention.waa_standing_effectiveness_voice_displayable

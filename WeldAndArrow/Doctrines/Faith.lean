@@ -9,11 +9,13 @@ derives neither its factivity nor occurrence fidelity. Testimony proceeds only
 when the held faith-object is factive, the particular record is faithful, and
 the offer is conventional. A floor-offered record is error-free only vacuously:
 it transmits no content through this route because the act-time premise fails.
+The standing two-obscurations bundle admits the sealed-and-silent pratyeka
+face; the enacted bundle adds witnessed deed and speech for the samyak face.
 
 Reading and motivation: Identification/Commentary.lean, C.4.
 -/
 
-import WeldAndArrow.Doctrines.Sraddha
+import WeldAndArrow.Doctrines.Shusho
 
 namespace WAA
 
@@ -83,6 +85,67 @@ structure WaaFullyEnlightened
     (b : G.Being) : Prop where
   effective : WaaEffectiveTerminus G b
   noDelusion : WaaNoDelusion G Fidelity b
+
+/-- A witnessed faithful sentence: an attributed, faithful record offered at
+    act-time and fitting there. This names the non-vacuous speech content that
+    standing no-delusion leaves open when no faithful utterances occur. -/
+def WaaFaithfulSpeechEnacted
+    (Fidelity : RecordedUtterance G (waaPathClaimLanguage G) → Prop)
+    (b : G.Being) : Prop :=
+  ∃ u : RecordedUtterance G (waaPathClaimLanguage G),
+    u.weld.agent = b ∧ Fidelity u ∧
+      ∃ w : G.Weld, u.offeredAt = Tier.actTime w ∧ u.FitsOfferedTier
+
+/-- If the standing speech conditional has an empty faithful domain, its
+    enacted speech witness is impossible. This is the silent-face fence. -/
+theorem not_faithfulSpeechEnacted_of_no_faithful_utterance
+    {Fidelity : RecordedUtterance G (waaPathClaimLanguage G) → Prop}
+    {b : G.Being}
+    (hnone : ∀ u : RecordedUtterance G (waaPathClaimLanguage G),
+      u.weld.agent = b → Fidelity u → False) :
+    ¬ WaaFaithfulSpeechEnacted G Fidelity b := by
+  rintro ⟨u, hagent, hfaithful, _witness⟩
+  exact hnone u hagent hfaithful
+
+/-- Enacted full enlightenment witnesses both conditionals of the standing
+    bundle. `deedWitness` supplies an own effective occurrence; `speechWitness`
+    supplies faithful, fitting act-time testimony. The standing bundle permits
+    the sealed and silent pratyekabuddha face, while this enacted rung names the
+    samyaksambuddha who touches and teaches. -/
+structure WaaFullyEnlightenedEnacted
+    (Fidelity : RecordedUtterance G (waaPathClaimLanguage G) → Prop)
+    (b : G.Being) : Prop where
+  standing : WaaFullyEnlightened G Fidelity b
+  deedWitness : WaaEffectivenessEnacted G b
+  speechWitness : WaaFaithfulSpeechEnacted G Fidelity b
+
+/-- Standing full enlightenment always contains effective termination. -/
+theorem waaEffectiveTerminus_of_fullyEnlightened
+    {Fidelity : RecordedUtterance G (waaPathClaimLanguage G) → Prop}
+    {b : G.Being} (h : WaaFullyEnlightened G Fidelity b) :
+    WaaEffectiveTerminus G b :=
+  h.effective
+
+/-- The enacted top rung forgets to the standing two-obscurations bundle. -/
+theorem waaFullyEnlightened_of_fullyEnlightenedEnacted
+    {Fidelity : RecordedUtterance G (waaPathClaimLanguage G) → Prop}
+    {b : G.Being} (h : WaaFullyEnlightenedEnacted G Fidelity b) :
+    WaaFullyEnlightened G Fidelity b :=
+  h.standing
+
+/-- The enacted top rung exposes its delivered effective occurrence. -/
+theorem waaEffectivenessEnacted_of_fullyEnlightenedEnacted
+    {Fidelity : RecordedUtterance G (waaPathClaimLanguage G) → Prop}
+    {b : G.Being} (h : WaaFullyEnlightenedEnacted G Fidelity b) :
+    WaaEffectivenessEnacted G b :=
+  h.deedWitness
+
+/-- The enacted top rung exposes its faithful, fitting act-time sentence. -/
+theorem waaFaithfulSpeechEnacted_of_fullyEnlightenedEnacted
+    {Fidelity : RecordedUtterance G (waaPathClaimLanguage G) → Prop}
+    {b : G.Being} (h : WaaFullyEnlightenedEnacted G Fidelity b) :
+    WaaFaithfulSpeechEnacted G Fidelity b :=
+  h.speechWitness
 
 /-- Factive faith in the full bundle exposes its no-delusion conjunct. -/
 theorem waaNoDelusion_of_factive_faith

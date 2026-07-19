@@ -383,6 +383,22 @@ the conjunct boundary is load-bearing. `FaithNegative.aklishta_ajnana_witness`
 exhibits the exact joint: effective termination with a misfitting faithful
 utterance under total fidelity.
 
+Both standing conjuncts retain legitimate vacuous faces. Sealed own-delivery
+can satisfy the material shortfall conditional, and absence of faithful speech
+can satisfy positive act-time no-delusion because no act-time instance is
+offered. This doubly vacuous standing satisfier is not an embarrassment to be
+patched with existential import: it is the pratyekabuddha, fully awakened while
+neither touching nor teaching in the represented regime. The further
+`WaaFullyEnlightenedEnacted` rung names the samyaksambuddha by witnessing both
+conditionals: `WaaEffectivenessEnacted` supplies a delivered closing deed and
+`WaaFaithfulSpeechEnacted` supplies faithful, fitting act-time testimony.
+`FaithNegative.effectiveTerminus_strictly_weaker_than_fullyEnlightened` and
+`FaithNegative.fullyEnlightened_strictly_weaker_than_enacted` check the two
+strict joints; `FaithNegative.EnactedWitness.fullyEnlightenedEnacted` shows the
+top rung is genuinely inhabited. Vacuity thereby becomes the formal difference
+between standing and enacted buddhahood rather than a defect in either
+definition.
+
 The positive no-delusion grounding matches the existing MN 58-shaped
 machinery: truth is act-time `TrueAt`, benefit is shortfall closure for a live
 aversion, and timeliness is fitting the offered tier. Constructively, "never
@@ -432,10 +448,12 @@ delivery facts around a terminus, not two being-natures stored in it.
 a live prior tendency. The standing universal survives only as display and
 direct-path hypothesis; `WaaEffectivenessEnacted` and
 `not_effectivenessEnacted_of_undelivered` fence the sealed-regime vacuity from
-an enacted occurrence. The separate faith-object is the two-obscurations
-`WaaFullyEnlightened` bundle. `EffectiveTerminusNegative` turns the old prose
-warning into a collision: changing only `conditions` leaves actual
-response/share data fixed while flipping `WaaEffectiveTerminus`.
+an enacted occurrence and provide the deed component of
+`WaaFullyEnlightenedEnacted`. The separate standing faith-object is the
+two-obscurations `WaaFullyEnlightened` bundle; the enacted top adds its named
+speech witness. `EffectiveTerminusNegative` turns the old prose warning into a
+collision: changing only `conditions` leaves actual response/share data fixed
+while flipping `WaaEffectiveTerminus`.
 
 C.5 Doctrines/Deliberation.lean
 
@@ -649,21 +667,21 @@ effectiveness ladder. This is the same fox-guard for
 sentient and insentient adaptive cases: a standing rank on a responder is the
 freeze, while a pole-typed landing is spent per occurrence.
 
-Pratyekabuddha is typed at rung 2 as a regime fact with two faces, not as a
-second attainment. Face A is uncooperative delivery: a deed is delivered but no
-share drop lands, so `OrthogonalityNegative.waaEffectiveTerminus_stronger_than_terminus`
-shows failure of `WaaEffectiveTerminus`. Face B is sealed delivery:
-`waaEffectiveTerminus_of_responsiveTerminus_of_undelivered` makes full
-effectiveness hold vacuously when no own deed is delivered at all; the enacted
-form fails by `not_effectivenessEnacted_of_undelivered`, paralleling the
-empty-domain separations in `ContentNegative`. The samyaksambuddha testimonial
-reading additionally requires `WaaNoDelusion`; effectiveness alone is not the
-faith-object. The guard clause is
-therefore strict: the model hosts a non-teaching terminus as a regime fact,
-never as a being who opts out of being read. This is the taxonomy-freeze cell
-for "the private buddha declining his own occurrence at others' Row 2" read
-without the freeze: non-teaching is the field declining to deliver, never the
-being withdrawing object-axis standing.
+At the enlightenment joint, pratyekabuddha is the sealed-and-silent standing
+bundle, not a second attainment. `buddha_waaFullyEnlightened_silent` combines
+vacuous effective closure for undelivered own deeds with vacuous no-delusion
+under `silentFidelity`; `buddha_not_waaFullyEnlightenedEnacted_silent` shows
+that it lacks the witnessed top rung, while
+`buddha_enacted_faces_absent_silent` checks both missing existential faces.
+The uncooperative delivered case remains a lower negative boundary: when a
+deed arrives but no share drop lands,
+`OrthogonalityNegative.waaEffectiveTerminus_stronger_than_terminus` shows that
+even effective termination fails. Samyaksambuddha is instead
+`WaaFullyEnlightenedEnacted`, where a delivered effective occurrence and a
+faithful fitting act-time sentence witness the two standing conditionals.
+Non-teaching is still a field fact, never a being who opts out of being read:
+the private-buddha freeze is avoided because the model records what was or was
+not delivered, not a refusal of object-axis standing.
 
 The older arhat anchors remain and have region duals:
 `identityView_excluded_at_arhatFiber`, `conceit_excluded_at_arhatFiber`,

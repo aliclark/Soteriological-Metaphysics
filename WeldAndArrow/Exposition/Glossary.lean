@@ -470,17 +470,24 @@ def glossary : List GlossaryEntry := [
     seeAlso := ["buddha-side shortfall", "assert/display"] },
   { term := "standing enlightenment"
     kind := .coinage .theorems
-    gloss := "Standing full enlightenment is the two-obscurations faith-object: effective termination together with positive act-time truth in faithfully recorded speech. FaithNegative separates the conjuncts."
+    gloss := "Standing full enlightenment is the two-obscurations faith-object: effective termination together with positive act-time truth in faithfully recorded speech. Its sealed-and-silent face names pratyekabuddha standing; FaithNegative separates both it from mere effectiveness and from the enacted top."
     anchors := [``Grid.DirectedConvention.WaaFullyEnlightened,
       ``Grid.DirectedConvention.WaaNoDelusion,
       ``FaithNegative.effectiveTerminus_not_waaFullyEnlightened]
     seeAlso := ["effective terminus"] },
   { term := "enacted effectiveness"
     kind := .coinage .theorems
-    gloss := "Enacted effectiveness is the non-vacuous effective-terminus display plus at least one per-occurrence effective landing. It fences sealed-regime vacuity from earned occurrence."
+    gloss := "Enacted effectiveness is the non-vacuous effective-terminus display plus at least one per-occurrence effective landing. It fences sealed-regime vacuity from earned occurrence and supplies the deed component of enacted full enlightenment."
     anchors := [``Grid.DirectedConvention.WaaEffectivenessEnacted,
       ``Grid.DirectedConvention.not_effectivenessEnacted_of_undelivered]
     seeAlso := ["effective terminus", "shushō-ittō"] },
+  { term := "enacted full enlightenment"
+    kind := .coinage .theorems
+    gloss := "Enacted full enlightenment is the samyaksambuddha rung: the standing two-obscurations bundle together with a delivered effective occurrence and faithful, fitting act-time speech. The sealed-and-silent standing face witnesses strictness below it."
+    anchors := [``Grid.DirectedConvention.WaaFullyEnlightenedEnacted,
+      ``FaithNegative.fullyEnlightened_strictly_weaker_than_enacted,
+      ``FaithNegative.EnactedWitness.fullyEnlightenedEnacted]
+    seeAlso := ["standing enlightenment", "enacted effectiveness"] },
   { term := "backsliding theorem"
     kind := .coinage .theorems
     gloss := "The backsliding theorem says a share-drop event cannot be held as a stored attainment. Later live welds are possible because nothing self-indexed is carried between acts."
@@ -894,7 +901,7 @@ def seeAlsoTargetsEarlierFrom (seen : List String) :
 def seeAlsoTargetsEarlier : Bool :=
   seeAlsoTargetsEarlierFrom [] glossary
 
-example : glossary.length = 151 := rfl
+example : glossary.length = 152 := rfl
 
 set_option maxRecDepth 100000 in
 theorem glossary_terms_nodup : glossaryTerms.Nodup := by

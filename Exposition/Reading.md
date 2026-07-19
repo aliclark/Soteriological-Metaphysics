@@ -192,8 +192,8 @@ before.tendency` and not `before.tendency ≼ share received`.
 - `EnvironsLine` and `ShareDropLine`.
 - `ShortfallClosedAt`, `WaaEffectiveTerminus`, `WaaAversionContext`, and
   `WaaPathOught`.
-- `WaaPathClaim`, `Factive`, `WaaNoDelusion`, `WaaFullyEnlightened`, and
-  `WaaFaithOught`.
+- `WaaPathClaim`, `Factive`, `WaaNoDelusion`, `WaaFullyEnlightened`,
+  `WaaFaithfulSpeechEnacted`, `WaaFullyEnlightenedEnacted`, and `WaaFaithOught`.
 - `WaaReportFace`, `WaaOwnershipFace`, `WaaVacuousOwnershipFace`, and
   `WaaDiachronicWhose`.
 
@@ -542,25 +542,33 @@ regime face: if no own deed is delivered, the shortfall-closure conjunct holds
 vacuously for any responsive terminus.
 `WaaPoleDeed` and `WaaEffectiveOccurrence` name the per-occurrence
 shusho-itto face; `WaaEffectivenessEnacted` adds a non-vacuous witness to the
-standing display. `not_effectivenessEnacted_of_undelivered` fences sealed-delivery vacuity,
-and `EffectiveTerminusNegative.no_effectiveTerminus_recovery_from_run` checks
-that actual-run response/share data do not decide the standing universal.
+standing display and supplies the deed component of enacted full enlightenment.
+`not_effectivenessEnacted_of_undelivered` fences sealed-delivery vacuity, and
+`EffectiveTerminusNegative.no_effectiveTerminus_recovery_from_run` checks that
+actual-run response/share data do not decide the standing universal.
 
 **Faith.** `WaaPathClaim` packages the local claim that a prior configuration,
 deed, and reception satisfy `ShortfallClosedAt`; `waaPathClaimLanguage` is
 silent at the floor and gives that condition at act-time. `Factive` types the
 identity leap, while per-utterance `Fidelity` types an uncorrupted occurrence.
-`WaaNoDelusion` excludes conventional misfits from faithful attributed speech,
-and `WaaFullyEnlightened` bundles it with `WaaEffectiveTerminus` as the
-two-obscurations faith-object. `waa_no_misfit_of_stance` supplies the negative
-verdict; `waa_says_true_at_actTime_of_stance` and
-`waa_says_true_of_faith` obtain fit only with an explicit act-time offer.
+`WaaNoDelusion` states the licensed claim positively: every faithful attributed
+speech occurrence offered at act-time is true there. The privative
+`waaNoDelusion_not_misfits` verdict is its constructive corollary, not its
+definition. `WaaFullyEnlightened` bundles positive no-delusion with
+`WaaEffectiveTerminus` as the standing two-obscurations faith-object.
+`waa_says_true_at_actTime_of_stance` and `waa_says_true_of_faith` consume that
+truth directly and require an explicit act-time offer.
 `fitsOfferedTier_of_waaEffectiveTerminus_ownDeed` remains the direct,
 non-testimonial route and likewise requires conventional offering.
 `waa_path_landing_of_stance` and `waaFaithOught_conditional` rederive the
-landing through testimony. `FaithNegative` supplies both the
-`aklishta_ajnana_witness` separating effectiveness from no-delusion and the
-non-vacuous faithful act-time inhabitant of the full bundle.
+landing through testimony. `WaaFullyEnlightenedEnacted` adds a delivered
+effective deed and `WaaFaithfulSpeechEnacted` to the standing bundle. The
+strict theorems in `FaithNegative` make the resulting ladder proper:
+effective termination is weaker than standing full enlightenment, which is
+weaker than its enacted form. Its sealed-and-silent standing witness names the
+pratyekabuddha face; `EnactedWitness.fullyEnlightenedEnacted` inhabits the
+samyaksambuddha top with both deed and act-time speech. The older
+`aklishta_ajnana_witness` continues to separate effectiveness from no-delusion.
 
 **Ethics.** `WaaEthicsStance` bundles factivity with faith in the
 two-obscurations object; fidelity and act-time offering remain per utterance.
@@ -734,8 +742,10 @@ actual fiber inhabitation; rung 3 is `WaaEffectiveTerminus`, and
 rung 2 still lacks effectiveness. The regime-relational face is two-sided:
 zero-effect delivery can make effective termination fail, while
 `waaEffectiveTerminus_of_responsiveTerminus_of_undelivered` makes it hold
-vacuously under sealed delivery. Testimonial full enlightenment is the further
-`WaaNoDelusion` bundle, separated by `FaithNegative`. The checked anchors are
+vacuously under sealed delivery. Standing full enlightenment adds positive
+act-time no-delusion and admits the sealed-and-silent pratyekabuddha face;
+`WaaFullyEnlightenedEnacted` adds witnessed deed and speech for the
+samyaksambuddha face. `FaithNegative` checks both strict joints. The checked anchors are
 `classQuiet_no_clench_in_class`, `identityView_excluded_at_arhatFiber`,
 `conceit_excluded_at_arhatFiber`, `all_fetters_cut_at_arhatFiber`,
 `arhatFiber_of_termini`,
@@ -1306,7 +1316,13 @@ The audited declarations are:
 - `Grid.DirectedConvention.waaPathOught_conditional`
 - `Grid.DirectedConvention.waaFaithOught_conditional`
 - `Grid.DirectedConvention.waa_says_true_at_actTime_of_stance`
+- `Grid.DirectedConvention.not_faithfulSpeechEnacted_of_no_faithful_utterance`
+- `Grid.DirectedConvention.waaFullyEnlightened_of_fullyEnlightenedEnacted`
 - `FaithNegative.effectiveTerminus_not_waaFullyEnlightened`
+- `FaithNegative.effectiveTerminus_strictly_weaker_than_fullyEnlightened`
+- `FaithNegative.fullyEnlightened_strictly_weaker_than_enacted`
+- `FaithNegative.buddha_enacted_faces_absent_silent`
+- `FaithNegative.EnactedWitness.fullyEnlightenedEnacted`
 - `Grid.DirectedConvention.no_waa_path_at_pole`
 - `Grid.DirectedConvention.map_waaAversionContext_iff`
 - `MisFeedNegative.fence_and_gate`
