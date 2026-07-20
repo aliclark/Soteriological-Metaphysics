@@ -82,11 +82,11 @@ The Signature layer itself uses only order and pole vocabulary around `share`. T
 
 ### B.6 The enlightenment ladder names standing and enacted vacuity
 
-The operational, assertable effectiveness content is per-occurrence: `WaaEffectiveOccurrence` states an actual pole-deed landing as a share-drop against a live prior tendency. The descriptive universal `WaaEffectiveTerminus` remains legal as run-display and direct-path hypothesis, but no estimator from actual-run response/share data decides it. Standing `WaaFullyEnlightened` adds positive act-time `WaaNoDelusion` while permitting sealed and silent pratyekabuddha faces. `WaaFullyEnlightenedEnacted` adds both an effective deed witness and faithful, fitting act-time speech; the two strictness theorems check the ladder to the samyaksambuddha rung.
+The operational, assertable effectiveness content is per-occurrence: `WaaEffectiveOccurrence` states an actual pole-deed landing as a share-drop against a live prior tendency. The descriptive universal `WaaEffectiveTerminus` remains legal as run-display and direct-path hypothesis, but no estimator from actual-run response/share data decides it. Standing `WaaFullyEnlightened` adds positive own-act-time `WaaNoNescience` over speech-or-mind productions. A quiet arhat may still fail that cognitive conjunct; sealed silent and true-thinking buddhas witness its two silent faces. `WaaFullyEnlightenedEnacted` separately adds an effective deed witness and a production-tied speech occurrence.
 
 **Checked anchors (Signature):** None.
 
-**Downstream elaboration:** `WAA.Grid.DirectedConvention.WaaEffectiveOccurrence` (proof), `WAA.Grid.DirectedConvention.WaaEffectivenessEnacted` (proof), `WAA.Grid.DirectedConvention.not_effectivenessEnacted_of_undelivered` (proof), `WAA.Grid.DirectedConvention.WaaFullyEnlightened` (proof), `WAA.Grid.DirectedConvention.WaaFullyEnlightenedEnacted` (proof), `WAA.FaithNegative.effectiveTerminus_strictly_weaker_than_fullyEnlightened` (witness), `WAA.FaithNegative.fullyEnlightened_strictly_weaker_than_enacted` (witness), `WAA.FaithNegative.buddha_enacted_faces_absent_silent` (witness), `WAA.FaithNegative.EnactedWitness.fullyEnlightenedEnacted` (witness), `WAA.EffectiveTerminusNegative.actual_run_data_underdetermines_effectiveTerminus` (witness), `WAA.Grid.DirectedConvention.BeingConvention.GridConvention.waa_effective_occurrence_voice_assertable` (proof), `WAA.Grid.DirectedConvention.BeingConvention.GridConvention.waa_standing_effectiveness_voice_displayable` (proof)
+**Downstream elaboration:** `WAA.Grid.DirectedConvention.WaaEffectiveOccurrence` (proof), `WAA.Grid.DirectedConvention.WaaEffectivenessEnacted` (proof), `WAA.Grid.DirectedConvention.not_effectivenessEnacted_of_undelivered` (proof), `WAA.Grid.DirectedConvention.WaaFullyEnlightened` (proof), `WAA.Grid.DirectedConvention.WaaNoNescience` (proof), `WAA.Grid.DirectedConvention.WaaFullyEnlightenedEnacted` (proof), `WAA.FaithNegative.noNescience_strictly_stronger_witness` (witness), `WAA.FaithNegative.arhat_retains_nescience_witness` (witness), `WAA.FaithNegative.Sealed.silent_buddha_models` (witness), `WAA.EffectiveTerminusNegative.actual_run_data_underdetermines_effectiveTerminus` (witness), `WAA.Grid.DirectedConvention.BeingConvention.GridConvention.waa_effective_occurrence_voice_assertable` (proof), `WAA.Grid.DirectedConvention.BeingConvention.GridConvention.waa_standing_effectiveness_voice_displayable` (proof)
 
 ### B.7 No blanket noninterference for the contribution carrier
 
@@ -95,6 +95,30 @@ Grading may depend on the agent — `gradingCollisionGrid` grades by being delib
 **Checked anchors (Signature):** `WAA.gradingCollisionGrid` (witness), `WAA.registerClockGrid` (witness)
 
 **Downstream elaboration:** `WAA.ConfigLeakWitness.registerClock_config_recovers_agent` (witness), `WAA.Config.relabel_fixed` (proof), `WAA.Grid.relabel_rePitch` (proof), `WAA.Grid.rePitch_forgets` (proof)
+
+### B.8 No recovered door boundary
+
+`DoorReading` totally classifies fine welds as body, speech, or mind, but that diagnosis is supplied rather than recovered from response or grade data. Totality and adequacy to the canonical three doors are modeling claims.
+
+**Checked anchors (Signature):** None.
+
+**Downstream elaboration:** `WAA.Grid.DoorReading` (proof), `WAA.DoorsNegative.no_door_boundary_recovery` (witness)
+
+### B.9 No recovered voicing
+
+`SpeechReading` supplies optional content independently of door. Thoughts and bodily intimations are representable, while only speech productions cross into testimony; neither voicing nor its production weld is recovered from visible grid data or content alone.
+
+**Checked anchors (Signature):** None.
+
+**Downstream elaboration:** `WAA.Grid.SpeechReading` (proof), `WAA.Grid.ProducedUtterance` (proof), `WAA.DoorsNegative.no_voicing_recovery` (witness), `WAA.DoorsNegative.no_production_recovery` (witness)
+
+### B.10 No recovered view content
+
+`ViewReading.ownerClaim` supplies which claims count as stored-owner views. The checked coarsening-freeze model is a correlation for one such reading, not a derivation of content from the grid.
+
+**Checked anchors (Signature):** None.
+
+**Downstream elaboration:** `WAA.Grid.ViewReading` (proof), `WAA.FettersNegative.no_view_content_recovery` (witness), `WAA.FettersNegative.ownerClaim_coarsening_freeze_correlation` (witness)
 
 ## C. Conveniences and Stand-Ins
 
@@ -169,10 +193,10 @@ The clock and register-clock models anchor possibility checks and taxonomy examp
 | `WAA.CorrelationsNegative.no_stage_boundary_recovery` | None |
 | `WAA.Grid.classQuiet_no_clench_in_class` | None |
 | `WAA.Fetter.kind_lower_iff_cut_by_nonReturn` | None |
-| `WAA.Grid.arhatPathQuiet_iff_fiberAtPole` | None |
-| `WAA.Grid.all_fetters_cut_at_arhatFiber` | None |
-| `WAA.Grid.identityView_excluded_at_arhatFiber` | None |
-| `WAA.Grid.conceit_excluded_at_arhatFiber` | None |
+| `WAA.Grid.arhatPathQuiet_iff_quietOn_univ` | None |
+| `WAA.Grid.all_fetters_cut_at_arhat` | None |
+| `WAA.Grid.identityView_cut_iff_noDefiledVoicing` | None |
+| `WAA.Grid.conceit_excluded_of_quietOn` | None |
 | `WAA.Grid.waaIrreversibleRegime_conditional` | None |
 | `WAA.Grid.lower_fetters_covered_by_rites_view_resolve` | None |
 | `WAA.Grid.waaStreamWinner_iff_streamEntry_cutClasses` | None |
@@ -180,19 +204,17 @@ The clock and register-clock models anchor possibility checks and taxonomy examp
 | `WAA.Grid.waaSerialFactorRegime_conditional` | None |
 | `WAA.Grid.waaOnceReturner_attenuation_witness` | `propext` |
 | `WAA.FactorsNegative.no_hold_conceit_boundary_recovery` | None |
-| `WAA.FactorsNegative.seen_run_underdetermines_factorOrder` | `propext` |
-| `WAA.FactorsNegative.lineage_underdetermined_by_seen_run` | None |
+| `WAA.FactorsNegative.factor_order_underdetermined` | `propext` |
 | `WAA.FettersNegative.seen_run_underdetermines_fetterCut` | `propext` |
 | `WAA.Grid.DirectedConvention.waaPathOught_conditional` | None |
 | `WAA.Grid.DirectedConvention.waaFaithOught_conditional` | None |
-| `WAA.Grid.DirectedConvention.waa_says_true_at_actTime_of_stance` | None |
-| `WAA.Grid.DirectedConvention.not_faithfulSpeechEnacted_of_no_faithful_utterance` | None |
+| `WAA.Grid.DirectedConvention.waa_says_true_of_faith` | None |
+| `WAA.Grid.DirectedConvention.noDelusion_of_noNescience_of_terminus` | None |
 | `WAA.Grid.DirectedConvention.waaFullyEnlightened_of_fullyEnlightenedEnacted` | None |
-| `WAA.FaithNegative.effectiveTerminus_not_waaFullyEnlightened` | None |
-| `WAA.FaithNegative.effectiveTerminus_strictly_weaker_than_fullyEnlightened` | None |
-| `WAA.FaithNegative.fullyEnlightened_strictly_weaker_than_enacted` | None |
-| `WAA.FaithNegative.buddha_enacted_faces_absent_silent` | None |
-| `WAA.FaithNegative.EnactedWitness.fullyEnlightenedEnacted` | None |
+| `WAA.FaithNegative.noNescience_strictly_stronger_witness` | `propext` |
+| `WAA.FaithNegative.aklishta_ajnana_witness` | None |
+| `WAA.FaithNegative.arhat_retains_nescience_witness` | `propext` |
+| `WAA.FaithNegative.Sealed.silent_buddha_models` | `propext` |
 | `WAA.Grid.DirectedConvention.no_waa_path_at_pole` | None |
 | `WAA.Grid.DirectedConvention.BeingConvention.GridConvention.rowOf_obeys` | None |
 | `WAA.Grid.DirectedConvention.BeingConvention.GridConvention.pole_validates_all_claims` | None |

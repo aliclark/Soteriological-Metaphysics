@@ -26,6 +26,7 @@ import WeldAndArrow.Meta.InvarianceNegative
 import WeldAndArrow.Identification.Ownership
 import WeldAndArrow.Doctrines.FourTruths
 import WeldAndArrow.Doctrines.EffectiveTerminusNegative
+import WeldAndArrow.Doctrines.DoorsNegative
 
 namespace WAA
 
@@ -237,17 +238,17 @@ def assumptionLedger : List AssumptionEntry := [
   { «section» := .declined
     number := 6
     title := "The enlightenment ladder names standing and enacted vacuity"
-    statement := "The operational, assertable effectiveness content is per-occurrence: `WaaEffectiveOccurrence` states an actual pole-deed landing as a share-drop against a live prior tendency. The descriptive universal `WaaEffectiveTerminus` remains legal as run-display and direct-path hypothesis, but no estimator from actual-run response/share data decides it. Standing `WaaFullyEnlightened` adds positive act-time `WaaNoDelusion` while permitting sealed and silent pratyekabuddha faces. `WaaFullyEnlightenedEnacted` adds both an effective deed witness and faithful, fitting act-time speech; the two strictness theorems check the ladder to the samyaksambuddha rung."
+    statement := "The operational, assertable effectiveness content is per-occurrence: `WaaEffectiveOccurrence` states an actual pole-deed landing as a share-drop against a live prior tendency. The descriptive universal `WaaEffectiveTerminus` remains legal as run-display and direct-path hypothesis, but no estimator from actual-run response/share data decides it. Standing `WaaFullyEnlightened` adds positive own-act-time `WaaNoNescience` over speech-or-mind productions. A quiet arhat may still fail that cognitive conjunct; sealed silent and true-thinking buddhas witness its two silent faces. `WaaFullyEnlightenedEnacted` separately adds an effective deed witness and a production-tied speech occurrence."
     anchors := [
       downProof ``Grid.DirectedConvention.WaaEffectiveOccurrence,
       downProof ``Grid.DirectedConvention.WaaEffectivenessEnacted,
       downProof ``Grid.DirectedConvention.not_effectivenessEnacted_of_undelivered,
       downProof ``Grid.DirectedConvention.WaaFullyEnlightened,
+      downProof ``Grid.DirectedConvention.WaaNoNescience,
       downProof ``Grid.DirectedConvention.WaaFullyEnlightenedEnacted,
-      downWitness ``FaithNegative.effectiveTerminus_strictly_weaker_than_fullyEnlightened,
-      downWitness ``FaithNegative.fullyEnlightened_strictly_weaker_than_enacted,
-      downWitness ``FaithNegative.buddha_enacted_faces_absent_silent,
-      downWitness ``FaithNegative.EnactedWitness.fullyEnlightenedEnacted,
+      downWitness ``FaithNegative.noNescience_strictly_stronger_witness,
+      downWitness ``FaithNegative.arhat_retains_nescience_witness,
+      downWitness ``FaithNegative.Sealed.silent_buddha_models,
       downWitness ``EffectiveTerminusNegative.actual_run_data_underdetermines_effectiveTerminus,
       downProof ``Grid.DirectedConvention.BeingConvention.GridConvention.waa_effective_occurrence_voice_assertable,
       downProof ``Grid.DirectedConvention.BeingConvention.GridConvention.waa_standing_effectiveness_voice_displayable
@@ -263,6 +264,33 @@ def assumptionLedger : List AssumptionEntry := [
       downProof ``Config.relabel_fixed,
       downProof ``Grid.relabel_rePitch,
       downProof ``Grid.rePitch_forgets
+    ] },
+  { «section» := .declined
+    number := 8
+    title := "No recovered door boundary"
+    statement := "`DoorReading` totally classifies fine welds as body, speech, or mind, but that diagnosis is supplied rather than recovered from response or grade data. Totality and adequacy to the canonical three doors are modeling claims."
+    anchors := [
+      downProof ``Grid.DoorReading,
+      downWitness ``DoorsNegative.no_door_boundary_recovery
+    ] },
+  { «section» := .declined
+    number := 9
+    title := "No recovered voicing"
+    statement := "`SpeechReading` supplies optional content independently of door. Thoughts and bodily intimations are representable, while only speech productions cross into testimony; neither voicing nor its production weld is recovered from visible grid data or content alone."
+    anchors := [
+      downProof ``Grid.SpeechReading,
+      downProof ``Grid.ProducedUtterance,
+      downWitness ``DoorsNegative.no_voicing_recovery,
+      downWitness ``DoorsNegative.no_production_recovery
+    ] },
+  { «section» := .declined
+    number := 10
+    title := "No recovered view content"
+    statement := "`ViewReading.ownerClaim` supplies which claims count as stored-owner views. The checked coarsening-freeze model is a correlation for one such reading, not a derivation of content from the grid."
+    anchors := [
+      downProof ``Grid.ViewReading,
+      downWitness ``FettersNegative.no_view_content_recovery,
+      downWitness ``FettersNegative.ownerClaim_coarsening_freeze_correlation
     ] },
   { «section» := .convenience
     number := 1
@@ -326,7 +354,7 @@ def assumptionNumberingContiguous (sec : AssumptionSection) : Bool :=
     (List.range entries.length).map (fun n => n + 1)
 
 example : (assumptionSectionEntries .asserted).length = 5 := rfl
-example : (assumptionSectionEntries .declined).length = 7 := rfl
+example : (assumptionSectionEntries .declined).length = 10 := rfl
 example : (assumptionSectionEntries .convenience).length = 4 := rfl
 
 example : assumptionNumberingContiguous .asserted = true := by

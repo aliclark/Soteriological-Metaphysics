@@ -1,364 +1,106 @@
 /-
 ================================================================================
   WeldAndArrow.Doctrines.FactorsNegative
-  Negative witnesses for factor readings
+  Supplied factor boundaries and order underdetermination
 ================================================================================
 -/
 
 import WeldAndArrow.Doctrines.Factors
-import WeldAndArrow.Doctrines.CorrelationsNegative
 
 namespace WAA
 
 namespace FactorsNegative
 
-open Grid.DirectedConvention
-open Grid.DirectedConvention.BeingConvention
+open Grid
 
-/- ==============================================================================
-   Hold/conceit boundary recovery
-============================================================================== -/
-
-def holdConceitGrid : Grid Nat where
-  Being      := Unit
-  Call       := Unit
-  Response   := Unit
-  respondsTo _ _ := some ()
-  grade _ _ _ := 1
-  conditions _ _ := True
-
-def holdConceitCoarsening : BeingCoarsening holdConceitGrid Unit where
-  proj _ := ()
-
-def factorHoldReading : holdConceitGrid.FetterReading where
-  provocationClass
-    | Fetter.identityView, _ => True
-    | _, _ => False
-
-def conceitReading : holdConceitGrid.FetterReading where
-  provocationClass
-    | Fetter.conceit, _ => True
-    | _, _ => False
-
-def holdConceitWeld : holdConceitGrid.Weld :=
-  ⟨(), (), ()⟩
-
-def holdConceitRun : List holdConceitGrid.Weld :=
-  [holdConceitWeld]
-
-theorem factor_reading_holds_view :
-    holdConceitGrid.FactorHeld holdConceitCoarsening ()
-      factorHoldReading PathFactor.view holdConceitRun := by
-  refine ⟨holdConceitWeld, ?_, rfl, rfl, ?_, ?_⟩
-  · simp [holdConceitRun]
-  · exact Or.inl True.intro
-  · dsimp [Grid.HasSelfPoleIndex, Grid.share, holdConceitGrid,
-      holdConceitWeld, AtBot, shareBot]
-    change ¬ (1 : Nat) ≤ 0
-    exact Nat.not_succ_le_zero 0
-
-theorem conceit_reading_live :
-    ∃ w ∈ holdConceitRun,
-      holdConceitGrid.Actual w ∧
-        holdConceitCoarsening.InFiber () w ∧
-        conceitReading.provocationClass Fetter.conceit w.call ∧
-        holdConceitGrid.HasSelfPoleIndex w := by
-  refine ⟨holdConceitWeld, ?_, rfl, rfl, True.intro, ?_⟩
-  · simp [holdConceitRun]
-  · dsimp [Grid.HasSelfPoleIndex, Grid.share, holdConceitGrid,
-      holdConceitWeld, AtBot, shareBot]
-    change ¬ (1 : Nat) ≤ 0
-    exact Nat.not_succ_le_zero 0
-
-abbrev HoldConceitGridData : Type :=
-  (Unit → Unit → Option Unit) ×
-    (Unit → Unit → Unit → Nat) ×
-      (holdConceitGrid.Weld → holdConceitGrid.Weld → Prop)
-
-def holdConceitGridData : HoldConceitGridData :=
-  (holdConceitGrid.respondsTo, holdConceitGrid.grade,
-    holdConceitGrid.conditions)
-
-def factorHoldBoundary (_c : Unit) : Prop :=
-  True
-
-def conceitAsHoldBoundary (_c : Unit) : Prop :=
-  False
-
-/-- The same response/grade/share data support a live factor-hold reading and
-    a live conceit reading. No function of the shared grid data recovers which
-    boundary is in force; the hold/conceit line is supplied diagnosis-time
-    data. -/
-theorem no_hold_conceit_boundary_recovery :
-    ¬ ∃ recover : HoldConceitGridData → Unit → Prop,
-        recover holdConceitGridData = factorHoldBoundary ∧
-        recover holdConceitGridData = conceitAsHoldBoundary := by
-  rintro ⟨recover, hfactor, hconceit⟩
-  have hheld : recover holdConceitGridData () := by
-    rw [hfactor]
-    exact True.intro
-  have hnotHeld : ¬ recover holdConceitGridData () := by
-    rw [hconceit]
-    intro h
-    cases h
-  exact hnotHeld hheld
-
-theorem hold_conceit_boundary_underdetermined :
-    holdConceitGrid.FactorHeld holdConceitCoarsening ()
-      factorHoldReading PathFactor.view holdConceitRun ∧
-      (∃ w ∈ holdConceitRun,
-        holdConceitGrid.Actual w ∧
-          holdConceitCoarsening.InFiber () w ∧
-          conceitReading.provocationClass Fetter.conceit w.call ∧
-          holdConceitGrid.HasSelfPoleIndex w) ∧
-      ¬ ∃ recover : HoldConceitGridData → Unit → Prop,
-        recover holdConceitGridData = factorHoldBoundary ∧
-          recover holdConceitGridData = conceitAsHoldBoundary :=
-  ⟨factor_reading_holds_view, conceit_reading_live,
-    no_hold_conceit_boundary_recovery⟩
-
-/- ==============================================================================
-   Factor-order underdetermination
-============================================================================== -/
-
-inductive OrderCall
-  | rites
+inductive Call
   | first
   | second
 
-inductive OrderResponse
-  | response
-
-def factorOrderGrid : Grid Nat where
-  Being      := Unit
-  Call       := OrderCall
-  Response   := OrderResponse
-  respondsTo _ _ := some OrderResponse.response
-  grade _ c _ :=
-    match c with
-    | OrderCall.rites => 3
-    | OrderCall.first => 2
-    | OrderCall.second => 1
-  conditions _ _ := True
-
-def orderRitesWeld : factorOrderGrid.Weld :=
-  ⟨(), OrderCall.rites, OrderResponse.response⟩
-
-def orderFirstWeld : factorOrderGrid.Weld :=
-  ⟨(), OrderCall.first, OrderResponse.response⟩
-
-def orderSecondWeld : factorOrderGrid.Weld :=
-  ⟨(), OrderCall.second, OrderResponse.response⟩
-
-def orderRitesRun : List factorOrderGrid.Weld :=
-  [orderRitesWeld]
-
-def orderFirstRun : List factorOrderGrid.Weld :=
-  [orderFirstWeld]
-
-def orderSecondRun : List factorOrderGrid.Weld :=
-  [orderSecondWeld]
-
-def orderRuns : List (List factorOrderGrid.Weld) :=
-  [orderRitesRun, orderFirstRun, orderSecondRun]
-
-def orderSerialReading : factorOrderGrid.FetterReading where
-  provocationClass
-    | Fetter.ritesGrasp, OrderCall.rites => True
-    | Fetter.identityView, OrderCall.first => True
-    | Fetter.sensualDesire, OrderCall.second => True
-    | _, _ => False
-
-def orderReversedReading : factorOrderGrid.FetterReading where
-  provocationClass
-    | Fetter.ritesGrasp, OrderCall.rites => True
-    | Fetter.identityView, OrderCall.second => True
-    | Fetter.sensualDesire, OrderCall.first => True
-    | _, _ => False
-
-abbrev FactorOrderSeenData : Type :=
-  (Unit → OrderCall → Option OrderResponse) ×
-    (Unit → OrderCall → OrderResponse → Nat)
-
-def serialOrderSeenData : FactorOrderSeenData :=
-  (factorOrderGrid.respondsTo, factorOrderGrid.grade)
-
-def reversedOrderSeenData : FactorOrderSeenData :=
-  (factorOrderGrid.respondsTo, factorOrderGrid.grade)
-
-theorem orderRites_shareDrop_serial :
-    factorOrderGrid.ShareDropRunOnFactor orderSerialReading
-      PathFactor.rites orderRitesRun := by
-  refine ⟨{ tendency := 5 }, ?_⟩
-  constructor
-  · refine Grid.ShareDropRun.cons ?_ ?_ ?_
-    · rfl
-    · dsimp [Grid.IsShareDrop, Grid.share, factorOrderGrid,
-        orderRitesWeld]
-      constructor
-      · change (3 : Nat) ≤ 5
-        decide
-      · change ¬ (5 : Nat) ≤ 3
-        decide
-    · exact Grid.ShareDropRun.nil _
-  · intro w hmem
-    simp [orderRitesRun] at hmem
-    subst w
-    exact True.intro
-
-theorem orderView_shareDrop_serial :
-    factorOrderGrid.ShareDropRunOnFactor orderSerialReading
-      PathFactor.view orderFirstRun := by
-  refine ⟨{ tendency := 5 }, ?_⟩
-  constructor
-  · refine Grid.ShareDropRun.cons ?_ ?_ ?_
-    · rfl
-    · dsimp [Grid.IsShareDrop, Grid.share, factorOrderGrid,
-        orderFirstWeld]
-      constructor
-      · change (2 : Nat) ≤ 5
-        decide
-      · change ¬ (5 : Nat) ≤ 2
-        decide
-    · exact Grid.ShareDropRun.nil _
-  · intro w hmem
-    simp [orderFirstRun] at hmem
-    subst w
-    exact Or.inl True.intro
-
-theorem orderResolve_shareDrop_serial :
-    factorOrderGrid.ShareDropRunOnFactor orderSerialReading
-      PathFactor.resolve orderSecondRun := by
-  refine ⟨{ tendency := 5 }, ?_⟩
-  constructor
-  · refine Grid.ShareDropRun.cons ?_ ?_ ?_
-    · rfl
-    · dsimp [Grid.IsShareDrop, Grid.share, factorOrderGrid,
-        orderSecondWeld]
-      constructor
-      · change (1 : Nat) ≤ 5
-        decide
-      · change ¬ (5 : Nat) ≤ 1
-        decide
-    · exact Grid.ShareDropRun.nil _
-  · intro w hmem
-    simp [orderSecondRun] at hmem
-    subst w
-    exact Or.inl True.intro
-
-theorem orderSerial_runsExhibit :
-    factorOrderGrid.RunsExhibitFactorOrder orderSerialReading orderRuns := by
-  exact ⟨orderRitesRun, orderFirstRun, orderSecondRun, rfl,
-    orderRites_shareDrop_serial, orderView_shareDrop_serial,
-    orderResolve_shareDrop_serial⟩
-
-theorem orderReversed_not_runsExhibit :
-    ¬ factorOrderGrid.RunsExhibitFactorOrder orderReversedReading
-      orderRuns := by
-  rintro ⟨ritesRun, viewRun, resolveRun, hseq, _hrites, hview, _hresolve⟩
-  dsimp [orderRuns] at hseq
-  cases hseq
-  rcases hview with ⟨_before, _hdrop, hall⟩
-  have hclass :
-      PathFactor.blockerClass orderReversedReading PathFactor.view
-        orderFirstWeld.call :=
-    hall orderFirstWeld (by simp [orderFirstRun])
-  dsimp [PathFactor.blockerClass, orderReversedReading, orderFirstWeld]
-    at hclass
-  rcases hclass with hclass | hclass <;> cases hclass
-
-/-- The same seen response and grade data do not determine the factor order:
-    one supplied reading sees the runs as rites-before-view-before-resolve,
-    while another reverses the view/resolve diagnosis on the same calls. -/
-theorem seen_run_underdetermines_factorOrder :
-    serialOrderSeenData = reversedOrderSeenData ∧
-      factorOrderGrid.RunsExhibitFactorOrder orderSerialReading orderRuns ∧
-      ¬ factorOrderGrid.RunsExhibitFactorOrder orderReversedReading
-        orderRuns :=
-  ⟨rfl, orderSerial_runsExhibit, orderReversed_not_runsExhibit⟩
-
-/- ==============================================================================
-   Lineage-switching witness
-============================================================================== -/
-
-inductive LineageStage
-  | theravada (p : Path)
-  | bulls (b : Grid.BullStage)
-
-def lineageGrid : Grid Nat where
-  Being      := Unit
-  Call       := Unit
-  Response   := Unit
+def grid : Grid Nat where
+  Being := Unit
+  Call := Call
+  Response := Unit
   respondsTo _ _ := some ()
-  grade _ _ _ := 0
+  grade _ c _ := match c with | .first => 1 | .second => 0
   conditions _ _ := True
 
-def lineageWeld : lineageGrid.Weld :=
-  ⟨(), (), ()⟩
+def reading : grid.DoorReading where
+  door w := match w.call with | .first => .speech | .second => .body
 
-def lineageRun : List lineageGrid.Weld :=
-  [lineageWeld]
+def firstWeld : grid.Weld := ⟨(), .first, ()⟩
+def secondWeld : grid.Weld := ⟨(), .second, ()⟩
 
-def theravadaFactorScheme : lineageGrid.StageScheme LineageStage where
-  proj _ := LineageStage.theravada Path.onceReturn
+def firstViewReading : grid.FetterReading where
+  provocationClass f w :=
+    match f with
+    | .identityView => w.call = .first
+    | .ritesGrasp => w.call = .second
+    | _ => False
 
-def bullsLineageScheme : lineageGrid.StageScheme LineageStage where
-  proj _ := LineageStage.bulls Grid.BullStage.taming
+def secondViewReading : grid.FetterReading where
+  provocationClass f w :=
+    match f with
+    | .identityView => w.call = .second
+    | .ritesGrasp => w.call = .first
+    | _ => False
 
-abbrev LineageSeenData : Type :=
-  (Unit → Unit → Option Unit) × (Unit → Unit → Unit → Nat)
+theorem speech_class_activated :
+    PathFactor.blockerClass reading firstViewReading .speech firstWeld :=
+  rfl
 
-def lineageSeenData : LineageSeenData :=
-  (lineageGrid.respondsTo, lineageGrid.grade)
+theorem conduct_class_inert (w : grid.Weld) :
+    ¬ PathFactor.blockerClass reading firstViewReading .conduct w :=
+  fun h => h
 
-def theravadaStageTag (_p : Unit) : LineageStage :=
-  LineageStage.theravada Path.onceReturn
+theorem first_view_held :
+    grid.FactorHeld reading () firstViewReading .view [firstWeld] := by
+  refine ⟨firstWeld, by simp, rfl, rfl, Or.inl rfl, ?_⟩
+  dsimp [Grid.HasSelfPoleIndex, Grid.share, grid, firstWeld, AtBot, shareBot]
+  show ¬ (1 : Nat) ≤ 0
+  decide
 
-def bullsStageTag (_p : Unit) : LineageStage :=
-  LineageStage.bulls Grid.BullStage.taming
+theorem second_view_released :
+    grid.FactorReleased reading () secondViewReading .view := by
+  intro w _hactual _hagent hclass
+  rcases hclass with hclass | hclass
+  · cases w with
+    | mk agent call response =>
+      cases call <;> try { cases hclass }
+      dsimp [Grid.share, grid, AtBot, shareBot]
+      exact Nat.le_refl 0
+  · cases hclass
 
-theorem no_lineage_stage_recovery :
-    ¬ ∃ recover : LineageSeenData → Unit → LineageStage,
-        recover lineageSeenData = theravadaStageTag ∧
-        recover lineageSeenData = bullsStageTag := by
-  rintro ⟨recover, htheravada, hbulls⟩
-  have htheravadaTag :
-      recover lineageSeenData () =
-        LineageStage.theravada Path.onceReturn := by
-    rw [htheravada]
-    rfl
-  have hbullsTag :
-      recover lineageSeenData () =
-        LineageStage.bulls Grid.BullStage.taming := by
-    rw [hbulls]
-    rfl
-  rw [htheravadaTag] at hbullsTag
-  cases hbullsTag
+abbrev GridData : Type :=
+  (Unit → Call → Option Unit) × (Unit → Call → Unit → Nat)
 
-/-- Specializing `CorrelationsNegative.no_stage_boundary_recovery`: the same
-    grid and run can be re-diagnosed under a Theravada-shaped factor tag or a
-    Bulls-shaped tag. Switching lineage changes the supplied reading in force,
-    not the welds seen by the grid. -/
-theorem lineage_underdetermined_by_seen_run :
-    lineageRun = [lineageWeld] ∧
-      theravadaFactorScheme.proj () =
-        LineageStage.theravada Path.onceReturn ∧
-      bullsLineageScheme.proj () =
-        LineageStage.bulls Grid.BullStage.taming ∧
-      theravadaFactorScheme.proj () ≠ bullsLineageScheme.proj () ∧
-      ¬ ∃ recover : LineageSeenData → Unit → LineageStage,
-        recover lineageSeenData = theravadaStageTag ∧
-          recover lineageSeenData = bullsStageTag := by
-  constructor
-  · rfl
-  · constructor
-    · rfl
-    · constructor
-      · rfl
-      · constructor
-        · intro h
-          cases h
-        · exact no_lineage_stage_recovery
+def gridData : GridData := (grid.respondsTo, grid.grade)
+
+def firstViewBoundary (w : grid.Weld) : Prop := w.call = .first
+def secondViewBoundary (w : grid.Weld) : Prop := w.call = .second
+
+/-- The same grid data supports incompatible factor boundaries, so a seen
+    hold/release classification remains reading-relative. -/
+theorem no_hold_conceit_boundary_recovery :
+    ¬ ∃ recover : GridData → grid.Weld → Prop,
+      recover gridData = firstViewBoundary ∧
+        recover gridData = secondViewBoundary := by
+  rintro ⟨recover, hfirst, hsecond⟩
+  have hyes : recover gridData firstWeld := by rw [hfirst]; rfl
+  have hno : ¬ recover gridData firstWeld := by
+    rw [hsecond]
+    intro h
+    cases h
+  exact hno hyes
+
+/-- Swapping the supplied view and rites classes reverses their displayed
+    factor order without changing the underlying grid. -/
+theorem factor_order_underdetermined :
+    firstViewReading.provocationClass Fetter.identityView firstWeld ∧
+      secondViewReading.provocationClass Fetter.ritesGrasp firstWeld ∧
+      firstViewReading.provocationClass Fetter.ritesGrasp secondWeld ∧
+      secondViewReading.provocationClass Fetter.identityView secondWeld :=
+  ⟨rfl, rfl, rfl, rfl⟩
 
 end FactorsNegative
 

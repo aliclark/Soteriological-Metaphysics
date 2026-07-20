@@ -75,6 +75,10 @@ inductive Disclaimer
   | verdictRecordData
   | compoundCellStacks
   | effectiveTerminusRetype
+  | viewMindVoicing
+  | falsehoodDeliberateLying
+  | doorTotalityAdequacy
+  | thoughtsVoicingSupplied
 
 namespace Disclaimer
 
@@ -139,6 +143,10 @@ def number : Disclaimer → Nat
   | .verdictRecordData => 56
   | .compoundCellStacks => 57
   | .effectiveTerminusRetype => 58
+  | .viewMindVoicing => 59
+  | .falsehoodDeliberateLying => 60
+  | .doorTotalityAdequacy => 61
+  | .thoughtsVoicingSupplied => 62
 
 theorem waaKarmaIdentification_number :
     number Disclaimer.waaKarmaIdentification = 9 := rfl
@@ -205,6 +213,18 @@ theorem compoundCellStacks_number :
 
 theorem effectiveTerminusRetype_number :
     number Disclaimer.effectiveTerminusRetype = 58 := rfl
+
+theorem viewMindVoicing_number :
+    number Disclaimer.viewMindVoicing = 59 := rfl
+
+theorem falsehoodDeliberateLying_number :
+    number Disclaimer.falsehoodDeliberateLying = 60 := rfl
+
+theorem doorTotalityAdequacy_number :
+    number Disclaimer.doorTotalityAdequacy = 61 := rfl
+
+theorem thoughtsVoicingSupplied_number :
+    number Disclaimer.thoughtsVoicingSupplied = 62 := rfl
 
 end Disclaimer
 

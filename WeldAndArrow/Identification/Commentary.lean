@@ -345,6 +345,24 @@ strictness outside the image of a display reparameterization can make
 direction-voidness and faith-closure fail to preserve, parallel in duty to the
 aptness countermodels above.
 
+C.3a Doctrines/Doors.lean and Doctrines/DoorsNegative.lean
+
+`DoorReading` supplies a total diagnosis of each fine weld as body, speech, or
+mind. `SpeechReading` adds optional claim voicing without a coherence field:
+thoughts and expressive bodily deeds remain representable, while restrictions
+belong to the predicates that use them. `ProducedUtterance` ties a voiced claim
+to an actual weld; only its speech-door form can be converted to a testimonial
+record. `DoorsNegative` checks independently that door boundaries, voicing, and
+the production weld cannot be recovered from visible grid or content data.
+
+`QuietOn` replaces the old coarsening/tag rectangle in the arhat and fetter
+machinery. Canonical arhat display is total fine-being quiet, equivalently
+quietness through all three doors. `WaaDefiledFalsehood` is the speech-door
+schema of own-act-time falsity plus a live self-pole; identifying it with
+canonical deliberate lying is a modeling claim, not a definition. Mind-door
+quiet removes defiled thought but does not establish thought-truth—the latter
+is the no-nescience boundary in C.4.
+
 C.4 Doctrines/FourTruths.lean, Doctrines/Sraddha.lean,
     Doctrines/Faith.lean, Doctrines/Ethics.lean, and the sibling negative modules
 
@@ -368,38 +386,33 @@ lacks effectiveness by
 `FettersNegative.total_cut_with_function_not_waaEffectiveTerminus`.
 
 The old floor-proximity grounding of testimony is withdrawn: floor silence
-transmits nothing selective. `WaaNoDelusion` instead states the character claim
-positively and only at act-time: every faithfully recorded, attributed
-conventional utterance is true. Its `waaNoDelusion_not_misfits` corollary gives
-the privative error verdict constructively. `WaaFullyEnlightened` is the
-two-obscurations bundle: its
-`WaaEffectiveTerminus` conjunct removes the afflictive obscuration, while its
-`WaaNoDelusion` conjunct removes the cognitive obscuration relevant to
-innocent factual error. Deliberate false speech belongs to defilement and is
-excluded with the first obscuration; innocent misfitting content is the
-undefiled nescience (akliṣṭa-ajñāna) not removed until the second. Because
-`MisfitsOfferedTier` records content-falsity without typing deceptive intent,
-the conjunct boundary is load-bearing. `FaithNegative.aklishta_ajnana_witness`
-exhibits the exact joint: effective termination with a misfitting faithful
-utterance under total fidelity.
+transmits nothing selective. `ProducedUtterance` now ties content to an actual
+voicing weld, and `toRecorded` admits only a speech-door production at that
+weld's own act-time. `ProductionFidelity` therefore cannot detach attribution
+from production. Mind-door thoughts never enter `RecordedUtterance`,
+`Fidelity`, `Faith`, or `Ethics`.
 
-Both standing conjuncts retain legitimate vacuous faces. Sealed own-delivery
-can satisfy the material shortfall conditional, and absence of faithful speech
-can satisfy positive act-time no-delusion because no act-time instance is
-offered. This doubly vacuous standing satisfier is not an embarrassment to be
-patched with existential import: it is the pratyekabuddha, fully awakened while
-neither touching nor teaching in the represented regime. The further
-`WaaFullyEnlightenedEnacted` rung names the samyaksambuddha by witnessing both
-conditionals: `WaaEffectivenessEnacted` supplies a delivered closing deed and
-`WaaFaithfulSpeechEnacted` supplies faithful, fitting act-time testimony.
-`FaithNegative.effectiveTerminus_strictly_weaker_than_fullyEnlightened` and
-`FaithNegative.fullyEnlightened_strictly_weaker_than_enacted` check the two
-strict joints; `FaithNegative.EnactedWitness.fullyEnlightenedEnacted` shows the
-top rung is genuinely inhabited. Vacuity thereby becomes the formal difference
-between standing and enacted buddhahood rather than a defect in either
-definition.
+The character conjunct is deliberately wider than testimony.
+`WaaNoNescience` requires positive own-act-time truth for every pole-share
+speech-or-mind production by the being. For a terminus producer,
+`noDelusion_of_noNescience_of_terminus` recovers the former speech-only
+`WaaNoDelusion` comparison. The converse fails:
+`FaithNegative.noNescience_strictly_stronger_witness` has true speech and one
+false pole-share thought. `FaithNegative.aklishta_ajnana_witness` checks that
+the false thought is innocent because pole share leaves no live self-pole;
+`FaithNegative.arhat_retains_nescience_witness` gives the third ladder fence:
+full three-door arhat quiet does not yet remove cognitive obscuration.
 
-The positive no-delusion grounding matches the existing MN 58-shaped
+Sealed own-delivery can still satisfy the material shortfall conditional, and
+absence of speech keeps the testimonial occurrence conjunct empty. Standing
+full enlightenment, however, is no longer forced to be mind-vacuous:
+`FaithNegative.Sealed.silent_buddha_models` supplies one silent reading with no
+thought and another with a true mind production. Both lack speech and deed
+occurrences. `WaaFullyEnlightenedEnacted` names the further samyaksambuddha
+rung by adding `WaaEffectivenessEnacted` and a tied
+`WaaFaithfulSpeechOccurrence`; the old untied act-time witness has disappeared.
+
+The positive no-nescience grounding matches the existing MN 58-shaped
 machinery: truth is act-time `TrueAt`, benefit is shortfall closure for a live
 aversion, and timeliness is fitting the offered tier. Constructively, "never
 wrong" and "right" do not coincide: deriving truth from mere absence of a
@@ -418,22 +431,15 @@ formalism. A floor-offered record is vacuously outside `MisfitsOfferedTier` but
 transmits no content, because the testimonial route explicitly requires an
 act-time offer.
 
-`WaaEthicsStance` bundles factivity and faith in the two-obscurations object;
-occurrence fidelity and act-time offering remain per utterance.
+`WaaEthicsStance` bundles factivity and faith in the two-obscurations object and
+requires admitted fidelity records to arise from speech productions.
 `WaaEthicalCode` is the fourth-truth ought generalized over such testimony,
 still an implication type only. The is-ought work is receiver-side: testimony
 supplies the is, while the receiver's live `WaaAversionContext` supplies the
 want. This is a hypothetical-imperative dissolution, not a refutation, of
-Hume's point. `EthicsNegative` keeps the code empty at the pole,
-unsatisfiable over faithful false testimony, and relative to its faith-object.
-
-Future work is deliberately registered but not implemented here: speech
-production may later be typed as deed through the three doors of body, speech,
-and mind. That extension could derive the impossibility of deliberate
-falsehood from bottom share, leaving only undefiled nescience as the explicit
-cognitive-obscuration conjunct. `RecordedUtterance` currently stores
-attribution rather than production, so that primitive remains absent in this
-pass.
+Hume's point. `EthicsNegative` keeps the code empty at the pole and
+unsatisfiable over an admitted false speech production. A false mind
+production is fenced out before the testimonial route begins.
 
 `Doctrines/SraddhaNegative.lean` keeps that conditional honest.
 `SraddhaNegative` shows that dropping faith or dropping the live-aversion
@@ -575,15 +581,15 @@ is intentionally true by construction: no grade in the model is zero, so the
 absence of pole-arrival is a displayed boundary of the koan, not a hidden
 answer to the terminus question.
 
-The Dōgen doubling checks are grid-internal only. `oldMan_utterance_misfits`
-delegates the old answer to the fox row's live-tier error predicate;
-`daishugyo_floor_face_error_free`, `daishugyo_conventional_face_fits`,
-`jinshinInga_instruction_fits`, `jinshinInga_floor_voicing_would_misfit`, and
-`dogen_doubling` preserve all four verdicts. The daishugyō floor face is
-error-free by silence, not positively true; 不昧 convicts the old man and the
-counterfactual floor-voicing at live act-time. These theorems do not
-prove the historical claim that this paper follows Daishugyo against the late
-Dogen; that disagreement stays prose. The dukkha-facing name
+The Dōgen doubling now has a production-side vocabulary. Daishugyō diagnoses:
+it reads the sentence weld's live share, while its floor face is both error-free
+by silence and structurally unproduced. Jinshin inga instructs: the fitting
+instruction is an actual speech production, and a terminus producer would put
+that weld at pole without arrogation. `oldMan_defiledFalsehood` and
+`jinshinInga_floor_voicing_defiled` converge on the same schema for the old
+answer and the counterfactual floor voicing. These checks narrow but do not
+discharge the historical contra: whether the unproduced floor face may be held
+remains prose interpretation. The dukkha-facing name
 `fox_dukkha_per_life` lives one layer down in `Doctrines/FoxCase.lean` because
 it consumes `WaaMismatchGrade` from `FourTruths`.
 
@@ -623,56 +629,49 @@ The Five Ranks are data plus reading pins; `kenChuTo_implies_waaBullTen` names
 the 到/Bull 10 shape under the same coarsening. This is a retype of ranks as
 utterance-diagnosis and index-placement, not a second stage ladder.
 
-`FiberAtPoleOn`, `LiveFiberAtPoleOn`, `FiberAtPoleOnWithin`, and the tag-axis
-within vocabulary sit in `Signature/BeingConvention.lean` because they are
-neutral fiber restrictions. The restriction now has two axes: call-class and
-fine tag-class. `FiberAtPoleOnWithin` is the product, monotone in both
-coordinates; the old call-axis and the new tag-axis are its total-class
-specializations. Fetters merely consume them: `FetterReading` supplies the
-provocation classes as model-side data, `SomaReading` supplies the tag-region
-with the same diagnosis-time status, and `FetterCutWithin` means the fiber is
-at pole on that fetter's call-class inside that tag-region. Thus a cut is
-cessation of enactment in a region, not possession of an anti-fetter.
-`classQuiet_no_clench_in_class` and `conceit_excluded_within` are the checked
-soul-guards: where the relevant cut holds, no actual weld in that region
-carries a live self-pole index. `FettersNegative.no_region_boundary_recovery`
-is the freedom witness on the tag axis.
+`FetterReading` now supplies weld-classes directly. `FetterCut` is fine-being
+`QuietOn` for the selected provocation class: cessation of enactment in that
+class, not possession of an anti-fetter. The retired two-axis rectangle is
+recoverable as the special weld-class `cs w.call ∧ ts w.agent`, recorded by
+`fiberAtPoleOnWithin_iff_quietOn_rectangle`; no Soma layer remains in the
+fetter API. `classQuiet_no_clench_in_class` is the checked soul-guard.
+
+`ViewReading.ownerClaim` supplies identity-view content rather than deriving it
+from coarsening data. `FettersNegative.no_view_content_recovery` is the freedom
+witness; `ownerClaim_coarsening_freeze_correlation` checks the intended
+freeze-content correlation in one supplied model. View factors through mind,
+rites through body, and defiled falsehood through speech. Doubt and the upper
+fetters remain door-neutral supplied classes.
 
 The path scheme is nested class quietness. `Path.cutClasses` gives the stream,
 once-return, non-return, and arhat call-classes; once-return adds no new cut
 class, matching the prose weakening clause. `Fetter.kind_lower_iff_cut_by_nonReturn`
 pins the table coherence: exactly the lower fetters are cut by non-return.
-`all_fetters_cut_at_arhatFiber` upgrades the arhat case from samples to
-`∀ f : Fetter`. `arhatPathQuiet_iff_fiberAtPole` says the arhat class is total,
-so arhat path-quietness is ordinary
-`FiberAtPole`. The within-family adds the tag cut. Sravaka-arhat is
-`PathQuietWithin` at `SomaReading.speechThoughtTag`; the total calls/total tags
-point is neutral, theorem-identical to ordinary `FiberAtPole` by
-`arhatWithin_univTags_iff_fiberAtPole`. Vasana remains residual clench enacted
-in the complement region after the call-axis closes, an existing-cell reading.
+`all_fetters_cut_at_arhat` upgrades the arhat case from samples to
+`∀ f : Fetter`. `arhatPathQuiet_iff_quietOn_univ` says the arhat class is total.
+The door-typed `WaaSravakaArhat` is speech-and-mind quiet; `WaaVasana` is a live
+body-door occurrence. `sravakaArhat_not_arhat_witness` checks that regional
+figure against canonical three-door quiet. Response-form vāsanā at pole share
+remains registered future work.
 
-The buddha reading enters only as a three-rung ladder above that neutral point.
-Rung 1 is the total-rectangle cut, the share axis alone; the all-stone witness
+The buddha reading enters as a ladder above that neutral point. Rung 1 is total
+three-door quiet, the share axis alone; the all-stone witness
 `FettersNegative.total_cut_carries_no_function` shows that it has no function
-conjunct. Rung 2 is the live terminus reading, `LiveFiberAtPole`, with
-`sentientTag_iff_actualFiberInhabited` as the bridge from response-function to
-actual fiber inhabitation. `FettersNegative.total_cut_with_function_not_waaEffectiveTerminus`
+conjunct. Rung 2 adds response function.
+`FettersNegative.total_cut_with_function_not_waaEffectiveTerminus`
 checks that rung 2 still lacks effectiveness. Rung 3 is
-`WaaEffectiveTerminus`, rung 2's quietness plus universal shortfall closure, and
+`WaaEffectiveTerminus`, function plus universal shortfall closure, and
 it enters the direct śraddhā route as hypothesis. The shushō-ittō face is now
 explicit as `WaaEffectiveOccurrence`; the standing rung is a descriptive
-display, never the act-time verdict. The two-obscurations
-`WaaFullyEnlightened` bundle is the testimonial faith-object above this
-effectiveness ladder. This is the same fox-guard for
-sentient and insentient adaptive cases: a standing rank on a responder is the
-freeze, while a pole-typed landing is spent per occurrence.
+display, never the act-time verdict. Rung 4 is the cognitive fence:
+`FaithNegative.arhat_retains_nescience_witness` shows that quiet function does
+not imply `WaaNoNescience`. The two-obscurations `WaaFullyEnlightened` bundle
+adds that speech-or-mind truth condition above effectiveness.
 
 At the enlightenment joint, pratyekabuddha is the sealed-and-silent standing
-bundle, not a second attainment. `buddha_waaFullyEnlightened_silent` combines
-vacuous effective closure for undelivered own deeds with vacuous no-delusion
-under `silentFidelity`; `buddha_not_waaFullyEnlightenedEnacted_silent` shows
-that it lacks the witnessed top rung, while
-`buddha_enacted_faces_absent_silent` checks both missing existential faces.
+bundle, not a second attainment. `FaithNegative.Sealed.silent_buddha_models`
+checks both a no-thought model and a true-thinking model; each retains empty
+speech and deed occurrence faces.
 The uncooperative delivered case remains a lower negative boundary: when a
 deed arrives but no share drop lands,
 `OrthogonalityNegative.waaEffectiveTerminus_stronger_than_terminus` shows that
@@ -683,10 +682,11 @@ Non-teaching is still a field fact, never a being who opts out of being read:
 the private-buddha freeze is avoided because the model records what was or was
 not delivered, not a refusal of object-axis standing.
 
-The older arhat anchors remain and have region duals:
-`identityView_excluded_at_arhatFiber`, `conceit_excluded_at_arhatFiber`,
-`arhatFiber_of_termini`, `identityView_excluded_at_speechThoughtRegion`,
-`conceit_excluded_within`, and `regionFiber_of_termini`.
+The arhat anchors are now the fine-being door forms:
+`arhat_iff_three_doors_quiet`, `conceit_excluded_of_quietOn`,
+`identityView_cut_iff_noDefiledVoicing`, and
+`no_defiledFalsehood_of_arhat`. Series quiet remains derived display through
+`seriesQuiet_iff_forall_fine`.
 
 Identity-view is the coarsening-freeze enacted: the macro tag held as stored
 owner. Its cut is quietness on the identity-view provocation class, so
@@ -694,12 +694,13 @@ stream-entry is typed as the cessation of the same attachment the uniform
 coarsening clause warns against.
 
 `Doctrines/Factors.lean` adds the path-factor reading over that same fetter
-table. `PathFactor.blockerClass` is derived from `FetterReading`, so the factor
+table. `PathFactor.blockerClass` is derived from `DoorReading` and
+`FetterReading`, so the factor
 scheme is a regrouping of the canonical classes rather than a second taxonomy:
 rites is the floor component, view covers identity-view and doubt, and resolve
 covers sensual desire and ill will. `FactorHeld` and `FactorReleased` are a
-new factor-relation frame. Hold is a witnessed live in-fiber weld in the
-factor's blocker class; release is the whole-class `FiberAtPoleOn` cut. Hold is
+new factor-relation frame. Hold is a witnessed live fine weld in the
+factor's blocker class; release is fine-being `QuietOn` for that class. Hold is
 not an error by itself, since a stage-appropriate hold is correct. The error
 taxonomy remains freeze/collapse on utterance distinctions, and clench remains
 the share-frame live-index vocabulary. The raft simile lands exactly at
@@ -716,7 +717,7 @@ diagnosis-time readings over welds and classes, never stored ranks.
 `WaaResolveAttenuation` gives once-return positive content without adding a cut
 class: a resolve-class share-drop run can be strict while still stopping short
 of the pole. `WaaSerialFactorRegime` is the matching "usually in order"
-conditional; `FactorsNegative.seen_run_underdetermines_factorOrder` blocks
+conditional; `FactorsNegative.factor_order_underdetermined` blocks
 deriving that order from the grid alone.
 
 One level up, the Theravada-side risk is overstaying the hold on the scheme
@@ -725,29 +726,24 @@ Mahayana-side risk is premature release of diagnosis: the lens-dismissal cell,
 checked elsewhere as `lens_denial_collapse_self_refuting`. Emptiness is not
 the absence of the coarsening, but the refusal to hold it as grid-carried.
 Lineages differ in where the supplied reading puts its weight, not in type
-signature; `FactorsNegative.lineage_underdetermined_by_seen_run` specializes
-`CorrelationsNegative.no_stage_boundary_recovery` to that switch.
+signature; stage-boundary non-recovery remains checked by
+`CorrelationsNegative.no_stage_boundary_recovery`.
 
-Speech and conduct are named as `PathFactor.speech` and `PathFactor.conduct`,
-but their blocker classes are `False` in this phase. The open question is what
-"holding a factor" should mean for the upper pair if an arhat is already at
-`FiberAtPole`: current `FactorHeld` requires `HasSelfPoleIndex`, and the arhat
-anchors refute that fiber-wide. This commit therefore leaves
-`arhatPathQuiet_iff_fiberAtPole`, `all_fetters_cut_at_arhatFiber`, the total
-arhat class, and `SomaReading.speechThoughtTag` untouched.
+Speech and conduct are named as `PathFactor.speech` and `PathFactor.conduct`.
+The speech blocker is active as the speech-door weld-class. Conduct remains
+inert pending body-door intimation content; the residue ledger owns that
+boundary.
 
-Irreversibility is three-layered on both axes. Whole-region `FetterCut` and
-`FetterCutWithin` are internally irreversible by quantifier logic: if a later
-clenched weld in the relevant rectangle exists, the cut never held. Run-assigned
+Irreversibility is three-layered. Whole-class `FetterCut` is internally
+irreversible by quantifier logic: if a later clenched weld in the selected
+class exists, the cut never held. Run-assigned
 path tags are only display over seen data, and
-`FettersNegative.seen_run_underdetermines_fetterCut` with
-`FettersNegative.seen_run_underdetermines_fetterCutWithin` gives the fresh-call
-transfer countermodel. A forward guarantee is hostable only as the conditionals
-`waaIrreversibleRegime_conditional` and
-`waaIrreversibleRegimeWithin_conditional`, parallel in voice to the sraddha
+`FettersNegative.seen_run_underdetermines_fetterCut` gives the fresh-weld
+countermodel. A forward guarantee is hostable only as
+`waaIrreversibleRegime_conditional`, parallel in voice to the sraddha
 conditional. The orthogonality note is checked by
-`unquiet_region_still_functions_witness`: region cuts speak to share; the uncut
-region's tags act as fully as the cut region's tags.
+`unquiet_door_still_functions_witness`: door quiet speaks to share, not whether
+the remaining door functions.
 
 C.9 Doctrines/OtherPower.lean and Doctrines/OtherPowerNegative.lean
 

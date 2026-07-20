@@ -1,341 +1,310 @@
 /-
 ================================================================================
   WeldAndArrow.Doctrines.FaithNegative
-  The two-obscurations separator and non-vacuity witness
+  Speech/mind strictness, undefiled nescience, and silent buddhas
 ================================================================================
-
-The countermodel is the undefiled-nescience witness: effective functioning and
-universal shortfall closure do not remove cognitive obscuration. Under total
-occurrence fidelity the buddha has `WaaEffectiveTerminus` but lacks
-`WaaNoDelusion`, and therefore lacks the two-obscurations bundle
-`WaaFullyEnlightened`. Further witnesses prove the strict standing/enacted
-ladder, exhibit its sealed-and-silent pratyeka face, and inhabit its samyak top.
 -/
 
 import WeldAndArrow.Doctrines.Faith
 
 namespace WAA
-
 namespace FaithNegative
 
 open Grid
 open Grid.DirectedConvention
 
-inductive Being
-  | buddha
-  | disciple
-  | receiver
+/-! ### A pole-share producer with true speech and a false thought -/
 
 inductive Call
-  | call
+  | speech
+  | mind
+  | target
+deriving DecidableEq
 
-inductive Response
-  | response
-
-/-- A grid in which the buddha is an effective terminus for free: its own deeds are
-    never delivered, so shortfall closure for its own deeds is vacuous. The
-    disciple's deed is delivered to a receiver whose live share does not drop. -/
+/-- Speech and thought occur at the pole.  The target is a merely possible
+    reception used to make the thought-content false. -/
 def grid : Grid Nat where
-  Being      := Being
-  Call       := Call
-  Response   := Response
-  respondsTo _ _ := some Response.response
-  grade b _ _ :=
-    match b with
-    | .buddha   => 0
-    | .disciple => 1
-    | .receiver => 1
+  Being := Unit
+  Call := Call
+  Response := Unit
+  respondsTo _ c :=
+    match c with
+    | .speech | .mind => some ()
+    | .target => none
+  grade _ c _ :=
+    match c with
+    | .speech | .mind => 0
+    | .target => 1
   conditions deed reception :=
-    deed.agent = Being.disciple ∧ reception.agent = Being.receiver
+    deed.call = .mind ∧ reception.call = .target
 
-def liveBefore : Config Nat :=
-  { tendency := 1 }
+def speechWeld : grid.Weld := ⟨(), .speech, ()⟩
+def mindWeld : grid.Weld := ⟨(), .mind, ()⟩
+def targetWeld : grid.Weld := ⟨(), .target, ()⟩
 
-def discipleDeed : grid.Weld :=
-  ⟨Being.disciple, Call.call, Response.response⟩
+def poleBefore : Config Nat := ⟨0⟩
+def liveBefore : Config Nat := ⟨1⟩
 
-def reception : grid.Weld :=
-  ⟨Being.receiver, Call.call, Response.response⟩
+def trueContent : WaaPathClaim grid :=
+  ⟨poleBefore, speechWeld, targetWeld⟩
 
-def buddhaWeld : grid.Weld :=
-  ⟨Being.buddha, Call.call, Response.response⟩
+def falseContent : WaaPathClaim grid :=
+  ⟨liveBefore, mindWeld, targetWeld⟩
 
-theorem liveBefore_not_atBot :
-    ¬ AtBot liveBefore.tendency := by
+def reading : SpeechReading grid (waaPathClaimLanguage grid) where
+  door w :=
+    match w.call with
+    | .speech => .speech
+    | .mind => .mind
+    | .target => .body
+  voices w :=
+    match w.call with
+    | .speech => some trueContent
+    | .mind => some falseContent
+    | .target => none
+
+def speechProduction : ProducedUtterance reading where
+  weld := speechWeld
+  actual := rfl
+  content := trueContent
+  voiced := rfl
+
+def mindProduction : ProducedUtterance reading where
+  weld := mindWeld
+  actual := rfl
+  content := falseContent
+  voiced := rfl
+
+theorem trueContent_trueAt :
+    (waaPathClaimLanguage grid).TrueAt
+      (Tier.actTime speechWeld) trueContent := by
+  intro hlive
+  exact False.elim (hlive (Nat.le_refl 0))
+
+theorem liveBefore_not_atBot : ¬ AtBot liveBefore.tendency := by
   intro h
   exact Nat.not_succ_le_zero 0 h
 
-theorem delivered :
-    DeliveredTo grid discipleDeed reception :=
+theorem mind_delivered_to_target :
+    DeliveredTo grid mindWeld targetWeld :=
   ⟨rfl, rfl⟩
 
-/-- The buddha side of the model is sealed even though disciple-side delivery
-    remains live. This is the deed-vacuity half of the pratyekabuddha witness. -/
-theorem buddha_own_deeds_undelivered
-    (deed reception : grid.Weld) (hdeed : deed.agent = Being.buddha) :
-    ¬ DeliveredTo grid deed reception := by
-  rintro ⟨hdisciple, _hreceiver⟩
-  rw [hdeed] at hdisciple
-  exact Being.noConfusion hdisciple
-
-theorem buddhaWeld_actual :
-    grid.Actual buddhaWeld :=
-  rfl
-
-theorem buddha_responsiveTerminus :
-    grid.ResponsiveTerminus Being.buddha := by
-  constructor
-  · intro _c
-    exact ⟨Response.response, rfl⟩
-  · intro _c _r _hresp
-    exact Nat.le_refl 0
-
-/-- The buddha's own deeds are never delivered in this grid, so the shortfall
-    closure conjunct holds vacuously. -/
-theorem buddha_waaEffectiveTerminus :
-    WaaEffectiveTerminus grid Being.buddha := by
-  refine ⟨buddha_responsiveTerminus, ?_⟩
-  intro _before deed reception hdeed _hlive hdel
-  exact False.elim (buddha_own_deeds_undelivered deed reception hdeed hdel)
-
-theorem not_hasShareDropLanding :
-    ¬ HasShareDropLanding grid liveBefore discipleDeed := by
+theorem mind_has_no_shareDropLanding :
+    ¬ HasShareDropLanding grid liveBefore mindWeld := by
   rintro ⟨received, hland⟩
-  have hreceiver : received.agent = Being.receiver := hland.left.left.right
-  have hdrop : Strict (grid.share received) liveBefore.tendency :=
-    hland.right
-  have hstrict : Strict (1 : Nat) 1 := by
-    simpa [grid, Grid.share, liveBefore, hreceiver] using hdrop
-  exact strict_irrefl (1 : Nat) hstrict
+  have htarget : received.call = Call.target := hland.left.left.right
+  have hactual : grid.Actual received := hland.left.right
+  cases received with
+  | mk agent call response =>
+      simp only at htarget
+      subst call
+      change (none : Option Unit) = some response at hactual
+      cases hactual
 
-/-- The buddha's recorded path claim about the disciple's deed is false: the
-    delivered deed does not land as a share-drop for the live receiver context. -/
-def falseClaim : RecordedUtterance grid (waaPathClaimLanguage grid) where
-  weld      := buddhaWeld
-  actual    := buddhaWeld_actual
-  offeredAt := Tier.actTime buddhaWeld
-  content   := ⟨liveBefore, discipleDeed, reception⟩
+theorem falseContent_not_trueAt :
+    ¬ (waaPathClaimLanguage grid).TrueAt
+      (Tier.actTime mindWeld) falseContent := by
+  intro htrue
+  exact mind_has_no_shareDropLanding
+    (htrue liveBefore_not_atBot mind_delivered_to_target)
 
-theorem falseClaim_not_fitsOfferedTier :
-    ¬ falseClaim.FitsOfferedTier := by
-  intro hfit
-  change (waaPathClaimLanguage grid).TrueAt falseClaim.offeredAt
-    falseClaim.content at hfit
-  dsimp [waaPathClaimLanguage, ClaimLanguage.TrueAt, falseClaim,
-    ShortfallClosedAt] at hfit
-  exact not_hasShareDropLanding (hfit liveBefore_not_atBot delivered)
+theorem all_speech_productions_true :
+    ∀ u : ProducedUtterance reading,
+      reading.door u.weld = .speech →
+        (waaPathClaimLanguage grid).TrueAt
+          (Tier.actTime u.weld) u.content := by
+  intro u hspeech
+  cases hcall : u.weld.call with
+  | speech =>
+      have hweld : u.weld = speechWeld := by
+        apply RawWeld.ext
+        · change (u.weld.agent : Unit) = ()
+          exact Unit.ext _ _
+        · exact hcall
+        · change (u.weld.response : Unit) = ()
+          exact Unit.ext _ _
+      have hvoiced := u.voiced
+      rw [hweld] at hvoiced ⊢
+      have hcontent : u.content = trueContent := by
+        change some trueContent = some u.content at hvoiced
+        exact (Option.some.inj hvoiced).symm
+      rw [hcontent]
+      exact trueContent_trueAt
+  | mind => simp [reading, hcall] at hspeech
+  | target => simp [reading, hcall] at hspeech
 
-/-- Every attributed occurrence is treated as faithful in the separating
-    model, so the character conjunct cannot evade the counterexample by a
-    sealed channel. -/
-def totalFidelity :
-    RecordedUtterance grid (waaPathClaimLanguage grid) → Prop :=
-  fun _ => True
+/-- Production-instantiated fidelity sees precisely speech-door productions,
+    all of which are true in the strictness model. -/
+theorem old_speech_side_holds :
+    WaaNoDelusion grid (ProductionFidelity grid reading) () := by
+  intro record _hagent hfid _w _hoff
+  rcases hfid with ⟨u, hspeech, rfl⟩
+  exact all_speech_productions_true u hspeech
 
-theorem falseClaim_misfitsOfferedTier :
-    falseClaim.MisfitsOfferedTier :=
-  ⟨buddhaWeld, rfl, falseClaim_not_fitsOfferedTier⟩
+theorem not_noNescience :
+    ¬ WaaNoNescience grid reading () := by
+  intro h
+  exact falseContent_not_trueAt
+    (h mindProduction rfl (Or.inr rfl) (Nat.le_refl 0))
 
-/-- Effective termination does not remove undefiled nescience: under total
-    fidelity the attributed false claim refutes no-delusion. -/
-theorem buddha_not_waaNoDelusion :
-    ¬ WaaNoDelusion grid totalFidelity Being.buddha := by
-  intro hno
-  exact falseClaim_not_fitsOfferedTier
-    (hno falseClaim rfl trivial buddhaWeld rfl)
+/-- No-nescience is deliberately stronger than the former speech-only test. -/
+theorem noNescience_strictly_stronger_witness :
+    WaaNoDelusion grid (ProductionFidelity grid reading) () ∧
+      (∀ u : ProducedUtterance reading,
+        reading.door u.weld = .speech →
+          (waaPathClaimLanguage grid).TrueAt
+            (Tier.actTime u.weld) u.content) ∧
+      ¬ WaaNoNescience grid reading () :=
+  ⟨old_speech_side_holds, all_speech_productions_true, not_noNescience⟩
 
-/-- The two-obscurations separator. Removal of the afflictive obscuration,
-    represented by `WaaEffectiveTerminus`, does not by itself remove the
-    cognitive obscuration represented by `WaaNoDelusion`. -/
-theorem effectiveTerminus_not_waaFullyEnlightened :
-    WaaEffectiveTerminus grid Being.buddha ∧
-      ¬ WaaFullyEnlightened grid totalFidelity Being.buddha := by
-  refine ⟨buddha_waaEffectiveTerminus, ?_⟩
-  intro hfull
-  exact buddha_not_waaNoDelusion hfull.noDelusion
-
-/-- The first strict ladder joint: full enlightenment always projects to
-    effective termination, while total fidelity exposes this effective
-    terminus as lacking the standing two-obscurations bundle. -/
-theorem effectiveTerminus_strictly_weaker_than_fullyEnlightened :
-    (WaaFullyEnlightened grid totalFidelity Being.buddha →
-        WaaEffectiveTerminus grid Being.buddha) ∧
-      WaaEffectiveTerminus grid Being.buddha ∧
-        ¬ WaaFullyEnlightened grid totalFidelity Being.buddha :=
-  ⟨fun h => waaEffectiveTerminus_of_fullyEnlightened grid h,
-    effectiveTerminus_not_waaFullyEnlightened⟩
-
-/-- Doctrinal name for the same undefiled-nescience witness. -/
+/-- The false thought is cognitive error but not defiled: its occurrence has
+    no live self-pole.  This is the checked akliṣṭa-ajñāna separation. -/
 theorem aklishta_ajnana_witness :
-    WaaEffectiveTerminus grid Being.buddha ∧
-      ¬ WaaNoDelusion grid totalFidelity Being.buddha :=
-  ⟨buddha_waaEffectiveTerminus, buddha_not_waaNoDelusion⟩
+    grid.Actual mindProduction.weld ∧
+      AtBot (grid.share mindProduction.weld) ∧
+      ¬ (waaPathClaimLanguage grid).TrueAt
+        (Tier.actTime mindProduction.weld) mindProduction.content ∧
+      ¬ grid.HasSelfPoleIndex mindProduction.weld := by
+  refine ⟨mindProduction.actual, Nat.le_refl 0,
+    falseContent_not_trueAt, ?_⟩
+  exact grid.no_self_pole_index_of_atBot mindProduction.weld
+    (Nat.le_refl 0)
 
-/-- A faithful, fitting, act-time own-deed claim for the non-vacuity witness. -/
-def faithfulClaim : RecordedUtterance grid (waaPathClaimLanguage grid) where
-  weld := buddhaWeld
-  actual := buddhaWeld_actual
-  offeredAt := Tier.actTime buddhaWeld
-  content := ⟨liveBefore, buddhaWeld, reception⟩
+theorem quiet_everywhere : QuietOn grid () (fun _ => True) := by
+  intro w hactual _hagent _
+  cases hcall : w.call with
+  | speech =>
+      change AtBot (grid.grade w.agent w.call w.response)
+      rw [hcall]
+      change AtBot (0 : Nat)
+      exact Nat.le_refl 0
+  | mind =>
+      change AtBot (grid.grade w.agent w.call w.response)
+      rw [hcall]
+      change AtBot (0 : Nat)
+      exact Nat.le_refl 0
+  | target =>
+      unfold Grid.Actual at hactual
+      rw [hcall] at hactual
+      simp [grid] at hactual
 
-theorem faithfulClaim_fitsOfferedTier :
-    faithfulClaim.FitsOfferedTier :=
-  fitsOfferedTier_of_waaEffectiveTerminus_ownDeed grid
-    buddha_waaEffectiveTerminus faithfulClaim rfl buddhaWeld rfl
+/-- Three-door arhat quietness removes the afflictive self-pole but does not by
+    itself make every speech-or-mind production true. -/
+theorem arhat_retains_nescience_witness :
+    QuietOn grid () (fun _ => True) ∧
+      ¬ WaaNoNescience grid reading () :=
+  ⟨quiet_everywhere, not_noNescience⟩
 
-/-- Concrete fidelity that records exactly fitting occurrences. -/
-def fittingFidelity :
-    RecordedUtterance grid (waaPathClaimLanguage grid) → Prop :=
-  fun u => u.FitsOfferedTier
+/-! ### Sealed silent and thinking buddhas -/
 
-theorem buddha_waaNoDelusion_fittingFidelity :
-    WaaNoDelusion grid fittingFidelity Being.buddha := by
-  intro u _hagent hfit _w _hoff
-  exact hfit
+namespace Sealed
 
-/-- The full bundle is non-vacuously inhabited: one faithful, fitting,
-    act-time utterance accompanies the two conjuncts. -/
-theorem waaFullyEnlightened_faithful_actTime_inhabited :
-    WaaFullyEnlightened grid fittingFidelity Being.buddha ∧
-      ∃ u : RecordedUtterance grid (waaPathClaimLanguage grid),
-        fittingFidelity u ∧
-          (∃ w : grid.Weld, u.offeredAt = Tier.actTime w) ∧
-            u.FitsOfferedTier := by
-  refine ⟨⟨buddha_waaEffectiveTerminus,
-    buddha_waaNoDelusion_fittingFidelity⟩, faithfulClaim, ?_, ?_, ?_⟩
-  · exact faithfulClaim_fitsOfferedTier
-  · exact ⟨buddhaWeld, rfl⟩
-  · exact faithfulClaim_fitsOfferedTier
-
-/- ==============================================================================
-   The sealed-and-silent pratyekabuddha strictness witness
-============================================================================== -/
-
-/-- No record is admitted as faithful in the silent reading. -/
-def silentFidelity :
-    RecordedUtterance grid (waaPathClaimLanguage grid) → Prop :=
-  fun _ => False
-
-theorem buddha_not_waaFaithfulSpeechEnacted_silent :
-    ¬ WaaFaithfulSpeechEnacted grid silentFidelity Being.buddha :=
-  not_faithfulSpeechEnacted_of_no_faithful_utterance
-    grid (by
-      intro _u _hagent hfaithful
-      exact hfaithful)
-
-theorem buddha_waaFullyEnlightened_silent :
-    WaaFullyEnlightened grid silentFidelity Being.buddha :=
-  waaFullyEnlightened_of_effectiveTerminus_of_no_faithful_utterance
-    grid silentFidelity buddha_waaEffectiveTerminus (by
-      intro _u _hagent hfaithful
-      exact hfaithful)
-
-theorem buddha_not_waaFullyEnlightenedEnacted_silent :
-    ¬ WaaFullyEnlightenedEnacted grid silentFidelity Being.buddha := by
-  intro htop
-  exact (not_effectivenessEnacted_of_undelivered grid
-    buddha_own_deeds_undelivered) htop.deedWitness
-
-/-- Both existential additions at the enacted rung fail in the same standing
-    witness: own deeds are sealed from delivery and faithful speech is silent. -/
-theorem buddha_enacted_faces_absent_silent :
-    (¬ WaaEffectivenessEnacted grid Being.buddha) ∧
-      ¬ WaaFaithfulSpeechEnacted grid silentFidelity Being.buddha :=
-  ⟨not_effectivenessEnacted_of_undelivered grid
-      buddha_own_deeds_undelivered,
-    buddha_not_waaFaithfulSpeechEnacted_silent⟩
-
-/-- The second strict ladder joint: the sealed, silent buddha satisfies the
-    standing bundle but not the enacted bundle. This is the checked
-    pratyekabuddha face rather than a defect in standing enlightenment. -/
-theorem fullyEnlightened_strictly_weaker_than_enacted :
-    (WaaFullyEnlightenedEnacted grid silentFidelity Being.buddha →
-        WaaFullyEnlightened grid silentFidelity Being.buddha) ∧
-      WaaFullyEnlightened grid silentFidelity Being.buddha ∧
-        ¬ WaaFullyEnlightenedEnacted grid silentFidelity Being.buddha :=
-  ⟨fun h => waaFullyEnlightened_of_fullyEnlightenedEnacted grid h,
-    buddha_waaFullyEnlightened_silent,
-    buddha_not_waaFullyEnlightenedEnacted_silent⟩
-
-/- ==============================================================================
-   A non-vacuous samyaksambuddha inhabitant of the enacted top rung
-============================================================================== -/
-
-namespace EnactedWitness
-
-/-- A one-being model in which the pole deed is delivered and lands with a
-    share drop for every live prior tendency. -/
 def grid : Grid Nat where
   Being := Unit
   Call := Unit
   Response := Unit
   respondsTo _ _ := some ()
   grade _ _ _ := 0
-  conditions _ _ := True
+  conditions _ _ := False
 
 def weld : grid.Weld := ⟨(), (), ()⟩
+def poleBefore : Config Nat := ⟨0⟩
+def content : WaaPathClaim grid := ⟨poleBefore, weld, weld⟩
 
-def liveBefore : Config Nat := ⟨1⟩
+def silentReading : SpeechReading grid (waaPathClaimLanguage grid) where
+  door _ := .mind
+  voices _ := none
 
-theorem weld_actual : grid.Actual weld :=
-  rfl
+def thinkingReading : SpeechReading grid (waaPathClaimLanguage grid) where
+  door _ := .mind
+  voices _ := some content
 
-theorem liveBefore_not_atBot : ¬ AtBot liveBefore.tendency := by
-  intro hbot
-  exact Nat.not_succ_le_zero 0 hbot
+def thought : ProducedUtterance thinkingReading where
+  weld := weld
+  actual := rfl
+  content := content
+  voiced := rfl
 
 theorem responsiveTerminus : grid.ResponsiveTerminus () := by
   constructor
-  · intro _call
+  · intro _
     exact ⟨(), rfl⟩
-  · intro _call _response _hresponds
+  · intro _ _ _
     exact Nat.le_refl 0
 
-theorem effectiveTerminus : WaaEffectiveTerminus grid () := by
-  refine ⟨responsiveTerminus, ?_⟩
-  intro before _deed reception _hdeed hlive hdel
-  refine ⟨reception, ?_⟩
-  refine ⟨⟨hdel, rfl⟩, ?_⟩
-  exact ⟨Nat.zero_le before.tendency, hlive⟩
+theorem own_deeds_undelivered
+    (deed reception : grid.Weld) (_hdeed : deed.agent = ()) :
+    ¬ DeliveredTo grid deed reception := by
+  simp [DeliveredTo, grid]
 
-theorem effectivenessEnacted : WaaEffectivenessEnacted grid () := by
-  refine ⟨effectiveTerminus, liveBefore, weld, weld, rfl, ?_⟩
-  refine ⟨⟨weld_actual, Nat.le_refl 0⟩, liveBefore_not_atBot, ?_⟩
-  exact ⟨⟨True.intro, weld_actual⟩,
-    ⟨Nat.zero_le liveBefore.tendency, liveBefore_not_atBot⟩⟩
+theorem effectiveTerminus : WaaEffectiveTerminus grid () :=
+  waaEffectiveTerminus_of_responsiveTerminus_of_undelivered
+    grid responsiveTerminus own_deeds_undelivered
 
-def claim : RecordedUtterance grid (waaPathClaimLanguage grid) where
-  weld := weld
-  actual := weld_actual
-  offeredAt := Tier.actTime weld
-  content := ⟨liveBefore, weld, weld⟩
+theorem content_trueAt :
+    (waaPathClaimLanguage grid).TrueAt (Tier.actTime weld) content := by
+  intro hlive
+  exact False.elim (hlive (Nat.le_refl 0))
 
-theorem claim_fitsOfferedTier : claim.FitsOfferedTier :=
-  fitsOfferedTier_of_waaEffectiveTerminus_ownDeed
-    grid effectiveTerminus claim rfl weld rfl
+theorem silent_noNescience : WaaNoNescience grid silentReading () := by
+  intro u _ _ _
+  have := u.voiced
+  simp [silentReading] at this
 
-def fittingFidelity :
-    RecordedUtterance grid (waaPathClaimLanguage grid) → Prop :=
-  fun u => u.FitsOfferedTier
+theorem thinking_noNescience : WaaNoNescience grid thinkingReading () := by
+  intro u _ _ _
+  have hcontent : u.content = content := by
+    simpa [thinkingReading] using u.voiced.symm
+  rw [hcontent]
+  rcases u.weld with ⟨⟨⟩, ⟨⟩, ⟨⟩⟩
+  exact content_trueAt
 
-theorem noDelusion : WaaNoDelusion grid fittingFidelity () := by
-  intro _u _hagent hfit _w _hoff
-  exact hfit
+theorem silent_fullyEnlightened :
+    WaaFullyEnlightened grid silentReading () :=
+  ⟨effectiveTerminus, silent_noNescience⟩
 
-theorem fullyEnlightened : WaaFullyEnlightened grid fittingFidelity () :=
-  ⟨effectiveTerminus, noDelusion⟩
+theorem thinking_fullyEnlightened :
+    WaaFullyEnlightened grid thinkingReading () :=
+  ⟨effectiveTerminus, thinking_noNescience⟩
 
-theorem faithfulSpeechEnacted :
-    WaaFaithfulSpeechEnacted grid fittingFidelity () :=
-  ⟨claim, rfl, claim_fitsOfferedTier,
-    weld, rfl, claim_fitsOfferedTier⟩
+def noFidelity
+    (_ : RecordedUtterance grid (waaPathClaimLanguage grid)) : Prop := False
 
-theorem fullyEnlightenedEnacted :
-    WaaFullyEnlightenedEnacted grid fittingFidelity () :=
-  ⟨fullyEnlightened, effectivenessEnacted, faithfulSpeechEnacted⟩
+theorem silent_no_speech_occurrence :
+    ¬ WaaFaithfulSpeechOccurrence grid silentReading noFidelity () := by
+  rintro ⟨u, _hagent, hspeech, _⟩
+  simp [silentReading] at hspeech
 
-end EnactedWitness
+theorem thinking_no_speech_occurrence :
+    ¬ WaaFaithfulSpeechOccurrence grid thinkingReading noFidelity () := by
+  rintro ⟨u, _hagent, hspeech, _⟩
+  simp [thinkingReading] at hspeech
+
+theorem thinking_has_mind_production :
+    ∃ u : ProducedUtterance thinkingReading,
+      thinkingReading.door u.weld = .mind :=
+  ⟨thought, rfl⟩
+
+theorem no_effectiveness_enacted :
+    ¬ WaaEffectivenessEnacted grid () :=
+  not_effectivenessEnacted_of_undelivered grid own_deeds_undelivered
+
+/-- Both sealed readings are fully enlightened.  One produces no thought and
+    the other produces a true thought; neither silently acquires a testimonial
+    or enacted deed witness. -/
+theorem silent_buddha_models :
+    WaaFullyEnlightened grid silentReading () ∧
+      WaaFullyEnlightened grid thinkingReading () ∧
+      (¬ WaaFaithfulSpeechOccurrence grid silentReading noFidelity ()) ∧
+      (¬ WaaFaithfulSpeechOccurrence grid thinkingReading noFidelity ()) ∧
+      (∃ u : ProducedUtterance thinkingReading,
+        thinkingReading.door u.weld = .mind) ∧
+      ¬ WaaEffectivenessEnacted grid () :=
+  ⟨silent_fullyEnlightened, thinking_fullyEnlightened,
+    silent_no_speech_occurrence, thinking_no_speech_occurrence,
+    thinking_has_mind_production, no_effectiveness_enacted⟩
+
+end Sealed
 
 end FaithNegative
-
 end WAA

@@ -1,4 +1,6 @@
 import WeldAndArrow.Doctrines.FourTruths
+import WeldAndArrow.Doctrines.Doors
+import WeldAndArrow.Doctrines.DoorsNegative
 import WeldAndArrow.Doctrines.FoxCase
 import WeldAndArrow.Doctrines.Sraddha
 import WeldAndArrow.Doctrines.Shusho

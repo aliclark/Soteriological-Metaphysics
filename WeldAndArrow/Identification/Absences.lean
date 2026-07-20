@@ -60,9 +60,9 @@ inductive InstructiveAbsence where
       fourth-truth shape but does not utter the detached command. The diagnostic
       work is the no-value clause itself: room and shape, no pull. -/
   | fourthTruthWithheld
-  /-- No stage immune to error: a terminal safe cell would be a rank. The
-      diagnostic work is to keep even buddha-immunity per-call rather than
-      possessed. -/
+  /-- No stage immune to error: formerly registered as future work.  It is now
+      retired as the checked production-level distinction between three-door
+      arhat quiet and buddha no-nescience; neither predicate is a stored rank. -/
   | noSafeStage
   /-- Prudential privilege underivable: special first-personal authority over
       future concern is absent as a theorem. The diagnostic work is the
@@ -121,6 +121,7 @@ def number : InstructiveAbsence → Nat
     section 3 ledger; this function records retirement. -/
 def status : InstructiveAbsence → AbsenceStatus
   | .thirdArrival => .retiredAsCheck
+  | .noSafeStage => .retiredAsCheck
   | .icchantikaDeclined => .standing
   | .rebirthCosmology => .standing
   | .floorTruthPredicate => .standing
@@ -180,8 +181,8 @@ theorem whyCallsLand_standing :
 theorem fourthTruthWithheld_standing :
     status InstructiveAbsence.fourthTruthWithheld = AbsenceStatus.standing := rfl
 
-theorem noSafeStage_standing :
-    status InstructiveAbsence.noSafeStage = AbsenceStatus.standing := rfl
+theorem noSafeStage_retired :
+    status InstructiveAbsence.noSafeStage = AbsenceStatus.retiredAsCheck := rfl
 
 theorem prudentialPrivilege_standing :
     status InstructiveAbsence.prudentialPrivilege = AbsenceStatus.standing := rfl

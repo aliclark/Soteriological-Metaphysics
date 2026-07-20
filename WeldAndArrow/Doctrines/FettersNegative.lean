@@ -1,7 +1,7 @@
 /-
 ================================================================================
   WeldAndArrow.Doctrines.FettersNegative
-  Fresh-call underdetermination for run-assigned fetter tags
+  Fresh-weld, view-content, and factor-split countermodels
 ================================================================================
 -/
 
@@ -12,383 +12,250 @@ namespace WAA
 
 namespace FettersNegative
 
+open Grid
 open Grid.DirectedConvention
-open Grid.DirectedConvention.BeingConvention
 
-/- ==============================================================================
-   The total-rectangle cut carries no function conjunct
-============================================================================== -/
+/- The total quiet class still carries no function conjunct. -/
 
-/-- A one-tag all-stone grid: no being mounts any response at any call. -/
 def stoneGrid : Grid Nat where
-  Being      := Unit
-  Call       := Unit
-  Response   := Unit
+  Being := Unit
+  Call := Unit
+  Response := Unit
   respondsTo _ _ := none
   grade _ _ _ := 0
   conditions _ _ := False
 
-def stoneCoarsening : BeingCoarsening stoneGrid Unit where
-  proj _ := ()
-
-theorem stone_fiber_total_cut :
-    stoneCoarsening.FiberAtPoleOnWithin ()
-      (fun _ => True) (fun _ => True) := by
-  intro w hactual _hfiber _hclass _htag
+theorem stone_quiet : QuietOn stoneGrid () (fun _ => True) := by
+  intro w hactual
   cases w with
-  | mk agent call response =>
-      cases agent
-      cases call
-      cases response
-      change (none : Option Unit) = some () at hactual
-      cases hactual
+  | mk agent c r =>
+    cases agent
+    cases c
+    cases r
+    change (none : Option Unit) = some () at hactual
+    cases hactual
 
-theorem stone_fiber_all_stone :
-    ∀ p : stoneGrid.Being, stoneCoarsening.proj p = () → stoneGrid.Stone p := by
-  intro p _hp c hmount
-  rcases hmount with ⟨r, hresp⟩
-  cases p
+theorem stone_not_functioning : ¬ stoneGrid.MountsSomewhere () := by
+  rintro ⟨c, r, hresp⟩
   cases c
   cases r
   change (none : Option Unit) = some () at hresp
   cases hresp
 
-theorem stone_fiber_not_sentient :
-    ¬ stoneCoarsening.SentientTag () :=
-  (stoneCoarsening.not_sentientTag_iff_fiber_all_stone ()).mpr
-    stone_fiber_all_stone
-
-theorem stone_fiber_atPole :
-    stoneCoarsening.FiberAtPole () :=
-  (stoneCoarsening.fiberAtPoleOnWithin_univ_univ_iff ()).mp
-    stone_fiber_total_cut
-
-theorem stone_fiber_not_live :
-    ¬ stoneCoarsening.LiveFiberAtPole () := by
-  intro hlive
-  exact stone_fiber_not_sentient
-    ((stoneCoarsening.sentientTag_iff_actualFiberInhabited ()).mpr hlive.left)
-
-/-- The lattice's top point is share-only. In this all-stone witness the total
-    calls/total tags cut holds vacuously, but `SentientTag` and hence
-    `LiveFiberAtPole` fail by `sentientTag_iff_actualFiberInhabited`. This is
-    the buddha/stone convergence blocked by the function/share split. -/
+/-- Total QuietOn alone is compatible with an all-stone model. -/
 theorem total_cut_carries_no_function :
-    stoneCoarsening.FiberAtPoleOnWithin ()
-      (fun _ => True) (fun _ => True) ∧
-      ¬ stoneCoarsening.SentientTag () ∧
-        stoneCoarsening.FiberAtPole () ∧
-          ¬ stoneCoarsening.LiveFiberAtPole () :=
-  ⟨stone_fiber_total_cut, stone_fiber_not_sentient,
-    stone_fiber_atPole, stone_fiber_not_live⟩
+    QuietOn stoneGrid () (fun _ => True) ∧
+      ¬ stoneGrid.MountsSomewhere () :=
+  ⟨stone_quiet, stone_not_functioning⟩
 
-/- ==============================================================================
-   Function still does not close the effectiveness gap
-============================================================================== -/
-
-def sraddhaEffectCoarsening :
-    BeingCoarsening SraddhaNegative.zeroEffectGrid SraddhaNegative.Being where
-  proj := id
-
-theorem sraddha_fiber_total_cut :
-    sraddhaEffectCoarsening.FiberAtPoleOnWithin
-      SraddhaNegative.Being.sraddha (fun _ => True) (fun _ => True) := by
-  intro w _hactual hfiber _hclass _htag
+theorem sraddha_total_quiet :
+    QuietOn SraddhaNegative.zeroEffectGrid
+      SraddhaNegative.Being.sraddha (fun _ => True) := by
+  intro w _hactual hagent _
   cases w with
-  | mk agent c r =>
-      cases agent with
-      | sraddha =>
-          dsimp [Grid.share, SraddhaNegative.zeroEffectGrid, AtBot, shareBot]
-          exact Nat.le_refl 0
-      | receiver =>
-          dsimp [sraddhaEffectCoarsening,
-            Grid.DirectedConvention.BeingConvention.BeingCoarsening.InFiber] at hfiber
-          cases hfiber
+  | mk agent _c _r =>
+    cases agent with
+    | sraddha =>
+        dsimp [Grid.share, SraddhaNegative.zeroEffectGrid, AtBot, shareBot]
+        exact Nat.le_refl 0
+    | receiver => cases hagent
 
-theorem sraddha_fiber_sentient :
-    sraddhaEffectCoarsening.SentientTag SraddhaNegative.Being.sraddha := by
-  refine ⟨SraddhaNegative.Being.sraddha, rfl, ?_⟩
-  exact ⟨SraddhaNegative.Call.call,
-    ⟨SraddhaNegative.Response.response, rfl⟩⟩
+theorem sraddha_functions :
+    SraddhaNegative.zeroEffectGrid.MountsSomewhere
+      SraddhaNegative.Being.sraddha :=
+  ⟨SraddhaNegative.Call.call,
+    SraddhaNegative.Response.response, rfl⟩
 
-theorem sraddha_liveFiberAtPole :
-    sraddhaEffectCoarsening.LiveFiberAtPole SraddhaNegative.Being.sraddha := by
-  have hpole :
-      sraddhaEffectCoarsening.FiberAtPole SraddhaNegative.Being.sraddha :=
-    (sraddhaEffectCoarsening.fiberAtPoleOnWithin_univ_univ_iff
-      SraddhaNegative.Being.sraddha).mp sraddha_fiber_total_cut
-  have hinh :
-      sraddhaEffectCoarsening.ActualFiberInhabited
-        SraddhaNegative.Being.sraddha :=
-    (sraddhaEffectCoarsening.sentientTag_iff_actualFiberInhabited
-      SraddhaNegative.Being.sraddha).mp sraddha_fiber_sentient
-  exact ⟨hinh, hpole⟩
-
-/-- Rung 2 to rung 3 is strict. Dressing the zero-effect sraddha countermodel
-    with the identity fiber gives total calls and total tags plus function
-    (`LiveFiberAtPole`), while `WaaEffectiveTerminus` still fails: quiet-and-
-    functioning is not regime effectiveness. This is the tag-axis sibling of
-    `OrthogonalityNegative.waaEffectiveTerminus_stronger_than_terminus`. -/
+/-- Quietness plus response-function still does not entail regime-relative
+    effectiveness. -/
 theorem total_cut_with_function_not_waaEffectiveTerminus :
-    sraddhaEffectCoarsening.FiberAtPoleOnWithin
-      SraddhaNegative.Being.sraddha (fun _ => True) (fun _ => True) ∧
-      sraddhaEffectCoarsening.SentientTag SraddhaNegative.Being.sraddha ∧
-        sraddhaEffectCoarsening.LiveFiberAtPole SraddhaNegative.Being.sraddha ∧
-          ¬ WaaEffectiveTerminus SraddhaNegative.zeroEffectGrid
-            SraddhaNegative.Being.sraddha :=
-  ⟨sraddha_fiber_total_cut, sraddha_fiber_sentient,
-    sraddha_liveFiberAtPole, SraddhaNegative.not_waaEffectiveTerminus⟩
+    QuietOn SraddhaNegative.zeroEffectGrid
+      SraddhaNegative.Being.sraddha (fun _ => True) ∧
+      SraddhaNegative.zeroEffectGrid.MountsSomewhere
+        SraddhaNegative.Being.sraddha ∧
+        ¬ WaaEffectiveTerminus SraddhaNegative.zeroEffectGrid
+          SraddhaNegative.Being.sraddha :=
+  ⟨sraddha_total_quiet, sraddha_functions,
+    SraddhaNegative.not_waaEffectiveTerminus⟩
 
-inductive Being
-  | practitioner
+/- A quiet seen weld does not settle a fresh weld in the same fetter class. -/
 
 inductive Call
   | seen
   | fresh
-deriving DecidableEq
 
-inductive Response
-  | response
-
-/-- The seen call is quiet; the fresh call is quiet too. -/
 def quietGrid : Grid Nat where
-  Being      := Being
-  Call       := Call
-  Response   := Response
-  respondsTo _ _ := some Response.response
-  grade _ _ _ := 0
-  conditions _ _ := True
-
-/-- The same seen behavior, but the fresh call carries live share. -/
-def freshClenchGrid : Grid Nat where
-  Being      := Being
-  Call       := Call
-  Response   := Response
-  respondsTo _ _ := some Response.response
-  grade _ c _ :=
-    match c with
-    | .seen => 0
-    | .fresh => 5
-  conditions _ _ := True
-
-def quietPath : quietGrid.PathScheme where
-  proj _ := Path.streamEntry
-
-def freshPath : freshClenchGrid.PathScheme where
-  proj _ := Path.streamEntry
-
-/-- Identity-view provocations are modeled here as the whole call domain. -/
-def quietReading : quietGrid.FetterReading where
-  provocationClass
-    | Fetter.identityView, _ => True
-    | _, _ => False
-
-def freshReading : freshClenchGrid.FetterReading where
-  provocationClass
-    | Fetter.identityView, _ => True
-    | _, _ => False
-
-def quietSeen : quietGrid.Weld :=
-  ⟨Being.practitioner, Call.seen, Response.response⟩
-
-def freshSeen : freshClenchGrid.Weld :=
-  ⟨Being.practitioner, Call.seen, Response.response⟩
-
-def freshWeld : freshClenchGrid.Weld :=
-  ⟨Being.practitioner, Call.fresh, Response.response⟩
-
-def quietRun : List quietGrid.Weld :=
-  [quietSeen]
-
-def freshRun : List freshClenchGrid.Weld :=
-  [freshSeen]
-
-/-- The restricted seen track record: response and grade behavior on `seen`. -/
-abbrev TrackData : Type :=
-  Option Response × (Response → Nat)
-
-def quietSeenTrackData : TrackData :=
-  (quietGrid.respondsTo Being.practitioner Call.seen,
-    fun r => quietGrid.grade Being.practitioner Call.seen r)
-
-def freshSeenTrackData : TrackData :=
-  (freshClenchGrid.respondsTo Being.practitioner Call.seen,
-    fun r => freshClenchGrid.grade Being.practitioner Call.seen r)
-
-theorem seen_track_agrees :
-    quietSeenTrackData = freshSeenTrackData :=
-  rfl
-
-theorem quiet_seen_runQuiet :
-    quietGrid.RunQuiet quietPath Path.streamEntry
-      (quietReading.provocationClass Fetter.identityView) quietRun := by
-  intro w hmem _hactual _hfiber _hclass
-  simp [quietRun, quietSeen] at hmem
-  subst w
-  dsimp [Grid.share, quietGrid, AtBot, shareBot]
-  show (0 : Nat) ≤ 0
-  decide
-
-theorem fresh_seen_runQuiet :
-    freshClenchGrid.RunQuiet freshPath Path.streamEntry
-      (freshReading.provocationClass Fetter.identityView) freshRun := by
-  intro w hmem _hactual _hfiber _hclass
-  simp [freshRun, freshSeen] at hmem
-  subst w
-  dsimp [Grid.share, freshClenchGrid, AtBot, shareBot]
-  show (0 : Nat) ≤ 0
-  decide
-
-theorem quiet_fetterCut :
-    quietGrid.FetterCut quietPath Path.streamEntry quietReading
-      Fetter.identityView := by
-  intro w _hactual _hfiber _hclass
-  dsimp [Grid.share, quietGrid, AtBot, shareBot]
-  show (0 : Nat) ≤ 0
-  decide
-
-theorem fresh_not_fetterCut :
-    ¬ freshClenchGrid.FetterCut freshPath Path.streamEntry freshReading
-      Fetter.identityView := by
-  intro hcut
-  have hbot : AtBot (freshClenchGrid.share freshWeld) :=
-    hcut freshWeld rfl rfl True.intro
-  dsimp [Grid.share, freshClenchGrid, freshWeld, AtBot, shareBot] at hbot
-  exact Nat.not_succ_le_zero 4 hbot
-
-theorem fresh_share_disagrees :
-    quietGrid.grade Being.practitioner Call.fresh Response.response ≠
-      freshClenchGrid.grade Being.practitioner Call.fresh Response.response := by
-  decide
-
-/-- A finite seen class-quiet track does not determine the fresh call. -/
-theorem seen_run_underdetermines_fetterCut :
-    quietSeenTrackData = freshSeenTrackData ∧
-      quietGrid.RunQuiet quietPath Path.streamEntry
-        (quietReading.provocationClass Fetter.identityView) quietRun ∧
-      freshClenchGrid.RunQuiet freshPath Path.streamEntry
-        (freshReading.provocationClass Fetter.identityView) freshRun ∧
-      quietGrid.FetterCut quietPath Path.streamEntry quietReading
-        Fetter.identityView ∧
-      ¬ freshClenchGrid.FetterCut freshPath Path.streamEntry freshReading
-        Fetter.identityView :=
-  ⟨seen_track_agrees, quiet_seen_runQuiet, fresh_seen_runQuiet,
-    quiet_fetterCut, fresh_not_fetterCut⟩
-
-theorem quiet_seen_runQuietWithin :
-    quietGrid.RunQuietWithin quietPath Path.streamEntry
-      (quietReading.provocationClass Fetter.identityView)
-      (fun _ => True) quietRun := by
-  intro w hmem hactual hfiber hclass _htag
-  exact quiet_seen_runQuiet w hmem hactual hfiber hclass
-
-theorem fresh_seen_runQuietWithin :
-    freshClenchGrid.RunQuietWithin freshPath Path.streamEntry
-      (freshReading.provocationClass Fetter.identityView)
-      (fun _ => True) freshRun := by
-  intro w hmem hactual hfiber hclass _htag
-  exact fresh_seen_runQuiet w hmem hactual hfiber hclass
-
-theorem quiet_fetterCutWithin :
-    quietGrid.FetterCutWithin quietPath Path.streamEntry quietReading
-      Fetter.identityView (fun _ => True) := by
-  intro w hactual hfiber hclass _htag
-  exact quiet_fetterCut w hactual hfiber hclass
-
-theorem fresh_not_fetterCutWithin :
-    ¬ freshClenchGrid.FetterCutWithin freshPath Path.streamEntry freshReading
-      Fetter.identityView (fun _ => True) := by
-  intro hcut
-  have hbot : AtBot (freshClenchGrid.share freshWeld) :=
-    hcut freshWeld rfl rfl True.intro True.intro
-  dsimp [Grid.share, freshClenchGrid, freshWeld, AtBot, shareBot] at hbot
-  exact Nat.not_succ_le_zero 4 hbot
-
-/-- A finite seen class-quiet track in a tag-region does not determine the
-    fresh call. The tag class is total here, so the old fresh-call obstruction
-    transfers directly to the product predicate. -/
-theorem seen_run_underdetermines_fetterCutWithin :
-    quietSeenTrackData = freshSeenTrackData ∧
-      quietGrid.RunQuietWithin quietPath Path.streamEntry
-        (quietReading.provocationClass Fetter.identityView)
-        (fun _ => True) quietRun ∧
-      freshClenchGrid.RunQuietWithin freshPath Path.streamEntry
-        (freshReading.provocationClass Fetter.identityView)
-        (fun _ => True) freshRun ∧
-      quietGrid.FetterCutWithin quietPath Path.streamEntry quietReading
-        Fetter.identityView (fun _ => True) ∧
-      ¬ freshClenchGrid.FetterCutWithin freshPath Path.streamEntry freshReading
-        Fetter.identityView (fun _ => True) :=
-  ⟨seen_track_agrees, quiet_seen_runQuietWithin, fresh_seen_runQuietWithin,
-    quiet_fetterCutWithin, fresh_not_fetterCutWithin⟩
-
-/- ==============================================================================
-   No grid-carried recovery of a unique soma boundary
-============================================================================== -/
-
-/-- Two fine tags with identical grid data and incompatible region readings. -/
-def somaGrid : Grid Nat where
-  Being      := Bool
-  Call       := Unit
-  Response   := Unit
+  Being := Unit
+  Call := Call
+  Response := Unit
   respondsTo _ _ := some ()
   grade _ _ _ := 0
   conditions _ _ := True
 
-def somaMergeReading : somaGrid.SomaReading where
-  speechThoughtTag _ := True
+def freshClenchGrid : Grid Nat where
+  Being := Unit
+  Call := Call
+  Response := Unit
+  respondsTo _ _ := some ()
+  grade _ c _ := match c with | .seen => 0 | .fresh => 1
+  conditions _ _ := True
 
-def somaSplitReading : somaGrid.SomaReading where
-  speechThoughtTag p := p = false
+def quietSeen : quietGrid.Weld := ⟨(), .seen, ()⟩
+def freshSeen : freshClenchGrid.Weld := ⟨(), .seen, ()⟩
+def freshWeld : freshClenchGrid.Weld := ⟨(), .fresh, ()⟩
 
-theorem somaMerge_true_in_region :
-    somaMergeReading.speechThoughtTag true :=
-  True.intro
+def quietReading : quietGrid.FetterReading where
+  provocationClass _ _ := True
 
-theorem somaSplit_true_not_in_region :
-    ¬ somaSplitReading.speechThoughtTag true := by
-  intro h
-  cases h
+def freshReading : freshClenchGrid.FetterReading where
+  provocationClass _ _ := True
 
-abbrev SomaW := RawWeld Bool Unit Unit
+theorem quiet_seen_run :
+    quietGrid.RunQuietOn ()
+      (quietReading.provocationClass Fetter.identityView) [quietSeen] := by
+  intro w _hmem _hactual _hagent _hclass
+  cases w
+  dsimp [Grid.share, quietGrid, AtBot, shareBot]
+  exact Nat.le_refl 0
 
-abbrev SomaGridData : Type :=
-  (Bool → Unit → Option Unit) ×
-    (Bool → Unit → Unit → Nat) ×
-      (SomaW → SomaW → Prop)
+theorem fresh_seen_run :
+    freshClenchGrid.RunQuietOn ()
+      (freshReading.provocationClass Fetter.identityView) [freshSeen] := by
+  intro w hmem _hactual _hagent _hclass
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hmem
+  subst hmem
+  dsimp [Grid.share, freshClenchGrid, freshSeen, AtBot, shareBot]
+  exact Nat.le_refl 0
 
-def somaGridData : SomaGridData :=
-  (somaGrid.respondsTo, somaGrid.grade, somaGrid.conditions)
+theorem quiet_fetterCut :
+    quietGrid.FetterCut () quietReading Fetter.identityView := by
+  intro w _hactual _hagent _hclass
+  cases w
+  dsimp [Grid.share, quietGrid, AtBot, shareBot]
+  exact Nat.le_refl 0
 
-def mergedRegion (_p : Bool) : Prop := True
+theorem fresh_not_fetterCut :
+    ¬ freshClenchGrid.FetterCut () freshReading Fetter.identityView := by
+  intro hcut
+  have hbot := hcut freshWeld rfl rfl True.intro
+  dsimp [Grid.share, freshClenchGrid, freshWeld, AtBot, shareBot] at hbot
+  exact Nat.not_succ_le_zero 0 hbot
 
-def splitRegion (p : Bool) : Prop := p = false
+/-- Identical one-weld quiet transcripts admit opposite whole-class verdicts
+    because the fresh weld is outside the run. -/
+theorem seen_run_underdetermines_fetterCut :
+    quietGrid.RunQuietOn ()
+        (quietReading.provocationClass Fetter.identityView) [quietSeen] ∧
+      freshClenchGrid.RunQuietOn ()
+        (freshReading.provocationClass Fetter.identityView) [freshSeen] ∧
+      quietGrid.FetterCut () quietReading Fetter.identityView ∧
+        ¬ freshClenchGrid.FetterCut () freshReading Fetter.identityView :=
+  ⟨quiet_seen_run, fresh_seen_run, quiet_fetterCut, fresh_not_fetterCut⟩
 
-/-- The same grid data supports incompatible supplied soma-readings. Holding a
-    speech/thought region as recovered from the grid is the uniform freeze on
-    the tag axis. -/
-theorem no_region_boundary_recovery :
-    ¬ ∃ recover : SomaGridData → Bool → Prop,
-        recover somaGridData = mergedRegion ∧
-        recover somaGridData = splitRegion := by
-  rintro ⟨recover, hmerge, hsplit⟩
-  have hmerged : recover somaGridData true := by
-    rw [hmerge]
-    exact True.intro
-  have hsplitNot : ¬ recover somaGridData true := by
-    rw [hsplit]
-    intro h
-    cases h
-  exact hsplitNot hmerged
+/- View content is also supplied rather than recovered. -/
 
-theorem soma_boundary_underdetermined :
-    somaMergeReading.speechThoughtTag true ∧
-      ¬ somaSplitReading.speechThoughtTag true ∧
-        ¬ ∃ recover : SomaGridData → Bool → Prop,
-          recover somaGridData = mergedRegion ∧
-            recover somaGridData = splitRegion :=
-  ⟨somaMerge_true_in_region, somaSplit_true_not_in_region,
-    no_region_boundary_recovery⟩
+def viewLanguage : ClaimLanguage quietGrid where
+  Claim := Bool
+  Holds _ _ := True
+
+def ownerAll : quietGrid.ViewReading viewLanguage where
+  ownerClaim _ := True
+
+def ownerNone : quietGrid.ViewReading viewLanguage where
+  ownerClaim _ := False
+
+abbrev ViewGridData : Type :=
+  (Unit → Call → Option Unit) ×
+    (Unit → Call → Unit → Nat)
+
+def viewGridData : ViewGridData := (quietGrid.respondsTo, quietGrid.grade)
+
+theorem no_view_content_recovery :
+    ¬ ∃ recover : ViewGridData → Bool → Prop,
+      recover viewGridData = ownerAll.ownerClaim ∧
+        recover viewGridData = ownerNone.ownerClaim := by
+  rintro ⟨recover, hall, hnone⟩
+  have ht : recover viewGridData true := by rw [hall]; exact True.intro
+  have hf : ¬ recover viewGridData true := by rw [hnone]; exact fun h => h
+  exact hf ht
+
+/- One checked coarsening-freeze correlation: the owner classifier names the
+   stored-owner claim about a supplied merge, but does not derive it. -/
+
+inductive MergeClaim
+  | freezeOwner (left right : Bool)
+  | other
+deriving DecidableEq
+
+def mergeGrid : Grid Nat where
+  Being := Bool
+  Call := Unit
+  Response := Unit
+  respondsTo _ _ := some ()
+  grade _ _ _ := 0
+  conditions _ _ := True
+
+def mergeLanguage : ClaimLanguage mergeGrid where
+  Claim := MergeClaim
+  Holds _ _ := True
+
+def mergeViewReading : mergeGrid.ViewReading mergeLanguage where
+  ownerClaim claim := claim = .freezeOwner false true
+
+def suppliedMerge :
+    Grid.DirectedConvention.BeingConvention.BeingCoarsening mergeGrid Unit where
+  proj _ := ()
+
+theorem ownerClaim_coarsening_freeze_correlation :
+    mergeViewReading.ownerClaim (.freezeOwner false true) ∧
+      suppliedMerge.SameFiber false true :=
+  ⟨rfl, rfl⟩
+
+/- The new typing keeps view and rites distinct in one concrete model. -/
+
+def factorLanguage : ClaimLanguage Grid.doorWitnessGrid where
+  Claim := Bool
+  Holds _ _ := True
+
+def factorSpeechReading :
+    Grid.doorWitnessGrid.SpeechReading factorLanguage where
+  toDoorReading := Grid.doorWitnessReading
+  voices w := match w.call with | .mind => some true | _ => none
+
+def factorViewReading :
+    Grid.doorWitnessGrid.ViewReading factorLanguage where
+  ownerClaim claim := claim = true
+
+def factorFetterReading : Grid.doorWitnessGrid.FetterReading where
+  provocationClass f w :=
+    match f with
+    | .identityView => w.call = .mind
+    | .ritesGrasp => w.call = .body
+    | _ => False
+
+theorem factor_view_cut :
+    Grid.doorWitnessGrid.FetterCut () factorFetterReading
+      Fetter.identityView := by
+  intro w _hactual _hagent hclass
+  cases w with
+  | mk agent call response =>
+    cases call <;> try { cases hclass }
+    dsimp [Grid.share, Grid.doorWitnessGrid, AtBot, shareBot]
+    exact Nat.le_refl 0
+
+theorem factor_rites_not_cut :
+    ¬ Grid.doorWitnessGrid.FetterCut () factorFetterReading
+      Fetter.ritesGrasp := by
+  intro hcut
+  have hbot := hcut Grid.doorWitnessBodyWeld rfl rfl rfl
+  exact Grid.doorWitnessBodyWeld_live hbot
+
+theorem view_cut_rites_cut_split :
+    Grid.doorWitnessGrid.FetterCut () factorFetterReading
+        Fetter.identityView ∧
+      ¬ Grid.doorWitnessGrid.FetterCut () factorFetterReading
+        Fetter.ritesGrasp :=
+  ⟨factor_view_cut, factor_rites_not_cut⟩
 
 end FettersNegative
 

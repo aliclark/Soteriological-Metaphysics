@@ -127,7 +127,9 @@ def glossary : List GlossaryEntry := [
   { term := "shushō-ittō"
     kind := .canonical
     gloss := "Shushō-ittō means practice and realization as non-dual. In this system it is read as one occurrence with two faces, not two events that later get joined, and grid-side it is the per-occurrence face of effectiveness."
-    anchors := [``Grid.DirectedConvention.WaaEffectiveOccurrence]
+    anchors := [``Grid.DirectedConvention.WaaPoleDeed,
+      ``Grid.DirectedConvention.WaaEffectiveOccurrence,
+      ``Grid.DirectedConvention.waaPoleDeed_of_produced_terminus]
     seeAlso := ["shō", "shu"] },
   { term := "shugenjō"
     kind := .coinage .theory
@@ -395,20 +397,48 @@ def glossary : List GlossaryEntry := [
     anchors := [``Grid.DirectedConvention.BeingConvention.BeingCoarsening.InFiber,
       ``Grid.DirectedConvention.BeingConvention.BeingCoarsening.SameFiber]
     seeAlso := ["coarsening"] },
-  { term := "tag-region/soma-reading"
-    kind := .coinage .theory
-    gloss := "A tag-region is a model-supplied class of fine tags. A soma-reading uses such a class to localize a cut to a region without making the region recoverable from grid data alone."
-    anchors := [``Grid.SomaReading]
-    seeAlso := ["tag/fiber"] },
-  { term := "within-cut"
-    kind := .coinage .theory
-    gloss := "A within-cut is quietness inside a product of call-class and tag-region. It says enactment has ceased in that rectangle, not that a person owns an anti-fetter."
-    anchors := [``Grid.FetterCutWithin]
-    seeAlso := ["tag-region/soma-reading", "call"] },
+  { term := "door"
+    kind := .leanConvention
+    gloss := "A door is a supplied diagnosis of a fine weld as body, speech, or mind. The grid does not recover this classification, and totality over the canonical three doors is an explicit modeling claim."
+    anchors := [``Door, ``Grid.DoorReading,
+      ``DoorsNegative.no_door_boundary_recovery]
+    seeAlso := ["weld"] },
+  { term := "three doors"
+    kind := .canonical
+    gloss := "The three doors are body, speech, and mind. Canonical arhat display is fine-being quietness through all three; a regional śrāvaka-arhat may still carry body-door residue."
+    anchors := [``Grid.DoorQuiet, ``Grid.arhat_iff_three_doors_quiet]
+    seeAlso := ["door", "pole"] },
+  { term := "voicing"
+    kind := .leanConvention
+    gloss := "Voicing is a supplied claim-production reading on a weld. It is intentionally door-neutral: speech, thought, and expressive bodily action can be represented, while testimonial predicates impose the speech boundary."
+    anchors := [``Grid.SpeechReading, ``DoorsNegative.no_voicing_recovery]
+    seeAlso := ["door", "weld"] },
+  { term := "produced utterance"
+    kind := .leanConvention
+    gloss := "A produced utterance ties content to an actual voicing weld. Only a speech-door production can become a testimonial record, offered definitionally at that weld's own act-time."
+    anchors := [``Grid.ProducedUtterance,
+      ``Grid.ProducedUtterance.toRecorded,
+      ``DoorsNegative.no_production_recovery]
+    seeAlso := ["voicing", "weld"] },
+  { term := "defiled falsehood"
+    kind := .coinage .theorems
+    gloss := "Defiled falsehood is a false speech-door production at its own act-time with a live self-pole. Equating this derivable schema with deliberate lying is a separate modeling claim."
+    anchors := [``Grid.WaaDefiledFalsehood,
+      ``Grid.no_defiledFalsehood_of_speechDoorQuiet,
+      ``FoxCase.oldMan_defiledFalsehood]
+    seeAlso := ["produced utterance", "pole"] },
   { term := "vāsanā"
     kind := .canonical
-    gloss := "Vāsanā means residual habit or trace. In this system it is clench still enacted in an uncut region after another region has gone quiet."
-    seeAlso := ["clench", "within-cut"] },
+    gloss := "Vāsanā means residual habit or trace. The checked share-vāsanā form is live share in the body door while speech and mind are quiet; response-form habit at pole share remains future work."
+    anchors := [``Grid.WaaVasana, ``Grid.sravakaArhat_not_arhat_witness]
+    seeAlso := ["clench", "three doors"] },
+  { term := "śrāvaka-arhat"
+    kind := .canonical
+    gloss := "The door-typed śrāvaka-arhat is quiet at speech and mind. Unlike canonical three-door arhat display, this regional figure can retain a live body-door vāsanā."
+    anchors := [``Grid.WaaSravakaArhat,
+      ``Grid.sravakaArhat_no_defiledFalsehood,
+      ``Grid.sravakaArhat_not_arhat_witness]
+    seeAlso := ["three doors", "vāsanā"] },
   { term := "sentient/insentient tag"
     kind := .coinage .theory
     gloss := "A sentient tag is one whose fiber mounts response somewhere; an insentient tag lacks that. The distinction is fiber-level and convention-relative."
@@ -468,13 +498,21 @@ def glossary : List GlossaryEntry := [
     anchors := [``Grid.DirectedConvention.WaaEffectiveTerminus,
       ``EffectiveTerminusNegative.no_effectiveTerminus_recovery_from_run]
     seeAlso := ["buddha-side shortfall", "assert/display"] },
+  { term := "no-nescience"
+    kind := .coinage .theorems
+    gloss := "No-nescience is positive own-act-time truth for every pole-share speech-or-mind production by the being. It strengthens the old speech-only character check and marks the cognitive-obscuration boundary beyond arhat quiet."
+    anchors := [``Grid.DirectedConvention.WaaNoNescience,
+      ``Grid.DirectedConvention.noDelusion_of_noNescience_of_terminus,
+      ``FaithNegative.arhat_retains_nescience_witness]
+    seeAlso := ["effective terminus", "produced utterance"] },
   { term := "standing enlightenment"
     kind := .coinage .theorems
-    gloss := "Standing full enlightenment is the two-obscurations faith-object: effective termination together with positive act-time truth in faithfully recorded speech. Its sealed-and-silent face names pratyekabuddha standing; FaithNegative separates both it from mere effectiveness and from the enacted top."
+    gloss := "Standing full enlightenment is the two-obscurations faith-object: effective termination together with positive own-act-time truth for every pole-share speech-or-mind production. Silent models may voice no thought or true thought; testimony remains speech-only."
     anchors := [``Grid.DirectedConvention.WaaFullyEnlightened,
-      ``Grid.DirectedConvention.WaaNoDelusion,
-      ``FaithNegative.effectiveTerminus_not_waaFullyEnlightened]
-    seeAlso := ["effective terminus"] },
+      ``Grid.DirectedConvention.WaaNoNescience,
+      ``FaithNegative.noNescience_strictly_stronger_witness,
+      ``FaithNegative.Sealed.silent_buddha_models]
+    seeAlso := ["effective terminus", "no-nescience"] },
   { term := "enacted effectiveness"
     kind := .coinage .theorems
     gloss := "Enacted effectiveness is the non-vacuous effective-terminus display plus at least one per-occurrence effective landing. It fences sealed-regime vacuity from earned occurrence and supplies the deed component of enacted full enlightenment."
@@ -483,10 +521,9 @@ def glossary : List GlossaryEntry := [
     seeAlso := ["effective terminus", "shushō-ittō"] },
   { term := "enacted full enlightenment"
     kind := .coinage .theorems
-    gloss := "Enacted full enlightenment is the samyaksambuddha rung: the standing two-obscurations bundle together with a delivered effective occurrence and faithful, fitting act-time speech. The sealed-and-silent standing face witnesses strictness below it."
+    gloss := "Enacted full enlightenment is the samyaksambuddha rung: the standing two-obscurations bundle together with a delivered effective occurrence and an actual faithful, fitting speech production at its own act-time."
     anchors := [``Grid.DirectedConvention.WaaFullyEnlightenedEnacted,
-      ``FaithNegative.fullyEnlightened_strictly_weaker_than_enacted,
-      ``FaithNegative.EnactedWitness.fullyEnlightenedEnacted]
+      ``Grid.DirectedConvention.WaaFaithfulSpeechOccurrence]
     seeAlso := ["standing enlightenment", "enacted effectiveness"] },
   { term := "backsliding theorem"
     kind := .coinage .theorems
@@ -750,20 +787,20 @@ def glossary : List GlossaryEntry := [
     gloss := "WaaResolveAttenuation gives once-return positive content: a strict resolve-class share-drop run whose final tendency has not reached the pole."
     anchors := [``Grid.WaaResolveAttenuation,
       ``Grid.waaOnceReturner_attenuation_witness,
-      ``Grid.attenuation_not_release]
+      ``Grid.registerResolve_not_released]
     seeAlso := ["WaaOnceReturner", "re-pitch"] },
   { term := "WaaSerialFactorRegime"
     kind := .leanConvention
     gloss := "WaaSerialFactorRegime is the conditional voice for factor order. If the supplied regime reads seen share-drops as rites before view before resolve, it promotes path readings to fruit readings; the grid never derives the regime or any frequency claim."
     anchors := [``Grid.WaaSerialFactorRegime,
       ``Grid.waaSerialFactorRegime_conditional,
-      ``FactorsNegative.seen_run_underdetermines_factorOrder]
+      ``FactorsNegative.factor_order_underdetermined]
     seeAlso := ["WaaResolveAttenuation", "subitism/gradualism"] },
   { term := "śraddhā"
     kind := .canonical
     gloss := "Śraddhā means faith or trust. In this system it is modeled as an antecedent for testimony and path response, never as a field fact the grid can discharge by itself."
     anchors := [``Grid.DirectedConvention.Factive,
-      ``Grid.DirectedConvention.WaaNoDelusion,
+      ``Grid.DirectedConvention.WaaNoNescience,
       ``Grid.DirectedConvention.waaFaithOught_conditional]
     seeAlso := ["buddha-side shortfall", "delivery"] },
   { term := "icchantika"
@@ -901,7 +938,7 @@ def seeAlsoTargetsEarlierFrom (seen : List String) :
 def seeAlsoTargetsEarlier : Bool :=
   seeAlsoTargetsEarlierFrom [] glossary
 
-example : glossary.length = 152 := rfl
+example : glossary.length = 157 := rfl
 
 set_option maxRecDepth 100000 in
 theorem glossary_terms_nodup : glossaryTerms.Nodup := by

@@ -8,6 +8,7 @@ Reading and motivation: Identification/Commentary.lean, C.4.
 -/
 
 import WeldAndArrow.Doctrines.Sraddha
+import WeldAndArrow.Doctrines.Doors
 
 namespace WAA
 
@@ -46,6 +47,15 @@ theorem waaPoleDeed_of_terminus_response
     {w : G.Weld} (hterm : G.Terminus w.agent) (hactual : G.Actual w) :
     WaaPoleDeed G w :=
   ⟨hactual, G.atBot_of_terminus_response hterm hactual⟩
+
+/-- Any supplied production by a terminus producer has the per-occurrence
+    shō face.  The statement is door-neutral; speech-door productions may then
+    enter testimony, while mind-door productions remain character evidence. -/
+theorem waaPoleDeed_of_produced_terminus
+    {L : ClaimLanguage G} {sr : SpeechReading G L}
+    (u : ProducedUtterance sr) (hterm : G.Terminus u.weld.agent) :
+    WaaPoleDeed G u.weld :=
+  waaPoleDeed_of_terminus_response G hterm u.actual
 
 /-- The standing display entails an occurrence face only once the deed is an
     actual mounted response and the regime supplies a live delivered pair. The

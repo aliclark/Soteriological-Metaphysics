@@ -192,8 +192,10 @@ before.tendency` and not `before.tendency ≼ share received`.
 - `EnvironsLine` and `ShareDropLine`.
 - `ShortfallClosedAt`, `WaaEffectiveTerminus`, `WaaAversionContext`, and
   `WaaPathOught`.
-- `WaaPathClaim`, `Factive`, `WaaNoDelusion`, `WaaFullyEnlightened`,
-  `WaaFaithfulSpeechEnacted`, `WaaFullyEnlightenedEnacted`, and `WaaFaithOught`.
+- `DoorReading`, `SpeechReading`, `ProducedUtterance`, `QuietOn`, and `DoorQuiet`.
+- `WaaPathClaim`, `Factive`, `ProductionFidelity`, `WaaNoNescience`,
+  `WaaFullyEnlightened`, `WaaFaithfulSpeechOccurrence`,
+  `WaaFullyEnlightenedEnacted`, and `WaaFaithOught`.
 - `WaaReportFace`, `WaaOwnershipFace`, `WaaVacuousOwnershipFace`, and
   `WaaDiachronicWhose`.
 
@@ -547,39 +549,46 @@ standing display and supplies the deed component of enacted full enlightenment.
 `EffectiveTerminusNegative.no_effectiveTerminus_recovery_from_run` checks that
 actual-run response/share data do not decide the standing universal.
 
+**Doors and production.** `DoorReading` supplies a total body/speech/mind
+diagnosis on fine welds. `SpeechReading` adds optional content without forcing
+door coherence, and `ProducedUtterance` ties that content to an actual weld.
+Only a speech-door production can become a `RecordedUtterance`, definitionally
+offered at its own act-time. `QuietOn` and `DoorQuiet` type canonical arhat
+quiet through all three doors; `WaaDefiledFalsehood` is the narrower false
+speech plus live-self-pole schema. `DoorsNegative` blocks recovery of doors,
+voicing, and production welds from the underlying grid or record content.
+
 **Faith.** `WaaPathClaim` packages the local claim that a prior configuration,
 deed, and reception satisfy `ShortfallClosedAt`; `waaPathClaimLanguage` is
 silent at the floor and gives that condition at act-time. `Factive` types the
-identity leap, while per-utterance `Fidelity` types an uncorrupted occurrence.
-`WaaNoDelusion` states the licensed claim positively: every faithful attributed
-speech occurrence offered at act-time is true there. The privative
-`waaNoDelusion_not_misfits` verdict is its constructive corollary, not its
-definition. `WaaFullyEnlightened` bundles positive no-delusion with
-`WaaEffectiveTerminus` as the standing two-obscurations faith-object.
-`waa_says_true_at_actTime_of_stance` and `waa_says_true_of_faith` consume that
-truth directly and require an explicit act-time offer.
+identity leap, while `ProductionFidelity` ties admitted testimony to a speech
+production. `WaaNoNescience` states positive own-act-time truth for every
+pole-share speech-or-mind production. `WaaFullyEnlightened` bundles that
+cognitive conjunct with `WaaEffectiveTerminus` as the standing
+two-obscurations faith-object. `waa_says_true_of_faith` consumes it through a
+speech production; mind productions never enter testimony.
 `fitsOfferedTier_of_waaEffectiveTerminus_ownDeed` remains the direct,
 non-testimonial route and likewise requires conventional offering.
 `waa_path_landing_of_stance` and `waaFaithOught_conditional` rederive the
 landing through testimony. `WaaFullyEnlightenedEnacted` adds a delivered
-effective deed and `WaaFaithfulSpeechEnacted` to the standing bundle. The
-strict theorems in `FaithNegative` make the resulting ladder proper:
-effective termination is weaker than standing full enlightenment, which is
-weaker than its enacted form. Its sealed-and-silent standing witness names the
-pratyekabuddha face; `EnactedWitness.fullyEnlightenedEnacted` inhabits the
-samyaksambuddha top with both deed and act-time speech. The older
-`aklishta_ajnana_witness` continues to separate effectiveness from no-delusion.
+effective deed and `WaaFaithfulSpeechOccurrence` to the standing bundle.
+`noNescience_strictly_stronger_witness` separates the new character conjunct
+from the old speech-only comparison; `aklishta_ajnana_witness` proves the false
+pole thought innocent, and `arhat_retains_nescience_witness` separates arhat
+quiet from buddha cognition. `Sealed.silent_buddha_models` supplies both a
+no-thought and a true-thinking silent standing model.
 
 **Ethics.** `WaaEthicsStance` bundles factivity with faith in the
-two-obscurations object; fidelity and act-time offering remain per utterance.
+two-obscurations object and requires its fidelity records to arise from speech
+productions.
 `WaaEthicalCode` generalizes the fourth-truth ought across that object's
 recorded testimony while remaining an implication type.
 `waaEthicalCode_conditional` is the hypothesis-free conditional. The voice
 pair is split by `waa_ethics_conditional_voice_assertable` and
 `waa_ethics_detached_voice_displayable`: the conditional is verdict-voiced, the
 detached injunction shortfall-voiced. `EthicsNegative` supplies
-`no_ethics_bearing_at_pole`, `no_stance_over_false_testimony`, and
-`ethicalCode_relative_to_faith_object`.
+`no_ethics_bearing_at_pole`, `mind_production_not_testimony`, and
+`no_stance_over_false_speech`.
 
 **Deliberation.** `ConsequentialistConvention` is a descriptive reading layer.
 `DropCount` and `DropCountInFiber` count share-drop receptions across finite
@@ -722,57 +731,35 @@ live. `OtherPowerNegative.regime_does_not_determine_share` and
 `OtherPowerNegative.share_does_not_determine_regime` witness the no-polemic
 clause: neither regime nor share recovers the other.
 
-**Fetters.** `FiberAtPoleOn`, `LiveFiberAtPoleOn`, `FiberAtPoleOnWithin`, and
-`FiberAtPoleWithin` are neutral fiber predicates in
-`Signature/BeingConvention.lean`. `FetterReading` supplies model-side
-provocation classes, `SomaReading` supplies model-side tag-regions, and
-`FetterCutWithin` means quietness at pole on the relevant call-class inside
-the supplied tag-class. `Fetter.kind_lower_iff_cut_by_nonReturn` records the
-enumeration coherence: exactly the lower fetters are cut by non-return.
-`Path.cutClasses` gives the nested path profiles;
-`PathQuietWithin`, `arhatPathQuietWithin_iff_fiberAtPoleWithin`, and
-`arhatWithin_univTags_iff_fiberAtPole` close the two-axis lattice back to
-ordinary `FiberAtPole` at total calls and total tags. That top point is the
-total-rectangle cut, not the buddha reading by itself. The layered reading has
-three checked rungs: rung 1 is share-only and stone-inclusive
-(`FettersNegative.total_cut_carries_no_function`); rung 2 is the live terminus
-reading, with `sentientTag_iff_actualFiberInhabited` bridging function to
-actual fiber inhabitation; rung 3 is `WaaEffectiveTerminus`, and
-`FettersNegative.total_cut_with_function_not_waaEffectiveTerminus` checks that
-rung 2 still lacks effectiveness. The regime-relational face is two-sided:
-zero-effect delivery can make effective termination fail, while
-`waaEffectiveTerminus_of_responsiveTerminus_of_undelivered` makes it hold
-vacuously under sealed delivery. Standing full enlightenment adds positive
-act-time no-delusion and admits the sealed-and-silent pratyekabuddha face;
-`WaaFullyEnlightenedEnacted` adds witnessed deed and speech for the
-samyaksambuddha face. `FaithNegative` checks both strict joints. The checked anchors are
-`classQuiet_no_clench_in_class`, `identityView_excluded_at_arhatFiber`,
-`conceit_excluded_at_arhatFiber`, `all_fetters_cut_at_arhatFiber`,
-`arhatFiber_of_termini`,
-`identityView_excluded_at_speechThoughtRegion`, `conceit_excluded_within`,
-`regionFiber_of_termini`, and `unquiet_region_still_functions_witness`.
+**Fetters.** `FetterReading` supplies model-side weld-classes, and `FetterCut`
+is fine-being `QuietOn` for the selected class. The old call × tag rectangle is
+retired by `fiberAtPoleOnWithin_iff_quietOn_rectangle`, which identifies it as
+one special weld-class. `Fetter.kind_lower_iff_cut_by_nonReturn` records the
+enumeration coherence; `Path.cutClasses` gives the nested profiles;
+`arhatPathQuiet_iff_quietOn_univ` and `all_fetters_cut_at_arhat` close the
+family at total quiet.
 
-The forward-looking face is conditional and diagnostic: `RunQuiet` and
-`RunQuietWithin` are finite track-record quietness,
-`waaIrreversibleRegime_conditional` and
-`waaIrreversibleRegimeWithin_conditional` promote them only under supplied
-regimes, and `FettersNegative.seen_run_underdetermines_fetterCut`,
-`FettersNegative.seen_run_underdetermines_fetterCutWithin`, and
-`FettersNegative.no_region_boundary_recovery` give the fresh-call and
-tag-boundary underdetermination witnesses.
+`ViewReading.ownerClaim` supplies stored-owner content. Under a model-side
+class equation, identity-view cut factors through mind-door
+`NoDefiledVoicing`; rites factor through body, and falsehood through speech.
+`no_view_content_recovery` and `seen_run_underdetermines_fetterCut` keep content
+and fresh-weld diagnosis honest. `WaaSravakaArhat` is speech-and-mind quiet,
+while `WaaVasana` is live body-door residue; the concrete witness separates
+that regional form from canonical three-door arhat quiet. `RunQuietOn` and
+`WaaIrreversibleRegime` retain the conditional forward-looking face.
 
 **Factors.** `PathFactor` names the factor-side regrouping of the canonical
-fetter table. `PathFactor.blockerClass` derives rites, view, and resolve
-blocker classes from `FetterReading`; speech and conduct are named but inert
-with `False` classes. The coherence theorems
+fetter table. `PathFactor.blockerClass` derives classes from `DoorReading` and
+`FetterReading`; speech is active as the speech-door class, while conduct
+remains inert. The coherence theorems
 `ritesView_union_covers_streamEntry_fetters`,
 `resolve_covers_nonReturn_fetters`, and
 `lower_fetters_covered_by_rites_view_resolve` check that the active factor
 classes cover exactly the intended stream-entry and lower-fetter unions.
 
-`FactorHeld` is a seen-run existential over actual in-fiber welds with live
+`FactorHeld` is a seen-run existential over actual fine welds with live
 self-pole index in the factor class. `FactorReleased` is the corresponding
-whole-class `FiberAtPoleOn` cut. `not_factorHeld_of_factorReleased` gives the
+whole-class `QuietOn` cut. `not_factorHeld_of_factorReleased` gives the
 refutation direction; `factorReleased_rites_iff_ritesGrasp_cut`,
 `factorReleased_view_iff`, and `factorReleased_resolve_iff` connect the factor
 release predicates back to the fetter cuts.
@@ -782,9 +769,9 @@ The stage readings are `WaaStreamEnterer`, `WaaStreamWinner`,
 equivalent to the old path cut classes by
 `waaStreamWinner_iff_streamEntry_cutClasses` and
 `waaNonReturner_iff_nonReturn_cut`, while
-`waaNonReturner_of_arhatFiber` consumes the existing arhat fiber anchor.
+`waaNonReturner_of_quietOn_univ` consumes total quiet.
 `ShareDropRunOn`, `WaaResolveAttenuation`,
-`waaOnceReturner_attenuation_witness`, and `attenuation_not_release` give
+`waaOnceReturner_attenuation_witness`, and `registerResolve_not_released` give
 once-return positive content as a strict resolve-class drop that stops short
 of pole release.
 
@@ -796,10 +783,9 @@ readings under the existing pole-fiber hypothesis.
 
 **FactorsNegative.** `no_hold_conceit_boundary_recovery` shows that the
 hold/conceit line is not recovered from shared response/grade/share data.
-`seen_run_underdetermines_factorOrder` gives one seen run whose factor order
-depends on the supplied reading. `lineage_underdetermined_by_seen_run`
-specializes the stage-boundary freedom witness to switching between a
-Theravada-shaped factor tag and a Bulls-shaped tag over the same grid and run.
+`factor_order_underdetermined` gives one seen run whose factor order depends on
+the supplied reading. `speech_class_activated` and `conduct_class_inert` pin
+the two upper-factor boundary decisions.
 
 ---
 
@@ -913,7 +899,7 @@ regime fact to be supplied by a model, not a structural axiom.
 The contemporary placement checks are `siderits_waaPlacement`,
 `ganeri_waaPlacement`, `zahavi_waaPlacement`, and `sartre_waaPlacement`.
 
-**Disclaimers.** `Disclaimer.number` now runs through 58. The recent entries are
+**Disclaimers.** `Disclaimer.number` now runs through 62. The recent entries are
 `beingConvention` (35), `pilotGeneratedRows` (36), `beingTrichotomy` (37),
 `hareHornRegister` (38), `modalRealismFreeze` (39), and
 `aptnessConditionality` (40), `sraddhaConditional` (41), and
@@ -922,9 +908,9 @@ existing pins: `generatedTableStructure` (43), `floorApophaticSemantics` (44),
 `proseRows` (45), and `errorFreeReading` (46). `misFeedFence` (47) records the
 avyākata fence-and-gate pair. The correlation entries are `tenBullsTyped` (48),
 `fiveRanksRetype` (49), `stageSchemeCoarsening` (50), and
-`fetterCutTyping` (51). `twoAxisFetterLattice` (52) records the product
-call/tag fetter lattice, `enlightenmentLadder` (53) records the neutral
-total-rectangle cut and three-rung ladder, and
+`fetterCutTyping` (51). `twoAxisFetterLattice` (52) now records the door-typed
+weld-class successor, `enlightenmentLadder` (53) records the three-door and
+no-nescience fences, and
 `ethicsBundledConditionalCode` (54) with `codeHonestyClauses` (55) records the
 ethics-code tail. `verdictRecordData` (56) records the generator's
 episode-grained verdict history as Lean data, including the retype entries in
@@ -933,8 +919,10 @@ records the five compound-position decompositions over existing `TableRow`s,
 with facets, roles, voices, legal elements, and core-cell counts in
 `Consequences/Compounds.lean`. `effectiveTerminusRetype` (58) records the
 per-occurrence effectiveness face, the descriptive standing-display demotion,
-and the enacted/vacuity fence; the testimonial faith-object is now the separate
-two-obscurations bundle.
+and the enacted/vacuity fence; the character faith-object is now the separate
+two-obscurations bundle. `viewMindVoicing` (59),
+`falsehoodDeliberateLying` (60), `doorTotalityAdequacy` (61), and
+`thoughtsVoicingSupplied` (62) pin the new modeling boundaries.
 `waaKarmaIdentification_number` pins `waaKarmaIdentification = 9`, and
 `modalRealismFreeze_number` pins `modalRealismFreeze = 39`.
 `aptnessConditionality_number` pins `aptnessConditionality = 40`;
@@ -947,8 +935,10 @@ correlation and disclaimer pins are `tenBullsTyped_number`, `fiveRanksRetype_num
 `stageSchemeCoarsening_number`, `fetterCutTyping_number`,
 `twoAxisFetterLattice_number`, `enlightenmentLadder_number`,
 `ethicsBundledConditionalCode_number`, `codeHonestyClauses_number`,
-`verdictRecordData_number`, `compoundCellStacks_number`, and
-`effectiveTerminusRetype_number`.
+`verdictRecordData_number`, `compoundCellStacks_number`,
+`effectiveTerminusRetype_number`, `viewMindVoicing_number`,
+`falsehoodDeliberateLying_number`, `doorTotalityAdequacy_number`, and
+`thoughtsVoicingSupplied_number`.
 
 ---
 
@@ -1299,10 +1289,10 @@ The audited declarations are:
 - `CorrelationsNegative.no_stage_boundary_recovery`
 - `Grid.classQuiet_no_clench_in_class`
 - `Fetter.kind_lower_iff_cut_by_nonReturn`
-- `Grid.arhatPathQuiet_iff_fiberAtPole`
-- `Grid.all_fetters_cut_at_arhatFiber`
-- `Grid.identityView_excluded_at_arhatFiber`
-- `Grid.conceit_excluded_at_arhatFiber`
+- `Grid.arhatPathQuiet_iff_quietOn_univ`
+- `Grid.all_fetters_cut_at_arhat`
+- `Grid.identityView_cut_iff_noDefiledVoicing`
+- `Grid.conceit_excluded_of_quietOn`
 - `Grid.waaIrreversibleRegime_conditional`
 - `Grid.lower_fetters_covered_by_rites_view_resolve`
 - `Grid.waaStreamWinner_iff_streamEntry_cutClasses`
@@ -1310,19 +1300,17 @@ The audited declarations are:
 - `Grid.waaSerialFactorRegime_conditional`
 - `Grid.waaOnceReturner_attenuation_witness`
 - `FactorsNegative.no_hold_conceit_boundary_recovery`
-- `FactorsNegative.seen_run_underdetermines_factorOrder`
-- `FactorsNegative.lineage_underdetermined_by_seen_run`
+- `FactorsNegative.factor_order_underdetermined`
 - `FettersNegative.seen_run_underdetermines_fetterCut`
 - `Grid.DirectedConvention.waaPathOught_conditional`
 - `Grid.DirectedConvention.waaFaithOught_conditional`
-- `Grid.DirectedConvention.waa_says_true_at_actTime_of_stance`
-- `Grid.DirectedConvention.not_faithfulSpeechEnacted_of_no_faithful_utterance`
+- `Grid.DirectedConvention.waa_says_true_of_faith`
+- `Grid.DirectedConvention.noDelusion_of_noNescience_of_terminus`
 - `Grid.DirectedConvention.waaFullyEnlightened_of_fullyEnlightenedEnacted`
-- `FaithNegative.effectiveTerminus_not_waaFullyEnlightened`
-- `FaithNegative.effectiveTerminus_strictly_weaker_than_fullyEnlightened`
-- `FaithNegative.fullyEnlightened_strictly_weaker_than_enacted`
-- `FaithNegative.buddha_enacted_faces_absent_silent`
-- `FaithNegative.EnactedWitness.fullyEnlightenedEnacted`
+- `FaithNegative.noNescience_strictly_stronger_witness`
+- `FaithNegative.aklishta_ajnana_witness`
+- `FaithNegative.arhat_retains_nescience_witness`
+- `FaithNegative.Sealed.silent_buddha_models`
 - `Grid.DirectedConvention.no_waa_path_at_pole`
 - `Grid.DirectedConvention.map_waaAversionContext_iff`
 - `MisFeedNegative.fence_and_gate`
@@ -1357,7 +1345,8 @@ on exactly `[propext, Quot.sound]`, and
 `InteriorDirectionNegative.unorderedCRContent_transpose_invariant`, plus
 `FettersNegative.seen_run_underdetermines_fetterCut`,
 `Grid.waaOnceReturner_attenuation_witness`,
-`FactorsNegative.seen_run_underdetermines_factorOrder`, and
+`FactorsNegative.factor_order_underdetermined`, the no-nescience strictness
+witnesses, and
 the three census theorems
 `Grid.ConsequentialistConvention.dropCountInFiber_le_dropCount`,
 `Grid.ConsequentialistConvention.dropCount_eq_sum_dropCountInFiber`, and
