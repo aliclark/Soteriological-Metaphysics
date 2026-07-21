@@ -115,6 +115,7 @@ conflict check:
 
 ## Notes
 
+- Do a `git pull` first
 - Use `git merge --ff-only <task-branch>` when merging into `main`; this keeps
   history linear and refuses to create a merge commit.
 - During rebase, conflict resolutions become part of the rebased commits.
