@@ -122,6 +122,7 @@ The following are conventional and my own -- original moves, each flagged agains
 60. **Defiled falsehood is not deliberate lying by definition** -- `WaaDefiledFalsehood` derives speech-door own-act-time falsity plus a live self-pole. Its identification with canonical deliberate lying is an explicit modeling claim.
 61. **Three-door totality and adequacy are supplied** -- every fine weld is diagnosed as body, speech, or mind by a total `DoorReading`. That this trichotomy is adequate is an aptness claim with the same standing as content-row hypotheses; no door boundary is recovered from the grid.
 62. **Thoughts-as-voicings are supplied** -- a `SpeechReading` may voice mind-door content, but response and grade data do not determine that voicing. Thoughts remain outside `RecordedUtterance`, `Fidelity`, `Faith`, and `Ethics`; only the enlightenment character conjunct ranges over them.
+63. **Predicate-aptness is grain-indexed; it does not distribute over refinement** -- that a supplied reading (doors, voicing, fetter provocation-classes) is apt at the person grain confers nothing on any finer re-graining of the same fiber (for example, a homunculus reading of fine tags as mini-agents thinking macro-level thoughts). The merge/split countermodels already witness that verdicts fail to survive re-segmentation; aptness at a grain is a separate supplied claim each time, and the grid neither checks nor transfers it.
 
 ---
 

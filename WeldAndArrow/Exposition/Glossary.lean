@@ -395,7 +395,7 @@ def glossary : List GlossaryEntry := [
     seeAlso := ["being-convention"] },
   { term := "tag/fiber"
     kind := .coinage .theory
-    gloss := "A tag is a fine identifier; a fiber is the set of fine tags read as one macro tag by a coarsening. Fiber-level predicates let the system discuss beings without storing beings as substances."
+    gloss := "A tag is a fine identifier; a fiber is the set of fine tags read as one macro tag by a coarsening. Fiber-level predicates let the system discuss beings without storing beings as substances. See Identification §63 for the grain-indexed predicate-aptness caveat."
     anchors := [``Grid.DirectedConvention.BeingConvention.BeingCoarsening.InFiber,
       ``Grid.DirectedConvention.BeingConvention.BeingCoarsening.SameFiber]
     seeAlso := ["coarsening"] },
