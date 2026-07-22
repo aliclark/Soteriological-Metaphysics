@@ -139,13 +139,9 @@ theorem name_responseInvariant :
   cases c₂
   cases r₁ <;> cases r₂ <;> simp [tarikiGrid] at h₁ h₂ ⊢
 
-theorem name_mountsSomewhere :
-    tarikiGrid.MountsSomewhere Being.name :=
-  ⟨Call.heard, ⟨Response.chime, rfl⟩⟩
-
-theorem name_not_stone :
-    ¬ tarikiGrid.Stone Being.name :=
-  tarikiGrid.not_stone_of_mountsSomewhere Being.name name_mountsSomewhere
+theorem name_actualAgentInhabited :
+    tarikiGrid.ActualAgentInhabited Being.name :=
+  ⟨⟨Being.name, Call.heard, Response.chime⟩, rfl, rfl⟩
 
 theorem name_share_bot
     (w : tarikiGrid.Weld) (hagent : w.agent = Being.name) :

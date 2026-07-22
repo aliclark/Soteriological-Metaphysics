@@ -79,7 +79,7 @@ theorem reception_hasSelfPoleIndex :
 theorem aversionContext :
     WaaAversionContext zeroEffectGrid liveBefore reception :=
   { liveBefore := liveBefore_not_atBot
-    mismatchLive := ⟨reception_actual, reception_hasSelfPoleIndex⟩ }
+    clenchMismatch := ⟨reception_actual, reception_hasSelfPoleIndex⟩ }
 
 theorem sraddha_responsiveTerminus :
     zeroEffectGrid.ResponsiveTerminus Being.sraddha := by

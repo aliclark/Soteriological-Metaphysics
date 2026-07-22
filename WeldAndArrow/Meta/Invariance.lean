@@ -322,11 +322,6 @@ theorem map_transpose :
     (G.map f).transpose = G.transpose.map f :=
   rfl
 
-theorem map_staticized [h : DecidableEq G.Being] (b : G.Being) :
-    @Grid.staticized Contrib' _ (G.map f) h b =
-      (@Grid.staticized Contrib _ G h b).map f :=
-  rfl
-
 /-- Function-side predicates do not mention the contribution carrier, so they
     transport by definitional unfolding. -/
 theorem map_actual_iff (w : G.Weld) :
@@ -357,12 +352,25 @@ theorem map_weld {G : Grid Contrib} (f : DisplayReparam Contrib Contrib')
 
 end ActualWeld
 
-theorem map_mountsAt_iff (b : G.Being) (c : G.Call) :
-    (G.map f).MountsAt b c ↔ G.MountsAt b c :=
+namespace SentienceReading
+
+/-- A supplied sentience reading transports unchanged across a share-display
+    reparameterization because the weld carrier is unchanged. -/
+def displayMap {G : Grid Contrib} (S : SentienceReading G)
+    (f : DisplayReparam Contrib Contrib') :
+    SentienceReading (G.map f) where
+  sentient := S.sentient
+
+@[simp]
+theorem displayMap_sentient {G : Grid Contrib} (S : SentienceReading G)
+    (f : DisplayReparam Contrib Contrib') (w : G.Weld) :
+    (S.displayMap f).sentient w ↔ S.sentient w :=
   Iff.rfl
 
-theorem map_mountsSomewhere_iff (b : G.Being) :
-    (G.map f).MountsSomewhere b ↔ G.MountsSomewhere b :=
+end SentienceReading
+
+theorem map_mountsAt_iff (b : G.Being) (c : G.Call) :
+    (G.map f).MountsAt b c ↔ G.MountsAt b c :=
   Iff.rfl
 
 theorem map_respondsToEveryCall_iff (b : G.Being) :
@@ -373,17 +381,13 @@ theorem map_responseVariesWithCall_iff (b : G.Being) :
     (G.map f).ResponseVariesWithCall b ↔ G.ResponseVariesWithCall b :=
   Iff.rfl
 
-theorem map_stone_iff (b : G.Being) :
-    (G.map f).Stone b ↔ G.Stone b :=
-  Iff.rfl
-
-theorem map_allStone_iff :
-    (G.map f).AllStone ↔ G.AllStone := by
+theorem map_actualAgentInhabited_iff (b : G.Being) :
+    (G.map f).ActualAgentInhabited b ↔ G.ActualAgentInhabited b := by
   constructor
-  · intro h b
-    exact (G.map_stone_iff f b).mp (h b)
-  · intro h b
-    exact (G.map_stone_iff f b).mpr (h b)
+  · rintro ⟨w, hactual, hagent⟩
+    exact ⟨w, (G.map_actual_iff f w).mp hactual, hagent⟩
+  · rintro ⟨w, hactual, hagent⟩
+    exact ⟨w, (G.map_actual_iff f w).mpr hactual, hagent⟩
 
 namespace DirectedConvention
 
@@ -457,10 +461,10 @@ theorem map_liveTerminus_iff (b : G.Being) :
     (G.map f).LiveTerminus b ↔ G.LiveTerminus b := by
   constructor
   · intro h
-    exact ⟨(G.map_mountsSomewhere_iff f b).mp h.left,
+    exact ⟨(G.map_actualAgentInhabited_iff f b).mp h.left,
       (G.map_terminus_iff f b).mp h.right⟩
   · intro h
-    exact ⟨(G.map_mountsSomewhere_iff f b).mpr h.left,
+    exact ⟨(G.map_actualAgentInhabited_iff f b).mpr h.left,
       (G.map_terminus_iff f b).mpr h.right⟩
 
 theorem map_responsiveTerminus_iff (b : G.Being) :
@@ -474,16 +478,8 @@ theorem map_responsiveTerminus_iff (b : G.Being) :
       (G.map_terminus_iff f b).mpr h.right⟩
 
 theorem map_atPoleClass_iff (b : G.Being) :
-    (G.map f).AtPoleClass b ↔ G.AtPoleClass b := by
-  constructor
-  · intro h
-    exact h.elim
-      (fun hstone => Or.inl ((G.map_stone_iff f b).mp hstone))
-      (fun hterm => Or.inr ((G.map_terminus_iff f b).mp hterm))
-  · intro h
-    exact h.elim
-      (fun hstone => Or.inl ((G.map_stone_iff f b).mpr hstone))
-      (fun hterm => Or.inr ((G.map_terminus_iff f b).mpr hterm))
+    (G.map f).AtPoleClass b ↔ G.AtPoleClass b :=
+  G.map_terminus_iff f b
 
 theorem map_hasSelfPoleIndex_iff (w : G.Weld) :
     (G.map f).HasSelfPoleIndex w ↔ G.HasSelfPoleIndex w := by
@@ -498,8 +494,8 @@ theorem map_waaMismatchGrade (w : G.Weld) :
     (G.map f).WaaMismatchGrade w = f.toFun (G.WaaMismatchGrade w) :=
   rfl
 
-theorem map_waaMismatchLive_iff (w : G.Weld) :
-    (G.map f).WaaMismatchLive w ↔ G.WaaMismatchLive w := by
+theorem map_clenchMismatch_iff (w : G.Weld) :
+    (G.map f).ClenchMismatch w ↔ G.ClenchMismatch w := by
   constructor
   · intro h
     exact ⟨(G.map_actual_iff f w).mp h.left,
@@ -507,6 +503,14 @@ theorem map_waaMismatchLive_iff (w : G.Weld) :
   · intro h
     exact ⟨(G.map_actual_iff f w).mpr h.left,
       (G.map_hasSelfPoleIndex_iff f w).mpr h.right⟩
+
+theorem map_waaDukkha_iff (S : SentienceReading G) (w : G.Weld) :
+    (G.map f).WaaDukkha (S.displayMap f) w ↔ G.WaaDukkha S w := by
+  constructor
+  · intro h
+    exact ⟨h.left, (G.map_clenchMismatch_iff f w).mp h.right⟩
+  · intro h
+    exact ⟨h.left, (G.map_clenchMismatch_iff f w).mpr h.right⟩
 
 theorem map_probeConstant_iff (b : G.Being) (cs : G.Call → Prop) :
     (G.map f).ProbeConstant b cs ↔ G.ProbeConstant b cs := by
@@ -572,14 +576,18 @@ theorem map_actualFiberInhabited_iff
     exact ⟨w, (G.map_actual_iff f w).mpr hactual, hfiber⟩
 
 theorem map_sentientTag_iff
-    (κ : BeingCoarsening G Macro) (f : DisplayReparam Contrib Contrib')
+    (κ : BeingCoarsening G Macro) (S : SentienceReading G)
+    (f : DisplayReparam Contrib Contrib')
     (b : Macro) :
-    (displayMap κ f).SentientTag b ↔ κ.SentientTag b := by
+    (displayMap κ f).SentientTag (S.displayMap f) b ↔
+      κ.SentientTag S b := by
   constructor
-  · rintro ⟨p, hp, hmounts⟩
-    exact ⟨p, hp, (G.map_mountsSomewhere_iff f p).mp hmounts⟩
-  · rintro ⟨p, hp, hmounts⟩
-    exact ⟨p, hp, (G.map_mountsSomewhere_iff f p).mpr hmounts⟩
+  · rintro ⟨w, hsentient, hfiber⟩
+    exact ⟨w, ⟨(G.map_actual_iff f w).mp hsentient.left,
+      hsentient.right⟩, hfiber⟩
+  · rintro ⟨w, hsentient, hfiber⟩
+    exact ⟨w, ⟨(G.map_actual_iff f w).mpr hsentient.left,
+      hsentient.right⟩, hfiber⟩
 
 theorem map_fiberAtPole_iff
     (κ : BeingCoarsening G Macro) (f : DisplayReparam Contrib Contrib')
@@ -792,9 +800,11 @@ end BeingConvention
 end DirectedConvention
 
 theorem map_waaBullTen_iff {Macro : Type}
+    (S : SentienceReading G)
     (κ : DirectedConvention.BeingConvention.BeingCoarsening G Macro)
     (b : G.Being) :
-    (G.map f).WaaBullTen (κ.displayMap f) b ↔ G.WaaBullTen κ b := by
+    (G.map f).WaaBullTen (S.displayMap f) (κ.displayMap f) b ↔
+      G.WaaBullTen S κ b := by
   constructor
   · intro h
     refine ⟨(G.map_responsiveTerminus_iff f b).mp h.left, ?_⟩
@@ -809,7 +819,7 @@ theorem map_waaBullTen_iff {Macro : Type}
           ((DirectedConvention.BeingConvention.BeingCoarsening.map_sameFiber_iff
             κ f deed.agent reception.agent).mpr hsame)),
       (DirectedConvention.BeingConvention.BeingCoarsening.map_sentientTag_iff
-        κ f (κ.proj reception.agent)).mp hsentient,
+        κ S f (κ.proj reception.agent)).mp hsentient,
       (DirectedConvention.map_deliveredTo_iff G f deed reception).mp hdel⟩
   · intro h
     refine ⟨(G.map_responsiveTerminus_iff f b).mpr h.left, ?_⟩
@@ -824,7 +834,7 @@ theorem map_waaBullTen_iff {Macro : Type}
           ((DirectedConvention.BeingConvention.BeingCoarsening.map_sameFiber_iff
             κ f deed.agent reception.agent).mp hsame)),
       (DirectedConvention.BeingConvention.BeingCoarsening.map_sentientTag_iff
-        κ f (κ.proj reception.agent)).mpr hsentient,
+        κ S f (κ.proj reception.agent)).mpr hsentient,
       (DirectedConvention.map_deliveredTo_iff G f deed reception).mpr hdel⟩
 
 theorem map_stateToolFits_iff (w : G.Weld) :
@@ -1174,17 +1184,17 @@ theorem map_waaAversionContext_iff
   · intro h
     refine
       { liveBefore := ?_
-        mismatchLive := ?_ }
+        clenchMismatch := ?_ }
     · intro hbot
       exact h.liveBefore ((f.atBot_iff before.tendency).mpr hbot)
-    · exact (G.map_waaMismatchLive_iff f reception).mp h.mismatchLive
+    · exact (G.map_clenchMismatch_iff f reception).mp h.clenchMismatch
   · intro h
     refine
       { liveBefore := ?_
-        mismatchLive := ?_ }
+        clenchMismatch := ?_ }
     · intro hbot
       exact h.liveBefore ((f.atBot_iff before.tendency).mp hbot)
-    · exact (G.map_waaMismatchLive_iff f reception).mpr h.mismatchLive
+    · exact (G.map_clenchMismatch_iff f reception).mpr h.clenchMismatch
 
 end DirectedConvention
 
@@ -1232,11 +1242,11 @@ theorem map_contentIntraWeldArrowRow_obeys_of_variation
   exact ⟨b, (G.map_responseVariesWithCall_iff f b).mpr hvaries⟩
 
 theorem map_contentBeingsRow_obeys_of_being
-    (h : ∃ b : G.Being, ¬ G.Stone b) :
+    (h : ∃ w : G.Weld, G.Actual w) :
     (contentBeingsRow (G.map f)).ObeysSeparateFuse := by
   apply contentBeingsRow_obeys_of_being
-  rcases h with ⟨b, hnotStone⟩
-  exact ⟨b, fun hstone => hnotStone ((G.map_stone_iff f b).mp hstone)⟩
+  rcases h with ⟨w, hactual⟩
+  exact ⟨w, (G.map_actual_iff f w).mpr hactual⟩
 
 theorem map_contentGridLensRow_obeys_of_liveTier
     (h : ∃ t : Tier G, Tier.hasLiveShare G t) :

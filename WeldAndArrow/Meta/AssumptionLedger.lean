@@ -144,17 +144,32 @@ def assumptionLedger : List AssumptionEntry := [
     ] },
   { «section» := .asserted
     number := 4
-    title := "Stone and terminus split function from share"
-    statement := "A `Stone` mounts no response. A `Terminus` may mount responses, but every mounted response is at the pole-class. `AtPoleClass` intentionally includes the vacuous stone case."
+    title := "Sentience is a supplied per-weld reading"
+    statement := "A `SentienceReading` marks welds, not beings. Together with live or pole share it yields the four actual act-kinds `OrdinaryAct`, `TerminusAct`, `InsentientAppropriation`, and `StoneAct`; the checked square witnesses all four. `SentientTag`, `StoneTag`, and `Intermittent` are reading-relative quantified displays over those acts."
     anchors := [
-      sigProof ``Grid.Stone,
-      sigProof ``Grid.Terminus,
-      sigProof ``Grid.AtPoleClass,
-      sigProof ``Grid.stone_is_terminus_vacuously,
-      sigWitness ``clockGrid_function_share_split_witness
+      sigProof ``Grid.SentienceReading,
+      sigProof ``Grid.SentientAct,
+      sigProof ``Grid.InsentientAct,
+      sigProof ``Grid.OrdinaryAct,
+      sigProof ``Grid.TerminusAct,
+      sigProof ``Grid.InsentientAppropriation,
+      sigProof ``Grid.StoneAct,
+      sigProof ``Grid.DirectedConvention.BeingConvention.BeingCoarsening.SentientTag,
+      sigProof ``Grid.DirectedConvention.BeingConvention.BeingCoarsening.StoneTag,
+      sigProof ``Grid.DirectedConvention.BeingConvention.BeingCoarsening.Intermittent,
+      sigWitness ``sentience_share_square_inhabited
     ] },
   { «section» := .asserted
     number := 5
+    title := "Call/response is universal per occurrence"
+    statement := "Every actual weld is a mounted call/response occurrence. `respondsTo` remains `Option`-valued only to distinguish actual from hypothetical triples; `none` is not aggregated into a per-being doctrinal category. In Madhyamaka terms it marks non-arising, not a cessation or state entered by a being."
+    anchors := [
+      sigProof ``Grid.Actual,
+      sigProof ``Grid.MountsAt,
+      downProof ``Grid.mountsAt_iff_exists_actual
+    ] },
+  { «section» := .asserted
+    number := 6
     title := "Self-lines are permitted, not built in"
     statement := "The bare signature does not impose irreflexivity on `conditions`; a model may supply reflexive delivery, and then the directed vocabulary can read a self-line."
     anchors := [
@@ -164,6 +179,17 @@ def assumptionLedger : List AssumptionEntry := [
       sigWitness ``AssumptionLocalWitnesses.signature_self_line_permitted,
       downWitness ``SelfLineWitness.selfLine_landsAt_self,
       downWitness ``SelfLineWitness.selfLine_waaOwnershipFace_self
+    ] },
+  { «section» := .asserted
+    number := 7
+    title := "Dukkha and Bull 10 are reading-relative"
+    statement := "`ClenchMismatch` and its share covariation are grid-derived. `WaaDukkha` adds the supplied mark: the structure is derived, the suffering is supplied. Bull 10 likewise quantifies over `SentientTag` under a reading; with the constant-false reading its marketplace is empty and the predicate is unsatisfiable."
+    anchors := [
+      downProof ``Grid.ClenchMismatch,
+      downProof ``Grid.WaaDukkha,
+      downProof ``Grid.clenchMismatch_of_waaDukkha,
+      downProof ``Grid.WaaBullTen,
+      downProof ``Grid.not_waaBullTen_allInsentient
     ] },
   { «section» := .declined
     number := 1
@@ -292,6 +318,41 @@ def assumptionLedger : List AssumptionEntry := [
       downWitness ``FettersNegative.no_view_content_recovery,
       downWitness ``FettersNegative.ownerClaim_coarsening_freeze_correlation
     ] },
+  { «section» := .declined
+    number := 11
+    title := "No sentience recovery from grid data"
+    statement := "Given an actual weld, the same complete response, grade, and delivery data classify it as a `SentientAct` under the constant-true reading and an `InsentientAct` under the constant-false reading. Behavior, share, clench, and delivery therefore jointly underdetermine the mark on the actual domain."
+    anchors := [
+      sigProof ``Grid.SentienceReading,
+      sigProof ``Grid.actual_weld_readings_split,
+      sigWitness ``Grid.no_sentience_recovery
+    ] },
+  { «section» := .declined
+    number := 12
+    title := "No plenitude over being-call pairs"
+    statement := "Universal call/response ranges over actual occurrences; it does not assert that every `Being × Call` pair returns a response. The `Option` seam remains load-bearing for hypothetical variation and candidate receptions."
+    anchors := [
+      sigProof ``Grid.respondsTo,
+      sigProof ``Grid.Actual,
+      sigProof ``Grid.DirectedConvention.EnvironsLine
+    ] },
+  { «section» := .declined
+    number := 13
+    title := "No aggregate sentience scalar"
+    statement := "Sentience is marked per weld. `Intermittent` records fibers containing both marked and unmarked actual acts, but the system assigns no degree of sentience to a tag."
+    anchors := [
+      sigProof ``Grid.DirectedConvention.BeingConvention.BeingCoarsening.Intermittent,
+      sigProof ``Grid.DirectedConvention.BeingConvention.BeingCoarsening.Patchy
+    ] },
+  { «section» := .declined
+    number := 14
+    title := "No insentient-clench exclusion"
+    statement := "An unmarked actual weld may retain live self-share. `InsentientAppropriation` is an inhabited cell of the checked square, so appropriation and structural mismatch do not recover sentience."
+    anchors := [
+      sigProof ``Grid.InsentientAppropriation,
+      sigWitness ``square_insentientAppropriation,
+      downProof ``Grid.clenchMismatch_of_insentientAppropriation
+    ] },
   { «section» := .convenience
     number := 1
     title := "Hand-rolled order classes"
@@ -328,6 +389,7 @@ def assumptionLedger : List AssumptionEntry := [
       sigWitness ``clockGrid,
       sigWitness ``registerClockGrid,
       sigWitness ``registerClock_macro_sentient,
+      sigWitness ``sentience_share_square_inhabited,
       sigWitness ``registerClock_macro_selfConditioning
     ] }
 ]
@@ -353,8 +415,8 @@ def assumptionNumberingContiguous (sec : AssumptionSection) : Bool :=
   entries.map (fun entry => entry.number) ==
     (List.range entries.length).map (fun n => n + 1)
 
-example : (assumptionSectionEntries .asserted).length = 5 := rfl
-example : (assumptionSectionEntries .declined).length = 10 := rfl
+example : (assumptionSectionEntries .asserted).length = 7 := rfl
+example : (assumptionSectionEntries .declined).length = 14 := rfl
 example : (assumptionSectionEntries .convenience).length = 4 := rfl
 
 example : assumptionNumberingContiguous .asserted = true := by

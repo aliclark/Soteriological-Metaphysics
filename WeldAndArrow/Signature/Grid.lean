@@ -179,31 +179,25 @@ def ProbeConstant (b : G.Being) (cs : G.Call → Prop) : Prop :=
     without leaning on the `Bool → Prop` coercion. -/
 def MountsAt (b : G.Being) (c : G.Call) : Prop := ∃ r, G.respondsTo b c = some r
 
-/-- A being that mounts some response somewhere. This is the weakest
-    positive-function predicate, useful for separating a live responder from
-    a stone without requiring total response to every call. -/
-def MountsSomewhere (b : G.Being) : Prop := ∃ c, G.MountsAt b c
-
 /-- Function-entire in the formal sense: every call in the model receives
     some response. Downstream files can weaken this to a regime-indexed
     version when modelling deaf-blind limits or partial delivery. -/
 def RespondsToEveryCall (b : G.Being) : Prop := ∀ c, G.MountsAt b c
 
 /- Reading and motivation: Identification/Commentary.lean, C.1. -/
-def Stone (b : G.Being) : Prop := ∀ c, ¬ G.MountsAt b c
-
-/- Reading and motivation: Identification/Commentary.lean, C.1. -/
-def AllStone : Prop := ∀ b : G.Being, G.Stone b
-
-/- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def Terminus (b : G.Being) : Prop :=
   ∀ c r, G.respondsTo b c = some r → AtBot (G.grade b c r)
 
-/-- The non-vacuous terminus: function is present somewhere and every
-    mounted response is at the pole-class. This is often the right formal analogue
-    of the "responsive stone" when the model's call-domain is intentionally
-    sparse. -/
-def LiveTerminus (b : G.Being) : Prop := G.MountsSomewhere b ∧ G.Terminus b
+/-- An agent has at least one actual occurrence.  This occurrence-form
+    non-vacuity predicate replaces the retired function-zero/positive
+    per-being taxonomy. -/
+def ActualAgentInhabited (b : G.Being) : Prop :=
+  ∃ w : G.Weld, G.Actual w ∧ w.agent = b
+
+/-- The non-vacuous terminus: an actual occurrence is present and every
+    mounted response is at the pole-class. -/
+def LiveTerminus (b : G.Being) : Prop :=
+  G.ActualAgentInhabited b ∧ G.Terminus b
 
 /- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def ResponsiveTerminus (b : G.Being) : Prop :=
@@ -232,28 +226,19 @@ theorem not_waaAppropriates_of_terminus_response
   G.not_waaAppropriates_of_atBot ⟨b, c, r⟩
     (G.atBot_of_terminus_response hterm hresp)
 
-/- Reading and motivation: Identification/Commentary.lean, C.1. -/
-def AtPoleClass (b : G.Being) : Prop := G.Stone b ∨ G.Terminus b
-
-/- Reading and motivation: Identification/Commentary.lean, C.1. -/
-theorem stone_is_terminus_vacuously (b : G.Being) (h : G.Stone b) : G.Terminus b :=
-  fun c r hr => absurd ⟨r, hr⟩ (h c)
-
-/-- Positive function at even one call rules out stone-typing. -/
-theorem not_stone_of_mountsSomewhere (b : G.Being) (h : G.MountsSomewhere b) :
-    ¬ G.Stone b :=
-  fun hs => h.elim (fun c hc => hs c hc)
-
-/-- A live terminus is not a stone. -/
-theorem liveTerminus_not_stone (b : G.Being) (h : G.LiveTerminus b) :
-    ¬ G.Stone b :=
-  G.not_stone_of_mountsSomewhere b h.left
+/-- Pole classification has only the terminus reading.  The former
+    function-zero disjunct is retired; stone is now an act-level sentience/share
+    cell in `SentienceConvention`. -/
+def AtPoleClass (b : G.Being) : Prop := G.Terminus b
 
 /-- A responsive terminus is live whenever the call-domain has a witness. -/
 theorem responsiveTerminus_live_of_call
     (b : G.Being) (c : G.Call) (h : G.ResponsiveTerminus b) :
     G.LiveTerminus b :=
-  ⟨⟨c, h.left c⟩, h.right⟩
+  ⟨by
+    rcases h.left c with ⟨r, hresp⟩
+    exact ⟨⟨b, c, r⟩, hresp, rfl⟩,
+   h.right⟩
 
 end Grid
 
@@ -420,8 +405,8 @@ def ShareDropLine
 end DirectedConvention
 
 /-- A fixed/static responder gives the same response whenever it responds.
-    This is only the response-shape; a clock that never responds to the
-    listener at all is still handled by `Stone`. -/
+    This is only the response-shape; `none` remains the per-call seam between
+    actual and hypothetical welds and is not aggregated into a being type. -/
 def ResponseInvariant (b : G.Being) : Prop :=
   ∀ c₁ c₂ r₁ r₂,
     G.respondsTo b c₁ = some r₁ →
@@ -438,10 +423,9 @@ def ResponseVariesWithCall (b : G.Being) : Prop :=
 
 namespace DirectedConvention
 
-/-- Sowing-side aiming, in the thin extensional sense the glossary
-    licenses: the deed counts as aimed at this landing exactly when the
-    field in fact delivers it there. No intention-primitive is introduced;
-    stronger causal or intentional stories belong in downstream models. -/
+/-- Sowing-side aiming as a display-tier lens over the delivery line.  It is
+    definitionally delivery, introduces no intention primitive, and carries
+    no typed distinction. -/
 def WaaAimedAt (deed reception : G.Weld) : Prop := DeliveredTo G deed reception
 
 theorem deliveredTo_iff_waaReachBackFull (deed reception : G.Weld) :

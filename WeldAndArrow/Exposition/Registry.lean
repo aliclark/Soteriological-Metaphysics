@@ -35,7 +35,7 @@ def theoryRef : DocRef :=
     title := "Theory"
     output := "Exposition/Theory.md"
     provenance := .source
-    summary := "the motivations and the rules: the floor, the act-grammar, the grade and its determination, the domain joint and orthogonality, the karma circuit and its three registers, the weld's two faces, the separate/fuse rule; the input-side assumption list at [Assumptions.md](Assumptions.md); one act run whole through the grid; [Glossary.md](Glossary.md)" }
+    summary := "the motivations and the rules: the floor, the act-grammar, the grade and its determination, the supplied sentience joint and orthogonality, the karma circuit and its three registers, the weld's two faces, the separate/fuse rule; the input-side assumption list at [Assumptions.md](Assumptions.md); one act run whole through the grid; [Glossary.md](Glossary.md)" }
 
 def theoremsRef : DocRef :=
   { id := "theorems"

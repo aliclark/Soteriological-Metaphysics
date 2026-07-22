@@ -239,9 +239,9 @@ theorem official_mountsOnlyIn_economic :
   cases c <;> cases r <;>
     simp [ledgerGrid, economicModality] at h ⊢
 
-theorem official_not_stone :
-    ¬ ledgerGrid.Stone Being.official :=
-  fun hstone => hstone Call.economic ⟨Response.comply, rfl⟩
+theorem official_actualAgentInhabited :
+    ledgerGrid.ActualAgentInhabited Being.official :=
+  ⟨officialComplyWeld, officialComplyWeld_actual, rfl⟩
 
 theorem official_landing_only_economic
     {deed reception : ledgerGrid.Weld}
@@ -292,9 +292,14 @@ def sectorCoarsening : BeingCoarsening ledgerGrid Sector where
     | Being.official => Sector.state
     | _              => Sector.sangha
 
+def ledgerSentienceReading : ledgerGrid.SentienceReading :=
+  Grid.SentienceReading.allSentient ledgerGrid
+
 theorem state_tag_sentient :
-    sectorCoarsening.SentientTag Sector.state :=
-  ⟨Being.official, rfl, ⟨Call.economic, ⟨Response.comply, rfl⟩⟩⟩
+    sectorCoarsening.SentientTag ledgerSentienceReading Sector.state :=
+  ⟨officialComplyWeld, ⟨officialComplyWeld_actual, by
+      change True
+      exact True.intro⟩, rfl⟩
 
 theorem state_fiber_shares_register :
     ∀ p : ledgerGrid.Being,
@@ -350,34 +355,6 @@ theorem decree_engineers_calls_not_receptions :
         ¬ decreeUtterance.FitsOfferedTier :=
   ⟨commandedReception_delivered, commandedReception_not_actual,
     decree_utterance_not_fits⟩
-
-local instance ledgerGridDecidableEqBeing :
-    DecidableEq ledgerGrid.Being :=
-  inferInstanceAs (DecidableEq Being)
-
-abbrev purgedGrid : Grid Nat :=
-  ledgerGrid.staticized (show ledgerGrid.Being from Being.master)
-
-theorem purge_delivery_loss_real :
-    purgedGrid.Stone Being.master :=
-  ledgerGrid.futility_delivery_loss_real Being.master
-
-theorem purge_adaptive_to_static :
-    purgedGrid.ResponseInvariant Being.master :=
-  ledgerGrid.staticized_responseInvariant Being.master
-
-theorem purge_loop_runs_on :
-    purgedGrid.Actual officialComplyWeld := by
-  dsimp [purgedGrid, Grid.staticized, Grid.withRespondsTo, Grid.Actual,
-    ledgerGrid, officialComplyWeld]
-
-theorem purge_object_axis_subtraction_nil :
-    purgedGrid.conditions = ledgerGrid.conditions :=
-  ledgerGrid.futility_object_axis_subtraction_nil Being.master
-
-theorem corpus_still_delivered :
-    DeliveredTo purgedGrid codeWeld officialComplyWeld :=
-  True.intro
 
 end LedgerCase
 

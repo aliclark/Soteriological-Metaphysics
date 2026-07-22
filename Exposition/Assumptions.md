@@ -26,19 +26,35 @@ A weld is the primitive occurrence. `Grid.index` and `Grid.share` are projection
 
 **Checked anchors (Signature):** `WAA.Grid.HasSelfPoleIndex` (proof), `WAA.Grid.selfPoleIndex_eq_agent_of_hasSelfPoleIndex` (proof), `WAA.Grid.no_self_pole_index_of_atBot` (proof)
 
-### A.4 Stone and terminus split function from share
+### A.4 Sentience is a supplied per-weld reading
 
-A `Stone` mounts no response. A `Terminus` may mount responses, but every mounted response is at the pole-class. `AtPoleClass` intentionally includes the vacuous stone case.
+A `SentienceReading` marks welds, not beings. Together with live or pole share it yields the four actual act-kinds `OrdinaryAct`, `TerminusAct`, `InsentientAppropriation`, and `StoneAct`; the checked square witnesses all four. `SentientTag`, `StoneTag`, and `Intermittent` are reading-relative quantified displays over those acts.
 
-**Checked anchors (Signature):** `WAA.Grid.Stone` (proof), `WAA.Grid.Terminus` (proof), `WAA.Grid.AtPoleClass` (proof), `WAA.Grid.stone_is_terminus_vacuously` (proof), `WAA.clockGrid_function_share_split_witness` (witness)
+**Checked anchors (Signature):** `WAA.Grid.SentienceReading` (proof), `WAA.Grid.SentientAct` (proof), `WAA.Grid.InsentientAct` (proof), `WAA.Grid.OrdinaryAct` (proof), `WAA.Grid.TerminusAct` (proof), `WAA.Grid.InsentientAppropriation` (proof), `WAA.Grid.StoneAct` (proof), `WAA.Grid.DirectedConvention.BeingConvention.BeingCoarsening.SentientTag` (proof), `WAA.Grid.DirectedConvention.BeingConvention.BeingCoarsening.StoneTag` (proof), `WAA.Grid.DirectedConvention.BeingConvention.BeingCoarsening.Intermittent` (proof), `WAA.sentience_share_square_inhabited` (witness)
 
-### A.5 Self-lines are permitted, not built in
+### A.5 Call/response is universal per occurrence
+
+Every actual weld is a mounted call/response occurrence. `respondsTo` remains `Option`-valued only to distinguish actual from hypothetical triples; `none` is not aggregated into a per-being doctrinal category. In Madhyamaka terms it marks non-arising, not a cessation or state entered by a being.
+
+**Checked anchors (Signature):** `WAA.Grid.Actual` (proof), `WAA.Grid.MountsAt` (proof)
+
+**Downstream elaboration:** `WAA.Grid.mountsAt_iff_exists_actual` (proof)
+
+### A.6 Self-lines are permitted, not built in
 
 The bare signature does not impose irreflexivity on `conditions`; a model may supply reflexive delivery, and then the directed vocabulary can read a self-line.
 
 **Checked anchors (Signature):** `WAA.Grid.conditions` (proof), `WAA.Grid.DirectedConvention.DeliveredTo` (proof), `WAA.Grid.DirectedConvention.LandsAt` (proof), `WAA.AssumptionLocalWitnesses.signature_self_line_permitted` (witness)
 
 **Downstream elaboration:** `WAA.SelfLineWitness.selfLine_landsAt_self` (witness), `WAA.SelfLineWitness.selfLine_waaOwnershipFace_self` (witness)
+
+### A.7 Dukkha and Bull 10 are reading-relative
+
+`ClenchMismatch` and its share covariation are grid-derived. `WaaDukkha` adds the supplied mark: the structure is derived, the suffering is supplied. Bull 10 likewise quantifies over `SentientTag` under a reading; with the constant-false reading its marketplace is empty and the predicate is unsatisfiable.
+
+**Checked anchors (Signature):** None.
+
+**Downstream elaboration:** `WAA.Grid.ClenchMismatch` (proof), `WAA.Grid.WaaDukkha` (proof), `WAA.Grid.clenchMismatch_of_waaDukkha` (proof), `WAA.Grid.WaaBullTen` (proof), `WAA.Grid.not_waaBullTen_allInsentient` (proof)
 
 ## B. What Is Deliberately Declined
 
@@ -120,6 +136,32 @@ Grading may depend on the agent — `gradingCollisionGrid` grades by being delib
 
 **Downstream elaboration:** `WAA.Grid.ViewReading` (proof), `WAA.FettersNegative.no_view_content_recovery` (witness), `WAA.FettersNegative.ownerClaim_coarsening_freeze_correlation` (witness)
 
+### B.11 No sentience recovery from grid data
+
+Given an actual weld, the same complete response, grade, and delivery data classify it as a `SentientAct` under the constant-true reading and an `InsentientAct` under the constant-false reading. Behavior, share, clench, and delivery therefore jointly underdetermine the mark on the actual domain.
+
+**Checked anchors (Signature):** `WAA.Grid.SentienceReading` (proof), `WAA.Grid.actual_weld_readings_split` (proof), `WAA.Grid.no_sentience_recovery` (witness)
+
+### B.12 No plenitude over being-call pairs
+
+Universal call/response ranges over actual occurrences; it does not assert that every `Being × Call` pair returns a response. The `Option` seam remains load-bearing for hypothetical variation and candidate receptions.
+
+**Checked anchors (Signature):** `WAA.Grid.respondsTo` (proof), `WAA.Grid.Actual` (proof), `WAA.Grid.DirectedConvention.EnvironsLine` (proof)
+
+### B.13 No aggregate sentience scalar
+
+Sentience is marked per weld. `Intermittent` records fibers containing both marked and unmarked actual acts, but the system assigns no degree of sentience to a tag.
+
+**Checked anchors (Signature):** `WAA.Grid.DirectedConvention.BeingConvention.BeingCoarsening.Intermittent` (proof), `WAA.Grid.DirectedConvention.BeingConvention.BeingCoarsening.Patchy` (proof)
+
+### B.14 No insentient-clench exclusion
+
+An unmarked actual weld may retain live self-share. `InsentientAppropriation` is an inhabited cell of the checked square, so appropriation and structural mismatch do not recover sentience.
+
+**Checked anchors (Signature):** `WAA.Grid.InsentientAppropriation` (proof), `WAA.square_insentientAppropriation` (witness)
+
+**Downstream elaboration:** `WAA.Grid.clenchMismatch_of_insentientAppropriation` (proof)
+
 ## C. Conveniences and Stand-Ins
 
 ### C.1 Hand-rolled order classes
@@ -148,7 +190,7 @@ Grading may depend on the agent — `gradingCollisionGrid` grades by being delib
 
 The clock and register-clock models anchor possibility checks and taxonomy examples; they are not uniqueness claims.
 
-**Checked anchors (Signature):** `WAA.clockGrid` (witness), `WAA.registerClockGrid` (witness), `WAA.registerClock_macro_sentient` (witness), `WAA.registerClock_macro_selfConditioning` (witness)
+**Checked anchors (Signature):** `WAA.clockGrid` (witness), `WAA.registerClockGrid` (witness), `WAA.registerClock_macro_sentient` (witness), `WAA.sentience_share_square_inhabited` (witness), `WAA.registerClock_macro_selfConditioning` (witness)
 
 ## Axiom audit
 
@@ -173,8 +215,9 @@ The clock and register-clock models anchor possibility checks and taxonomy examp
 | `WAA.Grid.map_actual_iff` | None |
 | `WAA.Grid.map_isShareDrop_iff` | None |
 | `WAA.Grid.map_transpose` | None |
-| `WAA.Grid.staticized_transpose` | None |
-| `WAA.Grid.map_staticized` | None |
+| `WAA.Grid.actual_weld_readings_split` | None |
+| `WAA.Grid.no_sentience_recovery` | None |
+| `WAA.sentience_share_square_inhabited` | None |
 | `WAA.Grid.DirectedConvention.DirectionCoarsening.mapDir_resolutionBounded_iff` | None |
 | `WAA.DirectionCoarseningWitness.registerClock_unitTick_not_resolutionBounded` | None |
 | `WAA.DirectionCoarseningWitness.unit_directionVoid_via_mergeToUnit` | None |
@@ -231,10 +274,9 @@ The clock and register-clock models anchor possibility checks and taxonomy examp
 | `WAA.misFeed_entries_carry_decomposition` | None |
 | `WAA.Grid.grade_independent_of_conditions` | None |
 | `WAA.Grid.rePitch_forgets` | None |
-| `WAA.Grid.stone_of_no_call` | None |
 | `WAA.Grid.respondsToEveryCall_of_no_call` | None |
-| `WAA.Grid.allStone_of_no_being` | None |
-| `WAA.ContentNegative.emptyCallGrid_false_stone_and_respondsToEveryCall` | None |
+| `WAA.ContentNegative.noActualGrid_no_actual` | None |
+| `WAA.ContentNegative.emptyBeingGrid_no_actual` | None |
 | `WAA.ContentNegative.emptyBeingGrid_no_liveTier` | None |
 | `WAA.ContentNegative.contentBeingsRow_obeys_emptyBeing` | None |
 | `WAA.Grid.DirectedConvention.PrudentialPrivilegeNegative.prudentialPrivilege_failure_modes` | None |
@@ -249,7 +291,7 @@ The clock and register-clock models anchor possibility checks and taxonomy examp
 | `WAA.DeliveryArrogationNegative.command_utterance_not_fits` | None |
 | `WAA.Grid.DirectedConvention.landing_call_in_modality` | None |
 | `WAA.LedgerCase.decree_engineers_calls_not_receptions` | `propext` |
-| `WAA.LedgerCase.purge_loop_runs_on` | `propext` |
+| `WAA.LedgerCase.official_actualAgentInhabited` | `propext` |
 | `WAA.InteriorDirectionNegative.transposeCR_involutive` | None |
 | `WAA.InteriorDirectionNegative.unorderedCRContent_transpose_invariant` | `propext` |
 | `WAA.InteriorDirectionNegative.transpose_swaps_readings` | None |

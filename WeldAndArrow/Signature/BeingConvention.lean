@@ -7,7 +7,7 @@
 Reading and motivation: Identification/Commentary.lean, C.1.
 -/
 
-import WeldAndArrow.Signature.Grid
+import WeldAndArrow.Signature.SentienceConvention
 
 namespace WAA
 
@@ -22,14 +22,8 @@ namespace BeingConvention
 /- Reading and motivation: Identification/Commentary.lean, C.1. -/
 abbrev MountsAt (b : G.Being) (c : G.Call) : Prop := G.MountsAt b c
 
-/-- Re-rooted name for mounting at some call. -/
-abbrev MountsSomewhere (b : G.Being) : Prop := G.MountsSomewhere b
-
 /-- Re-rooted name for call-entire response. -/
 abbrev RespondsToEveryCall (b : G.Being) : Prop := G.RespondsToEveryCall b
-
-/- Reading and motivation: Identification/Commentary.lean, C.1. -/
-abbrev Stone (b : G.Being) : Prop := G.Stone b
 
 /-- Re-rooted name for the pole-class responder. -/
 abbrev Terminus (b : G.Being) : Prop := G.Terminus b
@@ -40,7 +34,7 @@ abbrev LiveTerminus (b : G.Being) : Prop := G.LiveTerminus b
 /-- Re-rooted name for call-entire terminus response. -/
 abbrev ResponsiveTerminus (b : G.Being) : Prop := G.ResponsiveTerminus b
 
-/-- Re-rooted name for the two attested arrivals at the pole-class. -/
+/-- Re-rooted name for terminus typing at the pole-class. -/
 abbrev AtPoleClass (b : G.Being) : Prop := G.AtPoleClass b
 
 /-- Re-rooted name for the probe, because the probe reads a being's
@@ -108,30 +102,42 @@ def FiberInhabited (b : Macro) : Prop := ∃ p : G.Being, κ.proj p = b
 def ActualFiberInhabited (b : Macro) : Prop :=
   ∃ w : G.Weld, G.Actual w ∧ κ.InFiber b w
 
-/-- Some fine tag in the fiber mounts a response somewhere. -/
-def SentientTag (b : Macro) : Prop :=
-  ∃ p : G.Being, κ.proj p = b ∧ G.MountsSomewhere p
+/-- A macro tag has at least one actual weld marked sentient by the supplied
+    reading.  This is quantified display over acts, not a standing property. -/
+def SentientTag (S : SentienceReading G) (b : Macro) : Prop :=
+  ∃ w : G.Weld, G.SentientAct S w ∧ κ.InFiber b w
 
-/-- A tag is not sentient exactly when every fine tag in its fiber is stone-typed. -/
-theorem not_sentientTag_iff_fiber_all_stone (b : Macro) :
-    ¬ κ.SentientTag b ↔ ∀ p : G.Being, κ.proj p = b → G.Stone p := by
-  constructor
-  · intro hnot p hp c hmount
-    exact hnot ⟨p, hp, ⟨c, hmount⟩⟩
-  · intro hall hsent
-    rcases hsent with ⟨p, hp, c, hmount⟩
-    exact hall p hp c hmount
+/-- A nonempty macro tag all of whose actual welds occupy the insentient
+    pole-share cell. -/
+def StoneTag (S : SentienceReading G) (b : Macro) : Prop :=
+  κ.ActualFiberInhabited b ∧
+    ∀ w : G.Weld, G.Actual w → κ.InFiber b w → G.StoneAct S w
 
-/-- A sentient macro tag is exactly a fiber with an actual weld. The forward
-    direction turns mounted response-function into the corresponding weld; the
-    reverse direction reads function from an actual weld's response equation. -/
-theorem sentientTag_iff_actualFiberInhabited (b : Macro) :
-    κ.SentientTag b ↔ κ.ActualFiberInhabited b := by
+/-- A macro tag with both marked and unmarked actual welds.  No scalar degree
+    of sentience is inferred from this patchiness. -/
+def Intermittent (S : SentienceReading G) (b : Macro) : Prop :=
+  (∃ w : G.Weld, G.SentientAct S w ∧ κ.InFiber b w) ∧
+    (∃ w : G.Weld, G.InsentientAct S w ∧ κ.InFiber b w)
+
+theorem actualFiberInhabited_of_sentientTag
+    (S : SentienceReading G) {b : Macro} (h : κ.SentientTag S b) :
+    κ.ActualFiberInhabited b := by
+  rcases h with ⟨w, hsentient, hfiber⟩
+  exact ⟨w, hsentient.left, hfiber⟩
+
+theorem allSentient_sentientTag_iff_actualFiberInhabited (b : Macro) :
+    κ.SentientTag (SentienceReading.allSentient G) b ↔
+      κ.ActualFiberInhabited b := by
   constructor
-  · rintro ⟨p, hp, c, r, hresp⟩
-    exact ⟨⟨p, c, r⟩, hresp, hp⟩
+  · exact κ.actualFiberInhabited_of_sentientTag
+      (SentienceReading.allSentient G)
   · rintro ⟨w, hactual, hfiber⟩
-    exact ⟨w.agent, hfiber, ⟨w.call, ⟨w.response, hactual⟩⟩⟩
+    exact ⟨w, ⟨hactual, True.intro⟩, hfiber⟩
+
+theorem allInsentient_not_sentientTag (b : Macro) :
+    ¬ κ.SentientTag (SentienceReading.allInsentient G) b := by
+  rintro ⟨w, hsentient, _hfiber⟩
+  exact hsentient.right
 
 /- Reading and motivation: Identification/Commentary.lean, C.1. -/
 def FiberAtPole (b : Macro) : Prop :=
@@ -376,8 +382,8 @@ theorem transpose_inFiber_iff
   Iff.rfl
 
 theorem transpose_sentientTag_iff
-    (κ : BeingCoarsening G Macro) (b : Macro) :
-    κ.transpose.SentientTag b ↔ κ.SentientTag b :=
+    (κ : BeingCoarsening G Macro) (S : SentienceReading G) (b : Macro) :
+    κ.transpose.SentientTag S.transpose b ↔ κ.SentientTag S b :=
   Iff.rfl
 
 /-- Direction-smuggling detector for the directed refinement: transposition

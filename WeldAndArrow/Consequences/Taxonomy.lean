@@ -53,7 +53,7 @@ inductive RowTag
   | weldEventType
   | standingDated
   | subjectObjectAxis
-  | undefinedZero
+  | standingSentience
   | perCallGlobal
   | terminusExit
   | selfPoleTransposed
@@ -468,7 +468,7 @@ theorem functionShareRow_not_freeze :
     ¬ (functionShareRow G).Freeze :=
   rowOf_not_freeze G .functionShare
 
-theorem functionZero_from_shareZero_collapse_self_refuting (t : Tier G) :
+theorem function_share_cell_collapse_self_refuting (t : Tier G) :
     ¬ (functionShareRow G).Collapse t :=
   rowOf_collapse_self_refuting G .functionShare t
 
@@ -564,25 +564,29 @@ theorem subjectObjectAxisRow_not_freeze :
     ¬ (subjectObjectAxisRow G).Freeze :=
   rowOf_not_freeze G .subjectObjectAxis
 
-theorem insentient_subject_collapse_self_refuting (t : Tier G) :
+theorem object_axis_as_subject_collapse_self_refuting (t : Tier G) :
     ¬ (subjectObjectAxisRow G).Collapse t :=
   rowOf_collapse_self_refuting G .subjectObjectAxis t
 
-abbrev undefinedZeroRow (G : Grid Contrib) : Distinction G :=
-  rowOf G .undefinedZero
+/- Sentience is marked per weld by `SentienceReading`; treating the mark as a
+   standing nature freezes this distinction, while identifying it with
+   grid-visible function collapses the two sides. The generic row machinery
+   checks the taxonomy shape without pretending to recover the supplied mark. -/
+abbrev standingSentienceRow (G : Grid Contrib) : Distinction G :=
+  rowOf G .standingSentience
 
-theorem undefinedZeroRow_obeys
+theorem standingSentienceRow_obeys
     [∀ w : G.Weld, Decidable (AtBot (G.share w))] :
-    (undefinedZeroRow G).ObeysSeparateFuse :=
-  rowOf_obeys G .undefinedZero
+    (standingSentienceRow G).ObeysSeparateFuse :=
+  rowOf_obeys G .standingSentience
 
-theorem undefinedZeroRow_not_freeze :
-    ¬ (undefinedZeroRow G).Freeze :=
-  rowOf_not_freeze G .undefinedZero
+theorem standingSentienceRow_not_freeze :
+    ¬ (standingSentienceRow G).Freeze :=
+  rowOf_not_freeze G .standingSentience
 
-theorem undefined_as_openness_collapse_self_refuting (t : Tier G) :
-    ¬ (undefinedZeroRow G).Collapse t :=
-  rowOf_collapse_self_refuting G .undefinedZero t
+theorem sentience_from_function_collapse_self_refuting (t : Tier G) :
+    ¬ (standingSentienceRow G).Collapse t :=
+  rowOf_collapse_self_refuting G .standingSentience t
 
 abbrev perCallGlobalRow (G : Grid Contrib) : Distinction G :=
   rowOf G .perCallGlobal
@@ -683,7 +687,7 @@ def tableOrder : List TableRow := [
   .generated .weldEventType,
   .generated .standingDated,
   .generated .subjectObjectAxis,
-  .generated .undefinedZero,
+  .generated .standingSentience,
   .generated .perCallGlobal,
   .prose .descriptionInjunction,
   .generated (.layer .gridLens),
@@ -726,14 +730,13 @@ end DirectedConvention
 
 end Grid
 
-/-- In the clock model, share-zero does not mean function-zero: the adaptive
-    clock answers the present-listener call at bottom share while remaining
-    non-stone. -/
-theorem shareZero_not_functionZero_witness :
-    AtBot (clockGrid.share ⟨Clock.adaptive, Listener.present, Chime.chime⟩) ∧
-      ¬ clockGrid.Stone Clock.adaptive :=
-  ⟨clockGrid.atBot_of_terminus_response adaptive_is_terminus rfl,
-    adaptive_not_stone⟩
+/-- The adaptive clock's pole occurrence is marked sentient only by the
+    supplied reading.  Share-zero does not recover that mark. -/
+theorem sentient_pole_act_witness :
+    clockGrid.TerminusAct clockSentienceReading
+      ⟨Clock.adaptive, Listener.present, Chime.chime⟩ :=
+  ⟨⟨rfl, rfl⟩,
+    clockGrid.atBot_of_terminus_response adaptive_is_terminus rfl⟩
 
 /-- In the register clock, a live share-drop rung is not yet the pole. -/
 theorem rung_not_pole_witness :
@@ -842,26 +845,6 @@ theorem cetana_live_share_without_object_standing_witness :
     rcases hstanding with ⟨reception, hdelivered⟩
     exact hdelivered
 
-local instance registerClockGridDecidableEqBeing :
-    DecidableEq registerClockGrid.Being :=
-  inferInstanceAs (DecidableEq Nat)
-
-/-- Staticizing one register in the register clock really destroys that
-    register's response function. -/
-theorem registerClock_staticized_zero_stone :
-    (registerClockGrid.staticized (0 : Nat)).Stone (0 : Nat) :=
-  registerClockGrid.futility_delivery_loss_real (0 : Nat)
-
-/-- Staticizing one register in the register clock leaves object-axis standing
-    exactly as it was, because delivery data are untouched. -/
-theorem registerClock_staticized_objectAxisStanding_iff
-    (deed : registerClockGrid.Weld) :
-    Grid.DirectedConvention.ObjectAxisStanding
-        (registerClockGrid.staticized (0 : Nat)) deed ↔
-      Grid.DirectedConvention.ObjectAxisStanding registerClockGrid deed :=
-  Grid.DirectedConvention.staticized_objectAxisStanding_iff registerClockGrid
-    (0 : Nat) deed
-
 /-- Assertable and displayable are different verdict voices. -/
 theorem assertable_ne_displayable :
     Grid.VerdictVoice.assertable ≠ Grid.VerdictVoice.displayable := by
@@ -904,17 +887,15 @@ theorem subitism_possibility_witness :
   · exact clockGrid.rePitch_tendency_atBot_of_terminus_response
       { tendency := 5 } adaptive_is_terminus rfl
 
-/-- The pole-validating act-time is inhabited by a non-stone terminus response
-    in the clock model; the validating disjunct is not merely the vacuous stone
-    side. -/
+/-- The pole-validating act-time is inhabited by a sentient terminus act in
+    the clock model under its supplied reading. -/
 theorem pole_tier_buddha_inhabited :
     ∃ w : clockGrid.Weld,
-      clockGrid.Actual w ∧ AtBot (clockGrid.share w) ∧
-        clockGrid.AtPoleClass w.agent ∧ ¬ clockGrid.Stone w.agent := by
-  refine ⟨⟨Clock.adaptive, Listener.present, Chime.chime⟩, rfl, ?_, ?_, ?_⟩
-  · exact clockGrid.atBot_of_terminus_response adaptive_is_terminus rfl
-  · exact clockGrid.atPoleClass_of_terminus Clock.adaptive adaptive_is_terminus
-  · exact adaptive_not_stone
+      clockGrid.TerminusAct clockSentienceReading w ∧
+        clockGrid.AtPoleClass w.agent := by
+  exact ⟨⟨Clock.adaptive, Listener.present, Chime.chime⟩,
+    sentient_pole_act_witness,
+    clockGrid.atPoleClass_of_terminus Clock.adaptive adaptive_is_terminus⟩
 
 
 end WAA

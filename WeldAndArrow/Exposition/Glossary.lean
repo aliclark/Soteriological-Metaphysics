@@ -220,7 +220,7 @@ def glossary : List GlossaryEntry := [
     seeAlso := ["arrogation", "weld"] },
   { term := "function"
     kind := .coinage .theory
-    gloss := "Function is the ability to mount a response at all. The grid keeps it separate from share, so answering a call and claiming the answer are not the same fact."
+    gloss := "Function is the call/response form of every actual occurrence. `MountsAt` names that form at one call; `none` marks only the actual/hypothetical seam and is not a being-kind. Function remains separate from share."
     anchors := [``Grid.MountsAt, ``Grid.RespondsToEveryCall]
     seeAlso := ["response", "share"] },
   { term := "pole"
@@ -232,16 +232,16 @@ def glossary : List GlossaryEntry := [
     seeAlso := ["share", "genjō"] },
   { term := "stone"
     kind := .coinage .theory
-    gloss := "A stone is the zero-function edge: no response is mounted. In this system it can sit at the pole only vacuously, because there is no answering act to grade."
-    anchors := [``Grid.Stone, ``Grid.stone_is_terminus_vacuously]
+    gloss := "Current sense: a stone is an actual weld in the unmarked, pole-share cell, `StoneAct`. Retired edge sense: before the per-weld sentience revision, stone meant a function-zero being. The dated senses keep older prose legible without restoring that edge."
+    anchors := [``Grid.StoneAct, ``Grid.DirectedConvention.BeingConvention.BeingCoarsening.StoneTag]
     seeAlso := ["function", "pole"] },
   { term := "solipsist"
     kind := .coinage .theory
-    gloss := "The solipsist is the opposite edge from the stone. It names the imagined case where response is all self-claim and the call has effectively vanished."
+    gloss := "The solipsist names the imagined collapse in which response is all self-claim and the call has effectively vanished. The old picture treated it as the edge opposite a function-zero stone; that edge is retired."
     seeAlso := ["function", "share"] },
   { term := "terminus"
     kind := .coinage .theory
-    gloss := "A terminus is a responder whose mounted responses lie at the pole. It answers without live share, so the system treats it differently from a stone."
+    gloss := "A terminus is a responder whose mounted responses lie at the pole. `AtPoleClass` now has exactly this meaning; sentient terminus acts and insentient stone acts are separated by the supplied mark."
     anchors := [``Grid.Terminus, ``Grid.LiveTerminus, ``Grid.ResponsiveTerminus]
     seeAlso := ["function", "pole"] },
   { term := "tier"
@@ -277,17 +277,18 @@ def glossary : List GlossaryEntry := [
     seeAlso := ["call", "response", "effectiveness"] },
   { term := "orthogonality rule"
     kind := .coinage .theory
-    gloss := "The orthogonality rule says two dimensions do not determine each other. Here function and share type the responder, while effectiveness grades landing."
+    gloss := "The orthogonality rule says the relevant dimensions do not determine each other. Function is universal, share types the response, effectiveness grades landing, and sentience is supplied."
     anchors := [``OrthogonalityNegative.waaEffectiveTerminus_stronger_than_terminus]
     seeAlso := ["function", "share", "effectiveness"] },
-  { term := "domain joint"
+  { term := "sentience joint"
     kind := .coinage .theory
-    gloss := "The domain joint is the question of what counts as responding at all. The grid answers it by drive-composition and accepts the resulting artifact cases openly."
-    anchors := [``Grid.MountsAt]
+    gloss := "The sentience joint is where phenomenal attribution is supplied rather than recovered. Holding the mark as a nature freezes the standing-sentience row; identifying it with visible function collapses that row."
+    anchors := [``Grid.SentienceReading, ``Grid.no_sentience_recovery,
+      ``Grid.DirectedConvention.BeingConvention.GridConvention.RowTag.standingSentience]
     seeAlso := ["function", "response"] },
   { term := "aimed call"
     kind := .coinage .theory
-    gloss := "An aimed call is a deed configured for a landing. In Lean this thin reading is just delivery from the deed to the reception, not a new intention primitive."
+    gloss := "An aimed call is a display-tier, sowing-side lens over a delivery line. In Lean it is definitionally delivery from deed to reception, not a mechanism or intention primitive."
     anchors := [``Grid.DirectedConvention.WaaAimedAt]
     seeAlso := ["call", "delivery"] },
   { term := "re-pitch"
@@ -332,7 +333,7 @@ def glossary : List GlossaryEntry := [
     seeAlso := ["assert/display", "call"] },
   { term := "object-axis/subject-axis"
     kind := .coinage .theory
-    gloss := "Object-axis means being available as something received; subject-axis means mounting responses oneself. The grid keeps these axes apart, especially for stones and termini."
+    gloss := "Object-axis means being available as something received; subject-axis means occurring as call/response. The grid keeps these axes apart, including for stone and terminus acts."
     anchors := [``Grid.DirectedConvention.ObjectAxisStanding, ``Grid.MountsAt]
     seeAlso := ["delivery", "function"] },
   { term := "index-question"
@@ -353,8 +354,9 @@ def glossary : List GlossaryEntry := [
     seeAlso := ["tier", "separate/fuse rule", "assert/display"] },
   { term := "dukkha"
     kind := .canonical
-    gloss := "Dukkha ordinarily names suffering or unsatisfactoriness. In this system it is the mismatch of a live self-maintaining response with delivery that answers to no self."
-    anchors := [``Grid.WaaMismatchGrade, ``Grid.WaaMismatchLive]
+    gloss := "Dukkha ordinarily names suffering or unsatisfactoriness. The grid derives `ClenchMismatch`; `WaaDukkha` adds a supplied sentience mark. Thus the structure is derived while whether it is suffered remains reading-relative."
+    anchors := [``Grid.WaaMismatchGrade, ``Grid.ClenchMismatch,
+      ``Grid.WaaDukkha]
     seeAlso := ["share", "delivery", "clench"] },
   { term := "before/after"
     kind := .coinage .theory
@@ -445,10 +447,12 @@ def glossary : List GlossaryEntry := [
     seeAlso := ["three doors", "vāsanā"] },
   { term := "sentient/insentient tag"
     kind := .coinage .theory
-    gloss := "A sentient tag is one whose fiber mounts response somewhere; an insentient tag lacks that. The distinction is fiber-level and convention-relative."
+    gloss := "Sentience is marked per actual weld under a supplied `SentienceReading`; it is never recovered from grid behavior. `SentientTag`, `StoneTag`, and `Intermittent` are convention-relative quantified displays over a macro fiber, not standing natures or scalar degrees."
     anchors := [``Grid.DirectedConvention.BeingConvention.BeingCoarsening.SentientTag,
-      ``Grid.DirectedConvention.BeingConvention.BeingCoarsening.not_sentientTag_iff_fiber_all_stone]
-    seeAlso := ["tag/fiber", "function"] },
+      ``Grid.DirectedConvention.BeingConvention.BeingCoarsening.StoneTag,
+      ``Grid.DirectedConvention.BeingConvention.BeingCoarsening.Intermittent,
+      ``Grid.no_sentience_recovery]
+    seeAlso := ["tag/fiber", "stone"] },
   { term := "FiberAtPole / SelfAptTag / Patchy"
     kind := .leanConvention
     gloss := "These names describe a fiber spectrum: all actual welds at pole, all actual welds self-apt, or an irreducibly mixed case. They deliberately avoid defining an aggregate share for a fiber."
@@ -703,10 +707,7 @@ def glossary : List GlossaryEntry := [
     seeAlso := ["cetanā", "weld", "field"] },
   { term := "futility theorem"
     kind := .coinage .theorems
-    gloss := "The futility theorem says the deliberate attempt fails at target and downstream. The body can be staticized as a delivery loss without subtracting object-axis standing."
-    anchors := [``Grid.staticized, ``Grid.futility_delivery_loss_real,
-      ``Grid.futility_object_axis_subtraction_nil,
-      ``Grid.DirectedConvention.staticized_objectAxisStanding_iff]
+    gloss := "Retired formal theorem, retained as a dated prose routing. Freezing death as subtraction of a standing victim is the subject/object-axis freeze; claiming that emptiness makes killing change nothing is the fox cell. No `none` region is given a death reading."
     seeAlso := ["delivery", "object-axis/subject-axis", "device / device-nature"] },
   { term := "victim-rank"
     kind := .coinage .theorems
@@ -720,7 +721,7 @@ def glossary : List GlossaryEntry := [
     kind := .coinage .theorems
     gloss := "A ledger is a public register that prices what can be counted. In the Huichang case it names an economic modality and the errors produced by reading that modality as a being-sized truth."
     anchors := [``LedgerCase.decree_engineers_calls_not_receptions,
-      ``LedgerCase.purge_loop_runs_on]
+      ``LedgerCase.official_actualAgentInhabited]
     seeAlso := ["delivery-regime", "Grade 1 / Grade 2"] },
   { term := "economic legibility"
     kind := .coinage .theorems
@@ -809,7 +810,7 @@ def glossary : List GlossaryEntry := [
     seeAlso := ["buddha-side shortfall", "delivery"] },
   { term := "icchantika"
     kind := .canonical
-    gloss := "Icchantika ordinarily names a being cut off from buddhahood. Here it is the terminus's inverse: non-stone, with a live self-pole index at every mounted response. It is reachable as a receiver and cannot be seated as an enlightened agent on its run. The permanent cannot-become-buddha verdict is declined, because foreclosure would be a stored rank the system forbids; defiance is a seed, not a rank."
+    gloss := "Icchantika ordinarily names a being cut off from buddhahood. Here it is the terminus's inverse on an inhabited actual run, with a live self-pole index at every mounted response. It is reachable as a receiver and cannot be seated as an enlightened agent on that run. Permanent foreclosure is declined: defiance is a seed, not a rank."
     anchors := [``Icchantika, ``not_waaEffectiveTerminus_of_icchantika,
       ``aversionContext_of_icchantika_reception,
       ``icchantika_release_not_foreclosed]

@@ -15,9 +15,9 @@ namespace FettersNegative
 open Grid
 open Grid.DirectedConvention
 
-/- The total quiet class still carries no function conjunct. -/
+/- The total quiet class still carries no actual-occurrence conjunct. -/
 
-def stoneGrid : Grid Nat where
+def noActualGrid : Grid Nat where
   Being := Unit
   Call := Unit
   Response := Unit
@@ -25,7 +25,7 @@ def stoneGrid : Grid Nat where
   grade _ _ _ := 0
   conditions _ _ := False
 
-theorem stone_quiet : QuietOn stoneGrid () (fun _ => True) := by
+theorem noActual_quiet : QuietOn noActualGrid () (fun _ => True) := by
   intro w hactual
   cases w with
   | mk agent c r =>
@@ -35,18 +35,22 @@ theorem stone_quiet : QuietOn stoneGrid () (fun _ => True) := by
     change (none : Option Unit) = some () at hactual
     cases hactual
 
-theorem stone_not_functioning : ¬ stoneGrid.MountsSomewhere () := by
-  rintro ⟨c, r, hresp⟩
-  cases c
-  cases r
-  change (none : Option Unit) = some () at hresp
-  cases hresp
+theorem noActual_no_occurrence :
+    ¬ ∃ w : noActualGrid.Weld, noActualGrid.Actual w := by
+  rintro ⟨w, hactual⟩
+  cases w with
+  | mk agent c r =>
+      cases agent
+      cases c
+      cases r
+      change (none : Option Unit) = some () at hactual
+      cases hactual
 
-/-- Total QuietOn alone is compatible with an all-stone model. -/
-theorem total_cut_carries_no_function :
-    QuietOn stoneGrid () (fun _ => True) ∧
-      ¬ stoneGrid.MountsSomewhere () :=
-  ⟨stone_quiet, stone_not_functioning⟩
+/-- Total `QuietOn` alone is compatible with a grid having no actual welds. -/
+theorem total_cut_carries_no_actual_occurrence :
+    QuietOn noActualGrid () (fun _ => True) ∧
+      ¬ ∃ w : noActualGrid.Weld, noActualGrid.Actual w :=
+  ⟨noActual_quiet, noActual_no_occurrence⟩
 
 theorem sraddha_total_quiet :
     QuietOn SraddhaNegative.zeroEffectGrid
@@ -60,22 +64,22 @@ theorem sraddha_total_quiet :
         exact Nat.le_refl 0
     | receiver => cases hagent
 
-theorem sraddha_functions :
-    SraddhaNegative.zeroEffectGrid.MountsSomewhere
+theorem sraddha_has_actual_occurrence :
+    SraddhaNegative.zeroEffectGrid.ActualAgentInhabited
       SraddhaNegative.Being.sraddha :=
-  ⟨SraddhaNegative.Call.call,
-    SraddhaNegative.Response.response, rfl⟩
+  ⟨⟨SraddhaNegative.Being.sraddha, SraddhaNegative.Call.call,
+      SraddhaNegative.Response.response⟩, rfl, rfl⟩
 
-/-- Quietness plus response-function still does not entail regime-relative
+/-- Quietness plus an actual occurrence still does not entail regime-relative
     effectiveness. -/
-theorem total_cut_with_function_not_waaEffectiveTerminus :
+theorem total_cut_with_actual_occurrence_not_waaEffectiveTerminus :
     QuietOn SraddhaNegative.zeroEffectGrid
       SraddhaNegative.Being.sraddha (fun _ => True) ∧
-      SraddhaNegative.zeroEffectGrid.MountsSomewhere
+      SraddhaNegative.zeroEffectGrid.ActualAgentInhabited
         SraddhaNegative.Being.sraddha ∧
         ¬ WaaEffectiveTerminus SraddhaNegative.zeroEffectGrid
           SraddhaNegative.Being.sraddha :=
-  ⟨sraddha_total_quiet, sraddha_functions,
+  ⟨sraddha_total_quiet, sraddha_has_actual_occurrence,
     SraddhaNegative.not_waaEffectiveTerminus⟩
 
 /- A quiet seen weld does not settle a fresh weld in the same fetter class. -/

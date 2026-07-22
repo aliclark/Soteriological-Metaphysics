@@ -41,6 +41,9 @@ def solitaryGrid : Grid Nat where
 def identityCoarsening : BeingCoarsening solitaryGrid Being where
   proj := id
 
+def solitarySentience : solitaryGrid.SentienceReading :=
+  Grid.SentienceReading.allSentient solitaryGrid
+
 theorem solo_bullNine :
     solitaryGrid.WaaBullNine Being.solo := by
   constructor
@@ -50,7 +53,8 @@ theorem solo_bullNine :
     exact Nat.le_refl 0
 
 theorem solo_not_bullTen :
-    ¬ solitaryGrid.WaaBullTen identityCoarsening Being.solo := by
+    ¬ solitaryGrid.WaaBullTen solitarySentience identityCoarsening
+      Being.solo := by
   intro h
   rcases h.right with
     ⟨deed, reception, _hdeed, _hactual, hnotSame, _hsentient, hdel⟩
@@ -59,7 +63,8 @@ theorem solo_not_bullTen :
 /-- A pratyekabuddha-shaped witness: Bull 9 can hold while Bull 10 fails. -/
 theorem pratyekabuddha_countermodel :
     solitaryGrid.WaaBullNine Being.solo ∧
-      ¬ solitaryGrid.WaaBullTen identityCoarsening Being.solo :=
+      ¬ solitaryGrid.WaaBullTen solitarySentience identityCoarsening
+        Being.solo :=
   ⟨solo_bullNine, solo_not_bullTen⟩
 
 /- ==============================================================================

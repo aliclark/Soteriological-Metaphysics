@@ -44,7 +44,7 @@ v2's Part III (the syntactic `Position` ladder) is **superseded**:
   distinction fuses. Ineffability without a gap and without ascent.
 
 * **真空妙有 is a hypothesis, structurally.** The contentful-beings ladder
-  obeys only given `∃ b, ¬ G.Stone b`: the emptiness of beings is available
+  obeys only given an actual weld: the emptiness of beings is available
   only where there is a being. v1's vacuity disease is not merely avoided
   but *excluded by the signature*.
 
@@ -70,7 +70,7 @@ v2's Part III (the syntactic `Position` ladder) is **superseded**:
 
 ## API consumed (all from WeldAndArrow.Theory / WeldAndArrow.Theorems)
 
-At `Grid` level: `Grid Contrib`, `G.Weld`, `G.Being`, `G.Stone`,
+At `Grid` level: `Grid Contrib`, `G.Weld`, `G.Being`, `G.Actual`,
 `Tier.floor`, `Tier.actTime`, `Distinction` (with `language`, `sideA`,
 `sideB`, `Separated`, `Freeze`, `Collapse`, `ObeysSeparateFuse`),
 `ClaimLanguage` (with `Claim`, `Holds`), `ErrorFree`,
@@ -282,7 +282,8 @@ theorem doerDeed_sunyata (G : Grid Contrib) : Sunyata (doerDeedRow G) :=
     technical convenience but the doctrine itself in signature form: 色即是空
     requires 色. An empty world does not model this emptiness; it fails to
     supply `h`. v1's vacuity disease is excluded by the type. -/
-theorem wondrous_being (G : Grid Contrib) (h : ∃ b : G.Being, ¬ G.Stone b) :
+theorem wondrous_being (G : Grid Contrib)
+    (h : ∃ w : G.Weld, G.Actual w) :
     Sunyata (contentBeingsRow G) :=
   fun ⟨n, hf⟩ => contentBeingsLadder_no_level_final_of_being (G := G) h n hf
 

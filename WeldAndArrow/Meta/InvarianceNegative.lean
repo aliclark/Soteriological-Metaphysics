@@ -260,11 +260,11 @@ theorem fullyCoarseRegisterClock_no_timeDirection
     not consume direction-coarsening or resolution-boundedness hypotheses. -/
 theorem registerClock_directionCoarsening_independence :
     (∀ {Tick : Type} (_ρ : DirectionCoarsening registerClockGrid Tick),
-        registerClockCoarsening.SentientTag () ∧
+        registerClockCoarsening.SentientTag registerClockSentienceReading () ∧
           registerClockCoarsening.SelfConditioningTag ()) ∧
       (∀ {Tick : Type} (ρ : DirectionCoarsening registerClockGrid Tick),
         ρ.ResolutionBounded ->
-          registerClockCoarsening.SentientTag () ∧
+          registerClockCoarsening.SentientTag registerClockSentienceReading () ∧
             registerClockCoarsening.SelfConditioningTag ()) := by
   constructor
   · intro _Tick _ρ
@@ -282,7 +282,7 @@ namespace ContentNegative
 
 open Grid.DirectedConvention.BeingConvention.GridConvention
 
-def allStoneGrid : Grid InvarianceNegative.TwoBottom where
+def noActualGrid : Grid InvarianceNegative.TwoBottom where
   Being      := Unit
   Call       := Unit
   Response   := Unit
@@ -290,16 +290,21 @@ def allStoneGrid : Grid InvarianceNegative.TwoBottom where
   grade _ _ _ := InvarianceNegative.TwoBottom.chosen
   conditions _ _ := False
 
-def allStoneWeld : allStoneGrid.Weld :=
+def noActualWeld : noActualGrid.Weld :=
   ⟨(), (), ()⟩
 
-theorem allStoneGrid_allStone : allStoneGrid.AllStone := by
-  intro _b _c hmount
-  rcases hmount with ⟨_r, hr⟩
-  cases hr
+theorem noActualGrid_no_actual :
+    ¬ ∃ w : noActualGrid.Weld, noActualGrid.Actual w := by
+  rintro ⟨w, hactual⟩
+  cases w with
+  | mk agent call response =>
+      cases agent
+      cases call
+      cases response
+      cases hactual
 
-theorem allStoneGrid_no_liveTier (t : Grid.Tier allStoneGrid) :
-    ¬ Grid.Tier.hasLiveShare allStoneGrid t := by
+theorem noActualGrid_no_liveTier (t : Grid.Tier noActualGrid) :
+    ¬ Grid.Tier.hasLiveShare noActualGrid t := by
   cases t with
   | floor =>
       intro h
@@ -308,63 +313,43 @@ theorem allStoneGrid_no_liveTier (t : Grid.Tier allStoneGrid) :
       intro hidx
       exact hidx True.intro
 
-theorem allStoneWeld_no_live_share :
-    ¬ Grid.Tier.hasLiveShare allStoneGrid (Grid.Tier.actTime allStoneWeld) :=
-  allStoneGrid_no_liveTier (Grid.Tier.actTime allStoneWeld)
+theorem noActualWeld_no_live_share :
+    ¬ Grid.Tier.hasLiveShare noActualGrid (Grid.Tier.actTime noActualWeld) :=
+  noActualGrid_no_liveTier (Grid.Tier.actTime noActualWeld)
 
-theorem contentBeingsRow_not_fused_allStone :
-    ¬ (contentBeingsRow allStoneGrid).Fused (Grid.Tier.actTime allStoneWeld) := by
+theorem contentBeingsRow_not_fused_noActual :
+    ¬ (contentBeingsRow noActualGrid).Fused (Grid.Tier.actTime noActualWeld) := by
   intro hfused
-  have hiff := hfused allStoneWeld_no_live_share
+  have hiff := hfused noActualWeld_no_live_share
   have hdenial :
-      (contentLayerLanguage allStoneGrid).TrueAt
-        (Grid.Tier.actTime allStoneWeld) (.layerDenied .beings) := by
+      (contentLayerLanguage noActualGrid).TrueAt
+        (Grid.Tier.actTime noActualWeld) (.layerDenied .beings) := by
     dsimp [contentLayerLanguage, Grid.ClaimLanguage.TrueAt]
-    exact allStoneGrid_allStone
-  exact allStoneWeld_no_live_share (hiff.mpr hdenial)
+    exact noActualGrid_no_actual
+  exact noActualWeld_no_live_share (hiff.mpr hdenial)
 
-theorem contentBeingsRow_not_obeys_allStone :
-    ¬ (contentBeingsRow allStoneGrid).ObeysSeparateFuse := by
+theorem contentBeingsRow_not_obeys_noActual :
+    ¬ (contentBeingsRow noActualGrid).ObeysSeparateFuse := by
   intro h
-  exact contentBeingsRow_not_fused_allStone
-    (allStoneGrid.fused_of_obeysSeparateFuse h (Grid.Tier.actTime allStoneWeld))
+  exact contentBeingsRow_not_fused_noActual
+    (noActualGrid.fused_of_obeysSeparateFuse h (Grid.Tier.actTime noActualWeld))
 
 theorem contentGridLensRow_not_fused_noLive :
-    ¬ (contentGridLensRow allStoneGrid).Fused (Grid.Tier.actTime allStoneWeld) := by
+    ¬ (contentGridLensRow noActualGrid).Fused (Grid.Tier.actTime noActualWeld) := by
   intro hfused
-  have hiff := hfused allStoneWeld_no_live_share
+  have hiff := hfused noActualWeld_no_live_share
   have hdenial :
-      (contentLayerLanguage allStoneGrid).TrueAt
-        (Grid.Tier.actTime allStoneWeld) (.layerDenied .gridLens) := by
+      (contentLayerLanguage noActualGrid).TrueAt
+        (Grid.Tier.actTime noActualWeld) (.layerDenied .gridLens) := by
     dsimp [contentLayerLanguage, Grid.ClaimLanguage.TrueAt]
-    exact allStoneGrid_no_liveTier
-  exact allStoneWeld_no_live_share (hiff.mpr hdenial)
+    exact noActualGrid_no_liveTier
+  exact noActualWeld_no_live_share (hiff.mpr hdenial)
 
 theorem contentGridLensRow_not_obeys_noLive :
-    ¬ (contentGridLensRow allStoneGrid).ObeysSeparateFuse := by
+    ¬ (contentGridLensRow noActualGrid).ObeysSeparateFuse := by
   intro h
   exact contentGridLensRow_not_fused_noLive
-    (allStoneGrid.fused_of_obeysSeparateFuse h (Grid.Tier.actTime allStoneWeld))
-
-/-- Empty calls make stone-typing and call-entire response coincide vacuously;
-    this is the function-axis analogue of a collapsed share axis. -/
-def emptyCallGrid : Grid InvarianceNegative.TwoBottom where
-  Being      := Bool
-  Call       := Empty
-  Response   := Unit
-  respondsTo _ c := Empty.elim c
-  grade _ _ _ := InvarianceNegative.TwoBottom.chosen
-  conditions _ _ := False
-
-theorem emptyCallGrid_stone_iff_respondsToEveryCall (b : emptyCallGrid.Being) :
-    emptyCallGrid.Stone b ↔ emptyCallGrid.RespondsToEveryCall b :=
-  emptyCallGrid.stone_iff_respondsToEveryCall_of_no_call
-    (fun c => Empty.elim c) b
-
-theorem emptyCallGrid_false_stone_and_respondsToEveryCall :
-    emptyCallGrid.Stone false ∧ emptyCallGrid.RespondsToEveryCall false :=
-  ⟨emptyCallGrid.stone_of_no_call (fun c => Empty.elim c) false,
-    emptyCallGrid.respondsToEveryCall_of_no_call (fun c => Empty.elim c) false⟩
+    (noActualGrid.fused_of_obeysSeparateFuse h (Grid.Tier.actTime noActualWeld))
 
 def emptyBeingGrid : Grid InvarianceNegative.TwoBottom where
   Being      := Empty
@@ -374,8 +359,10 @@ def emptyBeingGrid : Grid InvarianceNegative.TwoBottom where
   grade b _ _ := Empty.elim b
   conditions _ _ := False
 
-theorem emptyBeingGrid_allStone : emptyBeingGrid.AllStone :=
-  emptyBeingGrid.allStone_of_no_being (fun b => Empty.elim b)
+theorem emptyBeingGrid_no_actual :
+    ¬ ∃ w : emptyBeingGrid.Weld, emptyBeingGrid.Actual w := by
+  rintro ⟨w, _hactual⟩
+  cases w.agent
 
 theorem emptyBeingGrid_no_liveTier (t : Grid.Tier emptyBeingGrid) :
     ¬ Grid.Tier.hasLiveShare emptyBeingGrid t := by
@@ -391,7 +378,7 @@ theorem emptyBeingGrid_contentBeings_denial
     (contentLayerLanguage emptyBeingGrid).TrueAt (.actTime w)
       (.layerDenied .beings) := by
   dsimp [contentLayerLanguage, Grid.ClaimLanguage.TrueAt]
-  exact emptyBeingGrid_allStone
+  exact emptyBeingGrid_no_actual
 
 theorem contentBeingsRow_fused_emptyBeing (t : Grid.Tier emptyBeingGrid) :
     (contentBeingsRow emptyBeingGrid).Fused t := by

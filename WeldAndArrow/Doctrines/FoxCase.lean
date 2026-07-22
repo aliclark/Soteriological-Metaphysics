@@ -106,13 +106,21 @@ theorem jinshinInga_floor_voicing_defiled :
    weld at the pole, making the fitting instruction teaching without
    arrogation. The occurrence theorem is supplied with the Faith migration. -/
 
-/-- "Each clenched reception is that life's dukkha": live mismatch is present,
-    and its grade is definitionally the reception's share. -/
-theorem fox_dukkha_per_life (n : Nat) :
-    foxGrid.WaaMismatchLive (lifeReception (n + 1)) ∧
+/-- Each clenched reception carries the structural mismatch, and its grade is
+    definitionally the reception's share. -/
+theorem fox_clenchMismatch_per_life (n : Nat) :
+    foxGrid.ClenchMismatch (lifeReception (n + 1)) ∧
       foxGrid.WaaMismatchGrade (lifeReception (n + 1)) =
         foxGrid.share (lifeReception (n + 1)) :=
   ⟨fox_reception_clenched n, rfl⟩
+
+/-- Under a reading that marks the reception, the same structural witness has
+    the dukkha reading.  The mark is an explicit hypothesis, not grid output. -/
+theorem fox_dukkha_per_life
+    (S : foxGrid.SentienceReading) (n : Nat)
+    (hsentient : S.sentient (lifeReception (n + 1))) :
+    foxGrid.WaaDukkha S (lifeReception (n + 1)) :=
+  ⟨hsentient, (fox_clenchMismatch_per_life n).1⟩
 
 end FoxCase
 

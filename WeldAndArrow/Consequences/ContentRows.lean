@@ -33,7 +33,7 @@ def contentLayerLanguage (G : Grid Contrib) : ClaimLanguage G where
     | .actTime _, .layerDenied .directedTime => DirectionVoid Contrib
     | .actTime _, .layerDenied .intraWeldArrow =>
         ∀ b : G.Being, ¬ G.ResponseVariesWithCall b
-    | .actTime _, .layerDenied .beings => G.AllStone
+    | .actTime _, .layerDenied .beings => ¬ ∃ w : G.Weld, G.Actual w
     | .actTime _, .layerDenied .gridLens => ∀ t : Tier G, ¬ Tier.hasLiveShare G t
     | .actTime _, .layerDenied .weldGrain => ¬ ∃ w : G.Weld, G.Actual w
 
@@ -83,9 +83,8 @@ theorem contentLayerRow_obeys_of_direction
           exact False.elim (hvoid a b hstrict)
 
 theorem contentLayerRow_obeys_of_being
-    (h : ∃ b : G.Being, ¬ G.Stone b) :
+    (h : ∃ w : G.Weld, G.Actual w) :
     (contentLayerRow G .beings).ObeysSeparateFuse := by
-  rcases h with ⟨b, hnotStone⟩
   constructor
   · intro t hLive
     cases t with
@@ -94,7 +93,7 @@ theorem contentLayerRow_obeys_of_being
     | actTime _ =>
         dsimp [contentLayerRow, contentLayerLanguage, ClaimLanguage.TrueAt]
         intro hiff
-        exact hnotStone ((hiff.mp hLive) b)
+        exact (hiff.mp hLive) h
   · intro t hNotLive
     cases t with
     | floor =>
@@ -104,8 +103,8 @@ theorem contentLayerRow_obeys_of_being
         constructor
         · intro hLive
           exact False.elim (hNotLive hLive)
-        · intro hall
-          exact False.elim (hnotStone (hall b))
+        · intro hnone
+          exact False.elim (hnone h)
 
 theorem contentLayerRow_obeys_of_variation
     (h : ∃ b : G.Being, G.ResponseVariesWithCall b) :
@@ -192,7 +191,7 @@ theorem contentIntraWeldArrowRow_obeys_of_variation
   contentLayerRow_obeys_of_variation G h
 
 theorem contentBeingsRow_obeys_of_being
-    (h : ∃ b : G.Being, ¬ G.Stone b) :
+    (h : ∃ w : G.Weld, G.Actual w) :
     (contentBeingsRow G).ObeysSeparateFuse :=
   contentLayerRow_obeys_of_being G h
 
@@ -207,7 +206,7 @@ theorem contentWeldRow_obeys_of_actual
   contentLayerRow_obeys_of_actual G h
 
 /-- An actual utterance of the beings-denial cannot fit an act-time tier:
-    the utterer's actual response supplies a non-stone witness. -/
+    the utterance itself supplies the denied actual weld. -/
 theorem beings_denial_fits_only_floor
     (u : RecordedUtterance G (contentLayerLanguage G))
     (hc : u.content = .layerDenied .beings)
@@ -217,7 +216,7 @@ theorem beings_denial_fits_only_floor
   change (contentLayerLanguage G).TrueAt u.offeredAt u.content at hfit
   rw [ht, hc] at hfit
   dsimp [contentLayerLanguage, ClaimLanguage.TrueAt] at hfit
-  exact (G.not_stone_of_actual u.weld u.actual) (hfit u.weld.agent)
+  exact hfit ⟨u.weld, u.actual⟩
 
 /-- A directed-time denial offered by an appropriating utterer cannot fit an
     act-time tier: the utterer's live share is itself a strict direction. -/
@@ -249,12 +248,12 @@ def contentBeingsLadder (G : Grid Contrib) : Nat → Distinction G :=
   ladder (contentBeingsRow G)
 
 theorem contentBeingsLadder_obeys_of_being
-    (h : ∃ b : G.Being, ¬ G.Stone b) :
+    (h : ∃ w : G.Weld, G.Actual w) :
     ∀ n, (contentBeingsLadder G n).ObeysSeparateFuse :=
   ladder_obeys (G := G) (contentBeingsRow_obeys_of_being G h)
 
 theorem contentBeingsLadder_no_level_final_of_being
-    (h : ∃ b : G.Being, ¬ G.Stone b) :
+    (h : ∃ w : G.Weld, G.Actual w) :
     ∀ n, ¬ (contentBeingsLadder G n).Freeze :=
   no_level_final_of_obeys (G := G) (contentBeingsRow_obeys_of_being G h)
 end GridConvention

@@ -20,19 +20,12 @@ variable {Contrib : Type} [PreorderBot Contrib]
 ============================================================================== -/
 
 /-- The icchantika read literally as a run-shape, not as a stored nature:
-    function is mounted somewhere, and every mounted response remains live at
-    the self-pole index. Reading and motivation:
+    an actual occurrence is supplied, and every actual response remains live
+    at the self-pole index. Reading and motivation:
     `Identification/Commentary.lean`, C.13. -/
 def Icchantika (G : Grid Contrib) (b : G.Being) : Prop :=
-  G.MountsSomewhere b ∧
+  G.ActualAgentInhabited b ∧
     ∀ c r, G.respondsTo b c = some r → G.HasSelfPoleIndex ⟨b, c, r⟩
-
-/-- An icchantika is constructible on the function side, so it is not a stone.
-    Reading and motivation: `Identification/Commentary.lean`, C.13. -/
-theorem icchantika_not_stone
-    {G : Grid Contrib} {b : G.Being} (h : Icchantika G b) :
-    ¬ G.Stone b :=
-  G.not_stone_of_mountsSomewhere b h.left
 
 /-- An icchantika is the terminus's inverse on its mounted run: the mounted
     witness supplies a live self-pole index where terminus typing would force
@@ -42,8 +35,12 @@ theorem icchantika_not_terminus
     {G : Grid Contrib} {b : G.Being} (h : Icchantika G b) :
     ¬ G.Terminus b := by
   intro hterm
-  rcases h.left with ⟨c, r, hresp⟩
-  exact h.right c r hresp (G.atBot_of_terminus_response hterm hresp)
+  rcases h.left with ⟨w, hactual, hagent⟩
+  have hresp : G.respondsTo b w.call = some w.response := by
+    rw [← hagent]
+    exact hactual
+  exact h.right w.call w.response hresp
+    (G.atBot_of_terminus_response hterm hresp)
 
 /-- The honest negative fact: an icchantika cannot be seated as a fully
     enlightened agent on this run, because `WaaEffectiveTerminus` includes
@@ -67,7 +64,7 @@ theorem aversionContext_of_icchantika_reception
     WaaAversionContext G before reception := by
   refine
     { liveBefore := hlive
-      mismatchLive := ?_ }
+      clenchMismatch := ?_ }
   refine ⟨hactual, ?_⟩
   subst b
   simpa using hic.right reception.call reception.response hactual
@@ -157,7 +154,7 @@ theorem deed_actual :
 theorem receiver_icchantika :
     Icchantika grid Being.icchantika := by
   constructor
-  · exact ⟨Call.call, Response.response, rfl⟩
+  · exact ⟨reception, reception_actual, rfl⟩
   · intro c r _hresp
     cases c
     cases r

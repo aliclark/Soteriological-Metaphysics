@@ -51,21 +51,81 @@ def clockGrid : Grid Nat where
   grade _ _ _ := 0
   conditions _ _ := False
 
-theorem rigid_is_stone : clockGrid.Stone Clock.rigid :=
-  fun _c ⟨_r, hr⟩ => by cases hr
-
 theorem adaptive_is_terminus : clockGrid.Terminus Clock.adaptive :=
   fun _c _r _h => Nat.le_refl 0
 
-theorem adaptive_not_stone : ¬ clockGrid.Stone Clock.adaptive :=
-  fun h => h Listener.present ⟨Chime.chime, rfl⟩
+/-- A supplied reading for examples involving the adaptive clock.  This does
+    not follow from the clock's response table. -/
+def clockSentienceReading : clockGrid.SentienceReading where
+  sentient w := w.agent = Clock.adaptive
 
-/- Reading and motivation: Identification/Commentary.lean, C.1. -/
-theorem clockGrid_function_share_split_witness :
-    clockGrid.Stone Clock.rigid ∧
-    clockGrid.Terminus Clock.adaptive ∧
-    ¬ clockGrid.Stone Clock.adaptive :=
-  ⟨rigid_is_stone, adaptive_is_terminus, adaptive_not_stone⟩
+/- --------------------------------------------------------------------------
+   The inhabited sentience/share square
+-------------------------------------------------------------------------- -/
+
+inductive SquareCall
+  | ordinary
+  | terminus
+  | insentientAppropriation
+  | stone
+
+def sentienceSquareGrid : Grid Nat where
+  Being := Unit
+  Call := SquareCall
+  Response := Unit
+  respondsTo _ _ := some ()
+  grade _ c _ :=
+    match c with
+    | .ordinary | .insentientAppropriation => 1
+    | .terminus | .stone => 0
+  conditions _ _ := True
+
+def sentienceSquareReading : sentienceSquareGrid.SentienceReading where
+  sentient w :=
+    match w.call with
+    | .ordinary | .terminus => True
+    | .insentientAppropriation | .stone => False
+
+def squareWeld (c : SquareCall) : sentienceSquareGrid.Weld :=
+  ⟨(), c, ()⟩
+
+theorem square_ordinary :
+    sentienceSquareGrid.OrdinaryAct sentienceSquareReading
+      (squareWeld .ordinary) := by
+  refine ⟨⟨rfl, True.intro⟩, ?_⟩
+  dsimp [Grid.HasSelfPoleIndex, Grid.share, sentienceSquareGrid, squareWeld,
+    AtBot, shareBot]
+  exact Nat.not_succ_le_zero 0
+
+theorem square_terminus :
+    sentienceSquareGrid.TerminusAct sentienceSquareReading
+      (squareWeld .terminus) :=
+  ⟨⟨rfl, True.intro⟩, Nat.le_refl 0⟩
+
+theorem square_insentientAppropriation :
+    sentienceSquareGrid.InsentientAppropriation sentienceSquareReading
+      (squareWeld .insentientAppropriation) := by
+  refine ⟨⟨rfl, fun h => h⟩, ?_⟩
+  dsimp [Grid.HasSelfPoleIndex, Grid.share, sentienceSquareGrid, squareWeld,
+    AtBot, shareBot]
+  exact Nat.not_succ_le_zero 0
+
+theorem square_stone :
+    sentienceSquareGrid.StoneAct sentienceSquareReading
+      (squareWeld .stone) :=
+  ⟨⟨rfl, fun h => h⟩, Nat.le_refl 0⟩
+
+/-- No signature law excludes any of the four actual act kinds. -/
+theorem sentience_share_square_inhabited :
+    (∃ w, sentienceSquareGrid.OrdinaryAct sentienceSquareReading w) ∧
+      (∃ w, sentienceSquareGrid.TerminusAct sentienceSquareReading w) ∧
+      (∃ w, sentienceSquareGrid.InsentientAppropriation
+        sentienceSquareReading w) ∧
+      (∃ w, sentienceSquareGrid.StoneAct sentienceSquareReading w) :=
+  ⟨⟨squareWeld .ordinary, square_ordinary⟩,
+   ⟨squareWeld .terminus, square_terminus⟩,
+   ⟨squareWeld .insentientAppropriation, square_insentientAppropriation⟩,
+   ⟨squareWeld .stone, square_stone⟩⟩
 
 /- --------------------------------------------------------------------------
    Second concrete display — integer registers with diagnosis-time κ
@@ -98,9 +158,14 @@ def registerClockCoarsening :
     Grid.DirectedConvention.BeingConvention.BeingCoarsening registerClockGrid Unit where
   proj _ := ()
 
+def registerClockSentienceReading : registerClockGrid.SentienceReading :=
+  Grid.SentienceReading.allSentient registerClockGrid
+
 theorem registerClock_macro_sentient :
-    registerClockCoarsening.SentientTag () :=
-  ⟨(0 : Nat), rfl, ⟨(), ⟨(1 : Nat), rfl⟩⟩⟩
+    registerClockCoarsening.SentientTag registerClockSentienceReading () :=
+  ⟨⟨(0 : Nat), (), (1 : Nat)⟩, ⟨rfl, by
+    change True
+    exact True.intro⟩, rfl⟩
 
 theorem registerClock_macro_selfConditioning :
     registerClockCoarsening.SelfConditioningTag () := by

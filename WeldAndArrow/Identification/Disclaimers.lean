@@ -28,7 +28,7 @@ inductive Disclaimer
   | waaKarmaIdentification
   | weldTokenReflexivity
   | mmk17Decomposition
-  | stoneOutsideEdge
+  | stoneActOnScale
   | generatedTaxonomy
   | twoErrorGrades
   | shareDropEvent
@@ -40,8 +40,8 @@ inductive Disclaimer
   | clenchSelfShare
   | vacuityFromField
   | memoryPrudence
-  | dukkhaFieldSide
-  | asymmetricDomain
+  | dukkhaStructuralSupplied
+  | edgelessDomain
   | transposition
   | mirrorTerminus
   | threeKillings
@@ -79,6 +79,8 @@ inductive Disclaimer
   | falsehoodDeliberateLying
   | doorTotalityAdequacy
   | thoughtsVoicingSupplied
+  | predicateAptnessGrainIndexed
+  | sentienceSuppliedPerWeld
 
 namespace Disclaimer
 
@@ -96,7 +98,7 @@ def number : Disclaimer → Nat
   | .waaKarmaIdentification => 9
   | .weldTokenReflexivity => 10
   | .mmk17Decomposition => 11
-  | .stoneOutsideEdge => 12
+  | .stoneActOnScale => 12
   | .generatedTaxonomy => 13
   | .twoErrorGrades => 14
   | .shareDropEvent => 15
@@ -108,8 +110,8 @@ def number : Disclaimer → Nat
   | .clenchSelfShare => 21
   | .vacuityFromField => 22
   | .memoryPrudence => 23
-  | .dukkhaFieldSide => 24
-  | .asymmetricDomain => 25
+  | .dukkhaStructuralSupplied => 24
+  | .edgelessDomain => 25
   | .transposition => 26
   | .mirrorTerminus => 27
   | .threeKillings => 28
@@ -147,6 +149,17 @@ def number : Disclaimer → Nat
   | .falsehoodDeliberateLying => 60
   | .doorTotalityAdequacy => 61
   | .thoughtsVoicingSupplied => 62
+  | .predicateAptnessGrainIndexed => 63
+  | .sentienceSuppliedPerWeld => 64
+
+theorem stoneActOnScale_number :
+    number Disclaimer.stoneActOnScale = 12 := rfl
+
+theorem dukkhaStructuralSupplied_number :
+    number Disclaimer.dukkhaStructuralSupplied = 24 := rfl
+
+theorem edgelessDomain_number :
+    number Disclaimer.edgelessDomain = 25 := rfl
 
 theorem waaKarmaIdentification_number :
     number Disclaimer.waaKarmaIdentification = 9 := rfl
@@ -225,6 +238,12 @@ theorem doorTotalityAdequacy_number :
 
 theorem thoughtsVoicingSupplied_number :
     number Disclaimer.thoughtsVoicingSupplied = 62 := rfl
+
+theorem predicateAptnessGrainIndexed_number :
+    number Disclaimer.predicateAptnessGrainIndexed = 63 := rfl
+
+theorem sentienceSuppliedPerWeld_number :
+    number Disclaimer.sentienceSuppliedPerWeld = 64 := rfl
 
 end Disclaimer
 

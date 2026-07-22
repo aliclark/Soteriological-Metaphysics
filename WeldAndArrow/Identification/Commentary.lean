@@ -18,8 +18,8 @@ C.0 Naming and Scope
 Names beginning `Waa` mark identifiers that assert a system-POV reading: what
 the concept looks like from this grid, not what the concept is in a detached
 doctrinal voice. The marker covers ownership, appropriation, whose-ness,
-reach-back, sowing-side aiming, four-truths mismatch vocabulary, and sraddha
-conditional vocabulary such as `WaaMismatchGrade`, `WaaMismatchLive`,
+reach-back, sowing-side aiming, four-truths vocabulary, and sraddha
+conditional vocabulary such as `WaaMismatchGrade`, `WaaDukkha`,
 `WaaAversionContext`, `WaaEffectiveTerminus`, and the tariki/jiriki line
 readings. Doctrine names are carried by module names and commentary headings;
 checked reading identifiers use the single `Waa` marker.
@@ -30,7 +30,8 @@ tier-placement vocabulary, including `SameAgentDelivery` and
 the directional reading of `conditions`; the primitive signature itself does
 not add asymmetry, irreflexivity, or transitivity premises to `conditions`.
 
-C.1 Signature/Order.lean, Signature/Grid.lean, Signature/BeingConvention.lean,
+C.1 Signature/Order.lean, Signature/Grid.lean,
+    Signature/SentienceConvention.lean, Signature/BeingConvention.lean,
     Signature/Models.lean, Signature/Claims.lean
 
 `Signature/Assumptions.lean` is the canonical, compile-checked list of the
@@ -79,9 +80,22 @@ There is no `PreorderTop`: the solipsist/total-share gloss in the paper is an
 asymptote, not an attained element. By contrast, `PreorderBot` supplies an
 attained bottom so `AtBot` can express the share-zero pole as an order-class.
 
-`Stone`, `Terminus`, `AtPoleClass`, and `stone_is_terminus_vacuously` implement
-the function/share split discussed in Theory: Attainment. A stone has no mounted
-response; a terminus has mounted responses whose grade lies at the pole-class.
+Actual call/response is universal. `respondsTo = none` remains only at the
+actual/hypothetical seam and is not aggregated into a being-kind.
+`ActualAgentInhabited` supplies non-vacuity, `Terminus` is the universal
+share-pole condition, and `AtPoleClass` is exactly `Terminus`. The retired
+`Stone`, `AllStone`, and `MountsSomewhere` predicates have no compatibility
+aliases.
+
+`Signature/SentienceConvention.lean` supplies `SentienceReading`, a predicate
+on welds constrained by no grid field. `SentientAct` and `InsentientAct` cross
+the live-share/pole partition to form `OrdinaryAct`, `TerminusAct`,
+`InsentientAppropriation`, and `StoneAct`. `actual_act_fourfold` is the
+constructive partition theorem under explicit local decidability, while
+`sentience_share_square_inhabited` witnesses all four cells. Constant-true and
+constant-false readings split a witnessed actual weld into `SentientAct` and
+`InsentientAct`; `no_sentience_recovery` then shows that the same
+`SentienceGridData` cannot recover its act classification under both readings.
 
 `rePitch` keeps `_before` in the signature because the operation is conceptually
 on a prior configuration, even though the current simple implementation depends
@@ -89,10 +103,11 @@ only on the received weld. `IsShareDrop` is the strict order comparison
 `Strict (G.share received) before.tendency`.
 
 `Signature/BeingConvention.lean` records the reading in which fine tags may be
-diagnosed as macro beings. Its examples accommodate the paper's sentient,
-hare's-horn, buddha, and generated-boundary cases without adding a privileged
-partition to `Grid`. `Signature/Models.lean` holds the concrete clock and
-register-clock witnesses consumed by later taxonomy checks.
+diagnosed as macro beings. Relative to `S`, `SentientTag S`, `StoneTag S`, and
+`Intermittent S` summarize marked, wholly unmarked-pole, and mixed fibers.
+`ActualFiberInhabited` remains mark-free for consumers that need occurrence
+rather than phenomenality. `Signature/Models.lean` holds the clock,
+register-clock, and inhabited sentience/share square witnesses.
 
 `Signature/DirectionConvention.lean` records the parallel delivery-axis reading
 in which a model may be diagnosed through finite clock resolution. A
@@ -100,7 +115,7 @@ in which a model may be diagnosed through finite clock resolution. A
 `Grid`; `ResolutionBounded` says only that same-tick welds have
 order-equivalent shares in the chosen display. The point is deliberately
 display-side: sub-tick delivery cannot carry strict `TimeDirection`, but no
-stone, terminus, sentience, pole-class, or self-index predicate consumes the
+terminus, sentience, pole-class, or self-index predicate consumes the
 coarsening.
 
 The separate/fuse interface (`ClaimLanguage`, `Distinction`,
@@ -128,8 +143,8 @@ uses `Grid.DirectedConvention.TimeDirection`, an abbreviation of `Strict`.
 `strict_shareBot_of_hasSelfPoleIndex` and its re-rooted
 `timeDirection_of_hasSelfPoleIndex` reading make a live share itself the
 direction witness against bottom. `DirectionVoid` names the absence of any
-strict comparison, while `AllStone` names the grid-wide absence of response
-function.
+strict comparison. No aggregate predicate turns the signature's `none` region
+into a doctrinal population.
 
 `RowTag`, `RowClaim`, `rowLanguage`, and `rowOf` now generate the table's
 schema rows with floor-apophatic semantics. At `floor` no row claim holds;
@@ -145,6 +160,12 @@ carry only the local `AtBot` stability needed for non-live genjō fusion. The
 full row list is Lean data as `tableOrder`. No positive `Truth` or `Thus`
 predicate of the floor is introduced; `InstructiveAbsence.floorTruthPredicate`
 registers that refusal.
+
+The standing-sentience row replaces the retired undefined/zero edge row.
+Its freeze is sentience held as a nature; its collapse is sentience identified
+with grid-visible function. The row machinery checks the distinction shape,
+while `no_sentience_recovery` supplies the substantive recovery obstruction
+where an actual weld witnesses the question.
 
 `intraWeldArrow` is a `ConventionLayer`, not a bare row tag, because it names
 the convention by which the two faces of a weld are ordered. Its content denial
@@ -197,7 +218,7 @@ The `contentLayerLanguage` keeps the convention-live side as the live-share
 condition and gives row-specific content to the denial side. Its obedience
 theorems are aptness-conditional by design: where the denial is simply true,
 the convention row should not be held. This track deliberately keeps
-`LayerClaim`: global denials such as all-stone, direction-void, no-live-tier,
+`LayerClaim`: global denials such as no-actual-weld, direction-void, no-live-tier,
 or no-actual-weld cannot be made conventionally apt by truth at a particular
 genjō weld. Its floor clause is silent like every other `ClaimLanguage` in the
 development. `RecordedUtterance` supplies the actuality needed for the content
@@ -213,14 +234,15 @@ ladder climb without an added stability premise above the seed. The "completed
 ladder" remains an instructive absence: level quantification appears only in
 meta-theorems such as `ladder_obeys`, `no_level_final_of_obeys`, and the
 existential guard `no_final_level_of_errorFree`. Concrete witnesses such as
-`shareZero_not_functionZero_witness`, `rung_not_pole_witness`,
+`sentience_share_square_inhabited`, `no_sentience_recovery`,
+`rung_not_pole_witness`,
 `backsliding_witness`, `backsliding_rePitchSequence_witness`,
 `standing_does_not_determine_dated`, `subitism_possibility_witness`,
 `waaSuddenArrival_witness`, `waaGradualArrival_witness`,
 `rate_invisible_to_config`,
 `cetana_grading_tracks_weld_not_field_witness`,
-`cetana_live_share_without_object_standing_witness`, and the
-`registerClock_staticized_*` checks keep the row anchors model-checked.
+`cetana_live_share_without_object_standing_witness` keep the row anchors
+model-checked.
 `standing_does_not_determine_dated` and `subitism_possibility_witness` share
 the same clock-grid witness deliberately: the first serves the disposition/act
 retype, while the second names the sudden/gradual possibility claim.
@@ -235,9 +257,9 @@ recall as reception: `recall_waaOwnershipFace` names the delivered trace,
 separate even where their concrete welds coincide with the prudence witness, so
 the two pressure-tests can cite the same registers without depending on each
 other.
-`withRespondsTo` and `staticized` are the futility operation: delivery-loss is
-real (`futility_delivery_loss_real`) while object-axis standing is unchanged
-(`Grid.DirectedConvention.staticized_objectAxisStanding_iff`).
+`withRespondsTo` and `withConditions` remain neutral countermodel tooling.
+`staticized` and the futility theorem family are retired; death and killing are
+routed in prose through the subject/object freeze and fox collapse instead.
 
 C.2a Identification/Absences.lean
 
@@ -247,6 +269,8 @@ them in section 3. `AbsenceStatus` records the mutable world-facing fact, so the
 third arrival is `retiredAsCheck` rather than deleted or renumbered. The same
 rule applies to future retirements: constructors track the section list, while
 `status` carries whether an entry still stands.
+`undefinedZeroRowRetired` records the loss of the old edge-row exemplar and
+anchors its replacement by the generated standing-sentience row.
 
 The anchors are citations and shape checks, not new doctrine. Empty table cells
 are recorded beside `tableOrder` as `hasCollapseOccupant` and
@@ -283,10 +307,10 @@ The condition-transpose operation and its being-coarsening companion now live in
 the signature layer, beside the `conditions`, `DeliveredTo`, and
 `BeingCoarsening` vocabulary they transport. `Meta/Invariance.lean` remains the
 central home for `DisplayReparam` and all `map_*` transport lemmas.
-`transpose_transpose`, `map_transpose`, `staticized_transpose`, and
-`map_staticized` pin the three axis operations as definitionally orthogonal:
-reversing delivery, changing display, and removing a response function do not
-secretly implement one another.
+`transpose_transpose`, `map_transpose`, and the sentience-reading transports
+pin the independent axes: reversing delivery and changing display preserve the
+supplied mark only through its explicit transported reading. Grid surgery has
+no doctrinal transport law.
 `DirectionCoarsening.transpose_subTickDelivery` is the delivery-axis companion:
 tick equality survives transposition, while the delivery line reverses.
 `DirectionCoarsening.displayMapDir`, `mapDir_sameTick_iff`, and
@@ -331,11 +355,10 @@ a bare `RowTag` would have named a row without naming the convention whose
 freeze and collapse the row is supposed to catch.
 
 `ContentNegative` supplies the countermodels for the aptness hypotheses on
-content rows: an all-stone/no-live grid and the two-bottom direction-void
+content rows: a no-actual-weld/no-live grid and the two-bottom direction-void
 carrier make the relevant denials true at non-live act-time, so fusion fails
-there. The empty-domain witnesses separate two additional vacuities:
-`emptyCallGrid_false_stone_and_respondsToEveryCall` shows that no calls make
-stone and call-entire response coincide, while `emptyBeingGrid_no_liveTier` and
+there. The empty-domain witnesses separate additional vacuities:
+`emptyBeingGrid_no_liveTier` and
 `contentBeingsRow_obeys_emptyBeing` show that no beings leave no act-time tier
 on which the content row can fail to fuse.
 
@@ -367,23 +390,24 @@ C.4 Doctrines/FourTruths.lean, Doctrines/Sraddha.lean,
     Doctrines/Faith.lean, Doctrines/Ethics.lean, and the sibling negative modules
 
 `WaaMismatchGrade` is definitionally `share`; this is the formal honesty clause
-for dukkha-talk as covariation rather than a second measure. `WaaMismatchLive`
-adds occurrence actuality to the self-pole-index condition, so stones fall
-outside the domain by `not_actual_of_stone`, and terminus responses fall to the
-pole-class by the existing terminus theorem.
+for mismatch-talk as covariation rather than a second measure.
+`ClenchMismatch` is the actual live-share structure. `WaaDukkha S` adds the
+supplied mark, so `clenchMismatch_of_waaDukkha` forgets the phenomenal reading
+but no converse is derivable without `S.sentient w`. Insentient appropriation
+occupies the structural cell without dukkha; both pole cells exclude mismatch.
 
 `WaaAversionContext` treats sraddha reception per call: it packages a live
-prior tendency and an actual live-mismatch reception, not a stored faith
+prior tendency and an actual clench-mismatch reception, not a stored faith
 possession. `WaaEffectiveTerminus` deliberately has two conjuncts: terminus
 typing and universal shortfall closure for delivered deeds. The physician
 simile belongs exactly there: the grid can prove `waaPathOught_conditional`,
 but the antecedents are faith-shaped and are never discharged by field facts.
 This direct, non-testimonial route needs effectiveness only. The full
 faith-object cannot be replaced by anything the fetter lattice names: the
-total-rectangle cut lacks function by
-`FettersNegative.total_cut_carries_no_function`, and even the live fiber reading
-lacks effectiveness by
-`FettersNegative.total_cut_with_function_not_waaEffectiveTerminus`.
+total-rectangle cut may lack any actual occurrence by
+`FettersNegative.total_cut_carries_no_actual_occurrence`, and even adding
+actual-agent inhabitation lacks effectiveness by
+`FettersNegative.total_cut_with_actual_occurrence_not_waaEffectiveTerminus`.
 
 The old floor-proximity grounding of testimony is withdrawn: floor silence
 transmits nothing selective. `ProducedUtterance` now ties content to an actual
@@ -504,6 +528,12 @@ definition rather than asserted as a separate theorem. The
 discipline enforced architecturally by `Config`: no owner or self-index field is
 stored between deeds.
 
+The disclaimer ledger is synchronized with the supplied-sentience reading:
+entries 12, 24, and 25 name the revised stone-act, structural/supplied-dukkha,
+and edgeless-domain boundaries, while entries 63 and 64 record grain-indexed
+predicate aptness and per-weld supplied sentience. Their `rfl` number pins keep
+the paper numbering explicit without turning that numbering into doctrine.
+
 C.7 Doctrines/Ledger.lean
 
 The ledger case is run in code rather than read into it; this section is the
@@ -540,15 +570,11 @@ at `.perCallGlobal` and `.standingDated`, exactly as the fox's marquee theorem
 does at `.foxWeld`. No `RowTag` is added: the module's checked form of "three
 errors, zero new cells" is that its taxonomy content is entirely delegation.
 The third error's anchors are section 2 of the module plus the Deliberation
-negative; the exit-collapse's corrective is model-checked as
-`purge_object_axis_subtraction_nil` with `corpus_still_delivered`.
-
-The Huichang face reuses the futility operation unchanged: `staticized`,
-`futility_delivery_loss_real`, `staticized_responseInvariant`, and
-`staticized_objectAxisStanding_iff` are consumed, not reproved.
-`purge_loop_runs_on` is the one genuinely new futility-face check: the
-non-staticized reception is still actual, which is the "loop ran on" clause
-stated as a model fact.
+negative. The former purge/staticization block is retired. Huichang's
+death-and-futility face is now a prose routing: subtraction of a standing
+dharma is the subject/object freeze; "emptiness, so suppression changes
+nothing" is the fox collapse. The checked residue is the narrower
+`decree_engineers_calls_not_receptions`; historical survival remains display.
 
 Grades in `LedgerCase` are uniformly live and no being is pole-typed: the case
 asserts nothing about Baizhang's attainment, and the model is built so it
@@ -595,9 +621,9 @@ because any production separating them would instantiate the defiled-falsehood
 schema the checks convict. Whether the floor face may be held therefore remains
 prose interpretation — now typed as undischargeable by any find that keeps the
 fascicles' own discipline, rather than merely undischarged. The module adds no
-holding predicate and returns no verdict. The dukkha-facing name
-`fox_dukkha_per_life` lives one layer down in `Doctrines/FoxCase.lean` because
-it consumes `WaaMismatchGrade` from `FourTruths`.
+holding predicate and returns no verdict. `fox_clenchMismatch_per_life` records
+the structural witness. `fox_dukkha_per_life S` takes the sentience mark as an
+explicit hypothesis and lives one layer down in `Doctrines/FoxCase.lean`.
 
 C.8 Doctrines/Correlations.lean, Doctrines/CorrelationsNegative.lean,
     Doctrines/SuddenGradual*.lean, Doctrines/Fetters.lean, and
@@ -625,10 +651,11 @@ pole-reaching weld differs.
 For the Ten Bulls, Bulls 1-6 are a `ShareDropRun`; Bull 7 is
 `WaaBullSeven`, probe-constancy plus a live self-pole index. The theorem
 `bullSeven_not_bullEight` checks that this half-weld is not the empty-circle
-pole-class. Bull 8 is `AtPoleClass`, Bull 9 is `ResponsiveTerminus`, and Bull 10
-is the existential cross-fiber delivery predicate `WaaBullTen`. The stronger
-`StrongWaaBullTen` is named and shelved: delivery into every sentient fiber is a
-stronger bodhisattva reading than the picture asserts. The pratyekabuddha
+pole-class. Bull 8 is `AtPoleClass`, now exactly `Terminus`; Bull 9 is
+`ResponsiveTerminus`; and Bull 10 is the reading-relative existential
+cross-fiber delivery predicate `WaaBullTen S`. The stronger `StrongWaaBullTen S`
+is named and shelved. `not_waaBullTen_allInsentient` owns the consequence that
+the marketplace is empty under the constant-false reading. The pratyekabuddha
 countermodel shows Bull 9 without Bull 10.
 
 The Five Ranks are data plus reading pins; `kenChuTo_implies_waaBullTen` names
@@ -661,16 +688,16 @@ figure against canonical three-door quiet. Response-form vāsanā at pole share
 remains registered future work.
 
 The buddha reading enters as a ladder above that neutral point. Rung 1 is total
-three-door quiet, the share axis alone; the all-stone witness
-`FettersNegative.total_cut_carries_no_function` shows that it has no function
-conjunct. Rung 2 adds response function.
-`FettersNegative.total_cut_with_function_not_waaEffectiveTerminus`
+three-door quiet, the share axis alone;
+`FettersNegative.total_cut_carries_no_actual_occurrence` shows that it has no
+occurrence conjunct. Rung 2 adds `ActualAgentInhabited`.
+`FettersNegative.total_cut_with_actual_occurrence_not_waaEffectiveTerminus`
 checks that rung 2 still lacks effectiveness. Rung 3 is
-`WaaEffectiveTerminus`, function plus universal shortfall closure, and
+`WaaEffectiveTerminus`, terminus plus universal shortfall closure, and
 it enters the direct śraddhā route as hypothesis. The shushō-ittō face is now
 explicit as `WaaEffectiveOccurrence`; the standing rung is a descriptive
 display, never the act-time verdict. Rung 4 is the cognitive fence:
-`FaithNegative.arhat_retains_nescience_witness` shows that quiet function does
+`FaithNegative.arhat_retains_nescience_witness` shows that quiet occurrence does
 not imply `WaaNoNescience`. The two-obscurations `WaaFullyEnlightened` bundle
 adds that speech-or-mind truth condition above effectiveness.
 
@@ -749,7 +776,7 @@ countermodel. A forward guarantee is hostable only as
 `waaIrreversibleRegime_conditional`, parallel in voice to the sraddha
 conditional. The orthogonality note is checked by
 `unquiet_door_still_functions_witness`: door quiet speaks to share, not whether
-the remaining door functions.
+an actual occurrence exists at another door. No such fact recovers sentience.
 
 C.9 Doctrines/OtherPower.lean and Doctrines/OtherPowerNegative.lean
 
@@ -766,8 +793,8 @@ actual reception is present, either regime supplies the same ordinary
 reach-back relation by projection from delivery.
 
 `TarikiCase` supplies the non-vacuity witness. The name is response-invariant
-(`name_responseInvariant`), function-mounted rather than stone
-(`name_not_stone`), and share-zero at its welds (`name_share_bot`).
+(`name_responseInvariant`), actual-agent inhabited
+(`name_actualAgentInhabited`), and share-zero at its welds (`name_share_bot`).
 `name_object_axis_entire` delivers the name's weld to every invoker reception,
 while `universal_fixed_call_lands_without_reading` assembles the corresponding
 `HasShareDropLanding`. This is the effective corner opposite the zero-effect
@@ -853,8 +880,8 @@ C.13 Doctrines/Icchantika.lean
 
 `Icchantika` is entered as a declined foreclosure case rather than as a stored
 negative kind. The formal reading is deliberately literal and run-shaped:
-function is mounted somewhere, and every mounted response is live at the
-self-pole index. That makes the being non-stone and anti-terminus on its run,
+the agent has an actual occurrence, and every actual response is live at the
+self-pole index. That makes the being anti-terminus on its run,
 so `not_waaEffectiveTerminus_of_icchantika` gives the honest agent-role bar:
 this run cannot seat the icchantika as the enlightened agent, because
 `WaaEffectiveTerminus` includes terminus typing.

@@ -16,6 +16,49 @@ import WeldAndArrow.Identification.Ownership
 
 namespace WAA
 
+/- ------------------------------------------------------------------------------
+   Routing table for arguments that formerly consumed function-zero Stone
+------------------------------------------------------------------------------ -/
+
+/-- Successor layers available after the function-zero stone edge retires. -/
+inductive StoneSuccessorRoute where
+  | sentienceMark
+  | landingPattern
+  | enactedDoors
+  | universalFunction
+deriving Repr, DecidableEq
+
+/-- Paper-facing arguments whose old "stone mounts nothing" premise requires
+    an explicit successor. -/
+inductive RetiredStoneArgument where
+  | deathFreeze
+  | mirrorGloss
+  | insentientPreaching
+  | quietistArhat
+deriving Repr, DecidableEq
+
+/-- Audited routing for every retired stone argument named by the proposal. -/
+def RetiredStoneArgument.successors : RetiredStoneArgument →
+    List StoneSuccessorRoute
+  | .deathFreeze => [.landingPattern, .universalFunction]
+  | .mirrorGloss => [.landingPattern]
+  | .insentientPreaching => [.universalFunction]
+  | .quietistArhat => [.sentienceMark]
+
+theorem deathFreeze_successors :
+    RetiredStoneArgument.deathFreeze.successors =
+      [.landingPattern, .universalFunction] := rfl
+
+theorem mirrorGloss_successors :
+    RetiredStoneArgument.mirrorGloss.successors = [.landingPattern] := rfl
+
+theorem insentientPreaching_successors :
+    RetiredStoneArgument.insentientPreaching.successors =
+      [.universalFunction] := rfl
+
+theorem quietistArhat_successors :
+    RetiredStoneArgument.quietistArhat.successors = [.sentienceMark] := rfl
+
 /- ==============================================================================
    Section 3 instructive absences
 ============================================================================== -/
@@ -47,9 +90,9 @@ inductive InstructiveAbsence where
       The diagnostic work is to force the terminus question to be answered
       outside the paradigm case. -/
   | foxNeverTestsPole
-  /-- The third arrival: the never-clenched candidate is delivered from the
-      stone side. The diagnostic work now lives as a check: function mounted,
-      no share ever claimed, dukkha-free by construction. -/
+  /-- The former third arrival: the never-clenched candidate is no third
+      structural cell, but a pole weld typed by the supplied mark. The old
+      absence remains as a regression check. -/
   | thirdArrival
   /-- Why calls land at all: receptive moments exist on the adaptive side and
       any landing occurs on the fixed-call side. The diagnostic work is to leave
@@ -72,7 +115,7 @@ inductive InstructiveAbsence where
       diagnostic work is to make the missing scalar deliberate; no probability
       or metric apparatus is owed over grade or delivery. -/
   | noMeasure
-  /-- The icchantika declined: a non-stone being live at every mounted call
+  /-- The icchantika declined: a being with live share at every actual weld
       (the terminus's inverse) is reachable as a receiver and un-seatable as an
       enlightened agent on its run, yet receives no permanent "cannot become
       buddha" verdict. The diagnostic work is the refusal to type foreclosure as
@@ -83,8 +126,8 @@ inductive InstructiveAbsence where
       ownerless continuation (continuity without a carried bearer; the flame
       passed without a self) remains in scope, derived from
       `nothing_selfIndexed_carried` and the field/re-pitch machinery. What is
-      ceded lies downstream of where the Row-2 domain of mounted responses ends:
-      the consciousness question the grid brackets as domain, not phenomenality.
+      ceded includes persistence and the phenomenal sentience of later welds:
+      the grid brackets the latter with a supplied per-weld reading.
       The diagnostic work is to mark this boundary rather than manufacture a
       theorem across it. -/
   | rebirthCosmology
@@ -93,6 +136,10 @@ inductive InstructiveAbsence where
       pole/floor family. The diagnostic work is the registered refusal to turn
       degeneracy into a truth-maker. -/
   | floorTruthPredicate
+  /-- The undefined/zero row retired when the function-zero edge retired. Its
+      loss of an exemplar is retained as an instructive check, with the
+      standing-sentience row occupying the generated-table position. -/
+  | undefinedZeroRowRetired
 
 namespace InstructiveAbsence
 
@@ -116,6 +163,7 @@ def number : InstructiveAbsence → Nat
   | .icchantikaDeclined => 10
   | .rebirthCosmology => 11
   | .floorTruthPredicate => 12
+  | .undefinedZeroRowRetired => 13
 
 /-- Current world-facing status of each paper entry. Constructors remain the
     section 3 ledger; this function records retirement. -/
@@ -125,6 +173,7 @@ def status : InstructiveAbsence → AbsenceStatus
   | .icchantikaDeclined => .standing
   | .rebirthCosmology => .standing
   | .floorTruthPredicate => .standing
+  | .undefinedZeroRowRetired => .retiredAsCheck
   | _ => .standing
 
 theorem emptyCells_number :
@@ -163,6 +212,9 @@ theorem rebirthCosmology_number :
 theorem floorTruthPredicate_number :
     number InstructiveAbsence.floorTruthPredicate = 12 := rfl
 
+theorem undefinedZeroRowRetired_number :
+    number InstructiveAbsence.undefinedZeroRowRetired = 13 := rfl
+
 theorem emptyCells_standing :
     status InstructiveAbsence.emptyCells = AbsenceStatus.standing := rfl
 
@@ -199,6 +251,10 @@ theorem rebirthCosmology_standing :
 theorem floorTruthPredicate_standing :
     status InstructiveAbsence.floorTruthPredicate = AbsenceStatus.standing := rfl
 
+theorem undefinedZeroRowRetired_retired :
+    status InstructiveAbsence.undefinedZeroRowRetired =
+      AbsenceStatus.retiredAsCheck := rfl
+
 /- ------------------------------------------------------------------------------
    Anchors
 ------------------------------------------------------------------------------ -/
@@ -228,16 +284,13 @@ theorem foxNeverTestsPole_recordedUtterance_not_atBot
   FoxCase.fox_never_tests_pole u.weld u.actual
 
 /-- An actual fox-case weld is not made by an agent already in the pole-class:
-    actuality rules out the stone side, and terminus-typing would force
-    share-zero. -/
+    terminus typing would force share-zero. -/
 theorem foxNeverTestsPole_actual_not_atPoleClass
     {w : FoxCase.foxGrid.Weld} (hactual : FoxCase.foxGrid.Actual w) :
     ¬ FoxCase.foxGrid.AtPoleClass w.agent := by
   intro hpole
-  rcases hpole with hstone | hterm
-  · exact FoxCase.foxGrid.not_stone_of_actual w hactual hstone
-  · exact FoxCase.fox_never_tests_pole w hactual
-      (FoxCase.foxGrid.atBot_of_terminus_response hterm hactual)
+  exact FoxCase.fox_never_tests_pole w hactual
+    (FoxCase.foxGrid.atBot_of_terminus_response hpole hactual)
 
 /-- Any recorded utterance in the concrete fox grid is away from the pole-class
     on its agent side. -/
@@ -251,19 +304,19 @@ theorem foxNeverTestsPole_oldMan_misfit_anchor :
     FoxCase.oldManUtterance.MisfitsOfferedTier :=
   FoxCase.oldMan_utterance_misfits
 
-/-- The delivered third arrival is the concrete function/share split: the
-    adaptive responder mounts function while its received share is at bottom. -/
-theorem thirdArrival_function_mounted_no_share :
-    AtBot (clockGrid.share ⟨Clock.adaptive, Listener.present, Chime.chime⟩) ∧
-      ¬ clockGrid.Stone Clock.adaptive :=
-  shareZero_not_functionZero_witness
+/-- The delivered third arrival is on the scale at the pole and marked
+    sentient only by the supplied clock reading. -/
+theorem thirdArrival_sentient_at_pole :
+    clockGrid.TerminusAct clockSentienceReading
+      ⟨Clock.adaptive, Listener.present, Chime.chime⟩ :=
+  sentient_pole_act_witness
 
 /-- The retired absence is kept as the dukkha-free-by-construction check:
     a terminus response has no live mismatch. -/
-theorem thirdArrival_not_waaMismatchLive :
-    ¬ clockGrid.WaaMismatchLive
+theorem thirdArrival_not_clenchMismatch :
+    ¬ clockGrid.ClenchMismatch
         ⟨Clock.adaptive, Listener.present, Chime.chime⟩ :=
-  clockGrid.not_waaMismatchLive_of_terminus_response adaptive_is_terminus rfl
+  clockGrid.not_clenchMismatch_of_terminus_response adaptive_is_terminus rfl
 
 /-- The fourth-truth anchor is still only an implication type: the grid proves
     the conditional and does not detach the injunction. -/
@@ -297,9 +350,8 @@ theorem prudentialPrivilege_underivable_anchor :
 theorem icchantikaDeclined_agent_anchor
     {Contrib : Type} [PreorderBot Contrib] {G : Grid Contrib} {b : G.Being}
     (h : Icchantika G b) :
-    ¬ G.Stone b ∧ ¬ G.Terminus b ∧ ¬ WaaEffectiveTerminus G b :=
-  ⟨icchantika_not_stone (G := G) h,
-    icchantika_not_terminus (G := G) h,
+    ¬ G.Terminus b ∧ ¬ WaaEffectiveTerminus G b :=
+  ⟨icchantika_not_terminus (G := G) h,
     not_waaEffectiveTerminus_of_icchantika (G := G) h⟩
 
 /-- The receiver-side half of the icchantika decline: actual icchantika
@@ -343,6 +395,12 @@ theorem floorTruthPredicate_anchor
         ((rowLanguage G).Holds Tier.floor p ↔
           (rowLanguage G).Holds Tier.floor q) :=
   ⟨no_row_claim_holds_at_floor G, floor_claims_indiscernible G⟩
+
+/-- The removed edge-row leaves no constructor behind; the replacement table
+    position is occupied by the standing-sentience row. -/
+theorem undefinedZeroRowRetired_replacement_anchor :
+    (tableOrder.drop 16).head? =
+      some (TableRow.generated RowTag.standingSentience) := rfl
 
 end InstructiveAbsence
 

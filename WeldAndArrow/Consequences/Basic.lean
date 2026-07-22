@@ -54,73 +54,33 @@ theorem mountsAt_of_actual (w : G.Weld) (h : G.Actual w) :
     G.MountsAt w.agent w.call :=
   ⟨w.response, h⟩
 
-/-- An actual weld witnesses response-function somewhere for its agent. -/
-theorem mountsSomewhere_of_actual (w : G.Weld) (h : G.Actual w) :
-    G.MountsSomewhere w.agent :=
-  ⟨w.call, G.mountsAt_of_actual w h⟩
+/-- An actual weld supplies the occurrence-form non-vacuity witness for its
+    agent. -/
+theorem actualAgentInhabited_of_actual (w : G.Weld) (h : G.Actual w) :
+    G.ActualAgentInhabited w.agent :=
+  ⟨w, h, rfl⟩
 
-/-- A being with an actual weld is not stone-typed. -/
-theorem not_stone_of_actual (w : G.Weld) (h : G.Actual w) :
-    ¬ G.Stone w.agent :=
-  G.not_stone_of_mountsSomewhere w.agent (G.mountsSomewhere_of_actual w h)
-
-/-- A stone has no actual weld at any call. -/
-theorem not_actual_of_stone
-    (b : G.Being) (hstone : G.Stone b) {c : G.Call} {r : G.Response} :
-    ¬ G.Actual ⟨b, c, r⟩ :=
-  fun hactual => hstone c ⟨r, hactual⟩
-
-/-- A stone mounts nowhere. -/
-theorem not_mountsSomewhere_of_stone (b : G.Being) (hstone : G.Stone b) :
-    ¬ G.MountsSomewhere b :=
-  fun hmounts => G.not_stone_of_mountsSomewhere b hmounts hstone
-
-/-- A concrete response at a call rules out stone-typing. -/
-theorem not_stone_of_response
-    {b : G.Being} {c : G.Call} {r : G.Response}
-    (hresp : G.respondsTo b c = some r) :
-    ¬ G.Stone b :=
-  fun hstone => hstone c ⟨r, hresp⟩
-
-theorem stone_of_no_call (h : G.Call → False) (b : G.Being) :
-    G.Stone b :=
-  fun c _hmount => False.elim (h c)
+/-- Mounting at a call is exactly the existence of an actual weld with that
+    agent and call.  Function talk is thereby kept per occurrence. -/
+theorem mountsAt_iff_exists_actual (b : G.Being) (c : G.Call) :
+    G.MountsAt b c ↔
+      ∃ w : G.Weld, G.Actual w ∧ w.agent = b ∧ w.call = c := by
+  constructor
+  · rintro ⟨r, hresp⟩
+    exact ⟨⟨b, c, r⟩, hresp, rfl, rfl⟩
+  · rintro ⟨w, hactual, hagent, hcall⟩
+    subst hagent
+    subst hcall
+    exact ⟨w.response, hactual⟩
 
 theorem respondsToEveryCall_of_no_call (h : G.Call → False) (b : G.Being) :
     G.RespondsToEveryCall b :=
   fun c => False.elim (h c)
 
-theorem stone_iff_respondsToEveryCall_of_no_call
-    (h : G.Call → False) (b : G.Being) :
-    G.Stone b ↔ G.RespondsToEveryCall b :=
-  ⟨fun _ => G.respondsToEveryCall_of_no_call h b,
-    fun _ => G.stone_of_no_call h b⟩
-
-theorem allStone_of_no_being (h : G.Being → False) :
-    G.AllStone :=
-  fun b => False.elim (h b)
-
-/- Reading and motivation: Identification/Commentary.lean, C.2. -/
-theorem atPoleClass_of_stone (b : G.Being) (hstone : G.Stone b) :
-    G.AtPoleClass b :=
-  Or.inl hstone
-
 /- Reading and motivation: Identification/Commentary.lean, C.2. -/
 theorem atPoleClass_of_terminus (b : G.Being) (hterm : G.Terminus b) :
     G.AtPoleClass b :=
-  Or.inr hterm
-
-/- Reading and motivation: Identification/Commentary.lean, C.2. -/
-theorem atPoleClass_and_not_stone_of_liveTerminus
-    (b : G.Being) (h : G.LiveTerminus b) :
-    G.AtPoleClass b ∧ ¬ G.Stone b :=
-  ⟨G.atPoleClass_of_terminus b h.right, G.liveTerminus_not_stone b h⟩
-
-/-- A responsive terminus is not stone-typed whenever the call-domain has a witness. -/
-theorem not_stone_of_responsiveTerminus_of_call
-    (b : G.Being) (c : G.Call) (h : G.ResponsiveTerminus b) :
-    ¬ G.Stone b :=
-  G.liveTerminus_not_stone b (G.responsiveTerminus_live_of_call b c h)
+  hterm
 
 /- Reading and motivation: Identification/Commentary.lean, C.2. -/
 theorem rePitch_tendency_eq_share
@@ -216,12 +176,12 @@ theorem share_independent_of_conditions
   rfl
 
 /- ==============================================================================
-   Response-function replacement and futility
+   Response-function replacement as countermodel tooling
 ============================================================================== -/
 
 /-- Replace only the response function of a grid. Grade and delivery data are
-    left untouched. The futility mechanism's carrier: adaptive-to-static
-    conversion is one instance. -/
+    left untouched.  This is countermodel tooling; no doctrinal reading is
+    attached to the `none` region it may create. -/
 def withRespondsTo (respondsTo' : G.Being -> G.Call -> Option G.Response) :
     Grid Contrib where
   Being      := G.Being
@@ -249,63 +209,6 @@ theorem withRespondsTo_conditions
     (respondsTo' : G.Being -> G.Call -> Option G.Response) :
     (G.withRespondsTo respondsTo').conditions = G.conditions :=
   rfl
-
-/-- Death of one being, futility-theorem sense: its response function is
-    removed; nothing else in the grid moves. -/
-def staticized [DecidableEq G.Being] (b : G.Being) : Grid Contrib :=
-  G.withRespondsTo (fun b' c => if b' = b then none else G.respondsTo b' c)
-
-theorem staticized_transpose [h : DecidableEq G.Being] (b : G.Being) :
-    (@Grid.staticized Contrib _ G h b).transpose =
-      @Grid.staticized Contrib _ G.transpose h b :=
-  rfl
-
-/-- Staticizing leaves other beings' response functions untouched. -/
-theorem staticized_respondsTo_of_ne
-    [DecidableEq G.Being] {b b' : G.Being} (h : b' ≠ b) (c : G.Call) :
-    (G.staticized b).respondsTo b' c = G.respondsTo b' c := by
-  simp [staticized, withRespondsTo, h]
-
-/-- Staticizing leaves all prior share assignments untouched. -/
-theorem staticized_share
-    [DecidableEq G.Being] (b : G.Being) (w : G.Weld) :
-    (G.staticized b).share w = G.share w :=
-  rfl
-
-/-- Staticizing turns the named being into a response-invariant device
-    vacuously: no call receives a response from it. -/
-theorem staticized_responseInvariant
-    [DecidableEq G.Being] (b : G.Being) :
-    (G.staticized b).ResponseInvariant b := by
-  intro c₁ _c₂ r₁ _r₂ h₁ _h₂
-  simp [staticized, withRespondsTo] at h₁
-
-/-- Futility, delivery-loss face: after staticization, the named being mounts
-    no response. -/
-theorem futility_delivery_loss_real
-    [DecidableEq G.Being] (b : G.Being) :
-    (G.staticized b).Stone b := by
-  intro c hmount
-  rcases hmount with ⟨r, hr⟩
-  simp [staticized, withRespondsTo] at hr
-
-/-- Futility, object-axis face: staticization does not alter the delivery
-    relation. -/
-theorem futility_object_axis_subtraction_nil
-    [DecidableEq G.Being] (b : G.Being) :
-    (G.staticized b).conditions = G.conditions :=
-  rfl
-
-namespace DirectedConvention
-
-/-- Object-axis standing is unchanged by staticization, because it reads only
-    the delivery relation. -/
-theorem staticized_objectAxisStanding_iff
-    [DecidableEq G.Being] (b : G.Being) (deed : G.Weld) :
-    ObjectAxisStanding (G.staticized b) deed ↔ ObjectAxisStanding G deed :=
-  Iff.rfl
-
-end DirectedConvention
 
 /- ==============================================================================
    Accumulation: `rePitch` has no history register
@@ -471,7 +374,7 @@ theorem waaReachBackFull_iff_deliveredTo (deed reception : G.Weld) :
     WaaReachBackFull G deed reception ↔ DeliveredTo G deed reception :=
   Iff.rfl
 
-/-- An aimed call is just delivery, stated from the sowing side. -/
+/-- The display-tier aiming lens unfolds to delivery and adds no mechanism. -/
 theorem waaAimedAt_iff_deliveredTo (deed reception : G.Weld) :
     WaaAimedAt G deed reception ↔ DeliveredTo G deed reception :=
   Iff.rfl

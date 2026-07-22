@@ -1,5 +1,6 @@
 import WeldAndArrow.Signature.Order
 import WeldAndArrow.Signature.Grid
+import WeldAndArrow.Signature.SentienceConvention
 import WeldAndArrow.Signature.BeingConvention
 import WeldAndArrow.Signature.DirectionConvention
 import WeldAndArrow.Signature.Models
@@ -218,12 +219,17 @@ example (w : G.Weld) :
 example (w : G.Weld) (h : G.HasSelfPoleIndex w) :
     G.selfPoleIndex w h = G.index w := rfl -- proof
 
-/- A.4 Stone / terminus function-share split. -/
-#check Grid.Stone -- proof
+/- A.4 Sentience and share are orthogonal per weld. -/
+#check Grid.SentienceReading -- proof
+#check Grid.SentientAct -- proof
+#check Grid.InsentientAct -- proof
+#check Grid.OrdinaryAct -- proof
+#check Grid.TerminusAct -- proof
+#check Grid.InsentientAppropriation -- proof
+#check Grid.StoneAct -- proof
 #check Grid.Terminus -- proof
 #check Grid.AtPoleClass -- proof
-#check Grid.stone_is_terminus_vacuously -- proof
-#check clockGrid_function_share_split_witness -- witness
+#check sentience_share_square_inhabited -- witness
 
 /- A.5 Self-lines are permitted. -/
 #check Grid.conditions -- proof
@@ -278,6 +284,12 @@ example (w : G.Weld) (h : G.HasSelfPoleIndex w) :
 #check Grid.Terminus -- proof
 -- Downstream elaboration recorded in `Meta.AssumptionLedger` (entry B.5).
 
+/- B.11 No sentience recovery from grid data. -/
+#check Grid.actual_weld_readings_split -- proof
+#check Grid.no_sentience_recovery -- witness
+#check Grid.SentienceReading.allSentient -- witness
+#check Grid.SentienceReading.allInsentient -- witness
+
 /- C.1 Hand-rolled order classes. -/
 #check Preorder -- proof
 #check PreorderBot -- proof
@@ -298,6 +310,7 @@ example (before before' : Config Contrib) (received : G.Weld) :
 #check clockGrid -- witness
 #check registerClockGrid -- witness
 #check registerClock_macro_sentient -- witness
+#check sentience_share_square_inhabited -- witness
 #check registerClock_macro_selfConditioning -- witness
 
 end AssumptionAnchors

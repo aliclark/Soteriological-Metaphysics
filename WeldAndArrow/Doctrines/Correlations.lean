@@ -103,8 +103,8 @@ def WaaBullSeven (b : G.Being) : Prop :=
   G.ProbeConstant b (fun _ => True) ∧
     ∃ w : G.Weld, G.Actual w ∧ w.agent = b ∧ G.HasSelfPoleIndex w
 
-/-- Bull 8: the empty circle as the pole-class, covering stone and terminus
-    arrivals without collapsing them. -/
+/-- Bull 8: the empty circle as the pole-class.  The retired function-zero
+    disjunct is absent; this is terminus typing. -/
 abbrev WaaBullEight (b : G.Being) : Prop :=
   G.AtPoleClass b
 
@@ -115,23 +115,25 @@ abbrev WaaBullNine (b : G.Being) : Prop :=
 /-- Bull 10: marketplace functioning through at least one delivery line into
     another sentient fiber. The existential reading is the modest picture-level
     claim; stronger universal delivery is a separate asymptote. -/
-def WaaBullTen {Macro : Type} (κ : BeingCoarsening G Macro)
+def WaaBullTen {Macro : Type} (S : SentienceReading G)
+    (κ : BeingCoarsening G Macro)
     (b : G.Being) : Prop :=
   G.ResponsiveTerminus b ∧
     ∃ deed reception : G.Weld,
       κ.InFiber (κ.proj b) deed ∧
       G.Actual reception ∧
       ¬ κ.SameFiber deed.agent reception.agent ∧
-      κ.SentientTag (κ.proj reception.agent) ∧
+      κ.SentientTag S (κ.proj reception.agent) ∧
       DeliveredTo G deed reception
 
 /-- The shelved stronger bodhisattva reading: delivery reaches every other
     sentient fiber. The source picture does not require this strength. -/
-def StrongWaaBullTen {Macro : Type} (κ : BeingCoarsening G Macro)
+def StrongWaaBullTen {Macro : Type} (S : SentienceReading G)
+    (κ : BeingCoarsening G Macro)
     (b : G.Being) : Prop :=
   G.ResponsiveTerminus b ∧
     ∀ m : Macro,
-      κ.SentientTag m →
+      κ.SentientTag S m →
         m ≠ κ.proj b →
           ∃ deed reception : G.Weld,
             κ.InFiber (κ.proj b) deed ∧
@@ -150,19 +152,11 @@ theorem bullSeven_not_terminus {b : G.Being}
 theorem bullSeven_not_bullEight {b : G.Being}
     (h : G.WaaBullSeven b) :
     ¬ G.WaaBullEight b := by
-  intro height
-  rcases h.right with ⟨w, hactual, hagent, _hidx⟩
-  cases height with
-  | inl hstone =>
-      have hstoneW : G.Stone w.agent := by
-        simpa [hagent] using hstone
-      exact G.not_actual_of_stone w.agent hstoneW hactual
-  | inr hterm =>
-      exact G.bullSeven_not_terminus h hterm
+  exact G.bullSeven_not_terminus h
 
 theorem bullTen_to_bullNine {Macro : Type}
-    {κ : BeingCoarsening G Macro} {b : G.Being}
-    (h : G.WaaBullTen κ b) :
+    {S : SentienceReading G} {κ : BeingCoarsening G Macro} {b : G.Being}
+    (h : G.WaaBullTen S κ b) :
     G.WaaBullNine b :=
   h.left
 
@@ -174,7 +168,7 @@ theorem bullNine_to_terminus {b : G.Being}
 theorem terminus_to_bullEight {b : G.Being}
     (h : G.Terminus b) :
     G.WaaBullEight b :=
-  Or.inr h
+  h
 
 theorem bullNine_to_bullEight {b : G.Being}
     (h : G.WaaBullNine b) :
@@ -182,10 +176,19 @@ theorem bullNine_to_bullEight {b : G.Being}
   G.terminus_to_bullEight h.right
 
 theorem bullTen_to_bullEight {Macro : Type}
-    {κ : BeingCoarsening G Macro} {b : G.Being}
-    (h : G.WaaBullTen κ b) :
+    {S : SentienceReading G} {κ : BeingCoarsening G Macro} {b : G.Being}
+    (h : G.WaaBullTen S κ b) :
     G.WaaBullEight b :=
   G.bullNine_to_bullEight h.left
+
+/-- Bull 10 is explicitly reading-relative: under the constant-false
+    sentience reading its marketplace destination cannot be inhabited. -/
+theorem not_waaBullTen_allInsentient {Macro : Type}
+    (κ : BeingCoarsening G Macro) (b : G.Being) :
+    ¬ G.WaaBullTen (SentienceReading.allInsentient G) κ b := by
+  rintro ⟨_hterm, deed, reception, _hdeed, _hactual, _hcross,
+    hsentient, _hdel⟩
+  exact κ.allInsentient_not_sentientTag (κ.proj reception.agent) hsentient
 
 end Grid
 
@@ -247,14 +250,15 @@ abbrev RecordedRankUtterance : Type :=
 
 /-- The 到 rank's checked shape: marketplace arrival is exactly the Bull 10
     delivery pattern under the supplied coarsening. -/
-abbrev KenChuToShape {Macro : Type} (κ : BeingCoarsening G Macro)
+abbrev KenChuToShape {Macro : Type} (S : SentienceReading G)
+    (κ : BeingCoarsening G Macro)
     (b : G.Being) : Prop :=
-  G.WaaBullTen κ b
+  G.WaaBullTen S κ b
 
 theorem kenChuTo_implies_waaBullTen {Macro : Type}
-    {κ : BeingCoarsening G Macro} {b : G.Being}
-    (h : G.KenChuToShape κ b) :
-    G.WaaBullTen κ b :=
+    {S : SentienceReading G} {κ : BeingCoarsening G Macro} {b : G.Being}
+    (h : G.KenChuToShape S κ b) :
+    G.WaaBullTen S κ b :=
   h
 
 end Grid

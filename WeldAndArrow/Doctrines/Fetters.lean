@@ -318,9 +318,7 @@ theorem arhatPathQuiet_iff_quietOn_univ (b : G.Being)
   Iff.rfl
 
 /-- Total fine-being quietness and terminus typing are one share fact:
-    Bull 8's pole-class arrival is arhat display in bull-vocabulary.
-    Stone-typing satisfies both vacuously; everything above this rung
-    is function-axis, not share-axis. -/
+    Bull 8's pole-class arrival is arhat display in bull-vocabulary. -/
 theorem terminus_iff_quietOn_univ {b : G.Being} :
     G.Terminus b ↔ QuietOn G b (fun _ => True) := by
   constructor
@@ -334,15 +332,11 @@ theorem terminus_iff_quietOn_univ {b : G.Being} :
     have h := hquiet ⟨b, c, r⟩ hresp rfl trivial
     simpa [Grid.share] using h
 
-/-- The pole-class disjunction collapses to the quiet predicate, since
-    stone is vacuously terminus. -/
+/-- The pole-class predicate is terminus typing, hence exactly total
+    fine-being quietness. -/
 theorem atPoleClass_iff_quietOn_univ {b : G.Being} :
-    G.AtPoleClass b ↔ QuietOn G b (fun _ => True) := by
-  refine ⟨fun h => ?_, fun h => Or.inr (G.terminus_iff_quietOn_univ.mpr h)⟩
-  rcases h with hstone | hterm
-  · exact G.terminus_iff_quietOn_univ.mp
-      (G.stone_is_terminus_vacuously b hstone)
-  · exact G.terminus_iff_quietOn_univ.mp hterm
+    G.AtPoleClass b ↔ QuietOn G b (fun _ => True) :=
+  G.terminus_iff_quietOn_univ
 
 theorem all_fetters_cut_at_arhat (b : G.Being) (fr : G.FetterReading)
     (h : QuietOn G b (fun _ => True)) :

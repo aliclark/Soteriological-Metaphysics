@@ -189,10 +189,13 @@ theorem fox_never_tests_pole :
 def foxSeriesCoarsening : BeingCoarsening foxGrid Unit where
   proj _ := ()
 
+def foxSeriesSentienceReading : foxGrid.SentienceReading :=
+  Grid.SentienceReading.allSentient foxGrid
+
 theorem foxSeries_macro_sentient :
-    foxSeriesCoarsening.SentientTag () :=
-  ⟨(show foxGrid.Being from (0 : Nat)), rfl,
-    ⟨FoxCall.question, ⟨FoxResponse.notFall, rfl⟩⟩⟩
+    foxSeriesCoarsening.SentientTag foxSeriesSentienceReading () :=
+  ⟨⟨(0 : Nat), FoxCall.question, FoxResponse.notFall⟩,
+    ⟨rfl, by change True; exact True.intro⟩, rfl⟩
 
 theorem foxSeries_macro_selfConditioning :
     foxSeriesCoarsening.SelfConditioningTag () := by

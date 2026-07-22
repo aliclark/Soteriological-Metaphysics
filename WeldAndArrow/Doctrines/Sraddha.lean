@@ -28,19 +28,19 @@ variable (G : Grid Contrib)
 structure WaaAversionContext
     (before : Config Contrib) (reception : G.Weld) where
   liveBefore : ¬ AtBot before.tendency
-  mismatchLive : G.WaaMismatchLive reception
+  clenchMismatch : G.ClenchMismatch reception
 
 theorem actual_of_waaAversionContext
     {before : Config Contrib} {reception : G.Weld}
     (h : WaaAversionContext G before reception) :
     G.Actual reception :=
-  h.mismatchLive.left
+  h.clenchMismatch.left
 
 theorem hasSelfPoleIndex_of_waaAversionContext
     {before : Config Contrib} {reception : G.Weld}
     (h : WaaAversionContext G before reception) :
     G.HasSelfPoleIndex reception :=
-  h.mismatchLive.right
+  h.clenchMismatch.right
 
 /-- Given faith-shaped closure, delivery, and the receiver's live aversion
     context, the share-drop landing follows. -/
